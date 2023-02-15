@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:study_evaluation/view/screens/aboutus_screen.dart';
+import 'package:study_evaluation/view/screens/leardebord.dart';
+import 'package:study_evaluation/view/screens/myorder_screen.dart';
+import 'package:study_evaluation/viewmodel/category_view_model/category_list_vm.dart';
+import 'package:study_evaluation/viewmodel/feedback_view_model/feedback_list_vm.dart';
+import 'package:study_evaluation/viewmodel/slider_image_view_model/slider_image_list_vm.dart';
+import '../widgets/bottom_navigation.dart' as bottom_navi_widget;
+import 'package:study_evaluation/view/screens/home_view.dart';
+
+class HomeMainView extends StatefulWidget {
+  const HomeMainView({super.key});
+
+  @override
+  State<HomeMainView> createState() => _HomeMainViewState();
+}
+
+class _HomeMainViewState extends State<HomeMainView> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  List<Widget>? _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<CategoryListViewModel>(context, listen: false).fetch();
+    Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
+    Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final categoriesVM = Provider.of<CategoryListViewModel>(context);
+    final slidersVM = Provider.of<SliderImageListViewModel>(context);
+    final feedbacksVM = Provider.of<FeedbackListViewModel>(context);
+
+    _widgetOptions = <Widget>[
+      HomeView(
+        categoriesVM: categoriesVM,
+        slidersVM: slidersVM,
+        feedbacksVM: feedbacksVM,
+      ),
+      const AboutUsScreen(),
+      const MYOrderScreen(),
+      const LearderbordView()
+    ];
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions?.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: bottom_navi_widget
+          .getBottomNavigation(_selectedIndex, onItemTap: _onItemTapped),
+    );
+  }
+}
