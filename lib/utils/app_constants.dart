@@ -47,4 +47,5 @@ abstract class AppConstants {
   static const String signupAPIPath = '/apis/auth/register';
   static const String loginAPIPath = '/apis/auth/login';
   static const String imagePath = '/study_evolution/public';
+  static const String packageAPIPath = '/apis/web/category_by_package';
 }

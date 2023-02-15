@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/category_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/view/screens/testseries.dart';
+import 'package:study_evaluation/view/screens/category_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/viewmodel/category_view_model/category_list_vm.dart';
 import 'package:study_evaluation/viewmodel/feedback_view_model/feedback_list_vm.dart';
@@ -22,11 +23,17 @@ class HomeController {
         child: _getGridView(categoriesVM));
   }
 
-  void _onTestSeries() {
+  void _onTestSeries(id) {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const TestSeriesScreen()),
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                        create: (_) => CategoryListViewModel()),
+                  ],
+                  child: const CategoryListView(),
+                )));
     print("Test pressed!!!");
   }
 
