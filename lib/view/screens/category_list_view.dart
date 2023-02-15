@@ -4,6 +4,7 @@ import 'package:study_evaluation/models/category_model.dart';
 import 'package:study_evaluation/view/screens/package_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/viewmodel/category_view_model/category_list_vm.dart';
+import 'package:study_evaluation/viewmodel/package_view_model/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
 
@@ -54,11 +55,13 @@ class _CategoryListViewState extends State<CategoryListView> {
         child: _getGridView(categoriesVM));
   }
 
-  void _onTestSeries(id) {
+  void _onTap(id) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const PackageListView(),
+          builder: (context) => ChangeNotifierProvider(
+              create: (_) => PackageListViewModel(),
+              child: const PackageListView()),
           settings: RouteSettings(arguments: id)),
     );
     print("Test pressed!!!");
@@ -75,7 +78,7 @@ class _CategoryListViewState extends State<CategoryListView> {
               CategoryModel categoryModel =
                   categoriesVM.categoryViewModels[index].categoryModel;
               return WidgetUtils.getCard('${categoryModel.name}',
-                  "assets/images/test-series.png", _onTestSeries,
+                  "assets/images/test-series.png", _onTap,
                   imageHeight: 70.0);
             })
         : const CircularProgressIndicator();
