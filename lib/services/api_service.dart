@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:study_evaluation/services/base_service.dart';
-import '../apis/app_exception.dart';
+import '../core/apis/app_exception.dart';
 import '../utils/app_constants.dart';
 
 class APIService extends BaseService {

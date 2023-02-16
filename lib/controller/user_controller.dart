@@ -1,7 +1,5 @@
 import 'package:study_evaluation/models/user_model.dart';
-import 'package:study_evaluation/services/login_service.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/viewmodel/user_view_model/user_list_vm.dart';
+import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 class UserController {
   var context;

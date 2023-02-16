@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
-import 'package:study_evaluation/view/screens/aboutus_screen.dart';
-import 'package:study_evaluation/view/screens/followus_screen.dart';
-import 'package:study_evaluation/view/screens/myorder_screen.dart';
+import 'package:study_evaluation/view/views/aboutus_screen.dart';
+import 'package:study_evaluation/view/views/followus_screen.dart';
+import 'package:study_evaluation/view/views/myorder_screen.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../screens/feedbackalertdialog.dart';
+import '../views/feedbackalertdialog.dart';
 
 class NavBar extends StatefulWidget {
   @override

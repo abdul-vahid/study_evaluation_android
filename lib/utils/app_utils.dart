@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/utils/app_color.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 
 class AppUtil {
   void onLoading(BuildContext? context, String? label) {
@@ -66,5 +68,10 @@ class AppUtil {
         );
       },
     );
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
   }
 }

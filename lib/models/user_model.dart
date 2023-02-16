@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:study_evaluation/models/base_model.dart';
+import 'package:study_evaluation/core/models/base_model.dart';
 
 class UserModel extends BaseModel {
   String? id;

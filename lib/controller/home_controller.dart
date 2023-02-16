@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/category_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/view/screens/category_list_view.dart';
+import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
-import 'package:study_evaluation/viewmodel/category_view_model/category_list_vm.dart';
-import 'package:study_evaluation/viewmodel/feedback_view_model/feedback_list_vm.dart';
-import 'package:study_evaluation/viewmodel/slider_image_view_model/slider_image_list_vm.dart';
+import 'package:study_evaluation/view_models/category_view_model/category_list_vm.dart';
+import 'package:study_evaluation/view_models/feedback_view_model/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/slider_image_view_model/slider_image_list_vm.dart';
 
 class HomeController {
   var context;

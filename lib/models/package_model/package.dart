@@ -2,15 +2,14 @@ import 'dart:convert';
 
 import 'package:study_evaluation/core/models/base_model.dart';
 
-class PackageModel extends BaseModel {
-  String? categoriesId;
+class Package extends BaseModel {
   String? id;
   String? categoryId;
   String? title;
   String? publishType;
   String? packageType;
-  String? fullLineTests;
-  String? topicWiseTests;
+  dynamic fullLineTests;
+  dynamic topicWiseTests;
   String? totalPdfs;
   String? totalVideos;
   String? totalQuestions;
@@ -25,8 +24,7 @@ class PackageModel extends BaseModel {
   String? updatedBy;
   String? status;
 
-  PackageModel({
-    this.categoriesId,
+  Package({
     this.id,
     this.categoryId,
     this.title,
@@ -49,15 +47,14 @@ class PackageModel extends BaseModel {
     this.status,
   });
 
-  factory PackageModel.fromMap(Map<String, dynamic> data) => PackageModel(
-        categoriesId: data['categoriesId'] as String?,
+  factory Package.fromMap(Map<String, dynamic> data) => Package(
         id: data['id'] as String?,
         categoryId: data['category_id'] as String?,
         title: data['title'] as String?,
         publishType: data['publish_type'] as String?,
         packageType: data['package_type'] as String?,
-        fullLineTests: data['full_line_tests'] as String?,
-        topicWiseTests: data['topic_wise_tests'] as String?,
+        fullLineTests: data['full_line_tests'] as dynamic,
+        topicWiseTests: data['topic_wise_tests'] as dynamic,
         totalPdfs: data['total_pdfs'] as String?,
         totalVideos: data['total_videos'] as String?,
         totalQuestions: data['total_questions'] as String?,
@@ -74,7 +71,6 @@ class PackageModel extends BaseModel {
       );
 
   Map<String, dynamic> toMap() => {
-        'categoriesId': categoriesId,
         'id': id,
         'category_id': categoryId,
         'title': title,
@@ -99,13 +95,13 @@ class PackageModel extends BaseModel {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [PackageModel].
-  factory PackageModel.fromJson(String data) {
-    return PackageModel.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [Package].
+  factory Package.fromJson(String data) {
+    return Package.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [PackageModel] to a JSON string.
+  /// Converts [Package] to a JSON string.
   String toJson() => json.encode(toMap());
 }

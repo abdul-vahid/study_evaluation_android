@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
-import 'package:study_evaluation/view/screens/aboutus_screen.dart';
-import 'package:study_evaluation/view/screens/feedbackalertdialog.dart';
-import 'package:study_evaluation/view/screens/followus_screen.dart';
-import 'package:study_evaluation/view/screens/home_view.dart';
+import 'package:study_evaluation/view/views/aboutus_screen.dart';
+import 'package:study_evaluation/view/views/feedbackalertdialog.dart';
+import 'package:study_evaluation/view/views/followus_screen.dart';
+import 'package:study_evaluation/view/views/home_view.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
