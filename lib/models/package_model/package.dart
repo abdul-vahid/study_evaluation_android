@@ -39,6 +39,24 @@ class Package extends BaseModel {
     this.status,
   });
 
+  String getShortDescription(int start, {int? end}) {
+    int? len = description?.length;
+    if (end != null) {
+      if (len! < end) {
+        return description!;
+      }
+    } else {
+      if (len! < start) {
+        return description!;
+      }
+    }
+    if (end != null) {
+      return "${(description?.substring(start, end))!}...";
+    } else {
+      return "${(description?.substring(start))!}...";
+    }
+  }
+
   factory Package.fromMap(Map<String, dynamic> data) => Package(
         id: data['id'] as String?,
         categoryId: data['category_id'] as String?,

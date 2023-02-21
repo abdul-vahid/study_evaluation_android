@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
 
-class ResultHindiView extends StatefulWidget {
-  const ResultHindiView({super.key});
+class ExamView extends StatefulWidget {
+  const ExamView({super.key});
 
   @override
-  State<ResultHindiView> createState() => _ResultHindiViewState();
+  State<ExamView> createState() => _ExamViewState();
 }
 
-class _ResultHindiViewState extends State<ResultHindiView> {
+class _ExamViewState extends State<ExamView> {
   String? question;
   List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected

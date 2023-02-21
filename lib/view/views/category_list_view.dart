@@ -29,8 +29,8 @@ class _CategoryListViewState extends State<CategoryListView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: BackButton(color: Colors.white),
-        title: const Text("Test Categories"),
+        leading: const BackButton(color: Colors.white),
+        title: const Text("Test Series"),
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),

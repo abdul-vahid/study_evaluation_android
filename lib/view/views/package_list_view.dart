@@ -127,7 +127,7 @@ class _PackageListViewState extends State<PackageListView> {
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Html(data: model.description),
+          child: Html(data: model.getShortDescription(1, end: 50)),
         ),
       ],
     ));

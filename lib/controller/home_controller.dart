@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/category_model.dart';
+import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/category_view_model/category_list_vm.dart';
@@ -14,13 +16,13 @@ class HomeController {
   var context;
   FeedbackListViewModel feedbackListViewModel;
   HomeController(this.context, this.feedbackListViewModel);
-  Widget getTestSeries(categoriesVM) {
+  Widget getTestSeries() {
     return Container(
         width: double.infinity,
         height: 540.0,
         margin: const EdgeInsets.all(15.0),
         // width: 200,
-        child: _getGridView(categoriesVM));
+        child: _getGridView());
   }
 
   void _onTestSeries(id) {
@@ -37,18 +39,28 @@ class HomeController {
     print("Test pressed!!!");
   }
 
-  Widget _getGridView(CategoryListViewModel categoriesVM) {
-    return categoriesVM.categoryViewModels.isNotEmpty
+  void _onVideo(id) {
+    AppUtil().getAlert(context, ["App is Under Construction!"]);
+  }
+
+  Widget _getGridView() {
+    List<HomeTilesModel> homeTilesModels = AppUtil.getHomeTilesModels();
+    return homeTilesModels.isNotEmpty
         ? GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: categoriesVM.categoryViewModels.length,
+            itemCount: homeTilesModels.length,
             itemBuilder: (context, index) {
-              CategoryModel categoryModel =
-                  categoriesVM.categoryViewModels[index].categoryModel;
-              return WidgetUtils.getCard('${categoryModel.name}',
-                  "assets/images/test-series.png", _onTestSeries,
+              HomeTilesModel homeTilesModel = homeTilesModels[index];
+              var callBack;
+              if (homeTilesModel.title.toLowerCase() == "test series") {
+                callBack = _onTestSeries;
+              } else {
+                callBack = _onVideo;
+              }
+              return WidgetUtils.getCard(
+                  '${homeTilesModel.title}', homeTilesModel.imagePath, callBack,
                   imageHeight: 70.0);
             })
         : const CircularProgressIndicator();

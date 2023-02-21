@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
+import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 
@@ -104,5 +105,23 @@ class AppUtil {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
         bottom: bottom);
+  }
+
+  static List<HomeTilesModel> getHomeTilesModels() {
+    List<HomeTilesModel> homeTilesModels = [];
+    homeTilesModels.add(HomeTilesModel(
+        title: "Test Series", imagePath: "assets/images/test-series.png"));
+    homeTilesModels.add(HomeTilesModel(
+        title: "Recorded Video Course", imagePath: "assets/images/course.png"));
+    homeTilesModels.add(HomeTilesModel(
+        title: "Combo Package", imagePath: "assets/images/combo-package.png"));
+    homeTilesModels.add(HomeTilesModel(
+        title: "Live Course", imagePath: "assets/images/live-courses.png"));
+    homeTilesModels.add(HomeTilesModel(
+        title: "Free Content", imagePath: "assets/images/free-content.png"));
+    homeTilesModels.add(HomeTilesModel(
+        title: "Latest Exam", imagePath: "assets/images/exam-news.png"));
+
+    return homeTilesModels;
   }
 }

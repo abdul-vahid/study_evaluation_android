@@ -64,9 +64,17 @@ class WidgetUtils {
 
   static Widget getTextFormField(
       String labelText, String hintText, IconData iconData,
-      {controller}) {
+      {controller,
+      void Function(String?)? onSaved,
+      String? Function(String?)? onValidator,
+      bool obscureText = false,
+      String? initialValue}) {
     return TextFormField(
+      obscureText: obscureText,
       controller: controller,
+      onSaved: onSaved,
+      validator: onValidator,
+      initialValue: initialValue,
       decoration: InputDecoration(
           prefixIcon: Icon(iconData, color: AppColor.iconColor),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),

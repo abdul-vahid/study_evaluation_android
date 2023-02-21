@@ -12,7 +12,6 @@ class UserController {
   }
 
   Future<List<dynamic>> login(String username, String password) async {
-    print("loggin called");
     return await UserListViewModel().login(username, password);
   }
 }

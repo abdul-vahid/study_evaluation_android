@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
             height: 10,
           ),
           getButtonContainer(),
-          homeController.getTestSeries(categoriesVM),
+          homeController.getTestSeries(),
           // SizedBox(
           //   height: 10,
           // ),
