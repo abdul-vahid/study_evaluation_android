@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
 
-class BothScreen extends StatefulWidget {
-  const BothScreen({super.key});
+class ResultHindiEnglishView extends StatefulWidget {
+  const ResultHindiEnglishView({super.key});
 
   @override
-  State<BothScreen> createState() => _BothScreenState();
+  State<ResultHindiEnglishView> createState() => _ResultHindiEnglishViewState();
 }
 
-class _BothScreenState extends State<BothScreen> {
+class _ResultHindiEnglishViewState extends State<ResultHindiEnglishView> {
   String? question; //no radio button will be selected
 
   @override

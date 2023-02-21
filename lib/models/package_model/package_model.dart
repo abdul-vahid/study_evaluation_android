@@ -1,33 +1,44 @@
 import 'dart:convert';
 
+import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_model.dart';
+
+import 'document.dart';
 import 'package.dart';
-import 'test_model.dart';
-import 'document_model.dart';
+import 'test_series.dart';
 
 class PackageModel extends BaseModel {
   Package? package;
-  List<TestModel>? testSeries;
-  List<DocumentModel>? documents;
-
-  PackageModel({this.package, this.testSeries, this.documents});
+  List<Document>? documents;
+  List<TestSeries>? testSeries;
+  Exception? error;
+  AppException? appException;
+  PackageModel(
+      {this.package,
+      this.documents,
+      this.testSeries,
+      this.error,
+      this.appException});
+  bool get isError {
+    return error != null || appException != null;
+  }
 
   factory PackageModel.fromMap(Map<String, dynamic> data) => PackageModel(
         package: data['package'] == null
             ? null
             : Package.fromMap(data['package'] as Map<String, dynamic>),
-        testSeries: (data['test_series'] as List<dynamic>?)
-            ?.map((e) => TestModel.fromMap(e as Map<String, dynamic>))
-            .toList(),
         documents: (data['documents'] as List<dynamic>?)
-            ?.map((e) => DocumentModel.fromMap(e as Map<String, dynamic>))
+            ?.map((e) => Document.fromMap(e as Map<String, dynamic>))
+            .toList(),
+        testSeries: (data['test_series'] as List<dynamic>?)
+            ?.map((e) => TestSeries.fromMap(e as Map<String, dynamic>))
             .toList(),
       );
 
   Map<String, dynamic> toMap() => {
         'package': package?.toMap(),
-        'test_series': testSeries?.map((e) => e.toMap()).toList(),
         'documents': documents?.map((e) => e.toMap()).toList(),
+        'test_series': testSeries?.map((e) => e.toMap()).toList(),
       };
 
   /// `dart:convert`

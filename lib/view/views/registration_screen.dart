@@ -128,13 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           MaterialPageRoute(builder: (context) => const SignupSuccess()));
     }).catchError((onError) {
       Navigator.pop(context);
-      AppException exception = onError;
-      Map<String, dynamic> data = jsonDecode(exception.getMessage());
-      List<String> errorMessages = [];
-      data.forEach((key, value) {
-        errorMessages.add(value);
-      });
-
+      List<String> errorMessages = AppUtil.getErrorMessages(onError);
       AppUtil().getAlert(context, errorMessages, title: "Error Alert");
     });
   }

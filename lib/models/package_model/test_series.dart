@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'result_model.dart';
 
-class TestModel {
+class TestSeries {
   String? id;
-  String? packageId;
   String? type;
   String? examId;
   String? title;
@@ -11,10 +11,11 @@ class TestModel {
   String? duration;
   String? attemptLimit;
   String? status;
+  String? totalQuestions;
+  ResultModel? result;
 
-  TestModel({
+  TestSeries({
     this.id,
-    this.packageId,
     this.type,
     this.examId,
     this.title,
@@ -23,11 +24,12 @@ class TestModel {
     this.duration,
     this.attemptLimit,
     this.status,
+    this.totalQuestions,
+    this.result,
   });
 
-  factory TestModel.fromMap(Map<String, dynamic> data) => TestModel(
+  factory TestSeries.fromMap(Map<String, dynamic> data) => TestSeries(
         id: data['id'] as String?,
-        packageId: data['package_id'] as String?,
         type: data['type'] as String?,
         examId: data['exam_id'] as String?,
         title: data['title'] as String?,
@@ -36,11 +38,14 @@ class TestModel {
         duration: data['duration'] as String?,
         attemptLimit: data['attempt_limit'] as String?,
         status: data['status'] as String?,
+        totalQuestions: data['total_questions'] as String?,
+        result: data['result'] != null
+            ? ResultModel.fromMap(data['result'] as Map<String, dynamic>)
+            : null,
       );
 
   Map<String, dynamic> toMap() => {
         'id': id,
-        'package_id': packageId,
         'type': type,
         'exam_id': examId,
         'title': title,
@@ -49,17 +54,19 @@ class TestModel {
         'duration': duration,
         'attempt_limit': attemptLimit,
         'status': status,
+        'total_questions': totalQuestions,
+        'result': result?.toMap(),
       };
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [TestModel].
-  factory TestModel.fromJson(String data) {
-    return TestModel.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [TestSeries].
+  factory TestSeries.fromJson(String data) {
+    return TestSeries.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [TestModel] to a JSON string.
+  /// Converts [TestSeries] to a JSON string.
   String toJson() => json.encode(toMap());
 }

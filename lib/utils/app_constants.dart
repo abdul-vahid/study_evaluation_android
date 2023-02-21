@@ -50,5 +50,6 @@ abstract class AppConstants {
   static const String packageAPIPath = '/apis/web/category_by_package';
   static const String currentAffairsAPIPath = '/apis/web/category_by_package';
   static const String quotesAPIPath = '/apis/web/category_by_package';
-  static const String packageLineItemsAPIPath = '/apis/web/category_by_package';
+  static const String packageLineItemsAPIPath =
+      '/apis/web/fetch_package_entries';
 }

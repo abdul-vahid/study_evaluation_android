@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     )));
       }
     }).catchError((error) {
+      Navigator.pop(context);
       List<String> errorMessages = [];
       if (error.runtimeType == AppException) {
         AppException exception = error;

@@ -18,10 +18,6 @@ class Package extends BaseModel {
   String? validity;
   String? description;
   String? logoUrl;
-  String? createdDate;
-  String? updatedDate;
-  String? createdBy;
-  String? updatedBy;
   String? status;
 
   Package({
@@ -40,10 +36,6 @@ class Package extends BaseModel {
     this.validity,
     this.description,
     this.logoUrl,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
     this.status,
   });
 
@@ -63,10 +55,6 @@ class Package extends BaseModel {
         validity: data['validity'] as String?,
         description: data['description'] as String?,
         logoUrl: data['logo_url'] as String?,
-        createdDate: data['created_date'] as String?,
-        updatedDate: data['updated_date'] as String?,
-        createdBy: data['created_by'] as String?,
-        updatedBy: data['updated_by'] as String?,
         status: data['status'] as String?,
       );
 
@@ -86,10 +74,6 @@ class Package extends BaseModel {
         'validity': validity,
         'description': description,
         'logo_url': logoUrl,
-        'created_date': createdDate,
-        'updated_date': updatedDate,
-        'created_by': createdBy,
-        'updated_by': updatedBy,
         'status': status,
       };
 

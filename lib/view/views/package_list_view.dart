@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/models/package_model.dart';
+import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/view/views/rajasthanconstablespecial_screen.dart';
+import 'package:study_evaluation/view/views/package_detail_view.dart';
 import 'package:study_evaluation/view_models/package_view_model/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
@@ -30,7 +30,7 @@ class _PackageListViewState extends State<PackageListView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: BackButton(color: Colors.white),
+        leading: const BackButton(color: Colors.white),
         title: const Text("Packages"),
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
@@ -61,7 +61,7 @@ class _PackageListViewState extends State<PackageListView> {
     return widgets;
   }
 
-  Padding getPadding(BuildContext context, PackageModel model) {
+  Padding getPadding(BuildContext context, Package model) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
@@ -76,7 +76,7 @@ class _PackageListViewState extends State<PackageListView> {
     );
   }
 
-  Card getCard(BuildContext context, PackageModel model) {
+  Card getCard(BuildContext context, Package model) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -112,7 +112,7 @@ class _PackageListViewState extends State<PackageListView> {
     );
   }
 
-  Expanded _getContentContainer(PackageModel model) {
+  Expanded _getContentContainer(Package model) {
     return Expanded(
         child: Column(
       children: [
@@ -133,7 +133,7 @@ class _PackageListViewState extends State<PackageListView> {
     ));
   }
 
-  Container _getImageContainer(PackageModel model) {
+  Container _getImageContainer(Package model) {
     print("Image Path: ${AppConstants.imagePath}/${model.logoUrl}");
     return Container(
       height: 80,
@@ -157,7 +157,11 @@ class _PackageListViewState extends State<PackageListView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const RajasthanConstableSpecialScreen()),
+          builder: (context) => ChangeNotifierProvider(
+                create: (_) => PackageListViewModel(),
+                child: const PackageDetailView(),
+              ),
+          settings: RouteSettings(arguments: 9)),
     );
     print("Login Button pressed!!!");
   }

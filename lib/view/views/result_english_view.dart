@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
 
-class EnglishScreen extends StatefulWidget {
-  const EnglishScreen({super.key});
+class ResultEnglishView extends StatefulWidget {
+  const ResultEnglishView({super.key});
 
   @override
-  State<EnglishScreen> createState() => _EnglishScreenState();
+  State<ResultEnglishView> createState() => _ResultEnglishViewState();
 }
 
-class _EnglishScreenState extends State<EnglishScreen> {
+class _ResultEnglishViewState extends State<ResultEnglishView> {
   String? question; //no radio button will be selected
 
   @override

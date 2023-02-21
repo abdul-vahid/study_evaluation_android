@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 
@@ -73,5 +76,33 @@ class AppUtil {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+  }
+
+  ElevatedButton getElevatedButton(btnLabel,
+      {required void Function()? onPressed, buttonStyle, textStyle}) {
+    return ElevatedButton(
+      style: buttonStyle,
+      onPressed: onPressed,
+      child: Text(btnLabel, style: textStyle),
+    );
+  }
+
+  static List<String> getErrorMessages(AppException? appException) {
+    List<String> errorMessages = [];
+    Map<String, dynamic> data = jsonDecode(appException?.getMessage());
+    data.forEach((key, value) {
+      errorMessages.add(value);
+    });
+    return errorMessages;
+  }
+
+  static AppBar getAppbar(String title, {bottom}) {
+    return AppBar(
+        centerTitle: true,
+        leading: const BackButton(color: Colors.white),
+        title: Text(title),
+        elevation: .1,
+        backgroundColor: AppColor.appBarColor,
+        bottom: bottom);
   }
 }
