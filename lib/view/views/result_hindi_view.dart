@@ -11,7 +11,7 @@ class ResultHindiView extends StatefulWidget {
 
 class _ResultHindiViewState extends State<ResultHindiView> {
   String? question;
-  List<int> selectedValues = [];
+  List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected
 
   @override
@@ -28,7 +28,7 @@ class _ResultHindiViewState extends State<ResultHindiView> {
     int i = 0;
     for (var qm in questionModels) {
       if (isBlankSelValues) {
-        selectedValues.add(0);
+        selectedValues.add(qm.optionA!);
       }
       qm.index = i++;
       widgets.add(_getQuestionOptionWidget(context, qm));
@@ -85,11 +85,11 @@ class _ResultHindiViewState extends State<ResultHindiView> {
         style: _getTextStyleHindi(),
       ),
       value: value,
-      groupValue: qm.id,
+      groupValue: selectedValues[qm.index!],
       onChanged: (value) {
         setState(() {
           print("Value = $value");
-          qm.selectedOption = value.toString();
+          selectedValues[qm.index!] = value!;
         });
       },
     );
