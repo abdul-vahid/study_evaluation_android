@@ -6,7 +6,8 @@ import 'package:study_evaluation/view_models/current_affairs_view_model/current_
 import '../../core/apis/app_exception.dart';
 
 class CurrentAffairsListViewModel extends ChangeNotifier {
-  var viewModels = [];
+  Map<String, List<CurrentAffairsViewModel>> viewModels =
+      <String, List<CurrentAffairsViewModel>>{};
   var status = "Loading";
 
   Future<void> fetch({String jsonRecordKey = "records"}) async {
@@ -14,19 +15,34 @@ class CurrentAffairsListViewModel extends ChangeNotifier {
       final jsonObject = await CurrentAffairsService().fetch();
 
       final records = jsonObject[jsonRecordKey];
+
+      print('@@@records${records}');
+
       var modelMap =
           records.map((item) => CurrentAffairsModel.fromMap(item)).toList();
-      viewModels =
+      print('@@@modelMap${modelMap}');
+      var vmList =
           modelMap.map((item) => CurrentAffairsViewModel(model: item)).toList();
+      print('vmList${vmList}');
+      for (var vm in vmList) {
+        List<CurrentAffairsViewModel>? caList = viewModels[vm.model.type];
+        caList ??= [];
+        caList.add(vm);
+        viewModels[vm.model.type] = caList;
+      }
+      print("@@viewModels ${viewModels}");
       status = "Completed";
     } on AppException catch (error) {
       status = "Error";
-      viewModels.add(CurrentAffairsViewModel(
+      List<CurrentAffairsViewModel> caList = [];
+      caList.add(CurrentAffairsViewModel(
           model: CurrentAffairsModel(appException: error)));
+      viewModels["error"] = caList;
     } on Exception catch (e) {
       status = "Error";
-      viewModels
-          .add(CurrentAffairsViewModel(model: CurrentAffairsModel(error: e)));
+      List<CurrentAffairsViewModel> caList = [];
+      caList.add(CurrentAffairsViewModel(model: CurrentAffairsModel(error: e)));
+      viewModels["error"] = caList;
 
       //print("Exception:" + e.toString());
     }
