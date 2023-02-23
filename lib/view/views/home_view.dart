@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
+import 'package:study_evaluation/view_models/current_affairs_view_model/current_affairs_list_vm.dart';
+import 'package:study_evaluation/view_models/quote_view_model/quote_list_vm.dart';
 
 import '../../utils/app_color.dart';
 import '../widgets/sidebar.dart';
-import '../widgets/widget_utils.dart';
 
 class HomeView extends StatefulWidget {
   final categoriesVM;
@@ -46,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
             height: 10,
           ),
           getButtonContainer(),
-          homeController.getTestSeries(),
+          homeController.getTestSeries(categoriesVM),
           // SizedBox(
           //   height: 10,
           // ),
@@ -360,7 +362,13 @@ class _HomeViewState extends State<HomeView> {
   void onButtonPressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MotivationScreen()),
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (_) => QuoteListViewModel())
+                ],
+                child: const MotivationScreen(),
+              )),
     );
     print("Login Button pressed!!!");
   }
@@ -374,7 +382,14 @@ class _HomeViewState extends State<HomeView> {
   void onCurrentAffairs() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const CurrentAffairScreen()),
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                      create: (_) => CurrentAffairsListViewModel())
+                ],
+                child: const CurrentAffairScreen(),
+              )),
     );
     print("Login Button pressed!!!");
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/view/views/login_screen.dart';
 import 'package:study_evaluation/view/views/registration_screen.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
+import 'package:study_evaluation/view_models/result_view_model/role_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class LoginHome extends StatefulWidget {
@@ -14,7 +16,7 @@ class LoginHome extends StatefulWidget {
 class _LoginHomeState extends State<LoginHome>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-
+  var roleListVM;
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
@@ -86,7 +88,13 @@ class _LoginHomeState extends State<LoginHome>
 
               WidgetUtils.getExpanded(WidgetUtils.getTabview(tabController, [
                 const LoginScreen(),
-                const RegistrationScreen()
+                MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => RoleListViewModel()),
+                  ],
+                  child: RegistrationScreen(),
+                ),
+                //RegistrationScreen(roleListVM)
               ])) //Adding Tabs
             ],
           ),

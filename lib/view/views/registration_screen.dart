@@ -2,17 +2,20 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
+import 'package:study_evaluation/view_models/result_view_model/role_list_vm.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
 import '../widgets/widget_utils.dart';
 
 class RegistrationScreen extends StatefulWidget {
+  //RegistrationScreen(this.roleListVM);
   const RegistrationScreen({super.key});
 
   @override
@@ -20,8 +23,16 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  var roleListVM;
+  @override
+  void initState() {
+    // TODO: implement initState
+    Provider.of<RoleListViewModel>(context, listen: false).fetch();
+    super.initState();
+  }
+
   UserController? userController;
-  final GlobalKey<FormState> _registrationFormKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _registrationFormKey = GlobalKey<FormState>();
   String? _name;
   String? _mobileNumber;
   String? _email;
@@ -39,6 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? _selectedRole; // Option 2
   @override
   Widget build(BuildContext context) {
+    roleListVM = Provider.of<RoleListViewModel>(context);
     userController = UserController(context);
     return SingleChildScrollView(
       child: Form(
@@ -97,31 +109,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             DropdownButtonHideUnderline(
               child: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25)),
-                  prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-                ),
-                hint: Text('Select Role'),
-                // Not necessary for Option 1
-                value: _selectedRole,
-                validator: (value) => value == null ? 'Required' : null,
-                isDense: true,
-                isExpanded: false,
-                menuMaxHeight: 350,
-
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedRole = newValue;
-                  });
-                },
-                items: _role.map((state) {
-                  return DropdownMenuItem(
-                    child: new Text(state),
-                    value: state,
-                  );
-                }).toList(),
-              ),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25)),
+                    prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
+                  ),
+                  hint: const Text('Select Role'),
+                  // Not necessary for Option 1
+                  value: _selectedRole,
+                  validator: (value) => value == null ? 'Required' : null,
+                  isDense: true,
+                  isExpanded: false,
+                  menuMaxHeight: 350,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedRole = newValue;
+                    });
+                  },
+                  items: getItems()),
             ),
             const SizedBox(
               height: 20,
@@ -177,5 +182,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         AppUtil().getAlert(context, errorMessages, title: "Error Alert");
       });
     }
+  }
+
+  List<DropdownMenuItem<String>>? getItems() {
+    if (roleListVM.viewModels.isNotEmpty) {
+      return roleListVM.viewModels.map<DropdownMenuItem<String>>((viewModel) {
+        return DropdownMenuItem<String>(
+          value: viewModel.model.id,
+          child: Text(viewModel.model.role),
+        );
+      }).toList();
+    }
+    return null;
   }
 }

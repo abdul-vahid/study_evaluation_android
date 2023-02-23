@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:study_evaluation/core/models/base_model.dart';
 
+import '../core/apis/app_exception.dart';
+
 class QuoteModel extends BaseModel {
   String? id;
   String? quote;
@@ -15,21 +17,27 @@ class QuoteModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatedBy;
+  Exception? error;
+  AppException? appException;
 
-  QuoteModel({
-    this.id,
-    this.quote,
-    this.date,
-    this.documentName,
-    this.documentUrl,
-    this.videoUrl,
-    this.pdfUrl,
-    this.status,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
-  });
+  QuoteModel(
+      {this.id,
+      this.quote,
+      this.date,
+      this.documentName,
+      this.documentUrl,
+      this.videoUrl,
+      this.pdfUrl,
+      this.status,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatedBy,
+      this.error,
+      this.appException});
+  bool get isError {
+    return error != null || appException != null;
+  }
 
   factory QuoteModel.fromMap(Map<String, dynamic> data) => QuoteModel(
         id: data['id'] as String?,

@@ -124,4 +124,20 @@ class AppUtil {
 
     return homeTilesModels;
   }
+
+  static Widget getErrorWidget(model) {
+    List<String> errorMessages = [];
+    String errorMessage = "";
+    if (model!.appException != null) {
+      errorMessages = AppUtil.getErrorMessages(model!.appException);
+    } else {
+      errorMessage = model!.error.toString();
+    }
+
+    return errorMessages.isNotEmpty
+        ? Column(
+            children: [for (var message in errorMessages) Text(message)],
+          )
+        : Center(child: Text(errorMessage));
+  }
 }

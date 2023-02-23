@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:study_evaluation/core/models/base_model.dart';
 
+import '../core/apis/app_exception.dart';
+
 class CurrentAffairsModel extends BaseModel {
   String? id;
   String? title;
@@ -14,20 +16,26 @@ class CurrentAffairsModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatesBy;
+  Exception? error;
+  AppException? appException;
 
-  CurrentAffairsModel({
-    this.id,
-    this.title,
-    this.type,
-    this.status,
-    this.documentName,
-    this.documentUrl,
-    this.videoUrl,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatesBy,
-  });
+  CurrentAffairsModel(
+      {this.id,
+      this.title,
+      this.type,
+      this.status,
+      this.documentName,
+      this.documentUrl,
+      this.videoUrl,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatesBy,
+      this.error,
+      this.appException});
+  bool get isError {
+    return error != null || appException != null;
+  }
 
   factory CurrentAffairsModel.fromMap(Map<String, dynamic> data) {
     return CurrentAffairsModel(
