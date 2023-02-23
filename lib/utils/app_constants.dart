@@ -47,10 +47,9 @@ abstract class AppConstants {
   static const String signupAPIPath = '/apis/auth/register';
   static const String loginAPIPath = '/apis/auth/login';
   static const String imagePath = '/study_evolution/public';
-  static const String packageAPIPath = '/apis/web/category_by_package';
-  static const String currentAffairsAPIPath = '/apis/apis/current_affairs';
-  static const String quotesAPIPath = '/apis/web/quote';
-  static const String packageLineItemsAPIPath =
-      '/apis/web/fetch_package_entries';
-  static const String roleAPIPath = '/apis/apis/role';
+  static const String packageAPIPath = '/apis/category_by_package';
+  static const String currentAffairsAPIPath = '/apis/current_affairs';
+  static const String quotesAPIPath = '/apis/quote';
+  static const String packageLineItemsAPIPath = '/apis/fetch_package_entries';
+  static const String roleAPIPath = '/apis/role';
 }

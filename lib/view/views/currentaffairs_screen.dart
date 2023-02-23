@@ -89,26 +89,42 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
 
   List<Widget> get _getCurrentAffairVideoWidgets {
     List<Widget> widgets = [];
+    currentAffairsListVM.viewModels.forEach((key, viewModels) {
+      List<Widget> videoBottomSheetWidgets = [];
+      videoBottomSheetWidgets.add(Container(
+        child: Text(key),
+      ));
+      for (var viewModel in viewModels) {
+        List<Widget> tempWidgets = [];
 
-    for (var viewModel in currentAffairsListVM.viewModels) {
-      List<Widget> tempWidgets = [];
+        if (viewModel.model.videoUrl != null &&
+            viewModel.model.videoUrl.endsWith(".mp4")) {
+          tempWidgets
+              .add(_getCurrentAffairsModelVideo(viewModel.model.videoUrl));
+        }
+        tempWidgets.add(_bottomSheet(viewModel.model));
 
-      if (viewModel.model.videoUrl != null &&
-          viewModel.model.videoUrl.endsWith(".mp4")) {
-        tempWidgets.add(_getCurrentAffairsModelVideo(viewModel.model.videoUrl));
+        videoBottomSheetWidgets.add(Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Card(
+            elevation: 5,
+            child: Column(
+              children: tempWidgets,
+            ),
+          ),
+        ));
       }
-      tempWidgets.add(_bottomSheet(viewModel.model));
-
-      widgets.add(Padding(
+      widgets.addAll(videoBottomSheetWidgets);
+      /* widgets.add(Padding(
         padding: const EdgeInsets.all(10.0),
         child: Card(
           elevation: 5,
           child: Column(
-            children: tempWidgets,
+            children: videoBottomSheetWidgets,
           ),
         ),
-      ));
-    }
+      )); */
+    });
 
     return widgets;
   }
