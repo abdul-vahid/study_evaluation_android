@@ -8,11 +8,6 @@ class Exam {
   String? duration;
   String? attemptLimit;
   String? status;
-  String? publishDate;
-  String? createdDate;
-  String? updatedDate;
-  String? createdBy;
-  String? updatedBy;
 
   Exam({
     this.id,
@@ -22,11 +17,6 @@ class Exam {
     this.duration,
     this.attemptLimit,
     this.status,
-    this.publishDate,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
   });
 
   factory Exam.fromMap(Map<String, dynamic> data) => Exam(
@@ -37,11 +27,6 @@ class Exam {
         duration: data['duration'] as String?,
         attemptLimit: data['attempt_limit'] as String?,
         status: data['status'] as String?,
-        publishDate: data['publish_date'] as String?,
-        createdDate: data['created_date'] as String?,
-        updatedDate: data['updated_date'] as String?,
-        createdBy: data['created_by'] as String?,
-        updatedBy: data['updated_by'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -52,11 +37,6 @@ class Exam {
         'duration': duration,
         'attempt_limit': attemptLimit,
         'status': status,
-        'publish_date': publishDate,
-        'created_date': createdDate,
-        'updated_date': updatedDate,
-        'created_by': createdBy,
-        'updated_by': updatedBy,
       };
 
   /// `dart:convert`

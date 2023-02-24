@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 import '../../utils/app_color.dart';
 
@@ -16,7 +17,12 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   Widget build(BuildContext context) {
+    return _getBody(context);
+  }
+
+  Scaffold _getBody(BuildContext context) {
     return Scaffold(
+        appBar: AppUtil.getAppbar("Test"),
         body: SingleChildScrollView(
             child: Column(children: _getQuestionOptionWidgets(context))));
   }

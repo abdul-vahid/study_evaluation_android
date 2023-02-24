@@ -163,4 +163,11 @@ class AppUtil {
     print("Image URL = ${AppConstants.imagePath}/$logoUrl");
     return '${AppConstants.baseUrl}${AppConstants.imagePath}/$logoUrl';
   }
+
+  static void viewPush(BuildContext context, Widget view) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => view),
+    );
+  }
 }

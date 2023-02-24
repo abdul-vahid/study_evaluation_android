@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
-import 'package:study_evaluation/view/views/registration_screen.dart';
+import 'package:study_evaluation/view/views/signup_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/role_list_vm.dart';
 import '../../utils/app_color.dart';
@@ -92,7 +92,7 @@ class _LoginHomeState extends State<LoginHome>
                   providers: [
                     ChangeNotifierProvider(create: (_) => RoleListViewModel()),
                   ],
-                  child: const RegistrationScreen(),
+                  child: const SignupView(),
                 ),
                 //RegistrationScreen(roleListVM)
               ])) //Adding Tabs

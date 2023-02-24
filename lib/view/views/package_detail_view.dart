@@ -1,17 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/models/package_model/package_model.dart';
 import 'package:study_evaluation/models/package_model/result_model.dart';
 import 'package:study_evaluation/models/package_model/test_series.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/views/test_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
-
 import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
@@ -36,18 +32,6 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   @override
   Widget build(BuildContext context) {
     packageListVM = Provider.of<PackageListViewModel>(context);
-    /* if (packageListVM != null) {
-      if (packageListVM!.viewModels.isNotEmpty) {
-        model = packageListVM!.viewModels[0].model;
-        if (model!.isError) {
-          print("Error");
-          print(packageListVM!.viewModels[0].model.error);
-        } else {
-          package = model?.package;
-        }
-      }
-    } */
-
     return Scaffold(
         appBar: AppUtil.getAppbar("Package Detail"),
         body: AppUtil.getAppBody(packageListVM!, _getBody));
@@ -221,7 +205,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
     if (resultModel == null) {
       widgets.add(AppUtil().getElevatedButton('Start Now',
-          onPressed: () {},
+          onPressed: onPressed,
           buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor // foreground
               )));
@@ -231,6 +215,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       width: 10,
     ));
     return widgets;
+  }
+
+  void onPressed() {
+    AppUtil.viewPush(context, const ExamView());
   }
 
   Padding _getQuestionInfoContainer(TestSeries? testSeries) {

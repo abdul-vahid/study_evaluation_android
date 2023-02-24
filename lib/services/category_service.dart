@@ -10,7 +10,7 @@ class CategoryService {
     if (categoryId.isNotEmpty) {
       url += "/$categoryId";
     }
-    print("URL: ${url.toString()}");
+    //print("URL: ${url.toString()}");
     var token = "";
     final responseJsonData = await _apiService.getResponse(url, token);
     //String accessToken = responseJsonData['access_token'];

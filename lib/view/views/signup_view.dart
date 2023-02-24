@@ -10,15 +10,15 @@ import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
 import '../widgets/widget_utils.dart';
 
-class RegistrationScreen extends StatefulWidget {
+class SignupView extends StatefulWidget {
   //RegistrationScreen(this.roleListVM);
-  const RegistrationScreen({super.key});
+  const SignupView({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<SignupView> createState() => _SignupViewState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _SignupViewState extends State<SignupView> {
   var roleListVM;
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? _mobileNumber;
   String? _email;
   String? _password;
-  String? _confirmPassword;
 
 // Option 2
   String? _selectedRole; // Option 2
@@ -51,8 +50,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             WidgetUtils.getTextFormField('Name', 'Enter Name', Icons.person,
                 onSaved: ((value) {
               _name = value;
-
-              print('_userName @@@@ $_name');
             }), onValidator: validateName),
             const SizedBox(
               height: 20,
@@ -61,8 +58,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 'Mobile', 'Enter Mobile Number', Icons.mobile_screen_share,
                 onSaved: ((value) {
               _mobileNumber = value;
-
-              print('_mobileNumber @@@@ $_mobileNumber');
             }), onValidator: validatePhone),
             const SizedBox(
               height: 20,
@@ -88,8 +83,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             WidgetUtils.getTextFormField(
                 'Confirm Password', 'Enter Confirm Password', Icons.lock,
                 onSaved: ((value) {
-              _confirmPassword = value;
-
               print('_confirmPassword @@@@ $_password');
             }), onValidator: validatePassword, obscureText: true),
             const SizedBox(
