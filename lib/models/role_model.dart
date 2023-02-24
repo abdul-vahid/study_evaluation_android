@@ -7,7 +7,7 @@ class RoleModel extends BaseModel {
   String? role;
   String? status;
 
-  RoleModel({this.id, this.role, this.status});
+  RoleModel({this.id, this.role, this.status, super.appException, super.error});
 
   factory RoleModel.fromMap(Map<String, dynamic> data) => RoleModel(
         id: data['id'] as String?,

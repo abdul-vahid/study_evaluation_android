@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class SliderImageModel {
+import 'package:study_evaluation/core/models/base_model.dart';
+
+class SliderImageModel extends BaseModel {
   String? id;
   String? title;
   String? description;
@@ -14,20 +16,21 @@ class SliderImageModel {
   String? createdBy;
   String? updatedBy;
 
-  SliderImageModel({
-    this.id,
-    this.title,
-    this.description,
-    this.type,
-    this.redirectUrl,
-    this.sliderUrl,
-    this.status,
-    this.orderNumber,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
-  });
+  SliderImageModel(
+      {this.id,
+      this.title,
+      this.description,
+      this.type,
+      this.redirectUrl,
+      this.sliderUrl,
+      this.status,
+      this.orderNumber,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatedBy,
+      super.appException,
+      super.error});
 
   factory SliderImageModel.fromMap(Map<String, dynamic> data) =>
       SliderImageModel(

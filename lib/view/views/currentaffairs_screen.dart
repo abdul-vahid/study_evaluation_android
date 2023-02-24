@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
-import 'package:study_evaluation/view_models/current_affairs_view_model/current_affairs_list_vm.dart';
+import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 //import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 

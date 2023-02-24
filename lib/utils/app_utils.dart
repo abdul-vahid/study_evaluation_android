@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
@@ -139,5 +140,27 @@ class AppUtil {
             children: [for (var message in errorMessages) Text(message)],
           )
         : Center(child: Text(errorMessage));
+  }
+
+  static Widget getAppBody(
+      BaseListViewModel baseListViewModel, Widget Function() callBack) {
+    if (baseListViewModel.status == "Loading") {
+      return AppUtil.getLoader();
+    } else if (baseListViewModel.status == "Error") {
+      return AppUtil.getErrorWidget(baseListViewModel.viewModels[0].model);
+    } else if (baseListViewModel.viewModels.isNotEmpty) {
+      return callBack();
+    } else {
+      return AppUtil.getNoRecordWidget();
+    }
+  }
+
+  static Center getLoader() => const Center(child: CircularProgressIndicator());
+  static Center getNoRecordWidget({message = "No Records Found!"}) =>
+      Center(child: Text(message));
+
+  static String getImageUrl(logoUrl) {
+    print("Image URL = ${AppConstants.imagePath}/$logoUrl");
+    return '${AppConstants.baseUrl}${AppConstants.imagePath}/$logoUrl';
   }
 }

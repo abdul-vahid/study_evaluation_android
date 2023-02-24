@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class CategoryModel {
+import 'package:study_evaluation/core/models/base_model.dart';
+
+class CategoryModel extends BaseModel {
   String? id;
   String? name;
   String? status;
@@ -11,17 +13,18 @@ class CategoryModel {
   String? createdBy;
   String? updatedBy;
 
-  CategoryModel({
-    this.id,
-    this.name,
-    this.status,
-    this.orderNumber,
-    this.logoUrl,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
-  });
+  CategoryModel(
+      {this.id,
+      this.name,
+      this.status,
+      this.orderNumber,
+      this.logoUrl,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatedBy,
+      super.appException,
+      super.error});
 
   factory CategoryModel.fromMap(Map<String, dynamic> data) => CategoryModel(
         id: data['id'] as String?,

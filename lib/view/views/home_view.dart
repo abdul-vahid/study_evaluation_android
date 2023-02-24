@@ -5,8 +5,8 @@ import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
-import 'package:study_evaluation/view_models/current_affairs_view_model/current_affairs_list_vm.dart';
-import 'package:study_evaluation/view_models/quote_view_model/quote_list_vm.dart';
+import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
+import 'package:study_evaluation/view_models/quote_list_vm.dart';
 
 import '../../utils/app_color.dart';
 import '../widgets/sidebar.dart';
@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
             height: 10,
           ),
           getButtonContainer(),
-          homeController.getTestSeries(categoriesVM),
+          homeController.getHomeTiles(),
           // SizedBox(
           //   height: 10,
           // ),

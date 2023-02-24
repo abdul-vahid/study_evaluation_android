@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/category_model.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/views/package_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
-import 'package:study_evaluation/view_models/category_view_model/category_list_vm.dart';
-import 'package:study_evaluation/view_models/package_view_model/package_list_vm.dart';
+import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
 
@@ -16,6 +18,7 @@ class CategoryListView extends StatefulWidget {
 }
 
 class _CategoryListViewState extends State<CategoryListView> {
+  CategoryListViewModel? categoriesVM;
   @override
   void initState() {
     super.initState();
@@ -24,8 +27,7 @@ class _CategoryListViewState extends State<CategoryListView> {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesVM = Provider.of<CategoryListViewModel>(context);
-    //_categoryController = CategoryController(context, categoriesVM);
+    categoriesVM = Provider.of<CategoryListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -34,18 +36,22 @@ class _CategoryListViewState extends State<CategoryListView> {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _getCategoryWidget(categoriesVM),
-          ],
-        ),
+      body: AppUtil.getAppBody(categoriesVM!, _getDataBody),
+    );
+  }
+
+  SingleChildScrollView _getDataBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _getCategoryWidget(categoriesVM),
+        ],
       ),
     );
   }
 
   Widget _getCategoryWidget(categoriesVM) {
-    var count = categoriesVM.categoryViewModels.length;
+    var count = categoriesVM.viewModels.length;
     var height = count > 8 ? (count * 100.0) : 800.0;
     return Container(
         width: double.infinity,
@@ -68,19 +74,23 @@ class _CategoryListViewState extends State<CategoryListView> {
   }
 
   Widget _getGridView(categoriesVM) {
-    return categoriesVM.categoryViewModels.isNotEmpty
-        ? GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: categoriesVM.categoryViewModels.length,
-            itemBuilder: (context, index) {
-              CategoryModel categoryModel =
-                  categoriesVM.categoryViewModels[index].categoryModel;
-              return WidgetUtils.getCard('${categoryModel.name}',
-                  "assets/images/test-series.png", _onTap,
-                  imageHeight: 70.0);
-            })
-        : const CircularProgressIndicator();
+    return categoriesVM.viewModels.isNotEmpty
+        ? _getBody(categoriesVM)
+        : AppUtil.getLoader();
+  }
+
+  GridView _getBody(categoriesVM) {
+    return GridView.builder(
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: categoriesVM.viewModels.length,
+        itemBuilder: (context, index) {
+          CategoryModel categoryModel = categoriesVM.viewModels[index].model;
+          var url = AppUtil.getImageUrl(categoryModel.logoUrl);
+          //print(categoryModel.logoUrl);
+          return WidgetUtils.getCard(categoryModel.name!, url, _onTap,
+              imageHeight: 70.0, imageType: ImageType.network);
+        });
   }
 }

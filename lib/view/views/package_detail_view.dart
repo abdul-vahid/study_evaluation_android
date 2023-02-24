@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/models/package_model/package_model.dart';
 import 'package:study_evaluation/models/package_model/result_model.dart';
 import 'package:study_evaluation/models/package_model/test_series.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view_models/package_view_model/package_list_vm.dart';
+import 'package:study_evaluation/view_models/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
 
@@ -28,13 +30,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     super.initState();
     //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
-        .fetchPackageLineItems(9);
+        .fetchPackageLineItems(2);
   }
 
   @override
   Widget build(BuildContext context) {
     packageListVM = Provider.of<PackageListViewModel>(context);
-    if (packageListVM != null) {
+    /* if (packageListVM != null) {
       if (packageListVM!.viewModels.isNotEmpty) {
         model = packageListVM!.viewModels[0].model;
         if (model!.isError) {
@@ -44,18 +46,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           package = model?.package;
         }
       }
-    }
+    } */
 
     return Scaffold(
         appBar: AppUtil.getAppbar("Package Detail"),
-        body: packageListVM!.viewModels.isNotEmpty
-            ? model!.isError
-                ? _getErrorBody()
-                : _getBody(context)
-            : const Center(child: CircularProgressIndicator()));
+        body: AppUtil.getAppBody(packageListVM!, _getBody));
   }
 
-  SingleChildScrollView _getBody(BuildContext context) {
+  SingleChildScrollView _getBody() {
+    model = packageListVM!.viewModels[0].model;
+    package = model?.package;
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.only(
@@ -78,10 +78,6 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         const SizedBox(
           height: 10,
         ),
-        Container(
-          height: 40,
-          color: AppColor.containerBoxColor,
-        )
       ]),
     ));
   }
@@ -319,7 +315,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             const SizedBox(
               height: 20,
             ),
-            _getImageContainer(),
+            _getImageContainer(package?.logoUrl),
             _getPackageTitleContainer(package?.title),
             _getPackageLabelValueContainer(
                 'Price', '₹${package?.originalPrice} [₹${package?.listPrice}]'),
@@ -389,18 +385,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Padding _getImageContainer() {
+  Padding _getImageContainer(logoUrl) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
         height: 100,
         width: MediaQuery.of(context).size.width,
 
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage(
-            "assets/images/rajasthan-police.png",
-          ),
+          image: NetworkImage(AppUtil.getImageUrl(logoUrl)),
           fit: BoxFit.fill,
         )),
         //  color: Color.fromARGB(255, 209, 208, 210),
@@ -440,20 +434,4 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         _getTestLabelValueExpandedWidget("Duration", testSeries?.duration),
         _getTestLabelValueExpandedWidget("Marks", "150"),
       ];
-
-  _getErrorBody() {
-    List<String> errorMessages = [];
-    String errorMessage = "";
-    if (model!.appException != null) {
-      errorMessages = AppUtil.getErrorMessages(model!.appException);
-    } else {
-      errorMessage = model!.error.toString();
-    }
-
-    return errorMessages.isNotEmpty
-        ? Column(
-            children: [for (var message in errorMessages) Text(message)],
-          )
-        : Center(child: Text(errorMessage));
-  }
 }

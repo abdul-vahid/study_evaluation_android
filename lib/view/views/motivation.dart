@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/quote_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/view_models/quote_view_model/quote_list_vm.dart';
-import 'package:study_evaluation/view_models/quote_view_model/quote_vm.dart';
+import 'package:study_evaluation/view_models/quote_list_vm.dart';
 import '../../utils/app_color.dart';
 import 'package:video_player/video_player.dart';
 
@@ -58,16 +57,13 @@ class _MotivationScreenState extends State<MotivationScreen> {
               'Motivation',
             )),
         body: quoteListVM.status == "Loading"
-            ? _getLoader()
+            ? AppUtil.getLoader()
             : quoteListVM.status == "Error"
                 ? AppUtil.getErrorWidget(quoteListVM.viewModels[0].model)
                 : quoteListVM.viewModels.isNotEmpty
                     ? _getBody()
-                    : _noRecord());
+                    : AppUtil.getNoRecordWidget());
   }
-
-  Center _getLoader() => Center(child: const CircularProgressIndicator());
-  Center _noRecord() => Center(child: Text("No Record Found!!"));
 
   SingleChildScrollView _getBody() {
     return SingleChildScrollView(

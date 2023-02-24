@@ -38,7 +38,7 @@ abstract class AppConstants {
     'API_VERSION',
     defaultValue: '',
   );
-
+  static const String imagePath = '/study_evaluation/public';
   static const bool kDebugMode = true;
 
   static const String categoryAPIPath = '/apis/category';
@@ -46,7 +46,6 @@ abstract class AppConstants {
   static const String feedbackAPIPath = '/apis/feedback';
   static const String signupAPIPath = '/apis/auth/register';
   static const String loginAPIPath = '/apis/auth/login';
-  static const String imagePath = '/study_evolution/public';
   static const String packageAPIPath = '/apis/category_by_package';
   static const String currentAffairsAPIPath = '/apis/current_affairs';
   static const String quotesAPIPath = '/apis/quote';

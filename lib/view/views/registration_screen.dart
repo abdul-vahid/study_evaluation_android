@@ -1,15 +1,11 @@
-import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
-import 'package:study_evaluation/view_models/result_view_model/role_list_vm.dart';
-
+import 'package:study_evaluation/view_models/role_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
 import '../widgets/widget_utils.dart';
@@ -26,7 +22,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   var roleListVM;
   @override
   void initState() {
-    // TODO: implement initState
     Provider.of<RoleListViewModel>(context, listen: false).fetch();
     super.initState();
   }
@@ -39,14 +34,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? _password;
   String? _confirmPassword;
 
-  final List<String> _role = [
-    'QA',
-    'Uploader',
-    'Postman',
-    'Tester',
-    'Admin',
-    'Testing',
-  ]; // Option 2
+// Option 2
   String? _selectedRole; // Option 2
   @override
   Widget build(BuildContext context) {

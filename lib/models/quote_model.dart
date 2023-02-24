@@ -17,8 +17,6 @@ class QuoteModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatedBy;
-  Exception? error;
-  AppException? appException;
 
   QuoteModel(
       {this.id,
@@ -33,8 +31,8 @@ class QuoteModel extends BaseModel {
       this.updatedDate,
       this.createdBy,
       this.updatedBy,
-      this.error,
-      this.appException});
+      super.error,
+      super.appException});
   bool get isError {
     return error != null || appException != null;
   }

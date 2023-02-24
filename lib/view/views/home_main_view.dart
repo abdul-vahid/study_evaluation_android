@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/view/views/aboutus_screen.dart';
 import 'package:study_evaluation/view/views/leardebord.dart';
 import 'package:study_evaluation/view/views/myorder_screen.dart';
-import 'package:study_evaluation/view_models/category_view_model/category_list_vm.dart';
-import 'package:study_evaluation/view_models/feedback_view_model/feedback_list_vm.dart';
-import 'package:study_evaluation/view_models/slider_image_view_model/slider_image_list_vm.dart';
+import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import '../widgets/bottom_navigation.dart' as bottom_navi_widget;
 import 'package:study_evaluation/view/views/home_view.dart';
 

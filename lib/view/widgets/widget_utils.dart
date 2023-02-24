@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import '../../utils/app_color.dart';
 
 class WidgetUtils {
@@ -112,7 +113,7 @@ class WidgetUtils {
 
   static Widget getCard(
       String lable, String imagePath, void Function(dynamic) voidCallback,
-      {imageHeight = 100.0, fontSize = 15.0}) {
+      {imageHeight = 120.0, fontSize = 15.0, imageType = ImageType.assets}) {
     return Card(
       color: AppColor.boxColor,
       elevation: 3,
@@ -138,18 +139,24 @@ class WidgetUtils {
             const SizedBox(
               height: 7,
             ),
-            Image.asset(
-              imagePath,
-              height: imageHeight,
-            ),
-            // Icon(
-            //   iconData,
-            //   size: 50.0,
-            //   color: Colors.blue,
-            // ),
+            _getImage(imagePath, imageType, imageHeight: imageHeight),
           ]),
         ),
       ),
     );
+  }
+
+  static Widget _getImage(url, imageType, {imageHeight}) {
+    if (imageType == ImageType.assets) {
+      return Image.asset(
+        url,
+        height: imageHeight,
+      );
+    } else {
+      return Image.network(
+        url,
+        height: imageHeight,
+      );
+    }
   }
 }

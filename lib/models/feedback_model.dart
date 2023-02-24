@@ -17,21 +17,22 @@ class FeedbackModel extends BaseModel {
   String? createdBy;
   String? updatedBy;
 
-  FeedbackModel({
-    this.studentFirstname,
-    this.studentLastname,
-    this.fullName,
-    this.contactNo,
-    this.id,
-    this.studentId,
-    this.reason,
-    this.comment,
-    this.status,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
-  });
+  FeedbackModel(
+      {this.studentFirstname,
+      this.studentLastname,
+      this.fullName,
+      this.contactNo,
+      this.id,
+      this.studentId,
+      this.reason,
+      this.comment,
+      this.status,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatedBy,
+      super.appException,
+      super.error});
 
   factory FeedbackModel.fromMap(Map<String, dynamic> data) => FeedbackModel(
         studentFirstname: data['student_firstname'] as String?,

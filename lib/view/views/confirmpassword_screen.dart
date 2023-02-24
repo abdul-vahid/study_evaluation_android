@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:study_evaluation/view/views/login_screen.dart';
+import 'package:study_evaluation/view/views/login_view.dart';
 
 import '../../utils/app_color.dart';
 import '../widgets/widget_utils.dart';

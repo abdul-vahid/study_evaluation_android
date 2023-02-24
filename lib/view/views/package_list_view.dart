@@ -3,8 +3,9 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/package_detail_view.dart';
-import 'package:study_evaluation/view_models/package_view_model/package_list_vm.dart';
+import 'package:study_evaluation/view_models/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
 
@@ -16,6 +17,7 @@ class PackageListView extends StatefulWidget {
 }
 
 class _PackageListViewState extends State<PackageListView> {
+  PackageListViewModel? packageListVM;
   @override
   void initState() {
     super.initState();
@@ -26,7 +28,7 @@ class _PackageListViewState extends State<PackageListView> {
 
   @override
   Widget build(BuildContext context) {
-    final packageListVM = Provider.of<PackageListViewModel>(context);
+    packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,9 +37,25 @@ class _PackageListViewState extends State<PackageListView> {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),
-      body: SingleChildScrollView(
-          child: Column(children: getWidgets(packageListVM))),
+      body: AppUtil.getAppBody(packageListVM!, _getBody),
     );
+  }
+
+  /* Widget getBody(PackageListViewModel packageListVM) {
+    if (packageListVM.status == "Loading") {
+      return AppUtil.getLoader();
+    } else if (packageListVM.status == "Error") {
+      return AppUtil.getErrorWidget(packageListVM.viewModels[0].model);
+    } else if (packageListVM.viewModels.isNotEmpty) {
+      return _getBody(packageListVM);
+    } else {
+      return AppUtil.getNoRecordWidget();
+    }
+  } */
+
+  SingleChildScrollView _getBody() {
+    return SingleChildScrollView(
+        child: Column(children: getWidgets(packageListVM)));
   }
 
   List<Widget> getWidgets(packageListVM) {
@@ -50,13 +68,13 @@ class _PackageListViewState extends State<PackageListView> {
         height: 300,
       ));
 
-      widgets.add(Align(
+      /* widgets.add(Align(
         alignment: Alignment.bottomCenter,
         child: Container(
           height: 40,
           color: AppColor.containerBoxColor,
         ),
-      ));
+      )); */
     }
     return widgets;
   }

@@ -20,24 +20,25 @@ class Package extends BaseModel {
   String? logoUrl;
   String? status;
 
-  Package({
-    this.id,
-    this.categoryId,
-    this.title,
-    this.publishType,
-    this.packageType,
-    this.fullLineTests,
-    this.topicWiseTests,
-    this.totalPdfs,
-    this.totalVideos,
-    this.totalQuestions,
-    this.listPrice,
-    this.originalPrice,
-    this.validity,
-    this.description,
-    this.logoUrl,
-    this.status,
-  });
+  Package(
+      {this.id,
+      this.categoryId,
+      this.title,
+      this.publishType,
+      this.packageType,
+      this.fullLineTests,
+      this.topicWiseTests,
+      this.totalPdfs,
+      this.totalVideos,
+      this.totalQuestions,
+      this.listPrice,
+      this.originalPrice,
+      this.validity,
+      this.description,
+      this.logoUrl,
+      this.status,
+      super.error,
+      super.appException});
 
   String getShortDescription(int start, {int? end}) {
     int? len = description?.length;

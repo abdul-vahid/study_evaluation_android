@@ -1,24 +1,24 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/forgetpassword_screen.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
-import 'package:study_evaluation/view_models/category_view_model/category_list_vm.dart';
-import 'package:study_evaluation/view_models/feedback_view_model/feedback_list_vm.dart';
-import 'package:study_evaluation/view_models/slider_image_view_model/slider_image_list_vm.dart';
+import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
 import '../widgets/widget_utils.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _loginFormKey = new GlobalKey<FormState>();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
             WidgetUtils.getTextFormField(
                 'Password', 'Enter Password', Icons.lock,
                 onValidator: validatePassword,
-                initialValue: "test1234", onSaved: ((value) {
+                initialValue: "Admin@123", onSaved: ((value) {
               _password = value;
               print('_Password @@@@ $_password');
             }), obscureText: true),

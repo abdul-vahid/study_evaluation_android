@@ -16,8 +16,6 @@ class CurrentAffairsModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatesBy;
-  Exception? error;
-  AppException? appException;
 
   CurrentAffairsModel(
       {this.id,
@@ -31,8 +29,8 @@ class CurrentAffairsModel extends BaseModel {
       this.updatedDate,
       this.createdBy,
       this.updatesBy,
-      this.error,
-      this.appException});
+      super.error,
+      super.appException});
   bool get isError {
     return error != null || appException != null;
   }

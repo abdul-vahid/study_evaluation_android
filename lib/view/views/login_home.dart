@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/view/views/login_screen.dart';
+import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view/views/registration_screen.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
-import 'package:study_evaluation/view_models/result_view_model/role_list_vm.dart';
+import 'package:study_evaluation/view_models/role_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class LoginHome extends StatefulWidget {
@@ -87,12 +87,12 @@ class _LoginHomeState extends State<LoginHome>
               ),
 
               WidgetUtils.getExpanded(WidgetUtils.getTabview(tabController, [
-                const LoginScreen(),
+                const LoginView(),
                 MultiProvider(
                   providers: [
                     ChangeNotifierProvider(create: (_) => RoleListViewModel()),
                   ],
-                  child: RegistrationScreen(),
+                  child: const RegistrationScreen(),
                 ),
                 //RegistrationScreen(roleListVM)
               ])) //Adding Tabs

@@ -25,29 +25,30 @@ class PackageModel extends BaseModel {
   String? updatedBy;
   String? status;
 
-  PackageModel({
-    this.categoriesId,
-    this.id,
-    this.categoryId,
-    this.title,
-    this.publishType,
-    this.packageType,
-    this.fullLineTests,
-    this.topicWiseTests,
-    this.totalPdfs,
-    this.totalVideos,
-    this.totalQuestions,
-    this.listPrice,
-    this.originalPrice,
-    this.validity,
-    this.description,
-    this.logoUrl,
-    this.createdDate,
-    this.updatedDate,
-    this.createdBy,
-    this.updatedBy,
-    this.status,
-  });
+  PackageModel(
+      {this.categoriesId,
+      this.id,
+      this.categoryId,
+      this.title,
+      this.publishType,
+      this.packageType,
+      this.fullLineTests,
+      this.topicWiseTests,
+      this.totalPdfs,
+      this.totalVideos,
+      this.totalQuestions,
+      this.listPrice,
+      this.originalPrice,
+      this.validity,
+      this.description,
+      this.logoUrl,
+      this.createdDate,
+      this.updatedDate,
+      this.createdBy,
+      this.updatedBy,
+      this.status,
+      super.error,
+      super.appException});
 
   factory PackageModel.fromMap(Map<String, dynamic> data) => PackageModel(
         categoriesId: data['categoriesId'] as String?,

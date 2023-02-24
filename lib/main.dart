@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view_models/result_view_model/role_list_vm.dart';
+
 /* Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
