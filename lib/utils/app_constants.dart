@@ -51,4 +51,5 @@ abstract class AppConstants {
   static const String quotesAPIPath = '/apis/quote';
   static const String packageLineItemsAPIPath = '/apis/fetch_package_entries';
   static const String roleAPIPath = '/apis/role';
+  static const String questionAnswerAPIPath = '/apis/exam_questions';
 }

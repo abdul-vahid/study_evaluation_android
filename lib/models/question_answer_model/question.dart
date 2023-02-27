@@ -20,28 +20,29 @@ class Question {
   dynamic resultLineItemId;
   dynamic submittedAnswer;
   dynamic favourite;
-
-  Question({
-    this.id,
-    this.subjectId,
-    this.subjectName,
-    this.questionHindi,
-    this.answer,
-    this.optionAHindi,
-    this.optionBHindi,
-    this.optionCHindi,
-    this.optionDHindi,
-    this.questionEnglish,
-    this.optionAEnglish,
-    this.optionBEnglish,
-    this.optionCEnglish,
-    this.optionDEnglish,
-    this.status,
-    this.resultId,
-    this.resultLineItemId,
-    this.submittedAnswer,
-    this.favourite,
-  });
+  int index = 0;
+  bool? isSelected = false;
+  
+  Question(
+      {this.id,
+      this.subjectId,
+      this.subjectName,
+      this.questionHindi,
+      this.answer,
+      this.optionAHindi,
+      this.optionBHindi,
+      this.optionCHindi,
+      this.optionDHindi,
+      this.questionEnglish,
+      this.optionAEnglish,
+      this.optionBEnglish,
+      this.optionCEnglish,
+      this.optionDEnglish,
+      this.status,
+      this.resultId,
+      this.resultLineItemId,
+      this.submittedAnswer,
+      this.favourite});
 
   factory Question.fromMap(Map<String, dynamic> data) => Question(
         id: data['id'] as String?,

@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:study_evaluation/core/models/base_model.dart';
+
 import 'exam.dart';
 import 'question.dart';
 
-class QuestionAnswerModel {
+class QuestionAnswerModel extends BaseModel {
   Exam? exam;
   List<Question>? questions;
 
-  QuestionAnswerModel({this.exam, this.questions});
+  QuestionAnswerModel(
+      {this.exam, this.questions, super.appException, super.error});
 
   factory QuestionAnswerModel.fromMap(Map<String, dynamic> data) {
     return QuestionAnswerModel(

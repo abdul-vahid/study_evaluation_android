@@ -5,9 +5,10 @@ import 'package:study_evaluation/models/package_model/package_model.dart';
 import 'package:study_evaluation/models/package_model/result_model.dart';
 import 'package:study_evaluation/models/package_model/test_series.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/view/views/test_view.dart';
+import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
+import 'package:study_evaluation/view_models/question_answer_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
@@ -218,7 +219,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   }
 
   void onPressed() {
-    AppUtil.viewPush(context, const ExamView());
+    AppUtil.viewPush(
+        context,
+        MultiProvider(providers: [
+          ChangeNotifierProvider(create: (_) => QuestionAnswerListViewModel())
+        ], child: const ExamView()));
   }
 
   Padding _getQuestionInfoContainer(TestSeries? testSeries) {

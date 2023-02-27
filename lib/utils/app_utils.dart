@@ -136,9 +136,31 @@ class AppUtil {
     }
 
     return errorMessages.isNotEmpty
-        ? Column(
-            children: [for (var message in errorMessages) Text(message)],
-          )
+        ? Center(
+            child: Column(
+            children 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            : [for (var message in errorMessages) Text(message)],
+          ))
         : Center(child: Text(errorMessage));
   }
 
@@ -170,4 +192,10 @@ class AppUtil {
       MaterialPageRoute(builder: (context) => view),
     );
   }
+
+  static String getUrl(String path) {
+    print("PATH = $path");
+    return AppConstants.baseUrl + path;
+  }
 }
+ 
