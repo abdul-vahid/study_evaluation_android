@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +32,31 @@ class _ExamViewState extends State<ExamView> {
   String? _selectedLanguage = "Hindi";
   String? _selectedFont = "15";
   String title = "Test";
+
+  final interval = const Duration(seconds: 1);
+
+  final int timerMaxSeconds = 60;
+
+  int currentSeconds = 0;
+
+  String get timerText =>
+      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+
+  startTimeout([milliseconds]) {
+    var duration = interval;
+    Timer.periodic(duration, (timer) {
+      setState(() {
+        print(timer.tick);
+        currentSeconds = timer.tick;
+        if (timer.tick >= timerMaxSeconds) timer.cancel();
+      });
+    });
+  }
+
   @override
   void initState() {
-    Provider.of<ExamListViewModel>(context, listen: false)
-        .fetchQuestionAnswer(examId: "87");
+    Provider.of<QuestionAnswerListViewModel>(context, listen: false)
+        .fetch(examId: "87");
     super.initState();
   }
 
@@ -60,7 +83,10 @@ class _ExamViewState extends State<ExamView> {
     return languageOptions.map<DropdownMenuItem<String>>((value) {
       return DropdownMenuItem<String>(
         value: value,
-        child: Text(value),
+        child: Text(
+          value,
+          style: const TextStyle(fontSize: 15),
+        ),
       );
     }).toList();
   }
@@ -70,7 +96,10 @@ class _ExamViewState extends State<ExamView> {
     fontOptions.forEach((key, value) {
       dropDownItems.add(DropdownMenuItem<String>(
         value: key,
-        child: Text(value),
+        child: Text(
+          value,
+          style: const TextStyle(fontSize: 15),
+        ),
       ));
     });
     return dropDownItems;
@@ -78,9 +107,74 @@ class _ExamViewState extends State<ExamView> {
 
   List<Widget> _getQuestionOptionWidgets() {
     List<Widget> widgets = [];
-    widgets.add(Row(
-      children: [_getLanguageDropdown(), _getFontDropdown()],
+    widgets.add(Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColor.containerBoxColor,
+              borderRadius: BorderRadius.circular(20),
+              //more than 50% of width makes circle
+            ),
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                // ignore: prefer_const_constructors
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: const Icon(
+                    Icons.apps_rounded,
+                    size: 30,
+                    color: Colors.white, // add custom icons also
+                  ),
+                ),
+                // ignore: prefer_const_constructors
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  // ignore: prefer_const_constructors
+                  child: Text(
+                    '100 question ',
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // ignore: prefer_const_constructors
+                      Icon(
+                        Icons.timer,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        timerText,
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_getLanguageDropdown(), _getFontDropdown()],
+          ),
+        ],
+      ),
     ));
+
     bool isBlankSelValues = selectedValues.isEmpty;
     var i = 0;
 
@@ -92,18 +186,42 @@ class _ExamViewState extends State<ExamView> {
       model.index = i++;
       widgets.add(_getQuestionOptionWidget(model));
     }
+
+    widgets.add(Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                ),
+            onPressed: () {},
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                ),
+            onPressed: () {},
+            child: Text('Submit'),
+          ),
+        ],
+      ),
+    ));
+
     return widgets;
   }
 
   Widget _getFontDropdown() {
     return Container(
-        width: 150,
-        height: 70,
+        width: 120,
+        height: 60,
         child: DropdownButtonHideUnderline(
           child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
               ),
               hint: const Text('Font'),
@@ -124,8 +242,8 @@ class _ExamViewState extends State<ExamView> {
 
   Widget _getLanguageDropdown() {
     return Container(
-        width: 150,
-        height: 70,
+        width: 120,
+        height: 60,
         child: DropdownButtonHideUnderline(
           child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
@@ -195,7 +313,56 @@ class _ExamViewState extends State<ExamView> {
       _getOption(model.optionBHindi, model.optionBEnglish, "b", model),
       _getOption(model.optionCHindi, model.optionCEnglish, "c", model),
       _getOption(model.optionDHindi, model.optionDEnglish, "d", model),
+      const SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: AppColor.containerBoxColor,
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            getIconButton(
+              'Clear Section',
+              Icons.radio_button_unchecked_outlined,
+              onPressed: () {
+                selectedValues.clear();
+              },
+            ),
+            getIconButton(
+              'Favourite',
+              Icons.star_border_purple500_sharp,
+              onPressed: () {
+                //selectedValues.clear();
+              },
+            ),
+          ],
+        ),
+      )
     ];
+  }
+
+  TextButton getIconButton(String label, IconData iconData,
+      {required void Function()? onPressed}) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      label: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      icon: Icon(
+        iconData,
+        color: Colors.white,
+        size: 20,
+      ),
+    );
   }
 
   RadioListTile<String> _getOption(label, labelEnglish, value, Question model) {
@@ -204,7 +371,7 @@ class _ExamViewState extends State<ExamView> {
       value: value,
       groupValue: selectedValues[model.index],
       activeColor: Colors.blue,
-      selectedTileColor: Color.fromARGB(255, 197, 221, 241),
+      selectedTileColor: const Color.fromARGB(255, 197, 221, 241),
       selected: value == selectedValues[model.index],
       onChanged: (value) {
         setState(() {
