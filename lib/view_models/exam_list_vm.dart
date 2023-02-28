@@ -1,14 +1,17 @@
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
+import 'package:study_evaluation/models/question_answer_model/question.dart';
 import 'package:study_evaluation/models/question_answer_model/question_answer_model.dart';
 
-import 'package:study_evaluation/services/question_answer_service.dart';
+import 'package:study_evaluation/services/exam_service.dart';
 
-class QuestionAnswerListViewModel extends BaseListViewModel {
-  Future<void> fetch({required String examId, String? studentId}) async {
+class ExamListViewModel extends BaseListViewModel {
+  Future<void> fetchQuestionAnswer(
+      {required String examId, String? studentId}) async {
     try {
-      final jsonObject = await QuestionAnswerService().fetch(examId: examId);
+      final jsonObject =
+          await ExamService().fetchQuestionAnswer(examId: examId);
       final records = jsonObject["records"];
       print(records);
       var modelMap =
@@ -27,7 +30,7 @@ class QuestionAnswerListViewModel extends BaseListViewModel {
     notifyListeners();
   }
 
-  getViewModels(modelMap) {
-    return modelMap.map((item) => BaseViewModel(model: item)).toList();
+  Future<dynamic> submitExam(List<Question> questions) async {
+    return await ExamService().submitExam(questions);
   }
 }

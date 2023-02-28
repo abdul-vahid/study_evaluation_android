@@ -3,9 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/question_answer_model/question.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/view_models/question_answer_list_vm.dart';
-
-import '../../utils/app_color.dart';
+import 'package:study_evaluation/view_models/exam_list_vm.dart';
 
 enum LanguageOption { hindi, english, both }
 
@@ -21,7 +19,7 @@ class _ExamViewState extends State<ExamView> {
   String? question;
   List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected
-  QuestionAnswerListViewModel? baseListViewModel;
+  ExamListViewModel? baseListViewModel;
   List<String> languageOptions = ["Hindi", "English", "Both"];
   Map<String, String> fontOptions = {
     "15": "Small",
@@ -34,14 +32,14 @@ class _ExamViewState extends State<ExamView> {
   String title = "Test";
   @override
   void initState() {
-    Provider.of<QuestionAnswerListViewModel>(context, listen: false)
-        .fetch(examId: "87");
+    Provider.of<ExamListViewModel>(context, listen: false)
+        .fetchQuestionAnswer(examId: "87");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<QuestionAnswerListViewModel>(context);
+    baseListViewModel = Provider.of<ExamListViewModel>(context);
     if (baseListViewModel!.viewModels.isNotEmpty &&
         baseListViewModel!.viewModels[0].model != null) {
       setState(() {

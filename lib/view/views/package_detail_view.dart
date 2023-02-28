@@ -8,7 +8,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
-import 'package:study_evaluation/view_models/question_answer_list_vm.dart';
+import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
@@ -222,7 +222,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     AppUtil.viewPush(
         context,
         MultiProvider(providers: [
-          ChangeNotifierProvider(create: (_) => QuestionAnswerListViewModel())
+          ChangeNotifierProvider(create: (_) => ExamListViewModel())
         ], child: const ExamView()));
   }
 
