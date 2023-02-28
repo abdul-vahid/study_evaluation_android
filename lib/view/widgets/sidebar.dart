@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view/views/aboutus_screen.dart';
@@ -5,6 +7,7 @@ import 'package:study_evaluation/view/views/followus_screen.dart';
 import 'package:study_evaluation/view/views/myorder_screen.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
 
 class NavBar extends StatefulWidget {
@@ -45,6 +48,7 @@ class _NavBarState extends State<NavBar> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: <Widget>[
                     Text(
                       'Leon Roy',
@@ -131,12 +135,9 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
             onTap: () {
-              showDialog(
-                barrierColor: Colors.black26,
-                context: context,
-                builder: (context) {
-                  return FeedbackAlertDialog();
-                },
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeedbackView()),
               );
             },
           ),

@@ -24,4 +24,9 @@ class FeedbackListViewModel extends BaseListViewModel {
 
     notifyListeners();
   }
+
+  Future<dynamic> submitFeedback(FeedbackModel feedbackModel) async {
+    print("Feedback lis");
+    return await FeedbackService().submitFeedback(feedbackModel);
+  }
 }
