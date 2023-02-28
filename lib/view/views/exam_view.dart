@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/question_answer_model/question.dart';
+import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 
@@ -55,8 +56,8 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   void initState() {
-    Provider.of<QuestionAnswerListViewModel>(context, listen: false)
-        .fetch(examId: "87");
+    Provider.of<ExamListViewModel>(context, listen: false)
+        .fetchQuestionAnswer(examId: "87");
     super.initState();
   }
 
