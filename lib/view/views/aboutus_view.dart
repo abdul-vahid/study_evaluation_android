@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
@@ -97,6 +99,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       SizedBox(
                         height: 20,
                       ),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -112,6 +115,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ), //text
                         )
                       ]),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -127,6 +131,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ), //text
                         )
                       ]),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -142,6 +147,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ), //text
                         )
                       ]),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -157,6 +163,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ), //text
                         )
                       ]),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -172,6 +179,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           ), //text
                         )
                       ]),
+                      // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
                           "\u2022",
@@ -191,12 +199,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   ),
                 ),
               ),
-
-              // Expanded(
-              //     flex: 1,
-              //     child: Container(
-              //       height: 100,
-              //     ))
             ],
           ),
         )));

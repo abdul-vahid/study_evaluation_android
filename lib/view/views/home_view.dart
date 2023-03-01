@@ -7,9 +7,10 @@ import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
+import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../utils/app_color.dart';
-import '../widgets/sidebar.dart';
+import '../widgets/sidebar_view.dart';
 
 class HomeView extends StatefulWidget {
   final categoriesVM;
@@ -25,10 +26,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  UserListViewModel userListViewModel = UserListViewModel();
   int _selectedIndex = 0;
   final categoriesVM;
   final slidersVM;
   final feedbacksVM;
+
+  @override
+  void initState() {
+    //  Provider.of<UserListViewModel>(context, listen: false).login('raj@gmail.com', 'test@1234');
+    super.initState();
+  }
+
   _HomeViewState(this.categoriesVM, this.slidersVM, this.feedbacksVM);
   @override
   Widget build(BuildContext context) {

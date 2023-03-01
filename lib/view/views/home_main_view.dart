@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/view/views/aboutus_screen.dart';
+import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/leardebord.dart';
-import 'package:study_evaluation/view/views/myorder_screen.dart';
+import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
@@ -48,8 +48,8 @@ class _HomeMainViewState extends State<HomeMainView> {
         slidersVM: slidersVM,
         feedbacksVM: feedbacksVM,
       ),
-      const AboutUsScreen(),
-      const MYOrderScreen(),
+      AboutUsScreen(),
+      const MyOrderView(),
       const LearderbordView()
     ];
     return Scaffold(

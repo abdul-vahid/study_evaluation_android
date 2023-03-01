@@ -11,6 +11,7 @@ class UserModel extends BaseModel {
   String? status;
   String? password;
   String? userName;
+  String? profileUrl;
 
   UserModel(
       {this.id,
@@ -20,7 +21,8 @@ class UserModel extends BaseModel {
       this.mobileNo,
       this.status,
       this.password,
-      this.userName});
+      this.userName,
+      this.profileUrl});
 
   factory UserModel.fromMap(Map<String, dynamic> data) => UserModel(
         id: data['id'] as String?,
@@ -30,6 +32,7 @@ class UserModel extends BaseModel {
         userName: data['username'] as String?,
         mobileNo: data['mobile_no'] as String?,
         status: data['status'] as String?,
+        profileUrl: data['profile_url'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -40,6 +43,7 @@ class UserModel extends BaseModel {
         'username': userName,
         'mobile_no': mobileNo,
         'status': status,
+        'profile_url': profileUrl,
       };
 
   /// `dart:convert`

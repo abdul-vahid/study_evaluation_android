@@ -1,12 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/models/login_model/user.dart';
 import 'package:study_evaluation/utils/app_color.dart';
-import 'package:study_evaluation/view/views/aboutus_screen.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/followus_screen.dart';
-import 'package:study_evaluation/view/views/myorder_screen.dart';
+import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
+import '../../utils/app_constants.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
 
@@ -16,6 +22,40 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  UserListViewModel userListViewModel = UserListViewModel();
+
+  //  final SharedPreferences pref = await SharedPreferences.getInstance();
+
+  String? profileUrl;
+  String? mobileNo;
+  String? name;
+
+  void getProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.getString(SharedPrefsConstants.profileUrl);
+    prefs.getString(SharedPrefsConstants.name);
+    prefs.getString(SharedPrefsConstants.mobileNo);
+
+    setState(() {
+      profileUrl = prefs.getString(SharedPrefsConstants.profileUrl);
+      mobileNo = prefs.getString(SharedPrefsConstants.mobileNo);
+      name = prefs.getString(SharedPrefsConstants.name);
+      if (profileUrl != null) {
+        profileUrl = AppUtil.getImageUrl(profileUrl);
+      }
+      print('Name@@ ${name} -- -$profileUrl');
+    });
+  }
+
+  @override
+  void initState() {
+    getProfileData();
+    super.initState();
+  }
+
+  // final prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -37,8 +77,10 @@ class _NavBarState extends State<NavBar> {
                     borderRadius: BorderRadius.circular(50), //<-- SEE HERE
                   ),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
+                    backgroundImage: profileUrl == null
+                        ? NetworkImage(
+                            'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+                        : NetworkImage(profileUrl!),
                     radius: 40.0,
                   ),
                 ),
@@ -51,7 +93,7 @@ class _NavBarState extends State<NavBar> {
                   // ignore: prefer_const_literals_to_create_immutables
                   children: <Widget>[
                     Text(
-                      'Leon Roy',
+                      name ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -59,7 +101,7 @@ class _NavBarState extends State<NavBar> {
                     ),
                     SizedBox(height: 5.0),
                     Text(
-                      '9876543234',
+                      mobileNo ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -84,7 +126,7 @@ class _NavBarState extends State<NavBar> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MYOrderScreen()),
+                MaterialPageRoute(builder: (context) => const MyOrderView()),
               );
             },
           ),
@@ -104,22 +146,6 @@ class _NavBarState extends State<NavBar> {
                 context,
                 MaterialPageRoute(builder: (context) => const FollowUsScreen()),
               )
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.share,
-              color: AppColor.navBarIconColor,
-            ),
-            title: Text(
-              'Share App',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Share.share('com.example.share_app', subject: 'Welcome Message');
             },
           ),
           Divider(),
@@ -160,6 +186,22 @@ class _NavBarState extends State<NavBar> {
                       builder: (context) => const AboutUsScreen()),
                 );
               }),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.share,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Share App',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Share.share('com.example.share_app', subject: 'Welcome Message');
+            },
+          ),
           Divider(),
           ListTile(
             leading: Icon(

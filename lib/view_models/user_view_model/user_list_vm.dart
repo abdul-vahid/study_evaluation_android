@@ -8,6 +8,8 @@ import 'package:study_evaluation/view_models/user_view_model/user_vm.dart';
 class UserListViewModel {
   var viewModels = [];
 
+  String? name;
+
   Future<dynamic> signup(UserModel userModel) async {
     print("signup lis");
     return await UserService().signup(userModel);
@@ -24,8 +26,19 @@ class UserListViewModel {
     var loginModelMap = records.map((item) => UserModel.fromMap(item)).toList();
     if (loginModelMap.isNotEmpty) {
       final prefs = await SharedPreferences.getInstance();
-      print("Access Token = ${result["access_token"]}");
+      print("Access Token@@@ = ${result["access_token"]}");
       await prefs.setString("access_token", result["access_token"]);
+      await prefs.setString(
+          SharedPrefsConstants.profileUrl, loginModelMap[0].profileUrl);
+
+      await prefs.setString(
+          SharedPrefsConstants.mobileNo, loginModelMap[0].mobileNo);
+
+      await prefs.setString(SharedPrefsConstants.name, loginModelMap[0].name);
+
+      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].profileUrl}');
+      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].mobileNo}');
+      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].name}');
     }
     return loginModelMap.map((item) => UserViewModel(model: item)).toList();
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
-import 'package:study_evaluation/view/views/aboutus_screen.dart';
+import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/feedbackalertdialog.dart';
 import 'package:study_evaluation/view/views/followus_screen.dart';
 import 'package:study_evaluation/view/views/home_view.dart';

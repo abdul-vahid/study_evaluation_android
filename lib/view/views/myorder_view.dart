@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
 
-class MYOrderScreen extends StatefulWidget {
-  const MYOrderScreen({super.key});
+class MyOrderView extends StatefulWidget {
+  const MyOrderView({super.key});
 
   @override
-  State<MYOrderScreen> createState() => _MYOrderScreenState();
+  State<MyOrderView> createState() => _MyOrderViewState();
 }
 
-class _MYOrderScreenState extends State<MYOrderScreen> {
+class _MyOrderViewState extends State<MyOrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +114,7 @@ class _MYOrderScreenState extends State<MYOrderScreen> {
                     height: 5,
                     color: AppColor.appBarColor,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -122,10 +122,10 @@ class _MYOrderScreenState extends State<MYOrderScreen> {
                     height: height,
                     width: width,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Rajasthan Constable Special',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   ),
@@ -140,7 +140,7 @@ class _MYOrderScreenState extends State<MYOrderScreen> {
                     child: Center(
                         child: Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                     ))))
