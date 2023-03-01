@@ -23,6 +23,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   PackageListViewModel? packageListVM;
   PackageModel? model;
   Package? package;
+  String? _selectedFont = "15";
   @override
   void initState() {
     super.initState();
@@ -309,7 +310,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Container _getPackageContainer() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 450,
+      constraints: const BoxConstraints(
+        maxHeight: double.infinity,
+      ),
       child: Card(
         elevation: 5,
         shape: _getShape(context),
@@ -324,8 +327,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             ),
             _getImageContainer(package?.logoUrl),
             _getPackageTitleContainer(package?.title),
-            _getPackageLabelValueContainer(
-                'Price', '₹${package?.originalPrice} [₹${package?.listPrice}]'),
+            _getPackagePriceContainer('Price', '₹${package?.originalPrice}',
+                '[₹${package?.listPrice}]'),
             Divider(
               color: Colors.grey.shade300,
             ),
@@ -342,11 +345,15 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       padding: const EdgeInsets.all(10.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(
+        child: AppUtils.getHtmlData(package?.description,
+            fontFamily: 'Kruti',
+            fontSize:
+                _selectedFont) /* Text(
           (package?.description)!,
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
+        ) */
+        ,
       ),
     );
   }
@@ -359,6 +366,39 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         child: Row(
           children: _getPackageComponents(label, value),
         ),
+      ),
+    );
+  }
+
+  Padding _getPackagePriceContainer(label, listPrice, originalPrice) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Row(children: [
+          Text(label,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Color(0xFFc78f8f))),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(listPrice,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.black)),
+          const SizedBox(
+            width: 3,
+          ),
+          Text(originalPrice,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.black))
+        ]),
       ),
     );
   }
