@@ -89,12 +89,17 @@ class AppUtil {
     );
   }
 
-  static List<String> getErrorMessages(AppException? appException) {
+  static List<String> getErrorMessages(Exception exception) {
     List<String> errorMessages = [];
-    Map<String, dynamic> data = jsonDecode(appException?.getMessage());
-    data.forEach((key, value) {
-      errorMessages.add(value);
-    });
+    if (exception is AppException) {
+      Map<String, dynamic> data = jsonDecode(exception.getMessage());
+      data.forEach((key, value) {
+        errorMessages.add(value);
+      });
+    } else {
+      errorMessages.add(exception.toString());
+    }
+
     return errorMessages;
   }
 
@@ -138,28 +143,7 @@ class AppUtil {
     return errorMessages.isNotEmpty
         ? Center(
             child: Column(
-            children 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            : [for (var message in errorMessages) Text(message)],
+            children: [for (var message in errorMessages) Text(message)],
           ))
         : Center(child: Text(errorMessage));
   }
@@ -198,4 +182,3 @@ class AppUtil {
     return AppConstants.baseUrl + path;
   }
 }
- 

@@ -1,6 +1,9 @@
 /// Environment variables and shared app constants.
 class SharedPrefsConstants {
   static const String prefsAccessTokenKey = "access_token";
+  static const String profileUrl = "profile_url";
+  static const String mobileNo = "mobile_no";
+  static const String name = "name";
 }
 
 //
