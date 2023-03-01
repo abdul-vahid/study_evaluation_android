@@ -12,6 +12,14 @@ String? validateUserName(String? value) {
   return null;
 }
 
+String? validateFeedbackForm(String? value) {
+  value = value!.trim();
+  if (value == '') return 'Required';
+
+  if (value.length == 250) return 'User Name can insert 250 Character long.';
+  return null;
+}
+
 String? validatePassword(String? value) {
   value = value!.trim();
   if (value == '') return 'Required';

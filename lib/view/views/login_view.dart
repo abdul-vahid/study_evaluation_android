@@ -124,3 +124,28 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 }
+//           Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (context) => MultiProvider(providers: [
+//         ChangeNotifierProvider(create: (_) => QuestionAnswerListViewModel())
+//       ], child: const ExamView())/* MultiProvider(
+//                         providers: [
+//                           ChangeNotifierProvider(
+//                               create: (_) => CategoryListViewModel()),
+//                           ChangeNotifierProvider(
+//                               create: (_) => SliderImageListViewModel()),
+//                           ChangeNotifierProvider(
+//                               create: (_) => FeedbackListViewModel()),
+//                         ],
+//                         child: const HomeMainView(),
+//                       ) */));
+//         }
+//       }).catchError((error) {
+//         Navigator.pop(context);
+//         List<String> errorMessages = AppUtil.getErrorMessages(error);
+//         AppUtil().getAlert(context, errorMessages, title: "Error Alert");
+//       });
+//     }
+//   }
+// }
