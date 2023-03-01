@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
+import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 
@@ -80,6 +81,11 @@ class AppUtils {
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+  }
+
+  static UserModel getSessionUser(SharedPreferences prefs) {
+    return UserModel.fromMap(
+        jsonDecode(prefs.getString(SharedPrefsConstants.userKey)!));
   }
 
   static ElevatedButton getElevatedButton(btnLabel,

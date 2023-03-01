@@ -14,7 +14,8 @@ enum LanguageOption { hindi, english, both }
 
 class ExamView extends StatefulWidget {
   final String examId;
-  const ExamView({super.key, required this.examId});
+  final String studentId;
+  const ExamView({super.key, required this.examId, required this.studentId});
 
   @override
   State<ExamView> createState() => _ExamViewState();
@@ -48,8 +49,8 @@ class _ExamViewState extends State<ExamView> {
   int? totalQuestions = 30;
   @override
   void initState() {
-    Provider.of<ExamListViewModel>(context, listen: false)
-        .fetchQuestionAnswer(examId: widget.examId);
+    Provider.of<ExamListViewModel>(context, listen: false).fetchQuestionAnswer(
+        examId: widget.examId, studentId: widget.studentId);
     timeUP = "";
     super.initState();
   }

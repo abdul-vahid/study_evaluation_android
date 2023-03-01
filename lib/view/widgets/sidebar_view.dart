@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/login_model/user.dart';
+import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
@@ -27,23 +30,16 @@ class _NavBarState extends State<NavBar> {
   //  final SharedPreferences pref = await SharedPreferences.getInstance();
 
   String? profileUrl;
-  String? mobileNo;
-  String? name;
+  UserModel? userModel;
 
   void getProfileData() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.getString(SharedPrefsConstants.profileUrl);
-    prefs.getString(SharedPrefsConstants.name);
-    prefs.getString(SharedPrefsConstants.mobileNo);
 
     setState(() {
-      profileUrl = prefs.getString(SharedPrefsConstants.profileUrl);
-      mobileNo = prefs.getString(SharedPrefsConstants.mobileNo);
-      name = prefs.getString(SharedPrefsConstants.name);
-      if (profileUrl != null) {
-        profileUrl = AppUtils.getImageUrl(profileUrl);
+      userModel = AppUtils.getSessionUser(prefs);
+      if (userModel?.profileUrl != null) {
+        profileUrl = AppUtils.getImageUrl(userModel?.profileUrl);
       }
-      print('Name@@ ${name} -- -$profileUrl');
     });
   }
 
@@ -93,7 +89,7 @@ class _NavBarState extends State<NavBar> {
                   // ignore: prefer_const_literals_to_create_immutables
                   children: <Widget>[
                     Text(
-                      name ?? "",
+                      userModel?.name ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -101,7 +97,7 @@ class _NavBarState extends State<NavBar> {
                     ),
                     SizedBox(height: 5.0),
                     Text(
-                      mobileNo ?? "",
+                      userModel?.mobileNo ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

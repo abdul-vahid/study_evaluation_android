@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/models/package_model/package_model.dart';
 import 'package:study_evaluation/models/package_model/result_model.dart';
 import 'package:study_evaluation/models/package_model/test_series.dart';
+import 'package:study_evaluation/models/user_model.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
@@ -13,6 +16,7 @@ import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
   final String packageLineItemId;
+
   const PackageDetailView({super.key, required this.packageLineItemId});
 
   @override
@@ -20,12 +24,15 @@ class PackageDetailView extends StatefulWidget {
 }
 
 class _PackageDetailViewState extends State<PackageDetailView> {
+  UserModel? userModel;
   PackageListViewModel? packageListVM;
   PackageModel? model;
   Package? package;
   String? _selectedFont = "15";
   @override
   void initState() {
+    SharedPreferences.getInstance()
+        .then((prefs) => userModel = AppUtils.getSessionUser(prefs));
     super.initState();
     //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
@@ -176,14 +183,14 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   List<Widget> _getButtons(TestSeries testSeries) {
     List<Widget> widgets = [];
     ResultModel? resultModel = testSeries.result;
-    if (resultModel?.resultStatus == "In Progress") {
+    if (resultModel?.resultStatus == ResultStatus.inProgress) {
       widgets.add(AppUtils.getElevatedButton('Resume',
           onPressed: () {},
           buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: AppColor.buttonColor, // foreground
           )));
     }
-    if (resultModel?.resultStatus == "Complete") {
+    if (resultModel?.resultStatus == ResultStatus.completed) {
       widgets.add(AppUtils.getElevatedButton(
         'Re-Attempt',
         textStyle: const TextStyle(color: Colors.black),
@@ -216,6 +223,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 ],
                 child: ExamView(
                   examId: testSeries.examId!,
+                  studentId: (userModel?.studentId)!,
                 )));
       },
           buttonStyle: ElevatedButton.styleFrom(
@@ -238,6 +246,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             ],
             child: ExamView(
               examId: examId,
+              studentId: (userModel?.studentId)!,
             )));
   }
 
