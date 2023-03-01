@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -138,28 +139,7 @@ class AppUtil {
     return errorMessages.isNotEmpty
         ? Center(
             child: Column(
-            children 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            : [for (var message in errorMessages) Text(message)],
+            children: [for (var message in errorMessages) Text(message)],
           ))
         : Center(child: Text(errorMessage));
   }
@@ -197,5 +177,10 @@ class AppUtil {
     print("PATH = $path");
     return AppConstants.baseUrl + path;
   }
+
+  void onError(BuildContext context, error, {title = "Error Alert"}) {
+    Navigator.pop(context);
+    List<String> errorMessages = AppUtil.getErrorMessages(error);
+    AppUtil().getAlert(context, errorMessages, title: title);
+  }
 }
- 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/models/question_answer_model/question.dart';
+import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
@@ -33,21 +33,63 @@ class _ExamViewState extends State<ExamView> {
   String? _selectedLanguage = "Hindi";
   String? _selectedFont = "15";
   String title = "Test";
-
-  final interval = const Duration(seconds: 1);
-
-  final int timerMaxSeconds = 60;
-
+  String timeUP = "";
+  int timerMaxSeconds = 60;
+  Duration? myDuration;
+  var duration;
   int currentSeconds = 0;
+  Timer? countdownTimer;
+  var hours = "0";
+  var minutes = "0";
+  var seconds = "0";
 
-  String get timerText =>
-      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+  @override
+  void initState() {
+    Provider.of<ExamListViewModel>(context, listen: false)
+        .fetchQuestionAnswer(examId: "87");
+    timeUP = "";
+    super.initState();
+  }
 
-  startTimeout([milliseconds]) {
-    var duration = interval;
-    Timer.periodic(duration, (timer) {
+  void startTimer() {
+    countdownTimer ??=
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void stopTimer() {
+    setState(() => countdownTimer!.cancel());
+  }
+
+  // Step 6
+  void setCountDown() {
+    const reduceSecondsBy = 1;
+    final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
+    if (seconds1 < 0) {
+      timeUP = "Time UP!";
+      _onSubmit();
+      countdownTimer!.cancel();
+    } else {
+      myDuration = Duration(seconds: seconds1);
+    }
+    print("$seconds1 == ${myDuration!.inSeconds}");
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    hours = strDigits(myDuration!.inHours.remainder(24));
+    minutes = strDigits(myDuration!.inMinutes.remainder(60));
+    seconds = strDigits(myDuration!.inSeconds.remainder(60));
+    setState(() {
+      print(timerText);
+    });
+  }
+
+  String get timerText {
+    return '$hours:$minutes:$seconds';
+  }
+
+  void startTimeout(duration) {
+    timerMaxSeconds = (duration * 60);
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        print(timer.tick);
+        print("Time Tick = ${timer.tick}");
         currentSeconds = timer.tick;
         if (timer.tick >= timerMaxSeconds) timer.cancel();
       });
@@ -55,17 +97,15 @@ class _ExamViewState extends State<ExamView> {
   }
 
   @override
-  void initState() {
-    Provider.of<ExamListViewModel>(context, listen: false)
-        .fetchQuestionAnswer(examId: "87");
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     baseListViewModel = Provider.of<ExamListViewModel>(context);
     if (baseListViewModel!.viewModels.isNotEmpty &&
-        baseListViewModel!.viewModels[0].model != null) {
+        baseListViewModel!.viewModels[0].model != null &&
+        !baseListViewModel!.viewModels[0].model.isError) {
+      var duration =
+          int.tryParse(baseListViewModel?.viewModels[0].model.exam.duration);
+      myDuration ??= Duration(seconds: 15);
+      startTimer();
       setState(() {
         title = baseListViewModel?.viewModels[0].model.exam.title;
       });
@@ -112,58 +152,7 @@ class _ExamViewState extends State<ExamView> {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.containerBoxColor,
-              borderRadius: BorderRadius.circular(20),
-              //more than 50% of width makes circle
-            ),
-            height: 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              // ignore: prefer_const_literals_to_create_immutables
-              children: [
-                // ignore: prefer_const_constructors
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: const Icon(
-                    Icons.apps_rounded,
-                    size: 30,
-                    color: Colors.white, // add custom icons also
-                  ),
-                ),
-                // ignore: prefer_const_constructors
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  // ignore: prefer_const_constructors
-                  child: Text(
-                    '100 question ',
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      // ignore: prefer_const_constructors
-                      Icon(
-                        Icons.timer,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        timerText,
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+          _getTopBar(),
           const SizedBox(
             height: 20,
           ),
@@ -179,8 +168,8 @@ class _ExamViewState extends State<ExamView> {
     bool isBlankSelValues = selectedValues.isEmpty;
     var i = 0;
 
-    for (Question model
-        in (baseListViewModel?.viewModels[0].model.questions)!) {
+    for (QuestionModel model
+        in (baseListViewModel?.viewModels[0].model.questionModels)!) {
       if (isBlankSelValues) {
         selectedValues.add("0");
       }
@@ -188,31 +177,105 @@ class _ExamViewState extends State<ExamView> {
       widgets.add(_getQuestionOptionWidget(model));
     }
 
-    widgets.add(Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor // foreground
-                ),
-            onPressed: () {},
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonColor // foreground
-                ),
-            onPressed: () {},
-            child: Text('Submit'),
-          ),
-        ],
-      ),
-    ));
+    widgets.add(_getBottomButtons());
 
     return widgets;
   }
+
+  Container _getTopBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.containerBoxColor,
+        borderRadius: BorderRadius.circular(20),
+        //more than 50% of width makes circle
+      ),
+      height: 40,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // ignore: prefer_const_literals_to_create_immutables
+        children: _topBarChildren,
+      ),
+    );
+  }
+
+  List<Widget> get _topBarChildren {
+    return [
+      // ignore: prefer_const_constructors
+      Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: const Icon(
+          Icons.apps_rounded,
+          size: 30,
+          color: Colors.white, // add custom icons also
+        ),
+      ),
+      // ignore: prefer_const_constructors
+      Padding(
+        padding: const EdgeInsets.only(left: 20),
+        // ignore: prefer_const_constructors
+        child: Text(
+          '${baseListViewModel?.viewModels[0].model.questionModels.length} Questions',
+          style: const TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // ignore: prefer_const_constructors
+            Icon(
+              Icons.timer,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              timerText,
+              style: TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      )
+    ];
+  }
+
+  Padding _getBottomButtons() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        AppUtil().getElevatedButton('Cancel',
+            onPressed: _onCancel,
+            textStyle: const TextStyle(color: Colors.black),
+            buttonStyle:
+                ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor)),
+        const SizedBox(
+          width: 20,
+        ),
+        AppUtil().getElevatedButton('Submit',
+            onPressed: _onSubmit,
+            buttonStyle:
+                ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor))
+      ]),
+    );
+  }
+
+  void _onSubmit() {
+    AppUtil().onLoading(context, "$timeUP Submitting Your Exam...");
+    ExamListViewModel()
+        .submitExam(baseListViewModel?.viewModels[0].model)
+        .then((value) {
+      Navigator.pop(context);
+      AppUtil()
+          .getAlert(context, ["$timeUP Your's Exam Submitted Successfully!"]);
+      //Navigator.pop(context);
+    }).catchError((error) {
+      AppUtil().onError(context, error);
+    });
+  }
+
+  void _onCancel() {}
 
   Widget _getFontDropdown() {
     return Container(
@@ -304,7 +367,7 @@ class _ExamViewState extends State<ExamView> {
     );
   }
 
-  List<Widget> _getQuestionOptions(Question model) {
+  List<Widget> _getQuestionOptions(QuestionModel model) {
     return [
       _getQuestion(model),
       const SizedBox(
@@ -330,16 +393,32 @@ class _ExamViewState extends State<ExamView> {
           children: [
             getIconButton(
               'Clear Section',
-              Icons.radio_button_unchecked_outlined,
+              model.submittedAnswer != null && model.submittedAnswer.isNotEmpty
+                  ? Icons.clear_rounded
+                  : Icons.radio_button_unchecked_outlined,
               onPressed: () {
-                selectedValues.clear();
+                //print("index = ${model.index}");
+                setState(() {
+                  selectedValues[model.index] = "";
+                  model.submittedAnswer = "";
+                });
               },
             ),
             getIconButton(
               'Favourite',
               Icons.star_border_purple500_sharp,
+              textColor: model.isFavourite
+                  ? const Color.fromARGB(255, 248, 248, 9)
+                  : Colors.white,
+              iconColor: model.isFavourite
+                  ? const Color.fromARGB(255, 248, 248, 9)
+                  : Colors.white,
               onPressed: () {
                 //selectedValues.clear();
+                print("Favour : ${model.isFavourite}");
+                setState(() {
+                  model.favourite = (!model.isFavourite).toString();
+                });
               },
             ),
           ],
@@ -349,24 +428,27 @@ class _ExamViewState extends State<ExamView> {
   }
 
   TextButton getIconButton(String label, IconData iconData,
-      {required void Function()? onPressed}) {
+      {required void Function()? onPressed,
+      textColor = Colors.white,
+      iconColor = Colors.white}) {
     return TextButton.icon(
       onPressed: onPressed,
       label: Text(
         label,
         style: TextStyle(
-          color: Colors.white,
+          color: textColor,
         ),
       ),
       icon: Icon(
         iconData,
-        color: Colors.white,
+        color: iconColor,
         size: 20,
       ),
     );
   }
 
-  RadioListTile<String> _getOption(label, labelEnglish, value, Question model) {
+  RadioListTile<String> _getOption(
+      label, labelEnglish, value, QuestionModel model) {
     return RadioListTile(
       title: _getContent(label, labelEnglish),
       value: value,
@@ -384,7 +466,7 @@ class _ExamViewState extends State<ExamView> {
     );
   }
 
-  Widget _getQuestion(Question model) {
+  Widget _getQuestion(QuestionModel model) {
     return Align(
       alignment: Alignment.centerLeft,
       child: _getContent("Q.${model.index + 1}) ${model.questionHindi}",

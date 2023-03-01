@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:study_evaluation/models/question_answer_model/question.dart';
+import 'package:study_evaluation/models/result_model/result_model.dart';
 import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
@@ -9,7 +8,7 @@ import '../utils/app_constants.dart';
 class ExamService {
   static final APIService _apiService = APIService();
   Future<dynamic> fetchQuestionAnswer(
-      {required String examId, String? studentId = "-1"}) async {
+      {required String examId, String? studentId = ""}) async {
     String url =
         "${AppConstants.questionAnswerAPIPath}?exam_id=$examId&student_id=$studentId";
 
@@ -22,10 +21,10 @@ class ExamService {
     return responseJsonData;
   }
 
-  Future<dynamic> submitExam(List<Question> questions) async {
+  Future<dynamic> submitExam(ResultModel resultModel) async {
     String url = AppUtil.getUrl(AppConstants.submitExamAPIPath);
     var token = await AppUtil().getToken();
-    var body = jsonEncode(questions);
+    var body = resultModel.toJson();
     print("body = $body");
     final responseJsonData = await _apiService.postResponse(url, body, token!);
     if (AppConstants.kDebugMode) {
