@@ -327,8 +327,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             ),
             _getImageContainer(package?.logoUrl),
             _getPackageTitleContainer(package?.title),
-            _getPackagePriceContainer('Price', '₹${package?.originalPrice}',
-                '[₹${package?.listPrice}]'),
+            _getPackagePriceContainer('Price', '₹${package?.listPrice}',
+                '₹${package?.originalPrice}'),
             Divider(
               color: Colors.grey.shade300,
             ),
