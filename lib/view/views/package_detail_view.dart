@@ -146,7 +146,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             Divider(
               color: Colors.grey.shade300,
             ),
-            _getQuestionInfoButtons(testSeries?.result),
+            _getQuestionInfoButtons(testSeries!),
             Container(
               height: 10,
               decoration: BoxDecoration(
@@ -162,19 +162,19 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Padding _getQuestionInfoButtons(ResultModel? resultModel) {
+  Padding _getQuestionInfoButtons(TestSeries testSeries) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: _getButtons(resultModel),
+        children: _getButtons(testSeries),
       ),
     );
   }
 
-  List<Widget> _getButtons(ResultModel? resultModel) {
+  List<Widget> _getButtons(TestSeries testSeries) {
     List<Widget> widgets = [];
-
+    ResultModel? resultModel = testSeries.result;
     if (resultModel?.resultStatus == "In Progress") {
       widgets.add(AppUtils.getElevatedButton('Resume',
           onPressed: () {},
@@ -206,8 +206,17 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     }
 
     if (resultModel == null) {
-      widgets.add(AppUtils.getElevatedButton('Start Now',
-          onPressed: onPressed,
+      widgets.add(AppUtils.getElevatedButton('Start Now', onPressed: () {
+        AppUtils.viewPush(
+            context,
+            MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (_) => ExamListViewModel())
+                ],
+                child: ExamView(
+                  examId: testSeries.examId!,
+                )));
+      },
           buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor // foreground
               )));
@@ -219,12 +228,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     return widgets;
   }
 
-  void onPressed() {
+  void onPressed(examId) {
     AppUtils.viewPush(
         context,
-        MultiProvider(providers: [
-          ChangeNotifierProvider(create: (_) => ExamListViewModel())
-        ], child: const ExamView()));
+        MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => ExamListViewModel())
+            ],
+            child: ExamView(
+              examId: examId,
+            )));
   }
 
   Padding _getQuestionInfoContainer(TestSeries? testSeries) {

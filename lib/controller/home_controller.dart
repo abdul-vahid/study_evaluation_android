@@ -40,7 +40,7 @@ class HomeController {
   }
 
   void _onVideo(id) {
-    AppUtils().getAlert(context, ["App is Under Construction!"]);
+    AppUtils.getAlert(context, ["App is Under Construction!"]);
   }
 
   Widget _getGridView() {
