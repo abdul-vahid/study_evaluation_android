@@ -6,4 +6,6 @@ class BaseModel {
   AppException? appException;
 
   BaseModel({this.error, this.appException});
+
+  bool get isError => error != null || appException != null;
 }

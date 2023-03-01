@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -180,5 +181,11 @@ class AppUtil {
   static String getUrl(String path) {
     print("PATH = $path");
     return AppConstants.baseUrl + path;
+  }
+
+  void onError(BuildContext context, error, {title = "Error Alert"}) {
+    Navigator.pop(context);
+    List<String> errorMessages = AppUtil.getErrorMessages(error);
+    AppUtil().getAlert(context, errorMessages, title: title);
   }
 }

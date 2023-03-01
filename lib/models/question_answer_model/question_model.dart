@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Question {
+class QuestionModel {
   String? id;
   String? subjectId;
   String? subjectName;
@@ -22,8 +22,8 @@ class Question {
   dynamic favourite;
   int index = 0;
   bool? isSelected = false;
-  
-  Question(
+
+  QuestionModel(
       {this.id,
       this.subjectId,
       this.subjectName,
@@ -44,7 +44,15 @@ class Question {
       this.submittedAnswer,
       this.favourite});
 
-  factory Question.fromMap(Map<String, dynamic> data) => Question(
+  bool get isFavourite {
+    return favourite != null && favourite.toString().toLowerCase() == "true";
+  }
+
+  bool get hasSubmittedAnswer {
+    return submittedAnswer != null && submittedAnswer.toString().isNotEmpty;
+  }
+
+  factory QuestionModel.fromMap(Map<String, dynamic> data) => QuestionModel(
         id: data['id'] as String?,
         subjectId: data['subject_id'] as String?,
         subjectName: data['subject_name'] as String?,
@@ -90,13 +98,13 @@ class Question {
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [Question].
-  factory Question.fromJson(String data) {
-    return Question.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [QuestionModel].
+  factory QuestionModel.fromJson(String data) {
+    return QuestionModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [Question] to a JSON string.
+  /// Converts [QuestionModel] to a JSON string.
   String toJson() => json.encode(toMap());
 }

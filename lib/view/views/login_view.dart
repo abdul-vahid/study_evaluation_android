@@ -7,7 +7,7 @@ import 'package:study_evaluation/view/views/forgetpassword_screen.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
-import 'package:study_evaluation/view_models/question_answer_list_vm.dart';
+import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
@@ -97,17 +97,25 @@ class _LoginViewState extends State<LoginView> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider(
-                              create: (_) => CategoryListViewModel()),
-                          ChangeNotifierProvider(
-                              create: (_) => SliderImageListViewModel()),
-                          ChangeNotifierProvider(
-                              create: (_) => FeedbackListViewModel()),
-                        ],
-                        child: const HomeMainView(),
-                      )));
+                  builder:
+                      (context) => /* MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                                create: (_) => ExamListViewModel())
+                          ],
+                          child:
+                              const ExamView()) */
+                          MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (_) => CategoryListViewModel()),
+                              ChangeNotifierProvider(
+                                  create: (_) => SliderImageListViewModel()),
+                              ChangeNotifierProvider(
+                                  create: (_) => FeedbackListViewModel()),
+                            ],
+                            child: const HomeMainView(),
+                          )));
         }
       }).catchError((error) {
         Navigator.pop(context);
@@ -117,28 +125,3 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 }
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (context) => MultiProvider(providers: [
-//         ChangeNotifierProvider(create: (_) => QuestionAnswerListViewModel())
-//       ], child: const ExamView())/* MultiProvider(
-//                         providers: [
-//                           ChangeNotifierProvider(
-//                               create: (_) => CategoryListViewModel()),
-//                           ChangeNotifierProvider(
-//                               create: (_) => SliderImageListViewModel()),
-//                           ChangeNotifierProvider(
-//                               create: (_) => FeedbackListViewModel()),
-//                         ],
-//                         child: const HomeMainView(),
-//                       ) */));
-//         }
-//       }).catchError((error) {
-//         Navigator.pop(context);
-//         List<String> errorMessages = AppUtil.getErrorMessages(error);
-//         AppUtil().getAlert(context, errorMessages, title: "Error Alert");
-//       });
-//     }
-//   }
-// }

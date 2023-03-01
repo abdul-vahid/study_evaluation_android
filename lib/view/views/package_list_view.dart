@@ -10,7 +10,8 @@ import 'package:study_evaluation/view_models/package_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageListView extends StatefulWidget {
-  const PackageListView({super.key});
+  final String categoryId;
+  const PackageListView({super.key, required this.categoryId});
 
   @override
   State<PackageListView> createState() => _PackageListViewState();
@@ -20,10 +21,10 @@ class _PackageListViewState extends State<PackageListView> {
   PackageListViewModel? packageListVM;
   @override
   void initState() {
-    super.initState();
-    //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
-        .fetch(categoryId: 15);
+        .fetch(categoryId: widget.categoryId);
+    //final id = ModalRoute.of(context)!.settings.arguments;
+    super.initState();
   }
 
   @override
@@ -105,7 +106,7 @@ class _PackageListViewState extends State<PackageListView> {
       ),
       child: InkWell(
         onTap: () {
-          onButtonPressed();
+          onButtonPressed(model.id);
         },
         child: Column(
           children: [
@@ -171,13 +172,15 @@ class _PackageListViewState extends State<PackageListView> {
     );
   }
 
-  void onButtonPressed() {
+  void onButtonPressed(id) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
                 create: (_) => PackageListViewModel(),
-                child: const PackageDetailView(),
+                child: PackageDetailView(
+                  packageLineItemId: id,
+                ),
               ),
           settings: RouteSettings(arguments: 9)),
     );

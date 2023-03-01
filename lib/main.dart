@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view_models/question_answer_list_vm.dart';
+import 'package:study_evaluation/view_models/exam_list_vm.dart';
 
 /* Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false, home: const LoginHome()
         /* home: MultiProvider(providers: [
-        ChangeNotifierProvider(create: (_) => QuestionAnswerListViewModel())
+        ChangeNotifierProvider(create: (_) => ExamListViewModel())
       ], child: const ExamView()), */
         );
   }

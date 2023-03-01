@@ -62,12 +62,15 @@ class _CategoryListViewState extends State<CategoryListView> {
   }
 
   void _onTap(id) {
+    print("id is $id");
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (_) => PackageListViewModel(),
-              child: const PackageListView()),
+              child: PackageListView(
+                categoryId: id,
+              )),
           settings: RouteSettings(arguments: id)),
     );
     print("Test pressed!!!");
@@ -90,7 +93,9 @@ class _CategoryListViewState extends State<CategoryListView> {
           var url = AppUtil.getImageUrl(categoryModel.logoUrl);
           //print(categoryModel.logoUrl);
           return WidgetUtils.getCard(categoryModel.name!, url, _onTap,
-              imageHeight: 70.0, imageType: ImageType.network);
+              imageHeight: 70.0,
+              imageType: ImageType.network,
+              data: categoryModel.id);
         });
   }
 }
