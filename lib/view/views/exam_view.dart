@@ -112,8 +112,8 @@ class _ExamViewState extends State<ExamView> {
       });
     }
     return Scaffold(
-        appBar: AppUtil.getAppbar(title),
-        body: AppUtil.getAppBody(baseListViewModel!, _getBody));
+        appBar: AppUtils.getAppbar(title),
+        body: AppUtils.getAppBody(baseListViewModel!, _getBody));
   }
 
   SingleChildScrollView _getBody() {
@@ -255,7 +255,7 @@ class _ExamViewState extends State<ExamView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        AppUtil().getElevatedButton('Cancel',
+        AppUtils.getElevatedButton('Cancel',
             onPressed: _onCancel,
             textStyle: const TextStyle(color: Colors.black),
             buttonStyle:
@@ -263,7 +263,7 @@ class _ExamViewState extends State<ExamView> {
         const SizedBox(
           width: 20,
         ),
-        AppUtil().getElevatedButton('Submit',
+        AppUtils.getElevatedButton('Submit',
             onPressed: _onSubmit,
             buttonStyle:
                 ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor))
@@ -272,16 +272,16 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onSubmit() {
-    AppUtil().onLoading(context, "$timeUP Submitting Your Exam...");
+    AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
     ExamListViewModel()
         .submitExam(baseListViewModel?.viewModels[0].model)
         .then((value) {
       Navigator.pop(context);
-      AppUtil()
-          .getAlert(context, ["$timeUP Your's Exam Submitted Successfully!"]);
+      AppUtils.getAlert(
+          context, ["$timeUP Your's Exam Submitted Successfully!"]);
       //Navigator.pop(context);
     }).catchError((error) {
-      AppUtil().onError(context, error);
+      AppUtils.onError(context, error);
     });
   }
 

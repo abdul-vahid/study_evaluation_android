@@ -57,12 +57,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
               'Motivation',
             )),
         body: quoteListVM.status == "Loading"
-            ? AppUtil.getLoader()
+            ? AppUtils.getLoader()
             : quoteListVM.status == "Error"
-                ? AppUtil.getErrorWidget(quoteListVM.viewModels[0].model)
+                ? AppUtils.getErrorWidget(quoteListVM.viewModels[0].model)
                 : quoteListVM.viewModels.isNotEmpty
                     ? _getBody()
-                    : AppUtil.getNoRecordWidget());
+                    : AppUtils.getNoRecordWidget());
   }
 
   SingleChildScrollView _getBody() {

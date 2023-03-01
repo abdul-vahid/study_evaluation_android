@@ -40,15 +40,15 @@ class HomeController {
   }
 
   void _onVideo(id) {
-    AppUtil().getAlert(context, ["App is Under Construction!"]);
+    AppUtils().getAlert(context, ["App is Under Construction!"]);
   }
 
   Widget _getGridView() {
-    List<HomeTilesModel> homeTilesModels = AppUtil.getHomeTilesModels();
+    List<HomeTilesModel> homeTilesModels = AppUtils.getHomeTilesModels();
 
     return homeTilesModels.isNotEmpty
         ? _getBody(homeTilesModels, _onVideo)
-        : AppUtil.getLoader();
+        : AppUtils.getLoader();
   }
 
   GridView _getBody(
@@ -77,7 +77,7 @@ class HomeController {
     return Container(
         margin: const EdgeInsets.only(left: 5.0, right: 10.0, top: 4.0),
         height: 200,
-        child: AppUtil.getAppBody(viewModelList, _imageSlideshowWidget));
+        child: AppUtils.getAppBody(viewModelList, _imageSlideshowWidget));
   }
 
   ImageSlideshow _imageSlideshowWidget() {
@@ -108,7 +108,7 @@ class HomeController {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         image: DecorationImage(
-          image: NetworkImage(AppUtil.getImageUrl(model.sliderUrl)),
+          image: NetworkImage(AppUtils.getImageUrl(model.sliderUrl)),
           fit: BoxFit.cover,
         ),
       ),

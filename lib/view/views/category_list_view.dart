@@ -36,7 +36,7 @@ class _CategoryListViewState extends State<CategoryListView> {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),
-      body: AppUtil.getAppBody(categoriesVM!, _getDataBody),
+      body: AppUtils.getAppBody(categoriesVM!, _getDataBody),
     );
   }
 
@@ -79,7 +79,7 @@ class _CategoryListViewState extends State<CategoryListView> {
   Widget _getGridView(categoriesVM) {
     return categoriesVM.viewModels.isNotEmpty
         ? _getBody(categoriesVM)
-        : AppUtil.getLoader();
+        : AppUtils.getLoader();
   }
 
   GridView _getBody(categoriesVM) {
@@ -90,7 +90,7 @@ class _CategoryListViewState extends State<CategoryListView> {
         itemCount: categoriesVM.viewModels.length,
         itemBuilder: (context, index) {
           CategoryModel categoryModel = categoriesVM.viewModels[index].model;
-          var url = AppUtil.getImageUrl(categoryModel.logoUrl);
+          var url = AppUtils.getImageUrl(categoryModel.logoUrl);
           //print(categoryModel.logoUrl);
           return WidgetUtils.getCard(categoryModel.name!, url, _onTap,
               imageHeight: 70.0,

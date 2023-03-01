@@ -10,8 +10,8 @@ class FeedbackService {
     String url = AppConstants.baseUrl + AppConstants.feedbackAPIPath;
 
     print("URL: ${url.toString()}");
-    var token = "";
-    final responseJsonData = await _apiService.getResponse(url, token);
+    var token = await AppUtils.getToken();
+    final responseJsonData = await _apiService.getResponse(url, token!);
     //String accessToken = responseJsonData['access_token'];
     if (AppConstants.kDebugMode) {
       print("responseJsonData: $responseJsonData");
@@ -22,7 +22,7 @@ class FeedbackService {
 
   Future<dynamic> submitFeedback(FeedbackModel feedbackModel) async {
     String url = AppConstants.baseUrl + AppConstants.feedbackAPIPath;
-    var token = await AppUtil().getToken();
+    var token = await AppUtils.getToken();
     var body = feedbackModel.toJson();
     print(body);
     final responseJsonData = await _apiService.postResponse(url, body, token!);

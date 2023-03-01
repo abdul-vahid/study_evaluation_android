@@ -9,8 +9,8 @@ import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 
-class AppUtil {
-  void onLoading(BuildContext? context, String? label) {
+class AppUtils {
+  static void onLoading(BuildContext? context, String? label) {
     showDialog(
         context: context!,
         barrierDismissible: false,
@@ -38,7 +38,7 @@ class AppUtil {
         });
   }
 
-  List<Widget> _getTextWidgets(List<String> values) {
+  static List<Widget> _getTextWidgets(List<String> values) {
     List<Widget> widgets = [];
     values.forEach((value) => widgets.add(Text(
           value,
@@ -47,7 +47,7 @@ class AppUtil {
     return widgets;
   }
 
-  Future<void> getAlert(BuildContext context, List<String> values,
+  static Future<void> getAlert(BuildContext context, List<String> values,
       {title = "", buttonLabel = 'OK'}) async {
     return showDialog<void>(
       context: context,
@@ -76,12 +76,12 @@ class AppUtil {
     );
   }
 
-  Future<String?> getToken() async {
+  static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
   }
 
-  ElevatedButton getElevatedButton(btnLabel,
+  static ElevatedButton getElevatedButton(btnLabel,
       {required void Function()? onPressed, buttonStyle, textStyle}) {
     return ElevatedButton(
       style: buttonStyle,
@@ -136,7 +136,7 @@ class AppUtil {
     List<String> errorMessages = [];
     String errorMessage = "";
     if (model!.appException != null) {
-      errorMessages = AppUtil.getErrorMessages(model!.appException);
+      errorMessages = AppUtils.getErrorMessages(model!.appException);
     } else {
       errorMessage = model!.error.toString();
     }
@@ -152,13 +152,13 @@ class AppUtil {
   static Widget getAppBody(
       BaseListViewModel baseListViewModel, Widget Function() callBack) {
     if (baseListViewModel.status == "Loading") {
-      return AppUtil.getLoader();
+      return AppUtils.getLoader();
     } else if (baseListViewModel.status == "Error") {
-      return AppUtil.getErrorWidget(baseListViewModel.viewModels[0].model);
+      return AppUtils.getErrorWidget(baseListViewModel.viewModels[0].model);
     } else if (baseListViewModel.viewModels.isNotEmpty) {
       return callBack();
     } else {
-      return AppUtil.getNoRecordWidget();
+      return AppUtils.getNoRecordWidget();
     }
   }
 
@@ -183,9 +183,9 @@ class AppUtil {
     return AppConstants.baseUrl + path;
   }
 
-  void onError(BuildContext context, error, {title = "Error Alert"}) {
+  static void onError(BuildContext context, error, {title = "Error Alert"}) {
     Navigator.pop(context);
-    List<String> errorMessages = AppUtil.getErrorMessages(error);
-    AppUtil().getAlert(context, errorMessages, title: title);
+    List<String> errorMessages = AppUtils.getErrorMessages(error);
+    getAlert(context, errorMessages, title: title);
   }
 }

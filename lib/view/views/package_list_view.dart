@@ -38,7 +38,7 @@ class _PackageListViewState extends State<PackageListView> {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),
-      body: AppUtil.getAppBody(packageListVM!, _getBody),
+      body: AppUtils.getAppBody(packageListVM!, _getBody),
     );
   }
 
