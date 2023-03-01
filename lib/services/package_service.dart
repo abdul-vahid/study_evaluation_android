@@ -6,9 +6,9 @@ import '../utils/app_constants.dart';
 class PackageService {
   static final APIService _apiService = APIService();
   Future<dynamic> fetch({categoryId}) async {
-    String url = AppUtil.getUrl(AppConstants.packageAPIPath);
+    String url = AppUtils.getUrl(AppConstants.packageAPIPath);
     url += "/$categoryId";
-    var token = await AppUtil().getToken();
+    var token = await AppUtils.getToken();
     final responseJsonData = await _apiService.getResponse(url, token!);
     if (AppConstants.kDebugMode) {
       print("responseJsonData: $responseJsonData");
@@ -17,9 +17,9 @@ class PackageService {
   }
 
   Future<dynamic> fetchPackageLineItems(packageId, studentId) async {
-    String url = AppUtil.getUrl(AppConstants.packageLineItemsAPIPath);
+    String url = AppUtils.getUrl(AppConstants.packageLineItemsAPIPath);
     url += "?package_id=$packageId&student_id=$studentId";
-    var token = await AppUtil().getToken();
+    var token = await AppUtils.getToken();
 
     final responseJsonData = await _apiService.getResponse(url, token!);
 

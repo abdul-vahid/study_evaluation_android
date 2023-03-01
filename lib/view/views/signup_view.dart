@@ -19,7 +19,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  var roleListVM;
+  RoleListViewModel? roleListVM;
   @override
   void initState() {
     Provider.of<RoleListViewModel>(context, listen: false).fetch();
@@ -134,7 +134,7 @@ class _SignupViewState extends State<SignupView> {
 
   void onButtonPressed() {
     if (_registrationFormKey.currentState!.validate()) {
-      AppUtil().onLoading(context, "Please wait...");
+      AppUtils.onLoading(context, "Please wait...");
       _registrationFormKey.currentState!.save();
 
       int min = 5;
@@ -159,15 +159,15 @@ class _SignupViewState extends State<SignupView> {
             MaterialPageRoute(builder: (context) => const SignupSuccess()));
       }).catchError((onError) {
         Navigator.pop(context);
-        List<String> errorMessages = AppUtil.getErrorMessages(onError);
-        AppUtil().getAlert(context, errorMessages, title: "Error Alert");
+        List<String> errorMessages = AppUtils.getErrorMessages(onError);
+        AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
     }
   }
 
   List<DropdownMenuItem<String>>? getItems() {
-    if (roleListVM.viewModels.isNotEmpty) {
-      return roleListVM.viewModels.map<DropdownMenuItem<String>>((viewModel) {
+    if (roleListVM!.viewModels.isNotEmpty) {
+      return roleListVM!.viewModels.map<DropdownMenuItem<String>>((viewModel) {
         return DropdownMenuItem<String>(
           value: viewModel.model.id,
           child: Text(viewModel.model.role),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -12,7 +13,8 @@ import 'package:study_evaluation/view_models/exam_list_vm.dart';
 enum LanguageOption { hindi, english, both }
 
 class ExamView extends StatefulWidget {
-  const ExamView({super.key});
+  final String examId;
+  const ExamView({super.key, required this.examId});
 
   @override
   State<ExamView> createState() => _ExamViewState();
@@ -43,80 +45,47 @@ class _ExamViewState extends State<ExamView> {
   var hours = "0";
   var minutes = "0";
   var seconds = "0";
-
+  int? totalQuestions = 30;
   @override
   void initState() {
     Provider.of<ExamListViewModel>(context, listen: false)
-        .fetchQuestionAnswer(examId: "87");
+        .fetchQuestionAnswer(examId: widget.examId);
     timeUP = "";
     super.initState();
-  }
-
-  void startTimer() {
-    countdownTimer ??=
-        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
-  }
-
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  // Step 6
-  void setCountDown() {
-    const reduceSecondsBy = 1;
-    final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
-    if (seconds1 < 0) {
-      timeUP = "Time UP!";
-      _onSubmit();
-      countdownTimer!.cancel();
-    } else {
-      myDuration = Duration(seconds: seconds1);
-    }
-    print("$seconds1 == ${myDuration!.inSeconds}");
-    String strDigits(int n) => n.toString().padLeft(2, '0');
-    hours = strDigits(myDuration!.inHours.remainder(24));
-    minutes = strDigits(myDuration!.inMinutes.remainder(60));
-    seconds = strDigits(myDuration!.inSeconds.remainder(60));
-    setState(() {
-      print(timerText);
-    });
   }
 
   String get timerText {
     return '$hours:$minutes:$seconds';
   }
 
-  void startTimeout(duration) {
-    timerMaxSeconds = (duration * 60);
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        print("Time Tick = ${timer.tick}");
-        currentSeconds = timer.tick;
-        if (timer.tick >= timerMaxSeconds) timer.cancel();
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     baseListViewModel = Provider.of<ExamListViewModel>(context);
+
+    return Scaffold(
+        appBar: AppUtils.getAppbar(title),
+        body: AppUtils.getAppBody(baseListViewModel!, _getBody));
+  }
+
+  Widget _getBody() {
     if (baseListViewModel!.viewModels.isNotEmpty &&
         baseListViewModel!.viewModels[0].model != null &&
         !baseListViewModel!.viewModels[0].model.isError) {
-      var duration =
-          int.tryParse(baseListViewModel?.viewModels[0].model.exam.duration);
-      myDuration ??= Duration(seconds: 15);
+      ExamModel model = baseListViewModel!.viewModels[0].model;
+      if (model.questionModels == null || model.questionModels!.isEmpty) {
+        return const Center(
+          child: Text("No Questions to Start Exam!"),
+        );
+      }
+      var duration = int.tryParse(model.exam!.duration!);
+      myDuration ??= Duration(minutes: duration!);
       startTimer();
       setState(() {
-        title = baseListViewModel?.viewModels[0].model.exam.title;
+        title = model.exam!.title!;
+        totalQuestions =
+            model.questionModels != null ? model.questionModels!.length : 0;
       });
     }
-    return Scaffold(
-        appBar: AppUtil.getAppbar(title),
-        body: AppUtil.getAppBody(baseListViewModel!, _getBody));
-  }
-
-  SingleChildScrollView _getBody() {
     return SingleChildScrollView(
         child: Column(children: _getQuestionOptionWidgets()));
   }
@@ -224,7 +193,7 @@ class _ExamViewState extends State<ExamView> {
         padding: const EdgeInsets.only(left: 20),
         // ignore: prefer_const_constructors
         child: Text(
-          '${baseListViewModel?.viewModels[0].model.questionModels.length} Questions',
+          '$totalQuestions Questions',
           style: const TextStyle(color: Colors.white, fontSize: 15),
         ),
       ),
@@ -255,7 +224,7 @@ class _ExamViewState extends State<ExamView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        AppUtil().getElevatedButton('Cancel',
+        AppUtils.getElevatedButton('Cancel',
             onPressed: _onCancel,
             textStyle: const TextStyle(color: Colors.black),
             buttonStyle:
@@ -263,7 +232,7 @@ class _ExamViewState extends State<ExamView> {
         const SizedBox(
           width: 20,
         ),
-        AppUtil().getElevatedButton('Submit',
+        AppUtils.getElevatedButton('Submit',
             onPressed: _onSubmit,
             buttonStyle:
                 ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor))
@@ -272,16 +241,16 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onSubmit() {
-    AppUtil().onLoading(context, "$timeUP Submitting Your Exam...");
+    AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
     ExamListViewModel()
         .submitExam(baseListViewModel?.viewModels[0].model)
         .then((value) {
       Navigator.pop(context);
-      AppUtil()
-          .getAlert(context, ["$timeUP Your's Exam Submitted Successfully!"]);
+      AppUtils.getAlert(
+          context, ["$timeUP Your's Exam Submitted Successfully!"]);
       //Navigator.pop(context);
     }).catchError((error) {
-      AppUtil().onError(context, error);
+      AppUtils.onError(context, error);
     });
   }
 
@@ -489,13 +458,14 @@ class _ExamViewState extends State<ExamView> {
     if (labelHindi != null &&
         (languageOption == LanguageOption.both ||
             languageOption == LanguageOption.hindi)) {
-      widgets.add(getHtmlData(labelHindi, fontFamily: 'Kruti'));
+      widgets.add(AppUtils.getHtmlData(labelHindi,
+          fontFamily: 'Kruti', fontSize: _selectedFont));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
         (languageOption == LanguageOption.both ||
             languageOption == LanguageOption.english)) {
-      widgets.add(getHtmlData(labelEnglish));
+      widgets.add(AppUtils.getHtmlData(labelEnglish));
     }
 
     if (widgets.isNotEmpty) {
@@ -510,19 +480,33 @@ class _ExamViewState extends State<ExamView> {
     //return widgets;
   }
 
-  Html getHtmlData(data, {fontFamily = ''}) {
-    return Html(
-        data: data,
-        style: {
-          "span": Style(fontFamily: fontFamily),
-          "body, span, p, font, div":
-              Style(fontSize: FontSize(double.tryParse(_selectedFont!)))
-        },
-        customRender: {
-          "o:p": (RenderContext context, Widget child) {
-            return const TextSpan(text: "\\");
-          },
-        },
-        tagsList: Html.tags..addAll(["o:p"]));
+  void startTimer() {
+    countdownTimer ??=
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void stopTimer() {
+    setState(() => countdownTimer!.cancel());
+  }
+
+  // Step 6
+  void setCountDown() {
+    const reduceSecondsBy = 1;
+    final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
+    if (seconds1 < 0) {
+      timeUP = "Time UP!";
+      _onSubmit();
+      countdownTimer!.cancel();
+    } else {
+      myDuration = Duration(seconds: seconds1);
+    }
+    print("$seconds1 == ${myDuration!.inSeconds}");
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    hours = strDigits(myDuration!.inHours.remainder(24));
+    minutes = strDigits(myDuration!.inMinutes.remainder(60));
+    seconds = strDigits(myDuration!.inSeconds.remainder(60));
+    setState(() {
+      print(timerText);
+    });
   }
 }

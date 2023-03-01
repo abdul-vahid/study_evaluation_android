@@ -1,15 +1,7 @@
-// ignore_for_file: prefer_final_fields, prefer_const_constructors
-
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:study_evaluation/utils/app_color.dart';
-import 'package:study_evaluation/view/views/home_view.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
-
 import '../../models/feedback_model.dart';
-import '../../models/user_model.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/validator_util.dart';
 
@@ -21,7 +13,7 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
-  List<String> _subject = [
+  final List<String> _subject = [
     'Select Review',
     'Review',
     'App Issue',
@@ -140,7 +132,7 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   void onButtonPressed() {
     if (_feedbackFormKey.currentState!.validate()) {
-      AppUtil().onLoading(context, "Please wait...");
+      AppUtils.onLoading(context, "Please wait...");
       _feedbackFormKey.currentState!.save();
 
       FeedbackModel feedbackModel = FeedbackModel(
@@ -155,7 +147,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   }
 
   void submitFeedback(FeedbackModel feedbackModel) {
-    AppUtil.getLoader();
+    AppUtils.getLoader();
     FeedbackListViewModel().submitFeedback(feedbackModel).then((value) {
       Navigator.pop(context);
       setState(() {
@@ -164,15 +156,15 @@ class _FeedbackViewState extends State<FeedbackView> {
         _selectedReason = null;
       });
 
-      AppUtil().getAlert(context, ["Feedback Submitted Successfull!"],
+      AppUtils.getAlert(context, ["Feedback Submitted Successfull!"],
           title: "Feedback Alert");
       //Navigator.push(
       //  context, MaterialPageRoute(builder: (context) => const HomeView()));
     }).catchError((onError) {
       print("Error");
       Navigator.pop(context);
-      List<String> errorMessages = AppUtil.getErrorMessages(onError);
-      AppUtil().getAlert(context, errorMessages, title: "Error Alert");
+      List<String> errorMessages = AppUtils.getErrorMessages(onError);
+      AppUtils.getAlert(context, errorMessages, title: "Error Alert");
     });
 
     //   _message = '';

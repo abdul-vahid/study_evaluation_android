@@ -18,7 +18,7 @@ class _ResultViewState extends State<ResultView> {
         home: DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppUtil.getAppbar("Result", bottom: _getTabs),
+        appBar: AppUtils.getAppbar("Result", bottom: _getTabs),
         body: const TabBarView(
           children: [
             ResultHindiView(),

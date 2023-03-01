@@ -41,7 +41,7 @@ class _NavBarState extends State<NavBar> {
       mobileNo = prefs.getString(SharedPrefsConstants.mobileNo);
       name = prefs.getString(SharedPrefsConstants.name);
       if (profileUrl != null) {
-        profileUrl = AppUtil.getImageUrl(profileUrl);
+        profileUrl = AppUtils.getImageUrl(profileUrl);
       }
       print('Name@@ ${name} -- -$profileUrl');
     });

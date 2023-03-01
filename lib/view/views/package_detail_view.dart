@@ -35,8 +35,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Widget build(BuildContext context) {
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
-        appBar: AppUtil.getAppbar("Package Detail"),
-        body: AppUtil.getAppBody(packageListVM!, _getBody));
+        appBar: AppUtils.getAppbar("Package Detail"),
+        body: AppUtils.getAppBody(packageListVM!, _getBody));
   }
 
   SingleChildScrollView _getBody() {
@@ -146,7 +146,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             Divider(
               color: Colors.grey.shade300,
             ),
-            _getQuestionInfoButtons(testSeries?.result),
+            _getQuestionInfoButtons(testSeries!),
             Container(
               height: 10,
               decoration: BoxDecoration(
@@ -162,28 +162,28 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Padding _getQuestionInfoButtons(ResultModel? resultModel) {
+  Padding _getQuestionInfoButtons(TestSeries testSeries) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: _getButtons(resultModel),
+        children: _getButtons(testSeries),
       ),
     );
   }
 
-  List<Widget> _getButtons(ResultModel? resultModel) {
+  List<Widget> _getButtons(TestSeries testSeries) {
     List<Widget> widgets = [];
-
+    ResultModel? resultModel = testSeries.result;
     if (resultModel?.resultStatus == "In Progress") {
-      widgets.add(AppUtil().getElevatedButton('Resume',
+      widgets.add(AppUtils.getElevatedButton('Resume',
           onPressed: () {},
           buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: AppColor.buttonColor, // foreground
           )));
     }
     if (resultModel?.resultStatus == "Complete") {
-      widgets.add(AppUtil().getElevatedButton(
+      widgets.add(AppUtils.getElevatedButton(
         'Re-Attempt',
         textStyle: const TextStyle(color: Colors.black),
         buttonStyle: ElevatedButton.styleFrom(
@@ -191,7 +191,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             ),
         onPressed: () {},
       ));
-      widgets.add(AppUtil().getElevatedButton(
+      widgets.add(AppUtils.getElevatedButton(
         'Result',
         buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: AppColor.buttonColor // foreground
@@ -206,8 +206,17 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     }
 
     if (resultModel == null) {
-      widgets.add(AppUtil().getElevatedButton('Start Now',
-          onPressed: onPressed,
+      widgets.add(AppUtils.getElevatedButton('Start Now', onPressed: () {
+        AppUtils.viewPush(
+            context,
+            MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (_) => ExamListViewModel())
+                ],
+                child: ExamView(
+                  examId: testSeries.examId!,
+                )));
+      },
           buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor // foreground
               )));
@@ -219,12 +228,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     return widgets;
   }
 
-  void onPressed() {
-    AppUtil.viewPush(
+  void onPressed(examId) {
+    AppUtils.viewPush(
         context,
-        MultiProvider(providers: [
-          ChangeNotifierProvider(create: (_) => ExamListViewModel())
-        ], child: const ExamView()));
+        MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => ExamListViewModel())
+            ],
+            child: ExamView(
+              examId: examId,
+            )));
   }
 
   Padding _getQuestionInfoContainer(TestSeries? testSeries) {
@@ -387,7 +400,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: NetworkImage(AppUtil.getImageUrl(logoUrl)),
+          image: NetworkImage(AppUtils.getImageUrl(logoUrl)),
           fit: BoxFit.fill,
         )),
         //  color: Color.fromARGB(255, 209, 208, 210),
@@ -415,7 +428,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Align _getBuyNowButton(btnLabel, {required void Function()? onPressed}) {
     return Align(
         alignment: Alignment.bottomRight,
-        child: AppUtil().getElevatedButton(
+        child: AppUtils.getElevatedButton(
           btnLabel,
           onPressed: onPressed,
         ));

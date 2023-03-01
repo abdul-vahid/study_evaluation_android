@@ -88,7 +88,7 @@ class _LoginViewState extends State<LoginView> {
     if (_loginFormKey.currentState!.validate()) {
       _loginFormKey.currentState!.save();
 
-      AppUtil().onLoading(context, "Logging You, please wait...");
+      AppUtils.onLoading(context, "Logging You, please wait...");
       //var loginList = LoginListViewModel();
 
       _userController?.login(_userName!, _password!).then((records) {
@@ -119,8 +119,8 @@ class _LoginViewState extends State<LoginView> {
         }
       }).catchError((error) {
         Navigator.pop(context);
-        List<String> errorMessages = AppUtil.getErrorMessages(error);
-        AppUtil().getAlert(context, errorMessages, title: "Error Alert");
+        List<String> errorMessages = AppUtils.getErrorMessages(error);
+        AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
     }
   }

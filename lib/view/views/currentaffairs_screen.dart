@@ -58,7 +58,7 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
         body: currentAffairsListVM.status == "Loading"
             ? _getLoader()
             : currentAffairsListVM.status == "Error"
-                ? AppUtil.getErrorWidget(
+                ? AppUtils.getErrorWidget(
                     currentAffairsListVM.viewModels[0].model)
                 : currentAffairsListVM.viewModels.isNotEmpty
                     ? _getBody()
