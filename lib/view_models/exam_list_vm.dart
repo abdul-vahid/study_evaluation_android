@@ -12,8 +12,8 @@ class ExamListViewModel extends BaseListViewModel {
   Future<void> fetchQuestionAnswer(
       {required String examId, String? studentId}) async {
     try {
-      final jsonObject =
-          await ExamService().fetchQuestionAnswer(examId: examId);
+      final jsonObject = await ExamService()
+          .fetchQuestionAnswer(examId: examId, studentId: studentId);
       final records = jsonObject["records"];
       print(records);
       var modelMap = records.map((item) => ExamModel.fromMap(item)).toList();

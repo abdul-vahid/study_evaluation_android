@@ -30,15 +30,10 @@ class UserListViewModel {
       await prefs.setString("access_token", result["access_token"]);
       await prefs.setString(
           SharedPrefsConstants.profileUrl, loginModelMap[0].profileUrl);
-
       await prefs.setString(
           SharedPrefsConstants.mobileNo, loginModelMap[0].mobileNo);
-
       await prefs.setString(SharedPrefsConstants.name, loginModelMap[0].name);
-
-      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].profileUrl}');
-      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].mobileNo}');
-      print(' loginModelMap[0].mobileNo@@@ ${loginModelMap[0].name}');
+      await prefs.setString("user", loginModelMap[0].toJson());
     }
     return loginModelMap.map((item) => UserViewModel(model: item)).toList();
   }
