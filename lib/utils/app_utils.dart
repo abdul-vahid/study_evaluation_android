@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -187,5 +188,21 @@ class AppUtils {
     Navigator.pop(context);
     List<String> errorMessages = AppUtils.getErrorMessages(error);
     getAlert(context, errorMessages, title: title);
+  }
+
+  static Html getHtmlData(data, {fontFamily = '', fontSize = 15.0}) {
+    return Html(
+        data: data,
+        style: {
+          "span": Style(fontFamily: fontFamily),
+          "body, span, p, font, div":
+              Style(fontSize: FontSize(double.tryParse(fontSize)))
+        },
+        customRender: {
+          "o:p": (RenderContext context, Widget child) {
+            return const TextSpan(text: "\\");
+          },
+        },
+        tagsList: Html.tags..addAll(["o:p"]));
   }
 }

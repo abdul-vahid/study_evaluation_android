@@ -489,13 +489,14 @@ class _ExamViewState extends State<ExamView> {
     if (labelHindi != null &&
         (languageOption == LanguageOption.both ||
             languageOption == LanguageOption.hindi)) {
-      widgets.add(getHtmlData(labelHindi, fontFamily: 'Kruti'));
+      widgets.add(AppUtils.getHtmlData(labelHindi,
+          fontFamily: 'Kruti', fontSize: _selectedFont));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
         (languageOption == LanguageOption.both ||
             languageOption == LanguageOption.english)) {
-      widgets.add(getHtmlData(labelEnglish));
+      widgets.add(AppUtils.getHtmlData(labelEnglish));
     }
 
     if (widgets.isNotEmpty) {
@@ -508,21 +509,5 @@ class _ExamViewState extends State<ExamView> {
       children: widgets,
     );
     //return widgets;
-  }
-
-  Html getHtmlData(data, {fontFamily = ''}) {
-    return Html(
-        data: data,
-        style: {
-          "span": Style(fontFamily: fontFamily),
-          "body, span, p, font, div":
-              Style(fontSize: FontSize(double.tryParse(_selectedFont!)))
-        },
-        customRender: {
-          "o:p": (RenderContext context, Widget child) {
-            return const TextSpan(text: "\\");
-          },
-        },
-        tagsList: Html.tags..addAll(["o:p"]));
   }
 }
