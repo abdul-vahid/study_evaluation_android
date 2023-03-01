@@ -12,7 +12,8 @@ import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
-  const PackageDetailView({super.key});
+  final String packageLineItemId;
+  const PackageDetailView({super.key, required this.packageLineItemId});
 
   @override
   State<PackageDetailView> createState() => _PackageDetailViewState();
@@ -27,7 +28,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     super.initState();
     //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
-        .fetchPackageLineItems(2);
+        .fetchPackageLineItems(widget.packageLineItemId);
   }
 
   @override
@@ -332,7 +333,6 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           (package?.description)!,
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
-          maxLines: 15,
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 
 enum LanguageOption { hindi, english, both }
@@ -202,13 +203,22 @@ class _ExamViewState extends State<ExamView> {
     return [
       // ignore: prefer_const_constructors
       Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: const Icon(
-          Icons.apps_rounded,
-          size: 30,
-          color: Colors.white, // add custom icons also
-        ),
-      ),
+          padding: const EdgeInsets.only(left: 10),
+          child: IconButton(
+              onPressed: () => {
+                    showDialog(
+                      barrierColor: Colors.black26,
+                      context: context,
+                      builder: (context) {
+                        return CustomAlertDialog();
+                      },
+                    )
+                  },
+              icon: const Icon(
+                Icons.apps_rounded,
+                size: 30,
+                color: Colors.white, // add custom icons also
+              ))),
       // ignore: prefer_const_constructors
       Padding(
         padding: const EdgeInsets.only(left: 20),

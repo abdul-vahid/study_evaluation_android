@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // home: const LoginHome()
-      home: MultiProvider(providers: [
+        debugShowCheckedModeBanner: false, home: const LoginHome()
+        /* home: MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => ExamListViewModel())
-      ], child: const ExamView()),
-    );
+      ], child: const ExamView()), */
+        );
   }
 }

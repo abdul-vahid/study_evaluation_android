@@ -113,7 +113,10 @@ class WidgetUtils {
 
   static Widget getCard(
       String lable, String imagePath, void Function(dynamic) voidCallback,
-      {imageHeight = 120.0, fontSize = 15.0, imageType = ImageType.assets}) {
+      {imageHeight = 120.0,
+      fontSize = 15.0,
+      imageType = ImageType.assets,
+      data}) {
     return Card(
       color: AppColor.boxColor,
       elevation: 3,
@@ -123,7 +126,7 @@ class WidgetUtils {
       margin: EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          voidCallback(15);
+          voidCallback(data);
         },
         child: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
