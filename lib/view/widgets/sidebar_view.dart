@@ -13,6 +13,7 @@ import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/followus_screen.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../utils/app_constants.dart';
@@ -142,6 +143,25 @@ class _NavBarState extends State<NavBar> {
                 context,
                 MaterialPageRoute(builder: (context) => const FollowUsScreen()),
               )
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.feedback,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileView()),
+              );
             },
           ),
           Divider(),
