@@ -28,7 +28,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 barrierColor: Colors.black26,
                 context: context,
                 builder: (context) {
-                  return CustomAlertDialog();
+                  return AlertDialog();
                 },
               );
             },

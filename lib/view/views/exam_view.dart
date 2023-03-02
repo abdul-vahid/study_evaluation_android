@@ -22,6 +22,7 @@ class ExamView extends StatefulWidget {
 }
 
 class _ExamViewState extends State<ExamView> {
+  List<GlobalKey>? _keys;
   LanguageOption languageOption = LanguageOption.hindi;
   String? question;
   List<String> selectedValues = [];
@@ -47,6 +48,7 @@ class _ExamViewState extends State<ExamView> {
   var minutes = "0";
   var seconds = "0";
   int? totalQuestions = 30;
+
   @override
   void initState() {
     Provider.of<ExamListViewModel>(context, listen: false).fetchQuestionAnswer(
@@ -86,6 +88,8 @@ class _ExamViewState extends State<ExamView> {
         totalQuestions =
             model.questionModels != null ? model.questionModels!.length : 0;
       });
+
+      _keys = List.generate(totalQuestions!, (index) => GlobalKey());
     }
     return SingleChildScrollView(
         child: Column(children: _getQuestionOptionWidgets()));
@@ -180,9 +184,15 @@ class _ExamViewState extends State<ExamView> {
                       barrierColor: Colors.black26,
                       context: context,
                       builder: (context) {
-                        return CustomAlertDialog();
+                        return CustomAlertDialog(
+                            questionModels: baseListViewModel
+                                ?.viewModels[0].model.questionModels);
                       },
-                    )
+                    ).then((value) {
+                      print("Dialog Value = $value");
+
+                      Scrollable.ensureVisible((_keys?[value].currentContext)!);
+                    }),
                   },
               icon: const Icon(
                 Icons.apps_rounded,
@@ -449,6 +459,7 @@ class _ExamViewState extends State<ExamView> {
   Widget _getQuestion(QuestionModel model) {
     return Align(
       alignment: Alignment.centerLeft,
+      key: _keys?[model.index],
       child: _getContent("Q.${model.index + 1}) ${model.questionHindi}",
           "Q.${model.index + 1}) ${model.questionEnglish}"),
     );
@@ -501,13 +512,13 @@ class _ExamViewState extends State<ExamView> {
     } else {
       myDuration = Duration(seconds: seconds1);
     }
-    print("$seconds1 == ${myDuration!.inSeconds}");
-    String strDigits(int n) => n.toString().padLeft(2, '0');
-    hours = strDigits(myDuration!.inHours.remainder(24));
-    minutes = strDigits(myDuration!.inMinutes.remainder(60));
-    seconds = strDigits(myDuration!.inSeconds.remainder(60));
+    //print("$seconds1 == ${myDuration!.inSeconds}");
+
     setState(() {
-      print(timerText);
+      String strDigits(int n) => n.toString().padLeft(2, '0');
+      hours = strDigits(myDuration!.inHours.remainder(24));
+      minutes = strDigits(myDuration!.inMinutes.remainder(60));
+      seconds = strDigits(myDuration!.inSeconds.remainder(60));
     });
   }
 }

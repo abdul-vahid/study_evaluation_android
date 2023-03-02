@@ -5,8 +5,11 @@ import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
+import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
+import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
+import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../utils/app_color.dart';
@@ -21,27 +24,28 @@ class HomeView extends StatefulWidget {
       {super.key, this.categoriesVM, this.slidersVM, this.feedbacksVM});
 
   @override
-  State<HomeView> createState() =>
-      _HomeViewState(categoriesVM, slidersVM, feedbacksVM);
+  State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
   UserListViewModel userListViewModel = UserListViewModel();
   int _selectedIndex = 0;
-  final categoriesVM;
-  final slidersVM;
-  final feedbacksVM;
+  CategoryListViewModel? categoriesVM;
+  SliderImageListViewModel? slidersVM;
+  FeedbackListViewModel? feedbacksVM;
 
   @override
   void initState() {
     //  Provider.of<UserListViewModel>(context, listen: false).login('raj@gmail.com', 'test@1234');
     super.initState();
+    categoriesVM = widget.categoriesVM;
+    slidersVM = widget.slidersVM;
+    feedbacksVM = widget.feedbacksVM;
   }
 
-  _HomeViewState(this.categoriesVM, this.slidersVM, this.feedbacksVM);
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = HomeController(context, feedbacksVM);
+    HomeController homeController = HomeController(context, feedbacksVM!);
     return Scaffold(
       drawer: NavBar(),
       appBar: AppBar(
@@ -52,7 +56,7 @@ class _HomeViewState extends State<HomeView> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          homeController.getImageSlideshowContainer(slidersVM),
+          homeController.getImageSlideshowContainer(slidersVM!),
           const SizedBox(
             height: 10,
           ),
