@@ -59,31 +59,33 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     );
   }
 
-  Column _getSubjectQuestionNo(
+  Container _getSubjectQuestionNo(
       String subject, List<QuestionModel> questionModels) {
     print("len = ${questionModels.length}");
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: _getSubjectTitle(subject),
           ),
-          child: _getSubjectTitle(subject),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          height: 1,
-        ),
-        //SizedBox(height: 10),
-        Container(
-          //  color: Colors.amberAccent,
-          height: 150,
-          child: _getGridView(questionModels),
-        ),
-      ],
+          const SizedBox(
+            height: 10,
+          ),
+          const Divider(
+            height: 1,
+          ),
+          //SizedBox(height: 10),
+          Container(
+            //  color: Colors.amberAccent,
+            height: 150,
+            child: _getGridView(questionModels),
+          ),
+        ],
+      ),
     );
   }
 
@@ -135,6 +137,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
 
   GridView _getGridView(List<QuestionModel> questionModels) {
     return GridView(
+        physics: ClampingScrollPhysics(),
         padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             mainAxisSpacing: 5, crossAxisCount: 8, crossAxisSpacing: 5),
