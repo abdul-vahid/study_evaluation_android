@@ -14,17 +14,32 @@ class UserModel extends BaseModel {
   String? profileUrl;
   String? studentId;
 
-  UserModel(
-      {this.id,
-      this.roleId,
-      this.name,
-      this.email,
-      this.mobileNo,
-      this.status,
-      this.password,
-      this.userName,
-      this.profileUrl,
-      this.studentId});
+  String? firstName;
+  String? lastLame;
+  String? dob;
+  String? gender;
+
+  String? city;
+  String? state;
+
+  UserModel({
+    this.id,
+    this.roleId,
+    this.name,
+    this.email,
+    this.mobileNo,
+    this.status,
+    this.password,
+    this.userName,
+    this.profileUrl,
+    this.studentId,
+    this.firstName,
+    this.lastLame,
+    this.dob,
+    this.gender,
+    this.city,
+    this.state,
+  });
 
   factory UserModel.fromMap(Map<String, dynamic> data) => UserModel(
         id: data['id'] as String?,
@@ -36,6 +51,12 @@ class UserModel extends BaseModel {
         status: data['status'] as String?,
         profileUrl: data['profile_url'] as String?,
         studentId: data['student_id'] as String?,
+        firstName: data['first_name'] as String?,
+        lastLame: data['last_name'] as String?,
+        dob: data['dob'] as String?,
+        gender: data['gender'] as String?,
+        city: data['city'] as String?,
+        state: data['state'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -48,6 +69,12 @@ class UserModel extends BaseModel {
         'status': status,
         'profile_url': profileUrl,
         'student_id': studentId,
+        'first_name': firstName,
+        'last_name': lastLame,
+        'dob': dob,
+        'gender': gender,
+        'city': city,
+        'state': state,
       };
 
   /// `dart:convert`
