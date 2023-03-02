@@ -15,6 +15,11 @@ class UserListViewModel {
     return await UserService().signup(userModel);
   }
 
+  Future<dynamic> updateStudentProfile(UserModel userModel) async {
+    //print("signup lis");
+    return await UserService().updateStudentProfile(userModel);
+  }
+
   Future<List<dynamic>> login(String username, String password) async {
     print("loggin called");
     final result = await UserService().login(username, password);

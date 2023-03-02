@@ -15,7 +15,7 @@ class UserModel extends BaseModel {
   String? studentId;
 
   String? firstName;
-  String? lastLame;
+  String? lastName;
   String? dob;
   String? gender;
 
@@ -34,7 +34,7 @@ class UserModel extends BaseModel {
     this.profileUrl,
     this.studentId,
     this.firstName,
-    this.lastLame,
+    this.lastName,
     this.dob,
     this.gender,
     this.city,
@@ -52,7 +52,7 @@ class UserModel extends BaseModel {
         profileUrl: data['profile_url'] as String?,
         studentId: data['student_id'] as String?,
         firstName: data['first_name'] as String?,
-        lastLame: data['last_name'] as String?,
+        lastName: data['last_name'] as String?,
         dob: data['dob'] as String?,
         gender: data['gender'] as String?,
         city: data['city'] as String?,
@@ -70,7 +70,7 @@ class UserModel extends BaseModel {
         'profile_url': profileUrl,
         'student_id': studentId,
         'first_name': firstName,
-        'last_name': lastLame,
+        'last_name': lastName,
         'dob': dob,
         'gender': gender,
         'city': city,

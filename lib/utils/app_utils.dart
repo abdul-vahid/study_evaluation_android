@@ -21,7 +21,6 @@ class AppUtils {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(0),
-                color: Colors.green,
               ),
               padding: const EdgeInsets.all(16),
               child: Row(

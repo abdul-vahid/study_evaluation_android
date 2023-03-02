@@ -12,6 +12,24 @@ abstract class ResultStatus {
   static const String inProgress = "In Progress";
 }
 
+abstract class ProfileConstants {
+  static const String firstNameLabel = "First Name";
+  static const String lastNameLabel = "Last Name";
+  static const String mobileLabel = "Mobile Number";
+  static const String dobLabel = "Date of Birth";
+  static const String genderLabel = "Gender";
+  static const String stateLabel = "State";
+  static const String cityLabel = "City";
+
+  static const String firstNameHint = "Enter First Name";
+  static const String lastNameHint = "Enter Last Name";
+  static const String mobileHint = "Enter Mobile Number";
+  static const String dobHint = "MM-DD-YYYY";
+  static const String genderHint = "Gender";
+  static const String stateHint = "State";
+  static const String cityHint = "City";
+}
+
 //
 abstract class AppConstants {
   static const String baseUrl = String.fromEnvironment(
@@ -62,4 +80,5 @@ abstract class AppConstants {
   static const String roleAPIPath = '/apis/role';
   static const String questionAnswerAPIPath = '/apis/exam_questions';
   static const String submitExamAPIPath = '/apis/submit_result';
+  static const String studentProfileAPIPath = '/apis/student';
 }

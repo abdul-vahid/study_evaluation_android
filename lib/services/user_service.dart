@@ -1,5 +1,6 @@
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/services/api_service.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import '../utils/app_constants.dart';
 
 class UserService {
@@ -27,6 +28,22 @@ class UserService {
     //String accessToken = responseJsonData['access_token'];
     if (AppConstants.kDebugMode) {
       print("Access Token: $responseJsonData");
+    }
+    //print("Access Token: $responseJsonData");
+    return responseJsonData;
+  }
+
+  Future<dynamic> updateStudentProfile(UserModel userModel) async {
+    String url = AppUtils.getUrl(
+        "${AppConstants.studentProfileAPIPath}/${userModel.studentId}");
+
+    var token = await AppUtils.getToken();
+    var body = userModel.toJson();
+    print(body);
+    final responseJsonData = await _apiService.postResponse(url, body, token!);
+    //String accessToken = responseJsonData['access_token'];
+    if (AppConstants.kDebugMode) {
+      print("responseJsonData: $responseJsonData");
     }
     //print("Access Token: $responseJsonData");
     return responseJsonData;

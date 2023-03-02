@@ -174,7 +174,7 @@ class _ProfileViewState extends State<ProfileView> {
           height: 10,
         ),
         Text(
-          profileInput ?? "",
+          profileInput,
           style: const TextStyle(
             color: Colors.grey,
           ),

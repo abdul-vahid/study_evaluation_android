@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/view/views/profile_view.dart';
+import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
@@ -21,33 +24,34 @@ class _EditProfileViewState extends State<EditProfileView> {
   //late TextEditingController name = TextEditingController.fromValue(TextEditingValue(text: userModel?.firstName));
   final _firstNameCtrl = TextEditingController();
 
-  TextEditingController _firstNameController = TextEditingController();
-  // TextEditingController nameController = new TextEditingController(text: userModel?.firstName);
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
 
-  String? _firstName = "Hwllo";
-  String? lastname;
-
-  void getProfileData() async {
+  void _loadProfileData() async {
     final prefs = await SharedPreferences.getInstance();
-    _firstName = userModel?.firstName;
 
     // _firstNameCtrl.text = userModel?.firstName;
     setState(() {
       userModel = AppUtils.getSessionUser(prefs);
-      _firstName = userModel?.firstName;
-      _firstNameController.text = _firstName!;
-      print("First Name = $_firstName");
-      // if (userModel?.profileUrl != null) {
-      //   profileUrl = AppUtils.getImageUrl(userModel?.profileUrl);
-      // }
+      _firstNameController.text = (userModel?.firstName)!;
+      _lastNameController.text = (userModel?.lastName)!;
+      _mobileController.text = (userModel?.mobileNo)!;
+      _genderController.text = (userModel?.gender)!;
+      _dobController.text = (userModel?.dob)!;
+      _stateController.text = (userModel?.state)!;
+      _cityController.text = (userModel?.city)!;
     });
   }
 
   @override
   void initState() {
     // TODO: implement initState
-
-    getProfileData();
+    _loadProfileData();
 
     super.initState();
   }
@@ -71,13 +75,20 @@ class _EditProfileViewState extends State<EditProfileView> {
                 const SizedBox(
                   height: 20,
                 ),
-                getTextField('First Name', 'Enter ', _firstNameController),
-                getTextField('Last Name', 'Sahu', _firstNameController),
-                getTextField('Mobile No.', '9876543212', _firstNameController),
+                getTextField(ProfileConstants.firstNameLabel,
+                    ProfileConstants.firstNameHint, _firstNameController),
+                getTextField(ProfileConstants.lastNameLabel,
+                    ProfileConstants.lastNameHint, _lastNameController),
+                getTextField(ProfileConstants.mobileLabel,
+                    ProfileConstants.mobileHint, _mobileController),
                 getTextField(
-                    'Date/of/birth', '13-03-1995', _firstNameController),
-                getTextField('Gander', 'Male', _firstNameController),
-                getAddressTextField(),
+                    ProfileConstants.genderLabel, 'Male', _genderController),
+                getTextField(ProfileConstants.dobLabel,
+                    ProfileConstants.dobHint, _dobController),
+                getTextField(ProfileConstants.cityLabel,
+                    ProfileConstants.cityHint, _cityController),
+                getTextField(ProfileConstants.stateLabel,
+                    ProfileConstants.stateHint, _stateController),
                 getButton()
               ],
             ),
@@ -105,7 +116,7 @@ class _EditProfileViewState extends State<EditProfileView> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor,
             ),
-            onPressed: () {},
+            onPressed: _save,
             child: const Text(
               'Save',
               style: TextStyle(fontSize: 15),
@@ -116,7 +127,26 @@ class _EditProfileViewState extends State<EditProfileView> {
     );
   }
 
-  Padding getAddressTextField() {
+  void _save() {
+    userModel?.firstName = _firstNameController.text;
+    userModel?.lastName = _lastNameController.text;
+    userModel?.mobileNo = _mobileController.text;
+    userModel?.dob = _dobController.text;
+    userModel?.city = _cityController.text;
+    userModel?.state = _stateController.text;
+    userModel?.gender = _genderController.text;
+    AppUtils.onLoading(context, "Saving...");
+    UserListViewModel().updateStudentProfile(userModel!).then((value) {
+      print("success");
+      Navigator.pop(context);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ProfileView()));
+    }).catchError((error) {
+      AppUtils.onError(context, error);
+    });
+  }
+
+  /* Padding getAddressTextField() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -145,7 +175,7 @@ class _EditProfileViewState extends State<EditProfileView> {
         ],
       ),
     );
-  }
+  } */
 
   Padding getTextField(
       String label, String text, TextEditingController contorller) {
@@ -165,13 +195,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           ),
           const SizedBox(height: 8),
           TextFormField(
-            // key: formKeyList[0] as Glo,
             controller: contorller,
-
             keyboardType: TextInputType.text,
-            onSaved: (value) {
-              _firstName = value;
-            },
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: text,
