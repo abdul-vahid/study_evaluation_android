@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 
 class CustomAlertDialog extends StatefulWidget {
   final List<QuestionModel> questionModels;
@@ -62,6 +65,14 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
   Container _getSubjectQuestionNo(
       String subject, List<QuestionModel> questionModels) {
     print("len = ${questionModels.length}");
+    //var min = 10;
+    //var max = 50;
+    //Random random = Random();
+    //var _randomNumber1 = min + random.nextInt(max - min);
+    double height = ((questionModels.length / 7) + 1) * 50;
+    if (AppConstants.kDebugMode) {
+      print("height = $height");
+    }
     return Container(
       child: Column(
         children: [
@@ -79,9 +90,14 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
             height: 1,
           ),
           //SizedBox(height: 10),
+
           Container(
             //  color: Colors.amberAccent,
-            height: 150,
+            height: height,
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
             child: _getGridView(questionModels),
           ),
         ],
@@ -137,17 +153,17 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
 
   GridView _getGridView(List<QuestionModel> questionModels) {
     return GridView(
-        physics: ClampingScrollPhysics(),
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
+        physics: const ClampingScrollPhysics(),
+        //padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 5, crossAxisCount: 8, crossAxisSpacing: 5),
+            mainAxisSpacing: 5, crossAxisCount: 7, crossAxisSpacing: 5),
         children: getQuestionNos(questionModels));
   }
 
   List<Widget> getQuestionNos(List<QuestionModel> questionModels) {
     List<Widget> widgets = [];
     for (var qm in questionModels) {
-      widgets.add(getButton((qm.index + 1)));
+      widgets.add(button((qm.index + 1)));
     }
     return widgets;
   }
@@ -171,6 +187,18 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
                   fontSize: 12.0)),
         ),
       ),
+    );
+  }
+
+  Widget button(int questionNo) {
+    print("question = $questionNo");
+    return TextButton(
+      style: TextButton.styleFrom(
+          foregroundColor: Colors.white, backgroundColor: Colors.grey),
+      child: Text(questionNo.toString()),
+      onPressed: () {
+        Navigator.pop(context, questionNo - 1);
+      },
     );
   }
 }

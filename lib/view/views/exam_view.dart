@@ -66,7 +66,7 @@ class _ExamViewState extends State<ExamView> {
     baseListViewModel = Provider.of<ExamListViewModel>(context);
 
     return Scaffold(
-        appBar: AppUtils.getAppbar(title),
+        appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
         body: AppUtils.getAppBody(baseListViewModel!, _getBody));
   }
 
@@ -177,31 +177,7 @@ class _ExamViewState extends State<ExamView> {
     return [
       // ignore: prefer_const_constructors
       Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: IconButton(
-              onPressed: () => {
-                    showDialog(
-                      barrierColor: Colors.black26,
-                      context: context,
-                      builder: (context) {
-                        return CustomAlertDialog(
-                            questionModels: baseListViewModel
-                                ?.viewModels[0].model.questionModels);
-                      },
-                    ).then((value) {
-                      print("Dialog Value = $value");
-
-                      Scrollable.ensureVisible((_keys?[value].currentContext)!);
-                    }),
-                  },
-              icon: const Icon(
-                Icons.apps_rounded,
-                size: 30,
-                color: Colors.white, // add custom icons also
-              ))),
-      // ignore: prefer_const_constructors
-      Padding(
-        padding: const EdgeInsets.only(left: 20),
+        padding: const EdgeInsets.only(left: 10),
         // ignore: prefer_const_constructors
         child: Text(
           '$totalQuestions Questions',
@@ -231,6 +207,41 @@ class _ExamViewState extends State<ExamView> {
     ];
   }
 
+  IconButton _getFilterButton() {
+    return IconButton(
+        onPressed: () {
+          if (baseListViewModel?.viewModels[0].model.questionModels == null ||
+              baseListViewModel?.viewModels[0].model.questionModels.isEmpty) {
+            return;
+          }
+          showDialog(
+            barrierColor: Colors.black26,
+            context: context,
+            builder: (context) {
+              return CustomAlertDialog(
+                  questionModels:
+                      baseListViewModel?.viewModels[0].model.questionModels);
+            },
+          ).then((value) {
+            print("Dialog Value = $value");
+
+            if (value != null) {
+              Scrollable.ensureVisible(
+                (_keys?[value].currentContext)!,
+                duration: const Duration(milliseconds: 350),
+                curve: Curves.easeOut,
+                alignment: 0.5,
+              );
+            }
+          });
+        },
+        icon: const Icon(
+          Icons.apps_rounded,
+          size: 30,
+          color: Colors.white, // add custom icons also
+        ));
+  }
+
   Padding _getBottomButtons() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -258,11 +269,19 @@ class _ExamViewState extends State<ExamView> {
         .then((value) {
       Navigator.pop(context);
       AppUtils.getAlert(
-          context, ["$timeUP Your's Exam Submitted Successfully!"]);
+          context, ["$timeUP Your's Exam Submitted Successfully!"],
+          onPressed: _onPressedAlert);
+      stopTimer();
+
       //Navigator.pop(context);
     }).catchError((error) {
       AppUtils.onError(context, error);
     });
+  }
+
+  void _onPressedAlert() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pop("reload");
   }
 
   void _onCancel() {}

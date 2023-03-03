@@ -40,7 +40,7 @@ class ExamListViewModel extends BaseListViewModel {
       resultLineItems.add(ResultLineItem(
           id: qm.resultId,
           answer: qm.submittedAnswer,
-          favourite: qm.favourite ?? "false",
+          favourite: qm.favourite == null ? "false" : qm.favourite.toString(),
           questionId: qm.id));
     }
     Result result = Result(
