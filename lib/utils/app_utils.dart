@@ -49,7 +49,7 @@ class AppUtils {
   }
 
   static Future<void> getAlert(BuildContext context, List<String> values,
-      {title = "", buttonLabel = 'OK'}) async {
+      {title = "", buttonLabel = 'OK', void Function()? onPressed}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -64,12 +64,10 @@ class AppUtils {
               children: _getTextWidgets(values),
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
+              onPressed: onPressed ?? _onPressed(context),
               child: Text(buttonLabel, style: AppColor.themeNormal),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
           ],
         );
@@ -96,7 +94,7 @@ class AppUtils {
     );
   }
 
-  static List<String> getErrorMessages(Exception exception) {
+  static List<String> getErrorMessages(exception) {
     List<String> errorMessages = [];
     if (exception is AppException) {
       Map<String, dynamic> data = jsonDecode(exception.getMessage());
@@ -110,14 +108,15 @@ class AppUtils {
     return errorMessages;
   }
 
-  static AppBar getAppbar(String title, {bottom}) {
+  static AppBar getAppbar(String title, {bottom, List<Widget>? actions}) {
     return AppBar(
         centerTitle: true,
         leading: const BackButton(color: Colors.white),
         title: Text(title),
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
-        bottom: bottom);
+        bottom: bottom,
+        actions: actions);
   }
 
   static List<HomeTilesModel> getHomeTilesModels() {
@@ -191,8 +190,13 @@ class AppUtils {
 
   static void onError(BuildContext context, error, {title = "Error Alert"}) {
     Navigator.pop(context);
+
     List<String> errorMessages = AppUtils.getErrorMessages(error);
     getAlert(context, errorMessages, title: title);
+  }
+
+  static _onPressed(context) {
+    Navigator.of(context).pop();
   }
 
   static Html getHtmlData(data, {fontFamily = '', fontSize = 15.0}) {

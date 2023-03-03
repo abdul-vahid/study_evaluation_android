@@ -185,7 +185,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     ResultModel? resultModel = testSeries.result;
     if (resultModel?.resultStatus == ResultStatus.inProgress) {
       widgets.add(AppUtils.getElevatedButton('Resume',
-          onPressed: () {},
+          onPressed: () => _submitPage(testSeries),
           buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: AppColor.buttonColor, // foreground
           )));
@@ -197,7 +197,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFfef5e6) // foreground
             ),
-        onPressed: () {},
+        onPressed: () => _submitPage(testSeries),
       ));
       widgets.add(AppUtils.getElevatedButton(
         'Result',
@@ -235,6 +235,27 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       width: 10,
     ));
     return widgets;
+  }
+
+  void _submitPage(testSeries) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (_) => ExamListViewModel())
+                  ],
+                  child: ExamView(
+                    examId: testSeries.examId!,
+                    studentId: (userModel?.studentId)!,
+                  ))),
+    ).then((value) {
+      if (value == "reload") {
+        packageListVM = null;
+        Provider.of<PackageListViewModel>(context, listen: false)
+            .fetchPackageLineItems(widget.packageLineItemId);
+      }
+    });
   }
 
   void onPressed(examId) {
