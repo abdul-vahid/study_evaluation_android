@@ -31,7 +31,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getProfileData();
     super.initState();
   }
@@ -94,7 +93,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     Center(
                         child: Text(
-                      userModel?.name ?? "",
+                      userModel?.userName ?? "",
                       style: const TextStyle(
                         // fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -107,7 +106,7 @@ class _ProfileViewState extends State<ProfileView> {
                     Center(
                         child: Text(
                       userModel?.email ?? "",
-                      style: TextStyle(
+                      style: const TextStyle(
                         // fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Colors.white,
@@ -126,8 +125,8 @@ class _ProfileViewState extends State<ProfileView> {
                     getColumn('Mobile No.', '${userModel?.mobileNo}'),
                     getColumn('Date of Birth', '${userModel?.dob}'),
                     getColumn('Gender', '${userModel?.gender}'),
-                    getColumn('City', '${userModel?.city}'),
                     getColumn('State', '${userModel?.state}'),
+                    getColumn('City', '${userModel?.city}'),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
