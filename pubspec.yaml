@@ -38,6 +38,9 @@ dependencies:
 
   share_plus: ^6.3.0
 
+  intl: ^0.18.0
+
+
   # image slideshow
   flutter_image_slideshow: ^0.1.4
 
