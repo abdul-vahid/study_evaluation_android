@@ -48,6 +48,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   }
 
   SingleChildScrollView _getBody() {
+    print("body");
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
     return SingleChildScrollView(
@@ -197,7 +198,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         buttonStyle: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFfef5e6) // foreground
             ),
-        onPressed: () => _submitPage(testSeries),
+        onPressed: () => _submitPage(testSeries, reAttempt: true),
       ));
       widgets.add(AppUtils.getElevatedButton(
         'Result',
@@ -214,18 +215,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     }
 
     if (resultModel == null) {
-      widgets.add(AppUtils.getElevatedButton('Start Now', onPressed: () {
-        AppUtils.viewPush(
-            context,
-            MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(create: (_) => ExamListViewModel())
-                ],
-                child: ExamView(
-                  examId: testSeries.examId!,
-                  studentId: (userModel?.studentId)!,
-                )));
-      },
+      widgets.add(AppUtils.getElevatedButton('Start Now',
+          onPressed: () => _submitPage(testSeries),
           buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor // foreground
               )));
@@ -237,7 +228,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     return widgets;
   }
 
-  void _submitPage(testSeries) {
+  void _submitPage(testSeries, {bool reAttempt = false}) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -248,12 +239,14 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   child: ExamView(
                     examId: testSeries.examId!,
                     studentId: (userModel?.studentId)!,
+                    reAttempt: reAttempt,
                   ))),
     ).then((value) {
       if (value == "reload") {
-        packageListVM = null;
         Provider.of<PackageListViewModel>(context, listen: false)
             .fetchPackageLineItems(widget.packageLineItemId);
+        packageListVM =
+            Provider.of<PackageListViewModel>(context, listen: false);
       }
     });
   }
@@ -377,8 +370,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         alignment: Alignment.centerLeft,
         child: AppUtils.getHtmlData(package?.description,
             fontFamily: 'Kruti',
-            fontSize:
-                _selectedFont) /* Text(
+            fontSize: double.tryParse(
+                _selectedFont!)!) /* Text(
           (package?.description)!,
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),

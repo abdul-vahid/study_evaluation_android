@@ -8,6 +8,7 @@ class Exam {
   String? duration;
   String? attemptLimit;
   String? status;
+  String? remainingExamTime;
 
   Exam({
     this.id,
@@ -37,6 +38,7 @@ class Exam {
         'duration': duration,
         'attempt_limit': attemptLimit,
         'status': status,
+        'exam_time': remainingExamTime,
       };
 
   /// `dart:convert`

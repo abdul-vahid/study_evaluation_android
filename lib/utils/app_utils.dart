@@ -66,7 +66,7 @@ class AppUtils {
           ),
           actions: [
             TextButton(
-              onPressed: onPressed ?? _onPressed(context),
+              onPressed: onPressed ?? () => _onPressed(context),
               child: Text(buttonLabel, style: AppColor.themeNormal),
             ),
           ],
@@ -199,13 +199,12 @@ class AppUtils {
     Navigator.of(context).pop();
   }
 
-  static Html getHtmlData(data, {fontFamily = '', fontSize = 15.0}) {
+  static Html getHtmlData(data, {fontFamily = '', double fontSize = 15.0}) {
     return Html(
         data: data,
         style: {
           "span": Style(fontFamily: fontFamily),
-          "body, span, p, font, div":
-              Style(fontSize: FontSize(double.tryParse(fontSize)))
+          "body, span, p, font, div": Style(fontSize: FontSize(fontSize))
         },
         customRender: {
           "o:p": (RenderContext context, Widget child) {

@@ -5,7 +5,7 @@ class Result {
   String? studentId;
   String? status;
   String? examTime;
-  int? id;
+  String? id;
 
   Result({
     this.examId,
@@ -20,7 +20,7 @@ class Result {
         studentId: data['student_id'] as String?,
         status: data['status'] as String?,
         examTime: data['exam_time'] as String?,
-        id: data['id'] as int?,
+        id: data['id'] as String?,
       );
 
   Map<String, dynamic> toMap() => {

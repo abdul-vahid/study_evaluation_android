@@ -20,7 +20,10 @@ class UserService {
   }
 
   Future<dynamic> login(String username, String password) async {
-    Map<String, String> requestData = {'email': username, 'password': password};
+    Map<String, String> requestData = {
+      'username': username,
+      'password': password
+    };
     String url = AppConstants.baseUrl + AppConstants.loginAPIPath;
     print(url);
     final responseJsonData =

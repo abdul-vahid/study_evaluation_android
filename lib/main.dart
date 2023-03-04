@@ -17,8 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
-    return MaterialApp(
-        debugShowCheckedModeBanner: false, home: const LoginHome()
+    return MaterialApp(home: const LoginHome()
         /* home: MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => ExamListViewModel())
       ], child: const ExamView()), */

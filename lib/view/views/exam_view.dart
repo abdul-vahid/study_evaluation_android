@@ -1,21 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 
-enum LanguageOption { hindi, english, both }
-
 class ExamView extends StatefulWidget {
   final String examId;
   final String studentId;
-  const ExamView({super.key, required this.examId, required this.studentId});
+  bool? reAttempt = false;
+  ExamView(
+      {super.key,
+      required this.examId,
+      required this.studentId,
+      this.reAttempt});
 
   @override
   State<ExamView> createState() => _ExamViewState();
@@ -23,7 +26,6 @@ class ExamView extends StatefulWidget {
 
 class _ExamViewState extends State<ExamView> {
   List<GlobalKey>? _keys;
-  LanguageOption languageOption = LanguageOption.hindi;
   String? question;
   List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected
@@ -35,7 +37,7 @@ class _ExamViewState extends State<ExamView> {
     "22": "Large"
   };
 
-  String? _selectedLanguage = "Hindi";
+  String _selectedLanguage = "Hindi";
   String? _selectedFont = "15";
   String title = "Test";
   String timeUP = "";
@@ -65,9 +67,63 @@ class _ExamViewState extends State<ExamView> {
   Widget build(BuildContext context) {
     baseListViewModel = Provider.of<ExamListViewModel>(context);
 
-    return Scaffold(
-        appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
-        body: AppUtils.getAppBody(baseListViewModel!, _getBody));
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+          appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
+          body: AppUtils.getAppBody(baseListViewModel!, _getBody)),
+    );
+  }
+
+  Future<bool> showExitPopup() async {
+    return await showDialog(
+          //show confirm dialogue
+          //the return value will be from "Yes" or "No" options
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Leave Exam'),
+            content: const Text('What do you want to do?'),
+            actions: _getPopActions(context),
+          ),
+        ) ??
+        false; //if showDialouge had returned null, then return false
+  }
+
+  List<Widget> _getPopActions(BuildContext context) {
+    List<Widget> widgets = [];
+    widgets.add(_getPopCancelButton(context));
+    if (!widget.reAttempt!) {
+      widgets.add(_getPopSaveButton(context));
+    }
+    widgets.add(_getPopSubmitButton(context));
+    return widgets;
+  }
+
+  ElevatedButton _getPopCancelButton(BuildContext context) {
+    return AppUtils.getElevatedButton("Continue", onPressed: () {
+      stopTimer();
+      Navigator.of(context).pop(false);
+    },
+        textStyle: const TextStyle(color: Colors.black),
+        buttonStyle:
+            ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
+  }
+
+  ElevatedButton _getPopSubmitButton(BuildContext context) {
+    return AppUtils.getElevatedButton("Submit", onPressed: () {
+      Navigator.of(context).pop(false);
+      _onSubmit();
+
+      //Navigator.of(context).pop(true);
+    });
+  }
+
+  ElevatedButton _getPopSaveButton(BuildContext context) {
+    return AppUtils.getElevatedButton("Save", onPressed: () {
+      stopTimer();
+      Navigator.of(context).pop(true);
+      _onSubmit(status: ResultStatus.inProgress);
+    });
   }
 
   Widget _getBody() {
@@ -145,9 +201,18 @@ class _ExamViewState extends State<ExamView> {
 
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {
-      if (isBlankSelValues) {
-        selectedValues.add("0");
+      if (AppConstants.kDebugMode) {
+        //print("Submitted ${model.submittedAnswer}");
       }
+      selectedValues.add(model.submittedAnswer!);
+      /* if (isBlankSelValues) {
+        if (model.hasSubmittedAnswer) {
+          
+        } else {
+          selectedValues.add("0");
+        }
+      } */
+
       model.index = i++;
       widgets.add(_getQuestionOptionWidget(model));
     }
@@ -223,7 +288,7 @@ class _ExamViewState extends State<ExamView> {
                       baseListViewModel?.viewModels[0].model.questionModels);
             },
           ).then((value) {
-            print("Dialog Value = $value");
+            //print("Dialog Value = $value");
 
             if (value != null) {
               Scrollable.ensureVisible(
@@ -245,36 +310,60 @@ class _ExamViewState extends State<ExamView> {
   Padding _getBottomButtons() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        AppUtils.getElevatedButton('Cancel',
-            onPressed: _onCancel,
-            textStyle: const TextStyle(color: Colors.black),
-            buttonStyle:
-                ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor)),
-        const SizedBox(
-          width: 20,
-        ),
-        AppUtils.getElevatedButton('Submit',
-            onPressed: _onSubmit,
-            buttonStyle:
-                ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor))
-      ]),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.center, children: _getActions),
     );
   }
 
-  void _onSubmit() {
+  List<Widget> get _getActions {
+    List<Widget> widgets = [];
+    if (!widget.reAttempt!) {
+      widgets.add(_getSaveButton());
+    }
+    widgets.add(_getSubmitButton());
+    return widgets;
+  }
+
+  ElevatedButton _getSubmitButton() {
+    return AppUtils.getElevatedButton('Submit',
+        onPressed: _onSubmit,
+        buttonStyle:
+            ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor));
+  }
+
+  ElevatedButton _getSaveButton() {
+    return AppUtils.getElevatedButton('Save', onPressed: () {
+      _onSubmit(status: ResultStatus.inProgress);
+    },
+        buttonStyle:
+            ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor));
+  }
+
+  ElevatedButton _getCancelButton() {
+    return AppUtils.getElevatedButton('Cancel',
+        onPressed: _onCancel,
+        textStyle: const TextStyle(color: Colors.black),
+        buttonStyle:
+            ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
+  }
+
+  void _onSubmit({String status = "Completed"}) {
+    //print("submit");
+    ExamModel examModel = baseListViewModel?.viewModels[0].model;
+    examModel.exam?.remainingExamTime = timerText;
     AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
-    ExamListViewModel()
-        .submitExam(baseListViewModel?.viewModels[0].model)
-        .then((value) {
+    ExamListViewModel().submitExam(examModel, status: status).then((value) {
       Navigator.pop(context);
       AppUtils.getAlert(
           context, ["$timeUP Your's Exam Submitted Successfully!"],
           onPressed: _onPressedAlert);
-      stopTimer();
-
+      //stopTimer();
+      countdownTimer!.cancel();
       //Navigator.pop(context);
     }).catchError((error) {
+      if (AppConstants.kDebugMode) {
+        print(error.toString());
+      }
       AppUtils.onError(context, error);
     });
   }
@@ -333,14 +422,7 @@ class _ExamViewState extends State<ExamView> {
               menuMaxHeight: 300,
               onChanged: (newValue) {
                 setState(() {
-                  _selectedLanguage = newValue;
-                  if (_selectedLanguage == "Hindi") {
-                    languageOption = LanguageOption.hindi;
-                  } else if (_selectedLanguage == "English") {
-                    languageOption = LanguageOption.english;
-                  } else {
-                    languageOption = LanguageOption.both;
-                  }
+                  _selectedLanguage = newValue!;
                 });
               },
               items: getItems()),
@@ -402,7 +484,8 @@ class _ExamViewState extends State<ExamView> {
           children: [
             getIconButton(
               'Clear Section',
-              model.submittedAnswer != null && model.submittedAnswer.isNotEmpty
+              model.submittedAnswer != null &&
+                      (model.submittedAnswer?.isNotEmpty)!
                   ? Icons.clear_rounded
                   : Icons.radio_button_unchecked_outlined,
               onPressed: () {
@@ -423,8 +506,6 @@ class _ExamViewState extends State<ExamView> {
                   ? const Color.fromARGB(255, 248, 248, 9)
                   : Colors.white,
               onPressed: () {
-                //selectedValues.clear();
-                print("Favour : ${model.isFavourite}");
                 setState(() {
                   model.favourite = (!model.isFavourite).toString();
                 });
@@ -467,7 +548,7 @@ class _ExamViewState extends State<ExamView> {
       selected: value == selectedValues[model.index],
       onChanged: (value) {
         setState(() {
-          print("Value = $value");
+          //print("Value = $value");
           selectedValues[model.index] = value!;
           model.submittedAnswer = value;
         });
@@ -487,15 +568,15 @@ class _ExamViewState extends State<ExamView> {
   Widget _getContent(labelHindi, labelEnglish) {
     List<Widget> widgets = [];
     if (labelHindi != null &&
-        (languageOption == LanguageOption.both ||
-            languageOption == LanguageOption.hindi)) {
+        (_selectedLanguage.toLowerCase() == "both" ||
+            _selectedLanguage.toLowerCase() == "hindi")) {
       widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti', fontSize: _selectedFont));
+          fontFamily: 'Kruti', fontSize: double.tryParse(_selectedFont!)!));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
-        (languageOption == LanguageOption.both ||
-            languageOption == LanguageOption.english)) {
+        (_selectedLanguage.toLowerCase() == "both" ||
+            _selectedLanguage.toLowerCase() == "english")) {
       widgets.add(AppUtils.getHtmlData(labelEnglish));
     }
 

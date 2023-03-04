@@ -11,14 +11,12 @@ class PackageModel extends BaseModel {
   Package? package;
   List<Document>? documents;
   List<TestSeries>? testSeries;
-  Exception? error;
-  AppException? appException;
   PackageModel(
       {this.package,
       this.documents,
       this.testSeries,
-      this.error,
-      this.appException});
+      super.error,
+      super.appException});
   bool get isError {
     return error != null || appException != null;
   }

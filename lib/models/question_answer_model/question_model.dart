@@ -11,15 +11,15 @@ class QuestionModel {
   String? optionCHindi;
   String? optionDHindi;
   String? questionEnglish;
-  dynamic optionAEnglish;
-  dynamic optionBEnglish;
-  dynamic optionCEnglish;
-  dynamic optionDEnglish;
+  String? optionAEnglish;
+  String? optionBEnglish;
+  String? optionCEnglish;
+  String? optionDEnglish;
   String? status;
-  dynamic resultId;
-  dynamic resultLineItemId;
-  dynamic submittedAnswer;
-  dynamic favourite;
+  String? resultId;
+  String? resultLineItemId;
+  String? submittedAnswer;
+  String? favourite;
   int index = 0;
   bool? isSelected = false;
 
@@ -63,15 +63,15 @@ class QuestionModel {
         optionCHindi: data['option_c_hindi'] as String?,
         optionDHindi: data['option_d_hindi'] as String?,
         questionEnglish: data['question_english'] as String?,
-        optionAEnglish: data['option_a_english'] as dynamic,
-        optionBEnglish: data['option_b_english'] as dynamic,
-        optionCEnglish: data['option_c_english'] as dynamic,
-        optionDEnglish: data['option_d_english'] as dynamic,
+        optionAEnglish: data['option_a_english'] as String?,
+        optionBEnglish: data['option_b_english'] as String?,
+        optionCEnglish: data['option_c_english'] as String?,
+        optionDEnglish: data['option_d_english'] as String?,
         status: data['status'] as String?,
-        resultId: data['result_id'] as dynamic,
-        resultLineItemId: data['result_line_item_id'] as dynamic,
-        submittedAnswer: data['submitted_answer'] as dynamic,
-        favourite: data['favourite'] as dynamic,
+        resultId: data['result_id'] as String?,
+        resultLineItemId: data['result_line_item_id'] as String?,
+        submittedAnswer: data['submitted_answer'] as String?,
+        favourite: data['favourite'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
