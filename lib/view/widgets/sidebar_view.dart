@@ -216,6 +216,25 @@ class _NavBarState extends State<NavBar> {
               }),
           Divider(),
           ListTile(
+              leading: Icon(
+                Icons.location_history_rounded,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'Terms & Conditions ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutUsScreen()),
+                );
+              }),
+          Divider(),
+          ListTile(
             leading: Icon(
               Icons.share,
               color: AppColor.navBarIconColor,

@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
 
 import '../../utils/app_color.dart';
+import '../../utils/app_utils.dart';
+import '../../view_models/user_view_model/user_list_vm.dart';
 import '../widgets/widget_utils.dart';
 
 class ConfirmPasswordScreen extends StatefulWidget {
-  const ConfirmPasswordScreen({super.key});
+  const ConfirmPasswordScreen({
+    super.key,
+    required this.userName,
+  });
+  final String userName;
 
   @override
   State<ConfirmPasswordScreen> createState() => _ConfirmPasswordScreenState();
 }
 
 class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +64,8 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                           height: 40,
                         ),
                         WidgetUtils.getTextFormField(
-                            'Password', 'Enter New Password', Icons.lock),
+                            'Password', 'Enter New Password', Icons.lock,
+                            controller: passwordController),
                         const SizedBox(
                           height: 20,
                         ),
@@ -92,6 +100,21 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   }
 
   void onButtonPressed() {
+    UserListViewModel()
+        .ChangePasword(widget.userName, passwordController.text)
+        .then((records) {
+      print("success");
+
+      print('records.isNotEmpty$records');
+
+      Navigator.pop(context);
+    }).catchError((onError) {
+      print('@@@Error${onError}');
+
+      Navigator.pop(context);
+      List<String> errorMessages = AppUtils.getErrorMessages(onError);
+      AppUtils.getAlert(context, errorMessages, title: "Error Alert");
+    });
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => const LoginScreen()),

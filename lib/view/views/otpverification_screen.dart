@@ -2,19 +2,30 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:otp_text_field/otp_field.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view/views/confirmpassword_screen.dart';
 
+import '../../utils/app_utils.dart';
 import '../widgets/widget_utils.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
-  const OTPVerificationScreen({super.key});
+  OTPVerificationScreen({
+    super.key,
+    required this.otp,
+    required this.userName,
+  });
+  final int otp;
+  final String userName;
 
   @override
   State<OTPVerificationScreen> createState() => _OTPVerificationScreenState();
 }
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
+  var otpVerification;
+
+  // String username = userName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +59,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       children: [
                         Center(
                           child: Text(
-                            'OTP Verification',
+                            widget.otp.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
@@ -70,20 +81,22 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       ],
                     ),
                   ),
-                  OtpTextField(
-                    numberOfFields: 4,
-                    borderColor: Color(0xffF5591F),
-                    focusedBorderColor: Colors.blue,
-                    // styles: otpTextStyles,
-                    showFieldAsBox: false,
-                    borderWidth: 4.0,
-                    //runs when a code is typed in
-                    onCodeChanged: (String code) {
-                      //handle validation or checks here if necessary
-                    },
-                    //runs when every textfield is filled
-                    onSubmit: (String verificationCode) {},
-                  ),
+                  OTPTextField(
+                      // controller: otpController,
+                      length: 4,
+                      width: MediaQuery.of(context).size.width,
+                      textFieldAlignment: MainAxisAlignment.spaceAround,
+                      fieldWidth: 45,
+                      //fieldStyle: FieldStyle.box,
+                      outlineBorderRadius: 15,
+                      style: const TextStyle(fontSize: 17),
+                      onChanged: (pin) {
+                        print("Changed: " + pin);
+                        otpVerification = pin;
+                      },
+                      onCompleted: (pin) {
+                        print("Completed: " + pin);
+                      }),
                   const SizedBox(
                     height: 30,
                   ),
@@ -109,11 +122,23 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   void onButtonPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ConfirmPasswordScreen()),
-    );
-    print("Login Button pressed!!!");
+    print('otpController@@${widget.otp}');
+    print('otpController##@@${otpVerification}');
+
+    print('otpController##@@${widget.userName}');
+
+    if (otpVerification.toString() == widget.otp.toString()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ConfirmPasswordScreen(userName: widget.userName)),
+      );
+      print("Login Button pressed!!!");
+    } else {
+      AppUtils.showAlertDialog(context, 'Error', 'Wrong otp entered');
+      print('OTP not verified!!');
+    }
   }
 }
 //     return Scaffold(

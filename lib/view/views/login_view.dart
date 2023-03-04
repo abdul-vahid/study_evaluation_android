@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
-import 'package:study_evaluation/view/views/forgetpassword_screen.dart';
+import 'package:study_evaluation/view/views/forgetpassword_view.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
@@ -74,7 +74,7 @@ class _LoginViewState extends State<LoginView> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()),
+          MaterialPageRoute(builder: (context) => const ForgetPasswordView()),
         );
       },
       child: Text(
