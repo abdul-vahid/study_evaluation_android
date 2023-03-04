@@ -33,17 +33,21 @@ class ExamListViewModel extends BaseListViewModel {
   Future<dynamic> submitExam(ExamModel examModel) async {
     List<ResultLineItem> resultLineItems = [];
     String status = "Completed";
+    int? resultId;
+
     for (var qm in examModel.questionModels!) {
+      resultId = qm.resultId;
       if (!qm.hasSubmittedAnswer) {
         status = "In Progress";
       }
       resultLineItems.add(ResultLineItem(
-          id: qm.resultId,
+          id: qm.resultLineItemId,
           answer: qm.submittedAnswer,
           favourite: qm.favourite == null ? "false" : qm.favourite.toString(),
           questionId: qm.id));
     }
     Result result = Result(
+        id: resultId,
         examId: examModel.exam?.id,
         studentId: "12",
         status: status,

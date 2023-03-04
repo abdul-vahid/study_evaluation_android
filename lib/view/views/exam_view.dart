@@ -263,6 +263,7 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onSubmit() {
+    print("submit");
     AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
     ExamListViewModel()
         .submitExam(baseListViewModel?.viewModels[0].model)
@@ -271,8 +272,8 @@ class _ExamViewState extends State<ExamView> {
       AppUtils.getAlert(
           context, ["$timeUP Your's Exam Submitted Successfully!"],
           onPressed: _onPressedAlert);
-      stopTimer();
-
+      //stopTimer();
+      countdownTimer!.cancel();
       //Navigator.pop(context);
     }).catchError((error) {
       AppUtils.onError(context, error);

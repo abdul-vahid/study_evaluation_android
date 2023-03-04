@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -20,7 +22,10 @@ class UserService {
   }
 
   Future<dynamic> login(String username, String password) async {
-    Map<String, String> requestData = {'email': username, 'password': password};
+    Map<String, String> requestData = {
+      'username': username,
+      'password': password
+    };
     String url = AppConstants.baseUrl + AppConstants.loginAPIPath;
     print(url);
     final responseJsonData =
@@ -46,6 +51,26 @@ class UserService {
       print("responseJsonData: $responseJsonData");
     }
     //print("Access Token: $responseJsonData");
+    return responseJsonData;
+  }
+
+  Future<dynamic> getOTP(String mobileNo, String reason) async {
+    String url = AppUtils.getUrl("${AppConstants.otpVerificationAPIPath}");
+    print('url@@ ${url}');
+    Map<String, String> requestData = {
+      'contact_number': mobileNo,
+      'reason': reason
+    };
+
+    var token = await AppUtils.getToken();
+    var body = jsonEncode(requestData);
+    print('body@@ ${body}');
+    final responseJsonData = await _apiService.postResponse(url, body, token!);
+    //String accessToken = responseJsonData['access_token'];
+    if (AppConstants.kDebugMode) {
+      print("responseJsonData: $responseJsonData");
+    }
+    print("Otp@@: $responseJsonData");
     return responseJsonData;
   }
 }

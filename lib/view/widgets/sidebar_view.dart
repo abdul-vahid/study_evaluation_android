@@ -10,13 +10,14 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
-import 'package:study_evaluation/view/views/followus_screen.dart';
+import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../utils/app_constants.dart';
+import '../../view_models/follow_us_list_vm.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
 
@@ -141,8 +142,19 @@ class _NavBarState extends State<NavBar> {
             onTap: () => {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const FollowUsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                                create: (_) => FollowUSListViewModel())
+                          ],
+                          child: const FollowUsView(),
+                        )),
               )
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const FollowUsView()),
+              // )
             },
           ),
           Divider(),

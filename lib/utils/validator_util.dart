@@ -45,6 +45,14 @@ String? validatePhone(String? value) {
   return null;
 }
 
+String? validateOTP(String? value) {
+  value = value!.trim();
+  if (value == '') return 'Required';
+  if (!isNumeric(value)) return 'Invalid OTP';
+  if (value.length != 4) return '4 Digit OTP is required.';
+  return null;
+}
+
 String? validateRole(String? value) {
   value = value!.trim();
   if (value == '') return 'Required';

@@ -1,11 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/core/apis/app_exception.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/services/login_service.dart';
 import 'package:study_evaluation/services/user_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_vm.dart';
 
-class UserListViewModel {
+class UserListViewModel extends BaseListViewModel {
   var viewModels = [];
 
   String? name;
@@ -18,6 +20,16 @@ class UserListViewModel {
   Future<dynamic> updateStudentProfile(UserModel userModel) async {
     //print("signup lis");
     return await UserService().updateStudentProfile(userModel);
+  }
+
+  Future<dynamic> getOTP(String mobileNo, String reason) async {
+    print("otpVerification lis");
+    var records = await UserService().getOTP(mobileNo, reason);
+
+    print("@@@Records ${records}");
+    //var r = records["message"];
+    //print('####rr${r}');
+    return records["message"];
   }
 
   Future<List<dynamic>> login(String username, String password) async {

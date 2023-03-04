@@ -25,11 +25,19 @@ class ExamService {
     String url = AppUtils.getUrl(AppConstants.submitExamAPIPath);
     var token = await AppUtils.getToken();
     var body = resultModel.toJson();
-    print("body = $body");
+    printLongString("body = $body");
     final responseJsonData = await _apiService.postResponse(url, body, token!);
     if (AppConstants.kDebugMode) {
       print("responseJsonData: $responseJsonData");
     }
     return responseJsonData;
+  }
+
+  /// Print Long String
+  void printLongString(String text) {
+    final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern
+        .allMatches(text)
+        .forEach((RegExpMatch match) => print(match.group(0)));
   }
 }

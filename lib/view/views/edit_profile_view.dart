@@ -7,6 +7,7 @@ import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 import 'package:intl/intl.dart';
+import 'package:otp_text_field/otp_text_field.dart';
 
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
@@ -22,12 +23,10 @@ class EditProfileView extends StatefulWidget {
 
 class _EditProfileViewState extends State<EditProfileView> {
   final GlobalKey<FormState> _feedbackFormKey = GlobalKey<FormState>();
-
-  // String? profileUrl;
   UserModel? userModel;
-
-  final _firstNameCtrl = TextEditingController();
-
+  String? mobileNo;
+  String? reason;
+  var otp;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
@@ -35,10 +34,12 @@ class _EditProfileViewState extends State<EditProfileView> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
+  OtpFieldController otpController = OtpFieldController();
+
+  var otpVerification;
   // ignore: prefer_final_fields
   List<String> _gender = ['Male', 'Female', 'Other']; // Option 2
   String? _selectedGender; // Option 2
-
   // ignore: prefer_final_fields
   List<String> _states = [
     'Andhra Pradesh',
@@ -71,11 +72,8 @@ class _EditProfileViewState extends State<EditProfileView> {
     'West Bengal'
   ];
   String? _selectedState;
-
   void _loadProfileData() async {
     final prefs = await SharedPreferences.getInstance();
-
-    // _firstNameCtrl.text = userModel?.firstName;
     setState(() {
       userModel = AppUtils.getSessionUser(prefs);
       _firstNameController.text = (userModel?.firstName)!;
@@ -85,8 +83,6 @@ class _EditProfileViewState extends State<EditProfileView> {
       _dobController.text = (userModel?.dob)!;
       _stateController.text = (userModel?.state)!;
       _cityController.text = (userModel?.city)!;
-      print('state@@ ${userModel?.state}');
-      print('gender@@ ${userModel?.gender}');
       _selectedGender =
           (userModel?.gender == null || (userModel?.gender?.isEmpty)!)
               ? 'Male'
@@ -96,66 +92,6 @@ class _EditProfileViewState extends State<EditProfileView> {
               ? 'Rajasthan'
               : userModel?.state;
     });
-  }
-
-  TextEditingController _textFieldController = TextEditingController();
-
-  _displayDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Center(child: Text('OTP Verification')),
-            content: OtpTextField(
-              numberOfFields: 4,
-              borderColor: Color(0xffF5591F),
-              focusedBorderColor: Colors.blue,
-              // styles: otpTextStyles,
-              showFieldAsBox: false,
-              borderWidth: 4.0,
-              //runs when a code is typed in
-              onCodeChanged: (String code) {
-                //handle validation or checks here if necessary
-              },
-              //runs when every textfield is filled
-              onSubmit: (String verificationCode) {},
-            ),
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFfef5e6),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(fontSize: 15, color: Colors.black),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.buttonColor,
-                      ),
-                      onPressed: (() {
-                        AppUtils.onLoading(context, "Saving...");
-                      }),
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
   }
 
   @override
@@ -218,7 +154,7 @@ class _EditProfileViewState extends State<EditProfileView> {
               backgroundColor: const Color(0xFFfef5e6),
             ),
             onPressed: () {
-              _displayDialog(context);
+              Navigator.pop(context);
             },
             child: const Text(
               'Cancel',
@@ -244,58 +180,36 @@ class _EditProfileViewState extends State<EditProfileView> {
     print('@@mobileController${_mobileController.text}');
     print('@@userModel${(userModel?.mobileNo)!}');
 
+    // print('@@@123${resrponse}');
     if (_mobileController.text != (userModel?.mobileNo)!) {
-      _displayDialog(context);
-    } else {
-      userModel?.firstName = _firstNameController.text;
-      userModel?.lastName = _lastNameController.text;
-      userModel?.mobileNo = _mobileController.text;
-      userModel?.dob = _dobController.text;
-      userModel?.city = _cityController.text;
-      userModel?.state = _selectedState;
-      userModel?.gender = _selectedGender;
-      AppUtils.onLoading(context, "Saving...");
-      UserListViewModel().updateStudentProfile(userModel!).then((value) {
-        print("success");
-        Navigator.pop(context);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProfileView()));
-      }).catchError((error) {
-        AppUtils.onError(context, error);
+      _displayDialog(context).then((value) {
+        if (value == "update_user") {
+          _updateUser();
+        }
       });
+    } else {
+      _updateUser();
     }
   }
 
-  /* Padding getAddressTextField() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // ignore: prefer_const_literals_to_create_immutables
-        children: [
-          const Text(
-            'Address',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-          ),
-          const SizedBox(height: 8),
-          const SizedBox(
-            height: 150,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText:
-                    'M​-​15, Ana Sagar Link Rd, near City Hospital, Mali Mohalla, Ajmer, Rajasthan 305001',
-              ),
-              maxLines: null,
-              expands: true,
-              keyboardType: TextInputType.multiline,
-            ),
-          ),
-        ],
-      ),
-    );
-  } */
+  void _updateUser() {
+    userModel?.firstName = _firstNameController.text;
+    userModel?.lastName = _lastNameController.text;
+    userModel?.mobileNo = _mobileController.text;
+    userModel?.dob = _dobController.text;
+    userModel?.city = _cityController.text;
+    userModel?.state = _selectedState;
+    userModel?.gender = _selectedGender;
+    AppUtils.onLoading(context, "Saving...");
+    UserListViewModel().updateStudentProfile(userModel!).then((value) {
+      print("success");
+      Navigator.pop(context);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ProfileView()));
+    }).catchError((error) {
+      AppUtils.onError(context, error);
+    });
+  }
 
   Padding getDateTextField(
       String label, String text, TextEditingController contorller) {
@@ -332,13 +246,8 @@ class _EditProfileViewState extends State<EditProfileView> {
                   firstDate: DateTime(1900),
                   lastDate: DateTime(2101));
               if (pickedDate != null) {
-                // print(
-                //     pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                 String formattedDate =
                     DateFormat("dd-MM-yyyy").format(pickedDate);
-                // print(
-                //     formattedDate); //formatted date output using intl package =>  2021-03-16
-                //you can implement different kind of Date Format here according to your requirement
 
                 setState(() {
                   contorller.text =
@@ -379,8 +288,6 @@ class _EditProfileViewState extends State<EditProfileView> {
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: text,
-
-              // labelText: 'First Name',
             ),
           ),
         ],
@@ -459,8 +366,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                 border: OutlineInputBorder(),
               ),
               hint: Text(text),
-              // Not necessary for Option 1
-
               value: _selectedState,
               isDense: true,
               isExpanded: true,
@@ -482,5 +387,101 @@ class _EditProfileViewState extends State<EditProfileView> {
         ],
       ),
     );
+  }
+
+  _displayDialog(BuildContext context, {OtpFieldController? controller}) async {
+    AppUtils.onLoading(context, "Please Wait...");
+    mobileNo = _mobileController.text;
+    reason = 'Updated';
+    UserListViewModel()
+        .getOTP(mobileNo!, "UPDATE_USER")
+        .then((records) => showDialogOTP(records))
+        .catchError((onError) {
+      print('@@@Error${onError}');
+      // Navigator.pop(context);
+      // AppUtils.showAlertDialog(context, 'Error Alert',
+      //     'This contact number already exist. Please try another contact number.');
+
+      Navigator.pop(context);
+      List<String> errorMessages = AppUtils.getErrorMessages(onError);
+      AppUtils.getAlert(context, errorMessages, title: "Error Alert");
+    });
+
+    // Navigator.pop(context);
+  }
+
+  Future<dynamic> showDialogOTP(otp) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(child: Text('${otp}')),
+            content: OTPTextField(
+                controller: otpController,
+                length: 4,
+                width: MediaQuery.of(context).size.width,
+                textFieldAlignment: MainAxisAlignment.spaceAround,
+                fieldWidth: 45,
+                //fieldStyle: FieldStyle.box,
+                outlineBorderRadius: 15,
+                style: const TextStyle(fontSize: 17),
+                onChanged: (pin) {
+                  print("Changed: " + pin);
+                  otpVerification = pin;
+                },
+                onCompleted: (pin) {
+                  print("Completed: " + pin);
+                }),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFfef5e6),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(fontSize: 15, color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.buttonColor,
+                      ),
+                      onPressed: (() {
+                        _submit(otp);
+                        // AppUtils.onLoading(context, "Saving...");
+                      }),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _submit(otp) {
+    print('otpController@@${otp}');
+    print('otpController##@@${otpVerification}');
+
+    if (otpVerification == otp.toString()) {
+      print('enter');
+      Navigator.pop(context, "update_user");
+    } else {
+      Navigator.pop(context);
+      AppUtils.showAlertDialog(context, 'Error', 'Wrong otp entered');
+      print('OTP not verified!!');
+    }
   }
 }
