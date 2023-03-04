@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/feedbackalertdialog.dart';
-import 'package:study_evaluation/view/views/followus_screen.dart';
+import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/home_view.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     AboutUsScreen(),
-    FollowUsScreen(),
+    FollowUsView(),
   ];
 
   void _onItemTapped(int index) {

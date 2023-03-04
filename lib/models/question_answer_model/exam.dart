@@ -9,16 +9,18 @@ class Exam {
   String? attemptLimit;
   String? status;
   String? remainingExamTime;
+  String? resultId;
 
-  Exam({
-    this.id,
-    this.title,
-    this.announcementDate,
-    this.scheduledDate,
-    this.duration,
-    this.attemptLimit,
-    this.status,
-  });
+  Exam(
+      {this.id,
+      this.title,
+      this.announcementDate,
+      this.scheduledDate,
+      this.duration,
+      this.attemptLimit,
+      this.status,
+      this.remainingExamTime,
+      this.resultId});
 
   factory Exam.fromMap(Map<String, dynamic> data) => Exam(
         id: data['id'] as String?,
@@ -28,6 +30,8 @@ class Exam {
         duration: data['duration'] as String?,
         attemptLimit: data['attempt_limit'] as String?,
         status: data['status'] as String?,
+        remainingExamTime: data['remaining_exam_time'] as String?,
+        resultId: data['result_id'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -38,7 +42,8 @@ class Exam {
         'duration': duration,
         'attempt_limit': attemptLimit,
         'status': status,
-        'exam_time': remainingExamTime,
+        'remaining_exam_time': remainingExamTime,
+        'result_id': resultId,
       };
 
   /// `dart:convert`

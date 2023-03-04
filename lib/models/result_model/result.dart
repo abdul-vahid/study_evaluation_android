@@ -4,14 +4,14 @@ class Result {
   String? examId;
   String? studentId;
   String? status;
-  String? examTime;
+  String? remainingExamTime;
   String? id;
 
   Result({
     this.examId,
     this.studentId,
     this.status,
-    this.examTime,
+    this.remainingExamTime,
     this.id,
   });
 
@@ -19,7 +19,7 @@ class Result {
         examId: data['exam_id'] as String?,
         studentId: data['student_id'] as String?,
         status: data['status'] as String?,
-        examTime: data['exam_time'] as String?,
+        remainingExamTime: data['remaining_exam_time'] as String?,
         id: data['id'] as String?,
       );
 
@@ -27,7 +27,7 @@ class Result {
         'exam_id': examId,
         'student_id': studentId,
         'status': status,
-        'exam_time': examTime,
+        'remaining_exam_time': remainingExamTime,
         'id': id,
       };
 

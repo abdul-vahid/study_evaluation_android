@@ -101,7 +101,7 @@ class _ExamViewState extends State<ExamView> {
 
   ElevatedButton _getPopCancelButton(BuildContext context) {
     return AppUtils.getElevatedButton("Continue", onPressed: () {
-      stopTimer();
+      //stopTimer();
       Navigator.of(context).pop(false);
     },
         textStyle: const TextStyle(color: Colors.black),
@@ -120,7 +120,6 @@ class _ExamViewState extends State<ExamView> {
 
   ElevatedButton _getPopSaveButton(BuildContext context) {
     return AppUtils.getElevatedButton("Save", onPressed: () {
-      stopTimer();
       Navigator.of(context).pop(true);
       _onSubmit(status: ResultStatus.inProgress);
     });
@@ -136,8 +135,9 @@ class _ExamViewState extends State<ExamView> {
           child: Text("No Questions to Start Exam!"),
         );
       }
-      var duration = int.tryParse(model.exam!.duration!);
-      myDuration ??= Duration(minutes: duration!);
+
+      _initDuration(model);
+
       startTimer();
       setState(() {
         title = model.exam!.title!;
@@ -149,6 +149,28 @@ class _ExamViewState extends State<ExamView> {
     }
     return SingleChildScrollView(
         child: Column(children: _getQuestionOptionWidgets()));
+  }
+
+  void _initDuration(ExamModel model) {
+    if (model.exam?.remainingExamTime != null &&
+        (model.exam?.remainingExamTime?.isNotEmpty)!) {
+      if (model.exam?.remainingExamTime != null &&
+          (model.exam?.remainingExamTime?.isNotEmpty)!) {
+        String remainingTime = (model.exam?.remainingExamTime)!;
+        //print("remaingTime $remainingTime");
+        List<String> remainingTimes = remainingTime.split(":");
+        int hours = int.tryParse(remainingTimes[0])!;
+        int minutes = int.tryParse(remainingTimes[1])!;
+        int seconds = int.tryParse(remainingTimes[2])!;
+        //print("hours = $hours, min = $minutes, seconds = $seconds");
+        myDuration ??=
+            Duration(hours: hours, minutes: minutes, seconds: seconds);
+      } else {
+        //print("remaingTime blank");
+        var duration = int.tryParse(model.exam!.duration!);
+        myDuration ??= Duration(minutes: duration!);
+      }
+    }
   }
 
   List<DropdownMenuItem<String>>? getItems() {
@@ -319,6 +341,9 @@ class _ExamViewState extends State<ExamView> {
     List<Widget> widgets = [];
     if (!widget.reAttempt!) {
       widgets.add(_getSaveButton());
+      widgets.add(const SizedBox(
+        width: 10,
+      ));
     }
     widgets.add(_getSubmitButton());
     return widgets;
@@ -351,15 +376,17 @@ class _ExamViewState extends State<ExamView> {
     //print("submit");
     ExamModel examModel = baseListViewModel?.viewModels[0].model;
     examModel.exam?.remainingExamTime = timerText;
+    var message = status == ResultStatus.completed
+        ? "$timeUP Submitting Your Exam..."
+        : "$timeUP Saving Your Exam...";
+    var successMessage = status == ResultStatus.completed
+        ? "$timeUP Exam Submitted!"
+        : "$timeUP Exam Saved!";
     AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
     ExamListViewModel().submitExam(examModel, status: status).then((value) {
       Navigator.pop(context);
-      AppUtils.getAlert(
-          context, ["$timeUP Your's Exam Submitted Successfully!"],
-          onPressed: _onPressedAlert);
-      //stopTimer();
-      countdownTimer!.cancel();
-      //Navigator.pop(context);
+      AppUtils.getAlert(context, [successMessage], onPressed: _onPressedAlert);
+      stopTimer();
     }).catchError((error) {
       if (AppConstants.kDebugMode) {
         print(error.toString());
@@ -607,8 +634,8 @@ class _ExamViewState extends State<ExamView> {
     final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
     if (seconds1 < 0) {
       timeUP = "Time UP!";
+      stopTimer();
       _onSubmit();
-      countdownTimer!.cancel();
     } else {
       myDuration = Duration(seconds: seconds1);
     }

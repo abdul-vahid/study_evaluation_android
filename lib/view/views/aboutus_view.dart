@@ -44,7 +44,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               Card(
                 elevation: 5,
                 child: Container(
-                  height: 100,
+                  height: 150,
                   width: 350,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
@@ -64,7 +64,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     child: Text(
                       'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
                       style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 15,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
@@ -75,7 +75,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 height: 20,
               ),
               Container(
-                height: 300,
+                height: 400,
                 width: 350,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -94,10 +94,12 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           child: Text(
                         'We Provide',
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       )),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
@@ -111,7 +113,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Qualified and talented teachers.",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),
@@ -127,7 +129,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Modern and tech-equipped premises.",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),
@@ -143,7 +145,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Stable learning Test series and video courses.",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),
@@ -159,7 +161,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Stable learning Test series and video courses.",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),
@@ -175,7 +177,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Regular interacting with Student and their parent/guardians.",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),
@@ -191,7 +193,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Expanded(
                           child: Text(
                             "Here we not only the students to be successful, but also nurture them with values to be better humans",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ), //text
                         )
                       ]),

@@ -13,6 +13,7 @@ import 'package:study_evaluation/utils/app_constants.dart';
 
 class AppUtils {
   static void onLoading(BuildContext? context, String? label) {
+    print("On Loading..");
     showDialog(
         context: context!,
         barrierDismissible: false,
@@ -48,11 +49,12 @@ class AppUtils {
     return widgets;
   }
 
-  static Future<void> getAlert(BuildContext context, List<String> values,
-      {title = "", buttonLabel = 'OK', void Function()? onPressed}) async {
-    return showDialog<void>(
+  static getAlert(BuildContext context, List<String> values,
+      {title = "", buttonLabel = 'OK', void Function()? onPressed}) {
+    AppUtils.printDebug("getAlert");
+    showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      //barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -94,11 +96,51 @@ class AppUtils {
     );
   }
 
+  static showAlertDialog(BuildContext context, String title, String text) {
+    Widget okButton = TextButton(
+      child: Text('Ok', style: AppColor.themeNormal),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        title,
+        style: AppColor.themeNormal,
+      ),
+      content: Text(
+        text,
+        style: AppColor.themeNormal,
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  static void printDebug(message) {
+    if (AppConstants.kDebugMode) {
+      print(message);
+    }
+  }
+
   static List<String> getErrorMessages(exception) {
+    print("exception ");
     List<String> errorMessages = [];
     if (exception is AppException) {
+      print("exception type app ");
+
       Map<String, dynamic> data = jsonDecode(exception.getMessage());
+      printDebug(data);
       data.forEach((key, value) {
+        printDebug("key = $key, value = $value");
         errorMessages.add(value);
       });
     } else {

@@ -44,9 +44,8 @@ class ExamListViewModel extends BaseListViewModel {
     var studentId = AppUtils.getSessionUser(prefs).studentId;
     List<ResultLineItem> resultLineItems = [];
     //String status = "Completed";
-    String resultId = "";
+
     for (var qm in examModel.questionModels!) {
-      resultId = (qm.resultId)!;
       resultLineItems.add(ResultLineItem(
           id: qm.resultLineItemId,
           answer: qm.submittedAnswer,
@@ -54,11 +53,11 @@ class ExamListViewModel extends BaseListViewModel {
           questionId: qm.id));
     }
     Result result = Result(
-        id: resultId,
+        id: examModel.exam?.resultId,
         examId: examModel.exam?.id,
         studentId: studentId,
         status: status,
-        examTime: examModel.exam?.remainingExamTime);
+        remainingExamTime: examModel.exam?.remainingExamTime);
     ResultModel resultModel =
         ResultModel(result: result, resultLineItems: resultLineItems);
     return await ExamService().submitExam(resultModel);
