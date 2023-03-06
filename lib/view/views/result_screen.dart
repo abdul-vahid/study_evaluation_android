@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study_evaluation/view/views/Hindi_screen.dart';
 import 'package:study_evaluation/view/views/analysis_screen.dart';
 import 'package:study_evaluation/view/views/result_english_view.dart';
-import 'package:study_evaluation/view/views/leardebord.dart';
+import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/result_hindi_english_view.dart';
 
 import '../../utils/app_color.dart';

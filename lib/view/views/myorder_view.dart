@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/view/views/package_detail_view.dart';
 
 import '../../models/order_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/enum.dart';
-import '../../view_models/order_list_vm.dart';
+import '../../view_models/package_list_vm.dart';
 import '../widgets/widget_utils.dart';
 
 class MyOrderView extends StatefulWidget {
@@ -16,17 +19,20 @@ class MyOrderView extends StatefulWidget {
 }
 
 class _MyOrderViewState extends State<MyOrderView> {
-  OrderListViewModel? orderVM;
+  BaseListViewModel? baseListViewModel;
   @override
   void initState() {
     super.initState();
-    Provider.of<OrderListViewModel>(context, listen: false).fetch();
+    String url = AppUtils.getUrl("${AppConstants.orderAPIPath}?student_id=12");
+    print('url@@@$url');
+    Provider.of<BaseListViewModel>(context, listen: false)
+        .get(baseModel: OrderModel(), url: url);
   }
 
   @override
   Widget build(BuildContext context) {
-    orderVM = Provider.of<OrderListViewModel>(context);
-    print('@@@$orderVM');
+    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    print('@@@$baseListViewModel');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,7 +41,7 @@ class _MyOrderViewState extends State<MyOrderView> {
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
       ),
-      body: AppUtils.getAppBody(orderVM!, _getDataBody),
+      body: AppUtils.getAppBody(baseListViewModel!, _getDataBody),
     );
   }
 
@@ -43,13 +49,13 @@ class _MyOrderViewState extends State<MyOrderView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _getCategoryWidget(orderVM),
+          _getorderWidget(baseListViewModel),
         ],
       ),
     );
   }
 
-  Widget _getCategoryWidget(orderVM) {
+  Widget _getorderWidget(orderVM) {
     var count = orderVM.viewModels.length;
     var height = count > 8 ? (count * 100.0) : 800.0;
     return Container(
@@ -62,17 +68,6 @@ class _MyOrderViewState extends State<MyOrderView> {
 
   void _onTap(id) {
     print("id is $id");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => ChangeNotifierProvider(
-    //           create: (_) => PackageListViewModel(),
-    //           child: PackageListView(
-    //             categoryId: id,
-    //           )),
-    //       settings: RouteSettings(arguments: id)),
-    // );
-    // print("Test pressed!!!");
   }
 
   Widget _getGridView(orderVM) {
@@ -88,234 +83,95 @@ class _MyOrderViewState extends State<MyOrderView> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: orderVM.viewModels.length,
         itemBuilder: (context, index) {
-          OrderModel orderyModel = orderVM.viewModels[index].model;
+          OrderModel orderyModel =
+              orderVM.viewModels[index].model as OrderModel;
           var url = AppUtils.getImageUrl(orderyModel.logoUrl);
           //print(categoryModel.logoUrl);
-          return WidgetUtils.getCard(orderyModel.name!, url, _onTap,
+          return getCard(orderyModel.packagesTitle!, url, orderyModel.amount!,
+              orderyModel.packageId!, _onTap,
               imageHeight: 70.0,
               imageType: ImageType.network,
-              data: orderyModel.packageId);
+              data: orderyModel.packagesTitle);
         });
   }
+
+  getCard(String lable, String imagePath, String amount, String packageId,
+      void Function(dynamic) voidCallback,
+      {imageHeight = 120.0,
+      fontSize = 15.0,
+      imageType = ImageType.assets,
+      data}) {
+    return Card(
+      color: AppColor.boxColor,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18.0),
+      ),
+      margin: EdgeInsets.all(10.0),
+      child: InkWell(
+        onTap: () {
+          onButtonPressed(packageId);
+          print('packageId@@@!${packageId}');
+        },
+        child: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Text(
+              lable,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontSize,
+                color: AppColor.textColor,
+              ),
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            _getImage(imagePath, imageType, imageHeight: imageHeight),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              amount == null ? 'N/A' : '₹${amount}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontSize,
+                color: AppColor.textColor,
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  _getImage(url, imageType, {imageHeight}) {
+    if (imageType == ImageType.assets) {
+      return Image.asset(
+        url,
+        height: imageHeight,
+      );
+    } else {
+      return Image.network(
+        url,
+        height: imageHeight,
+      );
+    }
+  }
+
+  void onButtonPressed(packageId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+                create: (_) => PackageListViewModel(),
+                child: PackageDetailView(
+                  packageLineItemId: packageId,
+                ),
+              ),
+          settings: RouteSettings(arguments: 9)),
+    );
+    print("Login Button pressed!!!");
+  }
 }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         leading: BackButton(color: Colors.white),
-//         title: Text("My Order"),
-//         elevation: .1,
-//         backgroundColor: AppColor.appBarColor,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             Container(
-//               height: 800.0,
-//               child: GridView.count(
-//                 crossAxisCount: 2,
-//                 // padding: EdgeInsets.all(2.0),
-//                 children: <Widget>[
-//                   getCard(
-//                     '₹499',
-//                     'assets/images/contable.png',
-//                   ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                   // getCard(
-//                   //   '₹499',
-//                   //   'assets/images/contable.png',
-//                   // ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   onButtonPressed() {
-//     // Navigator.push(
-//     //   context,
-//     //   MaterialPageRoute(builder: (context) => const ContableScreen()),
-//     // );
-//     // print("Login Button pressed!!!");
-//   }
-
-//   getCard(String lable, String imagePath,
-//       {imageHeight = 120.0,
-//       fontSize = 15.0,
-//       imageType = ImageType.assets,
-//       data}) {
-//     return Card(
-//       color: AppColor.boxColor,
-//       elevation: 3,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(18.0),
-//       ),
-//       margin: EdgeInsets.all(10.0),
-//       child: InkWell(
-//         onTap: () {
-//           // voidCallback(data);
-//         },
-//         child: Center(
-//           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-//             Text(
-//               lable,
-//               textAlign: TextAlign.center,
-//               style: TextStyle(
-//                 fontWeight: FontWeight.bold,
-//                 fontSize: fontSize,
-//                 color: AppColor.textColor,
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 3,
-//             ),
-//             getImage(imagePath, imageType, imageHeight: imageHeight),
-//             const SizedBox(
-//               height: 3,
-//             ),
-//             Text(
-//               lable,
-//               textAlign: TextAlign.center,
-//               style: TextStyle(
-//                 fontWeight: FontWeight.bold,
-//                 fontSize: fontSize,
-//                 color: AppColor.textColor,
-//               ),
-//             ),
-//           ]),
-//         ),
-//       ),
-//     );
-//   }
-
-//   getImage(url, imageType, {imageHeight}) {
-//     if (imageType == ImageType.assets) {
-//       return Image.asset(
-//         url,
-//         height: imageHeight,
-//       );
-//     } else {
-//       return Image.network(
-//         url,
-//         height: imageHeight,
-//       );
-//     }
-//   }
-
-//   // Card makeDashboardItem(String title, Image image, double width, double height,
-//   //     VoidCallback voidCallback) {
-//   //   return Card(
-//   //       elevation: 1.0,
-//   //       // shape: RoundedRectangleBorder(
-//   //       //   borderRadius: BorderRadius.circular(15.0),
-//   //       // ),
-//   //       margin: new EdgeInsets.only(left: 15, top: 15, bottom: 10, right: 15),
-//   //       child: InkWell(
-//   //         onTap: () {
-//   //           voidCallback();
-//   //         },
-//   //         child: Column(children: [
-//   //           // InkWell(
-//   //           //   onTap: () {},
-//   //           // ),
-//   //           Expanded(
-//   //             flex: 3,
-//   //             child: Column(
-//   //               children: [
-//   //                 Container(
-//   //                   height: 5,
-//   //                   color: AppColor.appBarColor,
-//   //                 ),
-//   //                 const SizedBox(
-//   //                   height: 10,
-//   //                 ),
-//   //                 Container(
-//   //                   child: image,
-//   //                   height: height,
-//   //                   width: width,
-//   //                 ),
-//   //                 const SizedBox(
-//   //                   height: 10,
-//   //                 ),
-//   //                 const Text(
-//   //                   'Rajasthan Constable Special',
-//   //                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-//   //                 ),
-//   //               ],
-//   //             ),
-//   //           ),
-
-//   //           Expanded(
-//   //               child: Container(
-//   //                   decoration:
-//   //                       BoxDecoration(color: AppColor.containerBoxColor),
-//   //                   child: Center(
-//   //                       child: Text(
-//   //                     title,
-//   //                     style: const TextStyle(
-//   //                       color: Colors.white,
-//   //                     ),
-//   //                   ))))
-//   //         ]),
-//   //       ));
-
-// }
