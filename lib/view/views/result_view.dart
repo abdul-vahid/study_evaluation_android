@@ -523,10 +523,18 @@ class _ResultViewState extends State<ResultView> {
   }
 
   Widget _getDescription(QuestionModel model) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: _getContent(
-          "${model.descriptionHindi}", "${model.descriptionEnglish}"),
+    return Column(
+      children: [
+        const Text(
+          "Description",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: _getContent(
+              "${model.descriptionHindi}", "${model.descriptionEnglish}"),
+        )
+      ],
     );
   }
 
