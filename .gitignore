@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+git_batch.bat
 
 # IntelliJ related
 *.iml
