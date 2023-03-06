@@ -10,7 +10,7 @@ class OrderService {
     //Map<String, String> requestData = {'email': username, 'password': password};
     String url = AppConstants.baseUrl + AppConstants.orderAPIPath;
     if (studentId.isNotEmpty) {
-      url += "/$studentId=152";
+      url += "/$studentId";
     }
     //print("URL: ${url.toString()}");
     var token = await AppUtils.getToken();
