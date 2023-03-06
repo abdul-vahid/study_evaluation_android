@@ -21,6 +21,7 @@ class UserModel extends BaseModel {
 
   String? city;
   String? state;
+  String? roleName;
 
   UserModel({
     this.id,
@@ -39,6 +40,7 @@ class UserModel extends BaseModel {
     this.gender,
     this.city,
     this.state,
+    this.roleName,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> data) => UserModel(
@@ -57,6 +59,7 @@ class UserModel extends BaseModel {
         gender: data['gender'] as String?,
         city: data['city'] as String?,
         state: data['state'] as String?,
+        roleName: data['role_name'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -75,6 +78,7 @@ class UserModel extends BaseModel {
         'gender': gender,
         'city': city,
         'state': state,
+        'role_name': roleName,
       };
 
   /// `dart:convert`

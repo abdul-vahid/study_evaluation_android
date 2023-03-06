@@ -44,7 +44,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               Card(
                 elevation: 5,
                 child: Container(
-                  height: 150,
+                  height: 130,
                   width: 350,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
@@ -57,16 +57,18 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       color: Color(0xFFf8f9fa)),
                   child: Padding(
                     padding: EdgeInsets.only(
-                      top: 20,
+                      // top: 20,
                       left: 20,
                       right: 20,
                     ),
-                    child: Text(
-                      'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                    child: Center(
+                      child: Text(
+                        'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
@@ -94,7 +96,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           child: Text(
                         'We Provide',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       )),

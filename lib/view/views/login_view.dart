@@ -39,12 +39,18 @@ class _LoginViewState extends State<LoginView> {
               height: 60,
             ),
             WidgetUtils.getTextFormField(
-                'Mobile', 'Enter Mobile Number', Icons.mobile_screen_share,
-                onSaved: ((value) {
-              _userName = value;
+              'Mobile',
+              'Enter Mobile Number',
+              Icons.mobile_screen_share,
+              onSaved: ((value) {
+                _userName = value;
 
-              print('_userName @@@@ $_userName');
-            }), onValidator: validateUserName, initialValue: "raj@gmail.com"),
+                print('_userName @@@@ $_userName');
+              }),
+              onValidator: validateUserName,
+              initialValue: "0987654326",
+              keyboardType: TextInputType.phone,
+            ),
             const SizedBox(
               height: 20,
             ),

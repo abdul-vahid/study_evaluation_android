@@ -19,7 +19,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  RoleListViewModel? roleListVM;
+  // RoleListViewModel? roleListVM;
   @override
   void initState() {
     Provider.of<RoleListViewModel>(context, listen: false).fetch();
@@ -28,16 +28,19 @@ class _SignupViewState extends State<SignupView> {
 
   UserController? userController;
   final GlobalKey<FormState> _registrationFormKey = GlobalKey<FormState>();
-  String? _name;
+  final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
+
   String? _mobileNumber;
-  String? _email;
   String? _password;
+  String? _firstName;
+  String? _lastName;
 
 // Option 2
-  String? _selectedRole; // Option 2
+  // String? _selectedRole; // Option 2
   @override
   Widget build(BuildContext context) {
-    roleListVM = Provider.of<RoleListViewModel>(context);
+    //  roleListVM = Provider.of<RoleListViewModel>(context);
     userController = UserController(context);
     return SingleChildScrollView(
       child: Form(
@@ -47,27 +50,40 @@ class _SignupViewState extends State<SignupView> {
             const SizedBox(
               height: 60,
             ),
-            WidgetUtils.getTextFormField('Name', 'Enter Name', Icons.person,
+            WidgetUtils.getTextFormField(
+                'First Name', 'Enter First Name', Icons.person,
                 onSaved: ((value) {
-              _name = value;
+              _firstName = value;
             }), onValidator: validateName),
             const SizedBox(
               height: 20,
             ),
             WidgetUtils.getTextFormField(
-                'Mobile', 'Enter Mobile Number', Icons.mobile_screen_share,
+                'Last Name', 'Enter Last Name', Icons.person,
                 onSaved: ((value) {
-              _mobileNumber = value;
-            }), onValidator: validatePhone),
+              _lastName = value;
+            }), onValidator: validateName),
             const SizedBox(
               height: 20,
             ),
-            WidgetUtils.getTextFormField('Email', 'Enter Email', Icons.email,
-                onSaved: ((value) {
-              _email = value;
-
-              print('_email @@@@ $_email');
-            })),
+            WidgetUtils.getTextFormField(
+              'Mobile',
+              'Enter Mobile Number',
+              Icons.mobile_screen_share,
+              onSaved: ((value) {
+                _mobileNumber = value;
+              }),
+              keyboardType: TextInputType.phone,
+              onValidator: (value) {
+                if (value!.isEmpty) {
+                  return "Please Enter a Phone Number";
+                } else if (!RegExp(
+                        r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$')
+                    .hasMatch(value)) {
+                  return "Please Enter a Valid Phone Number";
+                }
+              },
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -76,42 +92,60 @@ class _SignupViewState extends State<SignupView> {
               _password = value;
 
               print('_password @@@@ $_password');
-            }), onValidator: validatePassword, obscureText: true),
+            }),
+                onValidator: validatePassword,
+                obscureText: true,
+                controller: passwordController),
             const SizedBox(
               height: 20,
             ),
             WidgetUtils.getTextFormField(
-                'Confirm Password', 'Enter Confirm Password', Icons.lock,
-                onSaved: ((value) {
-              print('_confirmPassword @@@@ $_password');
-            }), onValidator: validatePassword, obscureText: true),
-            const SizedBox(
-              height: 20,
-            ),
-            DropdownButtonHideUnderline(
-              child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-                  ),
-                  hint: const Text('Select Role'),
-                  // Not necessary for Option 1
-                  value: _selectedRole,
-                  validator: (value) => value == null ? 'Required' : null,
-                  isDense: true,
-                  isExpanded: false,
-                  menuMaxHeight: 350,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedRole = newValue;
-                    });
-                  },
-                  items: getItems()),
+              'Confirm Password',
+              'Enter Confirm Password',
+              Icons.lock,
+              onSaved: ((value) {
+                print('_confirmPassword @@@@ $_password');
+              }),
+              obscureText: true,
+              controller: confirmpasswordController,
+              onValidator: (String? value) {
+                if (value!.isEmpty) {
+                  return 'Please re-enter password';
+                }
+                print(passwordController.text);
+                print(confirmpasswordController.text);
+                if (passwordController.text != confirmpasswordController.text) {
+                  return "Password does not match";
+                }
+              },
             ),
             const SizedBox(
               height: 20,
             ),
+            // DropdownButtonHideUnderline(
+            //   child: DropdownButtonFormField<String>(
+            //       decoration: InputDecoration(
+            //         border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(25)),
+            //         prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
+            //       ),
+            //       hint: const Text('Select Role'),
+            //       // Not necessary for Option 1
+            //       value: _selectedRole,
+            //       validator: (value) => value == null ? 'Required' : null,
+            //       isDense: true,
+            //       isExpanded: false,
+            //       menuMaxHeight: 350,
+            //       onChanged: (newValue) {
+            //         setState(() {
+            //           _selectedRole = newValue;
+            //         });
+            //       },
+            //       items: getItems()),
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             getSubmitButtonContainer(),
             const SizedBox(
               height: 20,
@@ -144,13 +178,13 @@ class _SignupViewState extends State<SignupView> {
       print("$val is in the range of $min and $max");
 
       UserModel userModel = UserModel(
-          roleId: "4",
-          userName: _mobileNumber,
-          email: _email,
-          name: _name,
-          mobileNo: _mobileNumber,
-          password: _password,
-          status: "Active");
+        roleName: "student",
+        firstName: _firstName,
+        lastName: _lastName,
+        userName: _mobileNumber,
+        mobileNo: _mobileNumber,
+        password: _password,
+      );
 
       userController?.signUp(userModel).then((value) {
         print("success");
@@ -165,15 +199,15 @@ class _SignupViewState extends State<SignupView> {
     }
   }
 
-  List<DropdownMenuItem<String>>? getItems() {
-    if (roleListVM!.viewModels.isNotEmpty) {
-      return roleListVM!.viewModels.map<DropdownMenuItem<String>>((viewModel) {
-        return DropdownMenuItem<String>(
-          value: viewModel.model.id,
-          child: Text(viewModel.model.role),
-        );
-      }).toList();
-    }
-    return null;
-  }
+  // List<DropdownMenuItem<String>>? getItems() {
+  //   if (roleListVM!.viewModels.isNotEmpty) {
+  //     return roleListVM!.viewModels.map<DropdownMenuItem<String>>((viewModel) {
+  //       return DropdownMenuItem<String>(
+  //         value: viewModel.model.id,
+  //         child: Text(viewModel.model.role),
+  //       );
+  //     }).toList();
+  //   }
+  //   return null;
+  // }
 }

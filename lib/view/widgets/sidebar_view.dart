@@ -10,6 +10,7 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
+import 'package:study_evaluation/view/views/contact_us_view.dart';
 import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,6 +19,7 @@ import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../utils/app_constants.dart';
 import '../../view_models/follow_us_list_vm.dart';
+import '../../view_models/order_list_vm.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
 
@@ -124,8 +126,19 @@ class _NavBarState extends State<NavBar> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MyOrderView()),
+                MaterialPageRoute(
+                    builder: (context) => MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                                create: (_) => OrderListViewModel())
+                          ],
+                          child: const MyOrderView(),
+                        )),
               );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const FollowUsView()),
+              // )
             },
           ),
           ListTile(
@@ -231,6 +244,25 @@ class _NavBarState extends State<NavBar> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const AboutUsScreen()),
+                );
+              }),
+          Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.location_history_rounded,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'Contact Us',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ContactUsView()),
                 );
               }),
           Divider(),
