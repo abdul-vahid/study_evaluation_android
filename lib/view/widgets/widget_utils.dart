@@ -69,9 +69,11 @@ class WidgetUtils {
       void Function(String?)? onSaved,
       String? Function(String?)? onValidator,
       bool obscureText = false,
-      String? initialValue}) {
+      String? initialValue,
+      TextInputType? keyboardType}) {
     return TextFormField(
       obscureText: obscureText,
+      keyboardType: keyboardType,
       controller: controller,
       onSaved: onSaved,
       validator: onValidator,

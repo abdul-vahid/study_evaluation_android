@@ -86,16 +86,8 @@ class _LoginHomeState extends State<LoginHome>
                 child: _getTabBarColumns(),
               ),
 
-              WidgetUtils.getExpanded(WidgetUtils.getTabview(tabController, [
-                const LoginView(),
-                MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider(create: (_) => RoleListViewModel()),
-                  ],
-                  child: const SignupView(),
-                ),
-                //RegistrationScreen(roleListVM)
-              ])) //Adding Tabs
+              WidgetUtils.getExpanded(WidgetUtils.getTabview(tabController,
+                  [const LoginView(), const SignupView()])) //Adding Tabs
             ],
           ),
         ),

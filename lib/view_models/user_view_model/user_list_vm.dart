@@ -32,6 +32,16 @@ class UserListViewModel extends BaseListViewModel {
     return records["message"];
   }
 
+  Future<dynamic> ChangePasword(String mobileNo, String password) async {
+    print("otpVerification lis");
+    var records = await UserService().changePassword(mobileNo, password);
+
+    print("@@@Records ${records}");
+    //var r = records["message"];
+    //print('####rr${r}');
+    return records["message"];
+  }
+
   Future<List<dynamic>> login(String username, String password) async {
     print("loggin called");
     final result = await UserService().login(username, password);

@@ -392,7 +392,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   _displayDialog(BuildContext context, {OtpFieldController? controller}) async {
     AppUtils.onLoading(context, "Please Wait...");
     mobileNo = _mobileController.text;
-    reason = 'Updated';
+    reason = 'UPDATE_USER';
     UserListViewModel()
         .getOTP(mobileNo!, "UPDATE_USER")
         .then((records) => showDialogOTP(records))
