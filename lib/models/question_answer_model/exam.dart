@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:study_evaluation/core/models/base_model.dart';
 
-class Exam {
+import 'result.dart';
+
+class Exam extends BaseModel {
   String? id;
   String? title;
   String? announcementDate;
@@ -10,7 +13,7 @@ class Exam {
   String? status;
   String? remainingExamTime;
   String? resultId;
-
+  Result? result;
   Exam(
       {this.id,
       this.title,
@@ -20,7 +23,8 @@ class Exam {
       this.attemptLimit,
       this.status,
       this.remainingExamTime,
-      this.resultId});
+      this.resultId,
+      this.result});
 
   factory Exam.fromMap(Map<String, dynamic> data) => Exam(
         id: data['id'] as String?,
@@ -32,8 +36,12 @@ class Exam {
         status: data['status'] as String?,
         remainingExamTime: data['remaining_exam_time'] as String?,
         resultId: data['result_id'] as String?,
+        result: data['result'] != null
+            ? Result.fromMap(data['result'] as Map<String, dynamic>)
+            : null,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'title': title,
@@ -44,6 +52,7 @@ class Exam {
         'status': status,
         'remaining_exam_time': remainingExamTime,
         'result_id': resultId,
+        'result': result,
       };
 
   /// `dart:convert`

@@ -44,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
               _userName = value;
 
               print('_userName @@@@ $_userName');
-            }), onValidator: validateUserName, initialValue: "raj@gmail.com"),
+            }), onValidator: validateUserName, initialValue: "0987654326"),
             const SizedBox(
               height: 20,
             ),

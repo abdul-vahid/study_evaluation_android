@@ -22,6 +22,8 @@ class QuestionModel {
   String? favourite;
   int index = 0;
   bool? isSelected = false;
+  String? descriptionHindi;
+  String? descriptionEnglish;
 
   QuestionModel(
       {this.id,
@@ -42,7 +44,9 @@ class QuestionModel {
       this.resultId,
       this.resultLineItemId,
       this.submittedAnswer,
-      this.favourite});
+      this.favourite,
+      this.descriptionEnglish,
+      this.descriptionHindi});
 
   bool get isFavourite {
     return favourite != null && favourite.toString().toLowerCase() == "true";
@@ -72,6 +76,8 @@ class QuestionModel {
         resultLineItemId: data['result_line_item_id'] as String?,
         submittedAnswer: data['submitted_answer'] as String?,
         favourite: data['favourite'] as String?,
+        descriptionHindi: data['description_hindi'] as String?,
+        descriptionEnglish: data['description_english'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -94,6 +100,8 @@ class QuestionModel {
         'result_line_item_id': resultLineItemId,
         'submitted_answer': submittedAnswer,
         'favourite': favourite,
+        'description_hindi': descriptionHindi,
+        'description_english': descriptionEnglish,
       };
 
   /// `dart:convert`

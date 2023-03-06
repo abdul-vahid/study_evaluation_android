@@ -7,8 +7,11 @@ import 'package:study_evaluation/models/question_answer_model/question_model.dar
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/views/result_view.dart';
+import 'package:study_evaluation/view/views/result_view_old.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 
 class ExamView extends StatefulWidget {
   final String examId;
@@ -29,7 +32,7 @@ class _ExamViewState extends State<ExamView> {
   String? question;
   List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected
-  ExamListViewModel? baseListViewModel;
+  BaseListViewModel? baseListViewModel;
   List<String> languageOptions = ["Hindi", "English", "Both"];
   Map<String, String> fontOptions = {
     "15": "Small",
@@ -53,8 +56,12 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   void initState() {
-    Provider.of<ExamListViewModel>(context, listen: false).fetchQuestionAnswer(
-        examId: widget.examId, studentId: widget.studentId);
+    String url = AppUtils.getUrl(
+        "${AppConstants.questionAnswerAPIPath}?exam_id=${widget.examId}&student_id=${widget.studentId}");
+    Provider.of<BaseListViewModel>(context, listen: false)
+        .get(baseModel: ExamModel(), url: url);
+    /* Provider.of<ExamListViewModel>(context, listen: false).fetchQuestionAnswer(
+        examId: widget.examId, studentId: widget.studentId); */
     timeUP = "";
     super.initState();
   }
@@ -65,7 +72,7 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<ExamListViewModel>(context);
+    baseListViewModel = Provider.of<BaseListViewModel>(context);
 
     return WillPopScope(
       onWillPop: showExitPopup,
@@ -374,7 +381,7 @@ class _ExamViewState extends State<ExamView> {
 
   void _onSubmit({String status = "Completed"}) {
     //print("submit");
-    ExamModel examModel = baseListViewModel?.viewModels[0].model;
+    ExamModel examModel = baseListViewModel?.viewModels[0].model as ExamModel;
     examModel.exam?.remainingExamTime = timerText;
     var message = status == ResultStatus.completed
         ? "$timeUP Submitting Your Exam..."
@@ -382,22 +389,33 @@ class _ExamViewState extends State<ExamView> {
     var successMessage = status == ResultStatus.completed
         ? "$timeUP Exam Submitted!"
         : "$timeUP Exam Saved!";
-    AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
+    AppUtils.onLoading(context, message);
+
     ExamListViewModel().submitExam(examModel, status: status).then((value) {
+      print("examid = $value");
       Navigator.pop(context);
-      AppUtils.getAlert(context, [successMessage], onPressed: _onPressedAlert);
       stopTimer();
-    }).catchError((error) {
+      AppUtils.getAlert(context, [successMessage],
+          onPressed: () => _onPressedAlert(value));
+    }).catchError((error, stacktrace) {
       if (AppConstants.kDebugMode) {
         print(error.toString());
+        print(stacktrace);
       }
       AppUtils.onError(context, error);
     });
   }
 
-  void _onPressedAlert() {
+  void _onPressedAlert(resultId) {
     Navigator.of(context).pop();
-    Navigator.of(context).pop("reload");
+    AppUtils.viewPush(
+        context,
+        MultiProvider(providers: [
+          ChangeNotifierProvider(
+            create: (_) => BaseListViewModel(),
+          )
+        ], child: ResultView(resultId: resultId, studentId: widget.studentId)));
+    //Navigator.of(context).pop("reload");
   }
 
   void _onCancel() {}
@@ -587,16 +605,19 @@ class _ExamViewState extends State<ExamView> {
     return Align(
       alignment: Alignment.centerLeft,
       key: _keys?[model.index],
-      child: _getContent("Q.${model.index + 1}) ${model.questionHindi}",
-          "Q.${model.index + 1}) ${model.questionEnglish}"),
+      child: _getContent("${model.questionHindi}", "${model.questionEnglish}",
+          questionNumber: model.index + 1),
     );
   }
 
-  Widget _getContent(labelHindi, labelEnglish) {
+  Widget _getContent(labelHindi, labelEnglish, {questionNumber}) {
     List<Widget> widgets = [];
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "hindi")) {
+      labelHindi = questionNumber != null
+          ? "Q. $questionNumber) $labelHindi"
+          : labelHindi;
       widgets.add(AppUtils.getHtmlData(labelHindi,
           fontFamily: 'Kruti', fontSize: double.tryParse(_selectedFont!)!));
     }
@@ -604,7 +625,10 @@ class _ExamViewState extends State<ExamView> {
         labelEnglish.toString().trim().isNotEmpty &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "english")) {
-      widgets.add(AppUtils.getHtmlData(labelEnglish));
+      labelEnglish = questionNumber != null
+          ? "Q. $questionNumber) $labelEnglish"
+          : labelEnglish;
+      widgets.add(AppUtils.getHtmlData("$labelEnglish"));
     }
 
     if (widgets.isNotEmpty) {

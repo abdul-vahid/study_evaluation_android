@@ -11,6 +11,7 @@ class ExamModel extends BaseModel {
 
   ExamModel({this.exam, this.questionModels, super.appException, super.error});
 
+  @override
   factory ExamModel.fromMap(Map<String, dynamic> data) {
     return ExamModel(
       exam: data['exam'] == null
@@ -22,6 +23,12 @@ class ExamModel extends BaseModel {
     );
   }
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return ExamModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'exam': exam?.toMap(),
         'questions': questionModels?.map((e) => e.toMap()).toList(),
@@ -30,6 +37,8 @@ class ExamModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [ExamModel].
+
+  @override
   factory ExamModel.fromJson(String data) {
     return ExamModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }

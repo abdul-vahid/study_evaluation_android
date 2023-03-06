@@ -8,10 +8,12 @@ import 'package:study_evaluation/models/result_model/result_line_item.dart';
 import 'package:study_evaluation/models/result_model/result_model.dart';
 
 import 'package:study_evaluation/services/exam_service.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
 class ExamListViewModel extends BaseListViewModel {
-  Future<void> fetchQuestionAnswer(
+  var resultModels = [];
+  /* Future<void> fetchQuestionAnswer(
       {required String examId, String? studentId}) async {
     try {
       final jsonObject = await ExamService()
@@ -35,7 +37,7 @@ class ExamListViewModel extends BaseListViewModel {
     }
 
     notifyListeners();
-  }
+  } */
 
   Future<dynamic> submitExam(ExamModel examModel,
       {String status = "Completed"}) async {
@@ -60,6 +62,9 @@ class ExamListViewModel extends BaseListViewModel {
         remainingExamTime: examModel.exam?.remainingExamTime);
     ResultModel resultModel =
         ResultModel(result: result, resultLineItems: resultLineItems);
-    return await ExamService().submitExam(resultModel);
+    String url = AppUtils.getUrl(AppConstants.submitExamAPIPath);
+    var data =
+        await BaseListViewModel().post(url: url, body: resultModel.toJson());
+    return data["records"][0]["result"]["id"];
   }
 }
