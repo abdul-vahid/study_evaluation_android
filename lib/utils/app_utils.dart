@@ -150,10 +150,11 @@ class AppUtils {
     return errorMessages;
   }
 
-  static AppBar getAppbar(String title, {bottom, List<Widget>? actions}) {
+  static AppBar getAppbar(String title,
+      {bottom, List<Widget>? actions, Widget? leading}) {
     return AppBar(
         centerTitle: true,
-        leading: const BackButton(color: Colors.white),
+        leading: leading, //= const BackButton(color: Colors.white)
         title: Text(title),
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
@@ -254,5 +255,12 @@ class AppUtils {
           },
         },
         tagsList: Html.tags..addAll(["o:p"]));
+  }
+
+  static String capitalize(String string) {
+    if (string.isEmpty) {
+      return string;
+    }
+    return string[0].toUpperCase() + string.substring(1);
   }
 }

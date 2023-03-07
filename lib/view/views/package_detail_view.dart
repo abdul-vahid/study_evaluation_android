@@ -10,6 +10,7 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/result_view_old.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
@@ -207,10 +208,17 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             backgroundColor: AppColor.buttonColor // foreground
             ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ResultViewOld()),
-          );
+          AppUtils.viewPush(
+              context,
+              MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => BaseListViewModel(),
+                    )
+                  ],
+                  child: ResultView(
+                      resultId: (testSeries.result?.id)!,
+                      studentId: (userModel?.studentId)!)));
         },
       ));
     }

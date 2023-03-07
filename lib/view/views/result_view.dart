@@ -8,6 +8,7 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
+import 'package:study_evaluation/view/widgets/sidebar_view.dart';
 
 class ResultView extends StatefulWidget {
   final String resultId;
@@ -34,6 +35,7 @@ class _ResultViewState extends State<ResultView> {
 
   String _selectedLanguage = "Hindi";
   String? _selectedFont = "15";
+  String? _selectedFilter = "all";
   String title = "Test";
   String timeUP = "";
   int timerMaxSeconds = 60;
@@ -45,7 +47,8 @@ class _ResultViewState extends State<ResultView> {
   var minutes = "0";
   var seconds = "0";
   int? totalQuestions = 30;
-
+  Map<String, int> filtersMap = {};
+  bool isRefresh = false;
   @override
   void initState() {
     String url = AppUtils.getUrl(
@@ -53,6 +56,14 @@ class _ResultViewState extends State<ResultView> {
     Provider.of<BaseListViewModel>(context, listen: false)
         .get(baseModel: ExamModel(), url: url);
     timeUP = "";
+    /* Timer(Duration(seconds: 2), () {
+      setState(() {
+        AppUtils.printDebug("INit state");
+        title = "Test 123";
+        //filtersMap = {};
+      });
+    }); */
+
     super.initState();
   }
 
@@ -65,41 +76,18 @@ class _ResultViewState extends State<ResultView> {
     baseListViewModel = Provider.of<BaseListViewModel>(context);
 
     return Scaffold(
+        drawer: NavBar(),
         appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
-        body: AppUtils.getAppBody(baseListViewModel!, _getBody));
-  }
-
-  ElevatedButton _getPopCancelButton(BuildContext context) {
-    return AppUtils.getElevatedButton("Continue", onPressed: () {
-      //stopTimer();
-      Navigator.of(context).pop(false);
-    },
-        textStyle: const TextStyle(color: Colors.black),
-        buttonStyle:
-            ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
-  }
-
-  ElevatedButton _getPopSubmitButton(BuildContext context) {
-    return AppUtils.getElevatedButton("Submit", onPressed: () {
-      Navigator.of(context).pop(false);
-      _onSubmit();
-
-      //Navigator.of(context).pop(true);
-    });
-  }
-
-  ElevatedButton _getPopSaveButton(BuildContext context) {
-    return AppUtils.getElevatedButton("Save", onPressed: () {
-      Navigator.of(context).pop(true);
-      _onSubmit(status: ResultStatus.inProgress);
-    });
+        body: RefreshIndicator(
+            onRefresh: _pullRefresh,
+            child: AppUtils.getAppBody(baseListViewModel!, _getBody)));
   }
 
   Widget _getBody() {
     if (baseListViewModel!.viewModels.isNotEmpty &&
-        baseListViewModel!.viewModels[0].model != null &&
-        !baseListViewModel!.viewModels[0].model.isError) {
+        baseListViewModel!.viewModels[0].model != null) {
       ExamModel model = baseListViewModel!.viewModels[0].model;
+      print("hello");
       if (model.questionModels == null || model.questionModels!.isEmpty) {
         return const Center(
           child: Text("No Results Found!"),
@@ -131,6 +119,22 @@ class _ResultViewState extends State<ResultView> {
     }).toList();
   }
 
+  List<DropdownMenuItem<String>>? getFilters() {
+    print("Filters");
+    List<DropdownMenuItem<String>>? dropDownItems = [];
+    filtersMap.forEach((key, value) {
+      print("$key = $value");
+      dropDownItems.add(DropdownMenuItem<String>(
+        value: key,
+        child: Text(
+          "${AppUtils.capitalize(key)}($value)",
+          style: const TextStyle(fontSize: 15),
+        ),
+      ));
+    });
+    return dropDownItems;
+  }
+
   List<DropdownMenuItem<String>>? getFontSizes() {
     List<DropdownMenuItem<String>>? dropDownItems = [];
     fontOptions.forEach((key, value) {
@@ -147,6 +151,11 @@ class _ResultViewState extends State<ResultView> {
 
   List<Widget> _getQuestionOptionWidgets() {
     List<Widget> widgets = [];
+    bool isBlankSelValues = selectedValues.isEmpty;
+    var i = 0;
+
+    _loadFilters();
+
     widgets.add(Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -158,36 +167,78 @@ class _ResultViewState extends State<ResultView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_getLanguageDropdown(), _getFontDropdown()],
+            children: [
+              _getLanguageDropdown(),
+              _getFontDropdown(),
+            ],
           ),
+          _getDropdown()
+          /*  _getDropdown(
+              hint: "Select",
+              value: _selectedFilter,
+              type: "filter",
+              onChanged: (value) => {
+                    setState(() {
+                      _selectedFilter = value!;
+                    })
+                  },
+              items: getFilters()) */
         ],
       ),
     ));
 
-    bool isBlankSelValues = selectedValues.isEmpty;
-    var i = 0;
-
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {
-      if (AppConstants.kDebugMode) {
-        //print("Submitted ${model.submittedAnswer}");
-      }
-      selectedValues.add(model.submittedAnswer!);
-      /* if (isBlankSelValues) {
-        if (model.hasSubmittedAnswer) {
-          
-        } else {
-          selectedValues.add("0");
-        }
-      } */
-
       model.index = i++;
-      widgets.add(_getQuestionOptionWidget(model));
+      if (_selectedFilter == "all" ||
+          (_selectedFilter == "favourite" && model.isFavourite) ||
+          (_selectedFilter == "skipped" && model.isSkipped) ||
+          (_selectedFilter == "wrong" && model.isWrong) ||
+          (_selectedFilter == "correct" && model.isCorrect)) {
+        print("_selectedFilter = $_selectedFilter");
+        widgets.add(_getQuestionOptionWidget(model));
+      }
+    }
+    widgets.add(_getBottomButtons());
+    return widgets;
+  }
+
+  void _loadFilters() {
+    if (filtersMap.isNotEmpty) return;
+    for (QuestionModel model
+        in (baseListViewModel?.viewModels[0].model.questionModels)!) {
+      if (model.isFavourite) {
+        _loadFilterMap("favourite");
+      }
+
+      if (model.isCorrect) {
+        _loadFilterMap("correct");
+      }
+
+      if (model.isSkipped) {
+        _loadFilterMap("skipped");
+      }
+
+      if (model.isWrong) {
+        _loadFilterMap("wrong");
+      }
+
+      _loadFilterMap("all");
     }
 
-    widgets.add(_getBottomButtons());
+    filtersMap = Map.fromEntries(filtersMap.entries.toList()
+      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    AppUtils.printDebug(filtersMap);
+  }
 
-    return widgets;
+  void _loadFilterMap(key) {
+    print("debug _loadfilter");
+    int favCount = 0;
+    if (filtersMap.containsKey(key)) {
+      favCount = filtersMap[key]!;
+    }
+    favCount++;
+    filtersMap[key] = favCount;
   }
 
   Container _getTopBar() {
@@ -342,6 +393,34 @@ class _ResultViewState extends State<ResultView> {
 
   void _onCancel() {}
 
+  Widget _getDropdown() {
+    return Container(
+        width: 120,
+        height: 55,
+        padding: EdgeInsets.zero,
+        child: DropdownButtonHideUnderline(
+          child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+
+                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
+              ),
+              hint: const Text("Filters"),
+              // Not necessary for Option 1
+              value: _selectedFilter,
+              //validator: (value) => value == null ? 'Required' : null,
+              //isDense: true,
+              isExpanded: false,
+              menuMaxHeight: 350,
+              onChanged: (value) => setState(() {
+                    print("Value $value");
+                    _selectedFilter = value;
+                  }),
+              items: getFilters()),
+        ));
+  }
+
   Widget _getFontDropdown() {
     return Container(
         width: 120,
@@ -414,12 +493,7 @@ class _ResultViewState extends State<ResultView> {
             ),
             borderRadius: const BorderRadius.all(Radius.circular(8.0)),
           ),
-          child: InkWell(
-            onTap: () {
-              // onButtonPressed();
-            },
-            child: Column(children: _getQuestionOptions(model)),
-          ),
+          child: Column(children: _getQuestionOptions(model)),
         ),
       ),
     );
@@ -528,6 +602,7 @@ class _ResultViewState extends State<ResultView> {
         const Text(
           "Description",
           style: TextStyle(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left,
         ),
         Align(
           alignment: Alignment.centerLeft,
@@ -606,6 +681,25 @@ class _ResultViewState extends State<ResultView> {
       return Colors.green;
     } else if (model.submittedAnswer == value) {
       return Colors.red;
+    }
+  }
+
+  Future<void> _pullRefresh() async {
+    baseListViewModel?.viewModels.clear();
+    baseListViewModel = null;
+    print("pull refresh");
+    isRefresh = true;
+    AppUtils.onLoading(context, "Refreshing");
+    String url = AppUtils.getUrl(
+        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&student_id=${widget.studentId}");
+    Provider.of<BaseListViewModel>(context, listen: false)
+        .get(baseModel: ExamModel(), url: url);
+    baseListViewModel = Provider.of<BaseListViewModel>(context, listen: false);
+
+    if (baseListViewModel != null && isRefresh) {
+      AppUtils.printDebug("base list view model");
+      //Navigator.pop(context);
+      isRefresh = false;
     }
   }
 }
