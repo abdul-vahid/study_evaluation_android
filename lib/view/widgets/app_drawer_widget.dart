@@ -14,15 +14,16 @@ import 'package:study_evaluation/view/views/aboutus_view.dart';
 import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/views/contact_us_view.dart';
 import 'package:study_evaluation/view/views/follow_us_view.dart';
+import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
+import '../../core/models/base_list_view_model.dart';
 import '../../utils/app_constants.dart';
 import '../../view_models/follow_us_list_vm.dart';
-import '../../view_models/order_list_vm.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
 
@@ -135,7 +136,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                     builder: (context) => MultiProvider(
                           providers: [
                             ChangeNotifierProvider(
-                                create: (_) => OrderListViewModel())
+                                create: (_) => BaseListViewModel())
                           ],
                           child: const MyOrderView(),
                         )),
@@ -176,6 +177,35 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
             },
           ),
           Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.feedback,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'LeaderBoard',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                                create: (_) => BaseListViewModel())
+                          ],
+                          child: const LearderbordView(),
+                        )),
+              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const FollowUsView()),
+              // )
+            },
+          ),
           ListTile(
             leading: Icon(
               Icons.feedback,

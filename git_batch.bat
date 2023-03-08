@@ -1,3 +1,3 @@
 git add .
-git commit -m "changes"
-git push
+git commit -m "Shubham changes"
+git push origin shubham

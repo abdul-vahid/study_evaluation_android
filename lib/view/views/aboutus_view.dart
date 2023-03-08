@@ -58,7 +58,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(
                       // top: 20,
-                      left: 20,
+                      left: 30,
                       right: 20,
                     ),
                     child: Center(
@@ -77,7 +77,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 height: 20,
               ),
               Container(
-                height: 400,
+                height: 350,
                 width: 350,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -107,7 +107,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
@@ -123,7 +123,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
@@ -139,7 +139,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
@@ -155,7 +155,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
@@ -171,7 +171,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
@@ -187,7 +187,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       Row(children: [
                         Text(
                           "\u2022",
-                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          style: TextStyle(fontSize: 40, color: Colors.white),
                         ), //bullet text
                         SizedBox(
                           width: 10,
