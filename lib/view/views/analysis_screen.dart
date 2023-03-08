@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../../utils/app_color.dart';
@@ -51,6 +53,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '144/130',
@@ -109,6 +112,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '143/456',
@@ -162,6 +166,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '144.30',
@@ -220,6 +225,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '144/300',
@@ -282,6 +288,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '45.30',
@@ -340,6 +347,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '20 SEC',
@@ -402,6 +410,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '144/30',
@@ -460,6 +469,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
                               '44.3',
@@ -513,6 +523,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // ignore: prefer_const_literals_to_create_immutables
                         children: [
                           Text(
                             'Correct',
@@ -542,6 +553,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Text(
                           '45',

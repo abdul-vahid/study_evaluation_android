@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,7 @@ class LearderbordView extends StatefulWidget {
 
 class _LearderbordViewState extends State<LearderbordView> {
   BaseListViewModel? baseListViewModel;
+  static int? rank = 0;
   @override
   void initState() {
     super.initState();
@@ -48,139 +51,34 @@ class _LearderbordViewState extends State<LearderbordView> {
 
     for (var viewModel in baseListViewModel!.viewModels) {
       widgets.add(getCard(viewModel.model));
+
+      print('viewModel$viewModel');
       // viewModel.model
-      print('viewModel.model@@');
+      print('viewModel.model@@ ${viewModel.model}');
     }
 
     return widgets;
   }
 
-  InkWell getCard(leaderboardModel) {
+  Card getCard(leaderboardModel) {
     var url = AppUtils.getImageUrl(leaderboardModel.profileUrl);
+    rank = rank! + 1;
     print('url@@@$url');
-    return InkWell(
-      onTap: () {
-        // launch(leaderboardModel?.url);
-      },
-      child: Card(
-          child: ListTile(
-        title: Text(
-          leaderboardModel.firstName,
-          style:
-              TextStyle(fontWeight: FontWeight.bold, color: AppColor.textColor),
-        ),
-        subtitle: Text(
-          leaderboardModel.totalMarks,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        leading: Image.network(
-          url,
-          height: 60,
-          width: 60,
-        ),
-        trailing: Text(
-          leaderboardModel.percentage,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      )),
-    );
+    return Card(
+        child: ListTile(
+      title: Text(
+        leaderboardModel.firstName,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        "${leaderboardModel.totalMarks} Marks",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      leading: CircleAvatar(backgroundImage: NetworkImage(url)),
+      trailing: Text(
+        '#${rank.toString()}',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ));
   }
 }
-
-//         body: ListView(
-//           padding: const EdgeInsets.all(8),
-//           children: <Widget>[
-//             Card(
-//                 child: ListTile(
-//               title: Text(
-//                 "Nurcahyo Budi",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(
-//                 "300 Marks",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               leading: CircleAvatar(
-//                   backgroundImage: NetworkImage(
-//                       "https://m.media-amazon.com/images/M/MV5BNjE3NDQyOTYyMV5BMl5BanBnXkFtZTcwODcyODU2Mw@@._V1_UY209_CR5,0,140,209_AL_.jpg")),
-//               trailing: Text(
-//                 '#1',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             )),
-//             Card(
-//                 child: ListTile(
-//               title: Text(
-//                 "Rika Wahyuni",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(
-//                 "290 Marks",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               leading: CircleAvatar(
-//                   backgroundImage: NetworkImage(
-//                       "https://m.media-amazon.com/images/M/MV5BMjJkNDg5ZDctM2RlZS00NjFmLTkxZjktMWE5NGQzMDg4NDFhXkEyXkFqcGdeQXVyMTMwMDM1OTQ@._V1_UY209_CR6,0,140,209_AL_.jpg")),
-//               trailing: Text(
-//                 '#2',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             )),
-//             Card(
-//                 child: ListTile(
-//               title: Text(
-//                 "Alarm",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(
-//                 "280 Marks",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               leading: CircleAvatar(
-//                   backgroundImage: NetworkImage(
-//                       "https://m.media-amazon.com/images/M/MV5BNjE3NDQyOTYyMV5BMl5BanBnXkFtZTcwODcyODU2Mw@@._V1_UY209_CR5,0,140,209_AL_.jpg")),
-//               trailing: Text(
-//                 '#3',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             )),
-//             Card(
-//                 child: ListTile(
-//               title: Text(
-//                 "Ballot",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(
-//                 "200 Marks",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               leading: CircleAvatar(
-//                   backgroundImage: NetworkImage(
-//                       "https://m.media-amazon.com/images/M/MV5BNjE3NDQyOTYyMV5BMl5BanBnXkFtZTcwODcyODU2Mw@@._V1_UY209_CR5,0,140,209_AL_.jpg")),
-//               trailing: Text(
-//                 '#4',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             )),
-//             Card(
-//                 child: ListTile(
-//               title: Text(
-//                 "Rika",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(
-//                 "190 Marks",
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               leading: CircleAvatar(
-//                   backgroundImage: NetworkImage(
-//                       "https://m.media-amazon.com/images/M/MV5BMjJkNDg5ZDctM2RlZS00NjFmLTkxZjktMWE5NGQzMDg4NDFhXkEyXkFqcGdeQXVyMTMwMDM1OTQ@._V1_UY209_CR6,0,140,209_AL_.jpg")),
-//               trailing: Text(
-//                 '#5',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             )),
-//           ],
-//         ));
-//   }
-// }
