@@ -1,3 +1,5 @@
+import 'package:study_evaluation/utils/app_utils.dart';
+
 class AppException implements Exception {
   final _message;
   final _prefix;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -10,6 +11,7 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/result_view_old.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
@@ -45,7 +47,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
         appBar: AppUtils.getAppbar("Package Detail"),
-        body: AppUtils.getAppBody(packageListVM!, _getBody));
+        body: AppUtils.getAppBody(packageListVM!, _getBody, context: context));
   }
 
   SingleChildScrollView _getBody() {
@@ -207,20 +209,34 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             backgroundColor: AppColor.buttonColor // foreground
             ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ResultViewOld()),
-          );
+          AppUtils.viewPush(
+              context,
+              MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => BaseListViewModel(),
+                    )
+                  ],
+                  child: ResultView(
+                      resultId: (testSeries.result?.id)!,
+                      studentId: (userModel?.studentId)!)));
         },
       ));
     }
 
     if (resultModel == null) {
-      widgets.add(AppUtils.getElevatedButton('Start Now',
-          onPressed: () => _submitPage(testSeries),
-          buttonStyle: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.buttonColor // foreground
-              )));
+      var scheduleDT = DateFormat('dd-MM-yyyy HH:mm aaa')
+          .parse((model?.testSeries?[0].scheduledDate)!);
+
+      var currentDT = DateTime.now();
+      AppUtils.printDebug("$currentDT ==== $scheduleDT");
+      if (currentDT.compareTo(scheduleDT) > 0) {
+        widgets.add(AppUtils.getElevatedButton('Start Now',
+            onPressed: () => _submitPage(testSeries),
+            buttonStyle: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                )));
+      }
     }
 
     widgets.add(const SizedBox(

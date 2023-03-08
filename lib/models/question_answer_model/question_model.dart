@@ -52,6 +52,18 @@ class QuestionModel {
     return favourite != null && favourite.toString().toLowerCase() == "true";
   }
 
+  bool get isCorrect {
+    return answer == submittedAnswer;
+  }
+
+  bool get isWrong {
+    return answer != submittedAnswer;
+  }
+
+  bool get isSkipped {
+    return submittedAnswer == null || submittedAnswer!.isEmpty;
+  }
+
   bool get hasSubmittedAnswer {
     return submittedAnswer != null && submittedAnswer.toString().isNotEmpty;
   }
