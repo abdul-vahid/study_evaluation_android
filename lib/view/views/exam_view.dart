@@ -17,6 +17,7 @@ class ExamView extends StatefulWidget {
   final String examId;
   final String studentId;
   bool? reAttempt = false;
+  bool? noQuestions = false;
   ExamView(
       {super.key,
       required this.examId,
@@ -52,7 +53,8 @@ class _ExamViewState extends State<ExamView> {
   var hours = "0";
   var minutes = "0";
   var seconds = "0";
-  int? totalQuestions = 30;
+  int? totalQuestions = 0;
+  bool hasQuestions = true;
 
   @override
   void initState() {
@@ -138,6 +140,19 @@ class _ExamViewState extends State<ExamView> {
         !baseListViewModel!.viewModels[0].model.isError) {
       ExamModel model = baseListViewModel!.viewModels[0].model;
       if (model.questionModels == null || model.questionModels!.isEmpty) {
+        Timer(
+            Duration.zero,
+            () => {
+                  AppUtils.getAlert(
+                    context,
+                    ["No Questions to Start Exam!"],
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  )
+                });
+
         return const Center(
           child: Text("No Questions to Start Exam!"),
         );
@@ -391,12 +406,12 @@ class _ExamViewState extends State<ExamView> {
         : "$timeUP Exam Saved!";
     AppUtils.onLoading(context, message);
 
-    ExamListViewModel().submitExam(examModel, status: status).then((value) {
-      print("examid = $value");
+    ExamListViewModel().submitExam(examModel, status: status).then((resultId) {
+      //print("examid = $value");
       Navigator.pop(context);
       stopTimer();
       AppUtils.getAlert(context, [successMessage],
-          onPressed: () => _onPressedAlert(value));
+          onPressed: () => _onPressedAlert(resultId, status));
     }).catchError((error, stacktrace) {
       if (AppConstants.kDebugMode) {
         print(error.toString());
@@ -406,8 +421,12 @@ class _ExamViewState extends State<ExamView> {
     });
   }
 
-  void _onPressedAlert(resultId) {
+  void _onPressedAlert(resultId, status) {
     Navigator.of(context).pop();
+    if (status == ResultStatus.inProgress) {
+      Navigator.of(context).pop("reload");
+      return;
+    }
     AppUtils.viewPush(
         context,
         MultiProvider(providers: [

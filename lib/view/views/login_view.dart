@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/forgetpassword_view.dart';
@@ -27,9 +29,33 @@ class _LoginViewState extends State<LoginView> {
   String? _userName;
   String? _password;
   UserController? _userController;
+  bool displayLogin = false;
+  @override
+  void initState() {
+    _isLoggedIn();
+    super.initState();
+  }
+
+  void _isLoggedIn() {
+    SharedPreferences.getInstance().then((prefs) {
+      if (prefs.containsKey(SharedPrefsConstants.prefsAccessTokenKey)) {
+        _pushHomePage();
+      } else {
+        setState(() {
+          displayLogin = true;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _userController = UserController(context);
+    return displayLogin ? _getBody(context) : const CircularProgressIndicator();
+  }
+
+  SingleChildScrollView _getBody(BuildContext context) {
+    AppUtils.printDebug("loginviewbody");
     return SingleChildScrollView(
       child: Form(
         key: _loginFormKey,
@@ -100,28 +126,14 @@ class _LoginViewState extends State<LoginView> {
       _userController?.login(_userName!, _password!).then((records) {
         Navigator.pop(context);
         if (records.isNotEmpty) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder:
-                      (context) => /* MultiProvider(
-                          providers: [
-                            ChangeNotifierProvider(
-                                create: (_) => ExamListViewModel())
-                          ],
-                          child:
-                              const ExamView()) */
-                          MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => CategoryListViewModel()),
-                              ChangeNotifierProvider(
-                                  create: (_) => SliderImageListViewModel()),
-                              ChangeNotifierProvider(
-                                  create: (_) => FeedbackListViewModel()),
-                            ],
-                            child: const HomeMainView(),
-                          )));
+          /* Navigator.pushReplacementNamed(context, "/",
+              arguments: MultiProvider(providers: [
+                ChangeNotifierProvider(create: (_) => CategoryListViewModel()),
+                ChangeNotifierProvider(
+                    create: (_) => SliderImageListViewModel()),
+                ChangeNotifierProvider(create: (_) => FeedbackListViewModel())
+              ])); */
+          _pushHomePage();
         }
       }).catchError((error) {
         Navigator.pop(context);
@@ -129,5 +141,23 @@ class _LoginViewState extends State<LoginView> {
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
     }
+  }
+
+  void _pushHomePage() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                        create: (_) => CategoryListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => SliderImageListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => FeedbackListViewModel()),
+                  ],
+                  child: const HomeMainView(),
+                )),
+        (Route<dynamic> route) => false).then((value) => _isLoggedIn());
   }
 }

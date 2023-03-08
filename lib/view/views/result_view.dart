@@ -8,7 +8,7 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
-import 'package:study_evaluation/view/widgets/sidebar_view.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 
 class ResultView extends StatefulWidget {
   final String resultId;
@@ -76,7 +76,7 @@ class _ResultViewState extends State<ResultView> {
     baseListViewModel = Provider.of<BaseListViewModel>(context);
 
     return Scaffold(
-        drawer: NavBar(),
+        drawer: AppDrawerWidget(),
         appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
         body: RefreshIndicator(
             onRefresh: _pullRefresh,
@@ -88,13 +88,19 @@ class _ResultViewState extends State<ResultView> {
         baseListViewModel!.viewModels[0].model != null) {
       ExamModel model = baseListViewModel!.viewModels[0].model;
       print("hello");
+
       if (model.questionModels == null || model.questionModels!.isEmpty) {
         return const Center(
           child: Text("No Results Found!"),
         );
       }
-
+      if (isRefresh) {
+        AppUtils.printDebug("base list view model");
+        Navigator.pop(context);
+        isRefresh = false;
+      }
       setState(() {
+        //isRefresh = false;
         title = model.exam!.title!;
         print("title = $title");
         totalQuestions =
@@ -695,11 +701,6 @@ class _ResultViewState extends State<ResultView> {
     Provider.of<BaseListViewModel>(context, listen: false)
         .get(baseModel: ExamModel(), url: url);
     baseListViewModel = Provider.of<BaseListViewModel>(context, listen: false);
-
-    if (baseListViewModel != null && isRefresh) {
-      AppUtils.printDebug("base list view model");
-      //Navigator.pop(context);
-      isRefresh = false;
-    }
+    print("length = ${baseListViewModel?.viewModels.length}");
   }
 }

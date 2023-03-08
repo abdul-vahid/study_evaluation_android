@@ -10,8 +10,11 @@ import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/view/views/login_home.dart';
+import 'package:study_evaluation/view/views/login_view.dart';
 
 class AppUtils {
+  static bool isLoggedout = false;
   static void onLoading(BuildContext? context, String? label) {
     print("On Loading..");
     showDialog(
@@ -142,6 +145,7 @@ class AppUtils {
       data.forEach((key, value) {
         printDebug("key = $key, value = $value");
         errorMessages.add(value);
+        isLoggedout = value.toString().toLowerCase() == "expired token";
       });
     } else {
       errorMessages.add(exception.toString());
@@ -198,11 +202,17 @@ class AppUtils {
   }
 
   static Widget getAppBody(
-      BaseListViewModel baseListViewModel, Widget Function() callBack) {
+      BaseListViewModel baseListViewModel, Widget Function() callBack,
+      {context}) {
     if (baseListViewModel.status == "Loading") {
       return AppUtils.getLoader();
     } else if (baseListViewModel.status == "Error") {
-      return AppUtils.getErrorWidget(baseListViewModel.viewModels[0].model);
+      Widget widget =
+          AppUtils.getErrorWidget(baseListViewModel.viewModels[0].model);
+      Timer(Duration.zero, () {
+        isLoggedOut(context);
+      });
+      return widget;
     } else if (baseListViewModel.viewModels.isNotEmpty) {
       return callBack();
     } else {
@@ -262,5 +272,20 @@ class AppUtils {
       return string;
     }
     return string[0].toUpperCase() + string.substring(1);
+  }
+
+  static void logout(context) {
+    onLoading(context, "Logging out...");
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.clear();
+      Navigator.pop(context);
+      viewPush(context, const LoginHome());
+    });
+  }
+
+  static void isLoggedOut(context) {
+    if (isLoggedout) {
+      logout(context);
+    }
   }
 }

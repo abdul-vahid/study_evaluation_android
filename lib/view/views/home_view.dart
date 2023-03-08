@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
-
 import '../../utils/app_color.dart';
-import '../widgets/sidebar_view.dart';
 
 class HomeView extends StatefulWidget {
   final categoriesVM;
@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
   CategoryListViewModel? categoriesVM;
   SliderImageListViewModel? slidersVM;
   FeedbackListViewModel? feedbacksVM;
-
+  var ctime;
   @override
   void initState() {
     //  Provider.of<UserListViewModel>(context, listen: false).login('raj@gmail.com', 'test@1234');
@@ -47,20 +47,41 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     HomeController homeController = HomeController(context, feedbacksVM!);
     return Scaffold(
-      drawer: NavBar(),
+      drawer: const AppDrawerWidget(),
       appBar: AppBar(
         backgroundColor: AppColor.appBarColor,
         centerTitle: true,
         title: const Text('Home'),
       ),
-      body: SingleChildScrollView(
+      body: _getBody(context, homeController),
+    );
+  }
+
+  WillPopScope _getBody(BuildContext context, HomeController homeController) {
+    AppUtils.isLoggedOut(context);
+    return WillPopScope(
+      onWillPop: () {
+        DateTime now = DateTime.now();
+        if (ctime == null ||
+            now.difference(ctime) > const Duration(seconds: 2)) {
+          //add duration of press gap
+          ctime = now;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  'Press Back Button Again to Exit'))); //scaffold message, you can show Toast message too.
+          return Future.value(false);
+        }
+
+        return Future.value(true);
+      },
+      child: SingleChildScrollView(
           child: Column(
         children: [
           homeController.getImageSlideshowContainer(slidersVM!),
           const SizedBox(
             height: 10,
           ),
-          getButtonContainer(),
+          _getButtonContainer(),
           homeController.getHomeTiles(),
           // SizedBox(
           //   height: 10,
@@ -77,10 +98,6 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            height: 40,
-            color: AppColor.containerBoxColor,
-          )
         ],
       )),
     );
@@ -128,191 +145,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Container getStudentFeedbacks(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(left: 5.0, right: 10.0, top: 2.0),
-        height: 200,
-        child: ImageSlideshow(
-            width: double.infinity,
-            height: 200,
-            initialPage: 0,
-            //  indicatorColor: Colors.blue,
-            indicatorBackgroundColor: Colors.grey,
-            children: [
-              Container(
-                //color: Colors.amber,
-                width: 350,
-                height: 220,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(blurRadius: 1.0, color: Colors.grey.shade100)
-                  ],
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                ),
-
-                child: Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline,
-                    ),
-                    //borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 70,
-                        width: 70,
-                        //padding: EdgeInsets.only(top: 0),
-                        margin: const EdgeInsets.only(bottom: 100, left: 10),
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            scale: 5,
-                            image:
-                                AssetImage("assets/images/profile-image.png"),
-                            fit: BoxFit.fill,
-                          ),
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 10, left: 4),
-                            child: const ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: Text("Gaurav Sharma",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        letterSpacing: 1)),
-                              ),
-                              subtitle: Text(
-                                "Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though.",
-                                style: TextStyle(fontSize: 17),
-                                maxLines: 4,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 150),
-                            child: Row(
-                              children: [
-                                Align(
-                                  child: TextButton.icon(
-                                    // <-- TextButton
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.share,
-                                      size: 20.0,
-                                    ),
-                                    label: Text('SHARE'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                //color: Colors.amber,
-                width: 350,
-                height: 220,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(blurRadius: 1.0, color: Colors.grey.shade100)
-                  ],
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                ),
-
-                child: Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline,
-                    ),
-                    //borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 70,
-                        width: 70,
-                        //padding: EdgeInsets.only(top: 0),
-                        margin: EdgeInsets.only(bottom: 100, left: 10),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            scale: 5,
-                            image:
-                                AssetImage("assets/images/profile-image.png"),
-                            fit: BoxFit.fill,
-                          ),
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 10, left: 4),
-                            child: ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: Text("Gaurav Sharma",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        letterSpacing: 1)),
-                              ),
-                              subtitle: Text(
-                                "Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though.",
-                                style: TextStyle(fontSize: 17),
-                                maxLines: 4,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 150),
-                            child: Row(
-                              children: [
-                                Align(
-                                  child: TextButton.icon(
-                                    // <-- TextButton
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.share,
-                                      size: 20.0,
-                                    ),
-                                    label: Text('SHARE'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                    ],
-                  ),
-                ),
-              ),
-            ]));
-  }
-
-  Container getButtonContainer() {
+  Container _getButtonContainer() {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -405,5 +238,19 @@ class _HomeViewState extends State<HomeView> {
               )),
     );
     print("Login Button pressed!!!");
+  }
+
+  Future<bool> onWillPop() async {
+    DateTime now = DateTime.now();
+    if (ctime == null || now.difference(ctime) > const Duration(seconds: 2)) {
+      //add duration of press gap
+      ctime = now;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Press Back Button Again to Exit'))); //scaffold message, you can show Toast message too.
+      return Future.value(false);
+    }
+
+    return Future.value(true);
   }
 }

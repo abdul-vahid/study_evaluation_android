@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -46,7 +47,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
         appBar: AppUtils.getAppbar("Package Detail"),
-        body: AppUtils.getAppBody(packageListVM!, _getBody));
+        body: AppUtils.getAppBody(packageListVM!, _getBody, context: context));
   }
 
   SingleChildScrollView _getBody() {
@@ -224,11 +225,18 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     }
 
     if (resultModel == null) {
-      widgets.add(AppUtils.getElevatedButton('Start Now',
-          onPressed: () => _submitPage(testSeries),
-          buttonStyle: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.buttonColor // foreground
-              )));
+      var scheduleDT = DateFormat('dd-MM-yyyy HH:mm aaa')
+          .parse((model?.testSeries?[0].scheduledDate)!);
+
+      var currentDT = DateTime.now();
+      AppUtils.printDebug("$currentDT ==== $scheduleDT");
+      if (currentDT.compareTo(scheduleDT) > 0) {
+        widgets.add(AppUtils.getElevatedButton('Start Now',
+            onPressed: () => _submitPage(testSeries),
+            buttonStyle: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                )));
+      }
     }
 
     widgets.add(const SizedBox(
