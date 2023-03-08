@@ -32,6 +32,9 @@ abstract class ProfileConstants {
 
 //
 abstract class AppConstants {
+  static const String channelId = "study_evaluation";
+  static const String channelName = "Study Evaluation";
+  static const String channelDescription = "Study Evaluation";
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
     defaultValue: 'https://studyevaluation.com/sandbox',

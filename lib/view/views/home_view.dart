@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
+import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
@@ -36,11 +38,61 @@ class _HomeViewState extends State<HomeView> {
   var ctime;
   @override
   void initState() {
-    //  Provider.of<UserListViewModel>(context, listen: false).login('raj@gmail.com', 'test@1234');
-    super.initState();
+    _notificationHandler();
+
     categoriesVM = widget.categoriesVM;
     slidersVM = widget.slidersVM;
     feedbacksVM = widget.feedbacksVM;
+    super.initState();
+  }
+
+  void _notificationHandler() {
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          print("New Notification: ${message.data}");
+          // if (message.data['_id'] != null) {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (context) => DemoScreen(
+          //         id: message.data['_id'],
+          //       ),
+          //     ),
+          //   );
+          // }
+        }
+      },
+    );
+
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+          LocalNotificationService.displayNotification(message);
+        }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        if (message.notification != null) {
+          LocalNotificationService.displayNotification(message);
+          print("hello");
+          /*  print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data22 ${message.data['_id']}"); */
+        }
+      },
+    );
   }
 
   @override
