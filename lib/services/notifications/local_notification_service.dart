@@ -31,7 +31,11 @@ class LocalNotificationService {
         android: AndroidNotificationDetails(
             AppConstants.channelId, AppConstants.channelName,
             channelDescription: AppConstants.channelDescription,
-            playSound: true),
+            playSound: true,
+            priority: Priority.high,
+            importance: Importance.max,
+            channelShowBadge: true,
+            visibility: NotificationVisibility.public),
       );
 
       await _notificationsPlugin.show(

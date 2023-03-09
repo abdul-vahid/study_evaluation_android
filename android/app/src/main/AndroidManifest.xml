@@ -2,7 +2,7 @@
     package="com.example.study_evaluation">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    
+
    <application
         android:label="study_evaluation"
         android:name="${applicationName}"

@@ -1,42 +1,60 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
+import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
 class NotificationUtil {
-  FirebaseMessaging? _firebaseMessaging;
-  final BuildContext? context;
-
-  NotificationUtil(this.context) {
+  static FirebaseMessaging? _firebaseMessaging;
+  static BuildContext? context;
+  static void initialize(context) {
+    NotificationUtil.context = context;
     _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging!.requestPermission();
-    // workaround for onLaunch: When the app is completely closed (not in the background) and opened directly from the push notification
-    FirebaseMessaging.instance
+    _firebaseMessaging?.requestPermission();
+
+    /*
+      FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? remoteMessage) {
       onMessageReceived(remoteMessage);
     });
 
-    //20/04/2022
-    // replacement for onResume: When the app is in the background and opened directly from the push notification.
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage) {
-      print('onMessageOpenedApp');
-      onMessageReceived(remoteMessage);
-    });
+    */
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+    _firebaseMessaging?.getInitialMessage().then(
+      (RemoteMessage? remoteMessage) {
+        onMessageReceived(remoteMessage);
+      },
+    );
 
-    /*
-    _firebaseMessaging!.configure(
-      onMessage: (Map<String, dynamic> message) async {},
-      onResume: onMessageReceived,
-      onLaunch: onMessageReceived,
-    );*/
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage? remoteMessage) {
+        /* print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+          LocalNotificationService.displayNotification(message);
+        } */
+
+        onMessageReceived(remoteMessage);
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage? remoteMessage) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        onMessageReceived(remoteMessage!);
+      },
+    );
+
     registerToken();
   }
-  // 20/04/2022
-  void onBackgroundMessage() {
-    FirebaseMessaging.onBackgroundMessage(onMessageReceived);
-  }
 
-  Future<void> onMessageReceived(RemoteMessage? remoteMessage) {
+  static Future<void> onMessageReceived(RemoteMessage? remoteMessage) {
+    print("onMessageReceived");
     print(remoteMessage?.data);
     /* if (remoteMessage?.data['type'] == 'image') {
       onImageReceived(remoteMessage!.data['url'].toString());
@@ -45,19 +63,24 @@ class NotificationUtil {
     } else if (remoteMessage?.data['type'] == 'text') {
       onTextReceived(remoteMessage!.data['url'].toString());
     } */
-    onTextReceived(remoteMessage!.data.toString());
+    //onTextReceived(remoteMessage!.data.toString());
+    if (remoteMessage != null) {
+      LocalNotificationService.displayNotification(remoteMessage);
+    }
+
     return Future.value();
   }
 
-  void registerToken() async {
-    /* _firebaseMessaging!.getToken().then((token) {
-      TokenService tokenService = TokenService();
+  static void registerToken() async {
+    _firebaseMessaging!.getToken().then((token) {
+      //TokenService tokenService = TokenService();
       try {
-        tokenService.updateToken(patient!.sfId!, token!);
+        print("FCM Token = $token");
+        //tokenService.updateToken(patient!.sfId!, token!);
       } catch (err) {
         print(err);
       }
-    }); */
+    });
   }
 
   /* Future<dynamic> onMessageReceived(Map<String, dynamic> message) async {
@@ -77,3 +100,42 @@ class NotificationUtil {
     } */
   }
 }
+
+/* void _notificationHandler() {
+  // 1. This method call when app in terminated state and you get a notification
+  // when you click on notification app open from terminated state and you can get notification data in this method
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  firebaseMessaging.requestPermission();
+  //firebaseMessaging.requestPermission();
+  firebaseMessaging.getInitialMessage().then(
+    (message) {
+      print("FirebaseMessaging.instance.getInitialMessage");
+      if (message != null) {
+        print("New Notification: ${message.data}");
+        // if (message.data['_id'] != null) {
+        //   Navigator.of(context).push(
+        //     MaterialPageRoute(
+        //       builder: (context) => DemoScreen(
+        //         id: message.data['_id'],
+        //       ),
+        //     ),
+        //   );
+        // }
+      }
+    },
+  );
+
+  // 3. This method only call when App in background and not terminated(not closed)
+  FirebaseMessaging.onMessageOpenedApp.listen(
+    (message) {
+      print("FirebaseMessaging.onMessageOpenedApp.listen");
+      if (message.notification != null) {
+        //LocalNotificationService.displayNotification(message);
+        print("hello");
+        /*  print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data22 ${message.data['_id']}"); */
+      }
+    },
+  );
+} */
