@@ -5,9 +5,9 @@ Widget getBottomNavigation(selectedIndex, {Function(int)? onItemTap}) =>
     BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         _barItem('Home', Icons.home),
-        _barItem('About US', Icons.edit_location),
+        _barItem('My Test', Icons.text_snippet_outlined),
         _barItem('My Order', Icons.ramen_dining),
-        _barItem('Leadboard', Icons.people),
+        _barItem('Profile', Icons.person),
       ],
       currentIndex: selectedIndex,
       selectedItemColor: AppColor.selectedItemColor,

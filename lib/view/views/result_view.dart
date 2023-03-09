@@ -7,6 +7,7 @@ import 'package:study_evaluation/models/question_answer_model/question_model.dar
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 
@@ -22,6 +23,8 @@ class ResultView extends StatefulWidget {
 
 class _ResultViewState extends State<ResultView> {
   List<GlobalKey>? _keys;
+  bool isButtonPressed = false;
+
   String? question;
   List<String> selectedValues = [];
   String selectedRadioIndex = ""; //no radio button will be selected
@@ -36,7 +39,7 @@ class _ResultViewState extends State<ResultView> {
   String _selectedLanguage = "Hindi";
   String? _selectedFont = "15";
   String? _selectedFilter = "all";
-  String title = "Test";
+  String title = "Result";
   String timeUP = "";
   int timerMaxSeconds = 60;
   Duration? myDuration;
@@ -52,7 +55,7 @@ class _ResultViewState extends State<ResultView> {
   @override
   void initState() {
     String url = AppUtils.getUrl(
-        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&student_id=${widget.studentId}");
+        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.studentId}");
     Provider.of<BaseListViewModel>(context, listen: false)
         .get(baseModel: ExamModel(), url: url);
     timeUP = "";
@@ -77,7 +80,28 @@ class _ResultViewState extends State<ResultView> {
 
     return Scaffold(
         drawer: AppDrawerWidget(),
-        appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
+        appBar: AppUtils.getAppbar(title, actions: [
+          IconButton(
+              // ignore: prefer_const_constructors
+              icon: Icon(
+                Icons.leaderboard,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (_) => BaseListViewModel())
+                            ],
+                            child: const LearderbordView(),
+                          )),
+                );
+              }),
+          _getFilterButton()
+        ]),
         body: RefreshIndicator(
             onRefresh: _pullRefresh,
             child: AppUtils.getAppBody(baseListViewModel!, _getBody)));
@@ -125,11 +149,27 @@ class _ResultViewState extends State<ResultView> {
     }).toList();
   }
 
+  List<Widget> getButtonWidgets() {
+    List<Widget> list = [];
+    filtersMap.forEach((key, value) {
+      print('@@${value}');
+      list.add(
+          getButtons('${AppUtils.capitalize(key)}(${value})', onPressed: () {
+        setState(() {
+          _selectedFilter = key;
+          print('_selectedFilter === =$_selectedFilter --- $key');
+        });
+      }));
+    });
+    return list;
+  }
+
   List<DropdownMenuItem<String>>? getFilters() {
     print("Filters");
     List<DropdownMenuItem<String>>? dropDownItems = [];
     filtersMap.forEach((key, value) {
-      print("$key = $value");
+      print("@@@kay $key = $value");
+
       dropDownItems.add(DropdownMenuItem<String>(
         value: key,
         child: Text(
@@ -178,7 +218,17 @@ class _ResultViewState extends State<ResultView> {
               _getFontDropdown(),
             ],
           ),
-          _getDropdown()
+
+          SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 50,
+            child: ListView(
+                scrollDirection: Axis.horizontal, children: getButtonWidgets()),
+          ),
+
+          ///  _getDropdown()
           /*  _getDropdown(
               hint: "Select",
               value: _selectedFilter,
@@ -205,9 +255,46 @@ class _ResultViewState extends State<ResultView> {
         widgets.add(_getQuestionOptionWidget(model));
       }
     }
-    widgets.add(_getBottomButtons());
+    // widgets.add(_getBottomButtons());
     return widgets;
   }
+
+  Color getBackgroundColor(String label) {
+    if (label.toLowerCase().contains("all") && _selectedFilter == "all") {
+      return Colors.blue;
+    } else if (label.toLowerCase().contains("correct") &&
+        _selectedFilter == "correct") {
+      return Colors.blue;
+    } else if (label.toLowerCase().contains("wrong") &&
+        _selectedFilter == "wrong") {
+      return Colors.blue;
+    } else if (label.toLowerCase().contains("skipped") &&
+        _selectedFilter == "skipped") {
+      return Colors.blue;
+    }
+
+    return Colors.white;
+  }
+
+  Padding getButtons(btnLabel,
+      {required void Function()? onPressed, buttonStyle, textStyle}) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: getBackgroundColor(btnLabel),
+                side: BorderSide(
+                  width: 1.0,
+                  color: AppColor.containerBoxColor,
+                )),
+            onPressed: onPressed,
+            child: Text(
+              btnLabel,
+              style: TextStyle(color: Colors.black),
+            )));
+  }
+
+  void onPressed() {}
 
   void _loadFilters() {
     if (filtersMap.isNotEmpty) return;
@@ -332,12 +419,12 @@ class _ResultViewState extends State<ResultView> {
         ));
   }
 
-  Padding _getBottomButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(height: 10, width: 100, child: const Text("Button")),
-    );
-  }
+  // Padding _getBottomButtons() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(20.0),
+  //     child: Container(height: 10, width: 100, child: const Text("Button")),
+  //   );
+  // }
 
   ElevatedButton _getSubmitButton() {
     return AppUtils.getElevatedButton('Submit',

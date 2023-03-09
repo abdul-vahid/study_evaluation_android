@@ -18,7 +18,7 @@ class PackageService {
 
   Future<dynamic> fetchPackageLineItems(packageId, studentId) async {
     String url = AppUtils.getUrl(AppConstants.packageLineItemsAPIPath);
-    url += "?package_id=$packageId&student_id=$studentId";
+    url += "?package_id=$packageId&user_id=$studentId";
     var token = await AppUtils.getToken();
 
     final responseJsonData = await _apiService.getResponse(url, token!);
