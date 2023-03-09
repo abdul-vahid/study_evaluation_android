@@ -1,11 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../utils/app_color.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
 
 class CurrentAffairScreen extends StatefulWidget {
@@ -137,15 +142,17 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
         children: [
           TextButton.icon(
               onPressed: () async {
-                /* 
-                if (await canLaunchUrl(currentAffairsModel?.pdfUrl)) {
-                  await launchUrl(currentAffairsModel?.pdfUrl);
-                  print("#####");
-                } else {
-                  throw 'Could not launch $currentAffairsModel?.pdfUrl';
-                } */
+                final url = '${AppConstants.baseUrl}' +
+                    '/study_evaluation/public/' +
+                    '${currentAffairsModel?.documentUrl}';
 
-                print('CurrentAffairsModel  ${currentAffairsModel?.pdfUrl}');
+                if (url.isNotEmpty) {
+                  launch('${url}');
+                } else {
+                  throw 'Could not launch $url';
+                }
+
+                launch('${url}');
               },
               icon: const Icon(
                 Icons.picture_as_pdf,
@@ -157,7 +164,10 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
                 style: TextStyle(color: Color(0xFFFB83ADC), fontSize: 10),
               )),
           TextButton.icon(
-              onPressed: () => {},
+              onPressed: () => {
+                    Share.share('com.example.share_app',
+                        subject: 'Welcome Message')
+                  },
               icon: Icon(
                 Icons.share,
                 color: Colors.black,

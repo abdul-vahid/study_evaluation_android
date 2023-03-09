@@ -50,10 +50,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
                       ),
-                      // borderRadius: BorderRadius.only(
-                      //   topLeft: Radius.circular(20),
-                      //   bottomRight: Radius.circular(20),
-                      // ),
                       color: Color(0xFFf8f9fa)),
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -77,7 +73,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 height: 20,
               ),
               Container(
-                height: 350,
+                height: 370,
                 width: 350,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -104,21 +100,27 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         height: 25,
                       ),
                       // ignore: prefer_const_literals_to_create_immutables
-                      Row(children: [
-                        Text(
-                          "\u2022",
-                          style: TextStyle(fontSize: 40, color: Colors.white),
-                        ), //bullet text
-                        SizedBox(
-                          width: 10,
-                        ), //space between bullet and text
-                        Expanded(
-                          child: Text(
-                            "Qualified and talented teachers.",
-                            style: TextStyle(fontSize: 15, color: Colors.white),
-                          ), //text
-                        )
-                      ]),
+                      Row(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Text(
+                              "\u2022",
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white),
+                            ), //bullet text
+                            SizedBox(
+                              width: 10,
+                            ), //space between bullet and text
+                            Expanded(
+                              child: Text(
+                                "Qualified and talented teachers.",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ), //text
+                            )
+                          ]),
                       // ignore: prefer_const_literals_to_create_immutables
                       Row(children: [
                         Text(
@@ -184,21 +186,27 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         )
                       ]),
                       // ignore: prefer_const_literals_to_create_immutables
-                      Row(children: [
-                        Text(
-                          "\u2022",
-                          style: TextStyle(fontSize: 40, color: Colors.white),
-                        ), //bullet text
-                        SizedBox(
-                          width: 10,
-                        ), //space between bullet and text
-                        Expanded(
-                          child: Text(
-                            "Here we not only the students to be successful, but also nurture them with values to be better humans",
-                            style: TextStyle(fontSize: 15, color: Colors.white),
-                          ), //text
-                        )
-                      ]),
+                      Row(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Text(
+                              "\u2022",
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white),
+                            ), //bullet text
+                            SizedBox(
+                              width: 10,
+                            ), //space between bullet and text
+                            Expanded(
+                              child: Text(
+                                "Here we not only the students to be successful, but also nurture them with values to be better humans",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ), //text
+                            )
+                          ]),
                     ],
                   ),
                 ),

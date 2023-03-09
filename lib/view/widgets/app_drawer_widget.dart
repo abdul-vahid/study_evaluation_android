@@ -18,14 +18,18 @@ import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
+import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../core/models/base_list_view_model.dart';
 import '../../utils/app_constants.dart';
+import '../../view_models/feedback_list_vm.dart';
 import '../../view_models/follow_us_list_vm.dart';
+import '../../view_models/slider_image_list_vm.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
+import '../views/home_main_view.dart';
 
 class AppDrawerWidget extends StatefulWidget {
   const AppDrawerWidget({super.key});
@@ -85,7 +89,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                   child: CircleAvatar(
                     backgroundImage: profileUrl == null
                         ? NetworkImage(
-                            'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+                            'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
                         : NetworkImage(profileUrl!),
                     radius: 40.0,
                   ),
@@ -117,6 +121,34 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                 )
               ],
             ),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.home,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Home',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (_) => CategoryListViewModel()),
+                              ChangeNotifierProvider(
+                                  create: (_) => SliderImageListViewModel()),
+                              ChangeNotifierProvider(
+                                  create: (_) => FeedbackListViewModel()),
+                            ],
+                            child: const HomeMainView(),
+                          )));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -177,35 +209,6 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
             },
           ),
           Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.feedback,
-              color: AppColor.navBarIconColor,
-            ),
-            title: Text(
-              'LeaderBoard',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MultiProvider(
-                          providers: [
-                            ChangeNotifierProvider(
-                                create: (_) => BaseListViewModel())
-                          ],
-                          child: const LearderbordView(),
-                        )),
-              );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const FollowUsView()),
-              // )
-            },
-          ),
           ListTile(
             leading: Icon(
               Icons.feedback,
@@ -303,7 +306,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AboutUsScreen()),
+                      builder: (context) => const TermsConditionsView()),
                 );
               }),
           Divider(),

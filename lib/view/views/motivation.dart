@@ -2,11 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/quote_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/app_color.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../utils/app_constants.dart';
 
 class MotivationScreen extends StatefulWidget {
   const MotivationScreen({super.key});
@@ -129,15 +133,16 @@ class _MotivationScreenState extends State<MotivationScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TextButton.icon(
-              onPressed: () async {
-                /*
-                if (await canLaunchUrl(quoteModel?.pdfUrl)) {
-                  await launchUrl(quoteModel?.pdfUrl);
-                  print("#####");
+              onPressed: () {
+                final url = '${AppConstants.baseUrl}' +
+                    '/study_evaluation/public/' +
+                    '${quoteModel?.pdfUrl}';
+
+                if (url.isNotEmpty) {
+                  launch('${url}');
                 } else {
-                  throw 'Could not launch $quoteModel?.pdfUrl';
+                  throw 'Could not launch $url';
                 }
-                */
                 print('quoteModel?.quote Pdf ${quoteModel?.pdfUrl}');
               },
               icon: const Icon(
@@ -150,7 +155,10 @@ class _MotivationScreenState extends State<MotivationScreen> {
                 style: TextStyle(color: Color(0xFFFB83ADC), fontSize: 10),
               )),
           TextButton.icon(
-              onPressed: () => {},
+              onPressed: () => {
+                    Share.share('com.example.share_app',
+                        subject: 'Welcome Message')
+                  },
               icon: Icon(
                 Icons.share,
                 color: Colors.black,
@@ -194,7 +202,10 @@ class _MotivationScreenState extends State<MotivationScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor: Colors.white),
-                  onPressed: (() {}),
+                  onPressed: (() {
+                    Share.share('com.example.share_app',
+                        subject: 'Welcome Message');
+                  }),
                   label: const Text(
                     'SHARE',
                     style: TextStyle(color: Colors.black, fontSize: 12),
