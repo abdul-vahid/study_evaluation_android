@@ -19,6 +19,7 @@ class LearderbordView extends StatefulWidget {
 class _LearderbordViewState extends State<LearderbordView> {
   BaseListViewModel? baseListViewModel;
   static int? rank = 0;
+  String? profileUrl;
   @override
   void initState() {
     super.initState();
@@ -61,9 +62,12 @@ class _LearderbordViewState extends State<LearderbordView> {
   }
 
   Card getCard(leaderboardModel) {
-    var url = AppUtils.getImageUrl(leaderboardModel.profileUrl);
+    if (leaderboardModel.profileUrl != null) {
+      profileUrl = AppUtils.getImageUrl(leaderboardModel.profileUrl);
+    }
+
     rank = rank! + 1;
-    print('url@@@$url');
+    print('url@@@$profileUrl');
     return Card(
         child: ListTile(
       title: Text(
@@ -74,7 +78,13 @@ class _LearderbordViewState extends State<LearderbordView> {
         "${leaderboardModel.totalMarks} Marks",
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      leading: CircleAvatar(backgroundImage: NetworkImage(url)),
+      // ignore: unnecessary_null_comparison
+      leading: CircleAvatar(
+          // ignore: unnecessary_null_comparison
+          backgroundImage: profileUrl == null
+              ? const NetworkImage(
+                  'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+              : NetworkImage(profileUrl!)),
       trailing: Text(
         '#${rank.toString()}',
         style: TextStyle(fontWeight: FontWeight.bold),

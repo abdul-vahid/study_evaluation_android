@@ -219,7 +219,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   ],
                   child: ResultView(
                       resultId: (testSeries.result?.id)!,
-                      studentId: (userModel?.studentId)!)));
+                      studentId: (userModel?.id)!)));
         },
       ));
     }

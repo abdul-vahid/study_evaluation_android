@@ -31,8 +31,8 @@ class PackageListViewModel extends BaseListViewModel {
       var prefs = await SharedPreferences.getInstance();
       UserModel userModel = AppUtils.getSessionUser(prefs);
 
-      final jsonObject = await PackageService()
-          .fetchPackageLineItems(packageId, userModel.studentId);
+      final jsonObject =
+          await PackageService().fetchPackageLineItems(packageId, userModel.id);
       final records = jsonObject["records"];
 
       var modelMap = records.map((item) => PackageModel.fromMap(item)).toList();
