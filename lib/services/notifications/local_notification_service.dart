@@ -30,7 +30,8 @@ class LocalNotificationService {
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
             AppConstants.channelId, AppConstants.channelName,
-            channelDescription: AppConstants.channelDescription),
+            channelDescription: AppConstants.channelDescription,
+            playSound: true),
       );
 
       await _notificationsPlugin.show(
