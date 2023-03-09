@@ -36,7 +36,9 @@ class MyApp extends StatelessWidget {
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
 
     // ignore: prefer_const_constructors
+
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: "/login",
       routes: {
         "/": (context) => const HomeView(),

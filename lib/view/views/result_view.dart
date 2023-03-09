@@ -784,7 +784,7 @@ class _ResultViewState extends State<ResultView> {
     isRefresh = true;
     AppUtils.onLoading(context, "Refreshing");
     String url = AppUtils.getUrl(
-        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&student_id=${widget.studentId}");
+        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.studentId}");
     Provider.of<BaseListViewModel>(context, listen: false)
         .get(baseModel: ExamModel(), url: url);
     baseListViewModel = Provider.of<BaseListViewModel>(context, listen: false);

@@ -1,9 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
-import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
@@ -16,6 +14,7 @@ import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/app_color.dart';
 
 class HomeView extends StatefulWidget {
@@ -106,44 +105,49 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Container _footer() {
-    return Container(
-      // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Stack(
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 6.0),
-            height: 36.0,
-            decoration: BoxDecoration(
-              color: AppColor.buttonColor,
-              borderRadius: BorderRadius.circular(10.0),
-              //boxShadow: [BoxShadow(blurRadius: 12.0)],
-            ),
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
-              child: Text(
-                'Helpline No. 0987654321',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 2.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              //boxShadow: [BoxShadow(blurRadius: 12.0)],
-              border: Border.all(color: AppColor.buttonColor, width: 2),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(
-                Icons.wifi_calling_3,
+  InkWell _footer() {
+    return InkWell(
+      onTap: () {
+        launch("tel:0987654321");
+      },
+      child: Container(
+        // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 6.0),
+              height: 36.0,
+              decoration: BoxDecoration(
                 color: AppColor.buttonColor,
+                borderRadius: BorderRadius.circular(10.0),
+                //boxShadow: [BoxShadow(blurRadius: 12.0)],
+              ),
+              child: const Padding(
+                padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
+                child: Text(
+                  'Helpline No. 0987654321',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.only(top: 2.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                //boxShadow: [BoxShadow(blurRadius: 12.0)],
+                border: Border.all(color: AppColor.buttonColor, width: 2),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Icon(
+                  Icons.wifi_calling_3,
+                  color: AppColor.buttonColor,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

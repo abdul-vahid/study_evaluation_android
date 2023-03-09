@@ -44,10 +44,10 @@ class _LearderbordViewState extends State<LearderbordView> {
           backgroundColor: AppColor.appBarColor,
         ),
         body: ListView(
-            padding: const EdgeInsets.all(8), children: _getFollowUsWidgets));
+            padding: const EdgeInsets.all(8), children: _getLeaderBordWidgets));
   }
 
-  List<Widget> get _getFollowUsWidgets {
+  List<Widget> get _getLeaderBordWidgets {
     List<Widget> widgets = [];
 
     for (var viewModel in baseListViewModel!.viewModels) {
