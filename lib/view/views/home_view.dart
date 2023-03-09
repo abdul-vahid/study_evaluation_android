@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
   var ctime;
   @override
   void initState() {
-    _notificationHandler();
+    //_notificationHandler();
 
     categoriesVM = widget.categoriesVM;
     slidersVM = widget.slidersVM;
