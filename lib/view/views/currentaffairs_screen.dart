@@ -97,8 +97,21 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
     currentAffairsListVM.viewModels.forEach((key, viewModels) {
       List<Widget> videoBottomSheetWidgets = [];
       videoBottomSheetWidgets.add(Container(
-        child: Text(key),
-      ));
+          child: Padding(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            key,
+            style: const TextStyle(
+              // fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+      )));
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
 

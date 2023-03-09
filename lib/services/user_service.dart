@@ -65,7 +65,7 @@ class UserService {
     var token = await AppUtils.getToken();
     var body = jsonEncode(requestData);
     print('body@@ ${body}');
-    final responseJsonData = await _apiService.postResponse(url, body, token!);
+    final responseJsonData = await _apiService.postResponse(url, body, '');
     //String accessToken = responseJsonData['access_token'];
     if (AppConstants.kDebugMode) {
       print("responseJsonData: $responseJsonData");

@@ -276,6 +276,23 @@ class _ResultViewState extends State<ResultView> {
     return Colors.white;
   }
 
+  Color getSelectedButtonTextColor(String label) {
+    if (label.toLowerCase().contains("all") && _selectedFilter == "all") {
+      return Colors.white;
+    } else if (label.toLowerCase().contains("correct") &&
+        _selectedFilter == "correct") {
+      return Colors.white;
+    } else if (label.toLowerCase().contains("wrong") &&
+        _selectedFilter == "wrong") {
+      return Colors.white;
+    } else if (label.toLowerCase().contains("skipped") &&
+        _selectedFilter == "skipped") {
+      return Colors.white;
+    }
+
+    return AppColor.textColor;
+  }
+
   Padding getButtons(btnLabel,
       {required void Function()? onPressed, buttonStyle, textStyle}) {
     return Padding(
@@ -290,7 +307,7 @@ class _ResultViewState extends State<ResultView> {
             onPressed: onPressed,
             child: Text(
               btnLabel,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: getSelectedButtonTextColor(btnLabel)),
             )));
   }
 

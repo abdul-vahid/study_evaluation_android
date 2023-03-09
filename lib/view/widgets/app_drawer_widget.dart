@@ -17,6 +17,7 @@ import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:study_evaluation/view/views/notification_view.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
@@ -297,7 +298,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                 color: AppColor.navBarIconColor,
               ),
               title: Text(
-                'Terms & Conditions ',
+                'Terms & Conditions',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -307,6 +308,25 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const TermsConditionsView()),
+                );
+              }),
+          Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.notification_add,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'Notification',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationView()),
                 );
               }),
           Divider(),
