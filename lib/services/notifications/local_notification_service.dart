@@ -1,6 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+
+import '../../utils/app_utils.dart';
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -49,5 +52,23 @@ class LocalNotificationService {
     } on Exception catch (e) {
       print(e);
     }
+  }
+
+  static final APIService _apiService = APIService();
+  Future<dynamic> fetch({String userId = "152"}) async {
+    //Map<String, String> requestData = {'email': username, 'password': password};
+    String url = AppConstants.baseUrl + AppConstants.notificationAPIPath;
+    if (userId.isNotEmpty) {
+      url += "/$userId";
+    }
+    //print("URL: ${url.toString()}");
+    var token = await AppUtils.getToken();
+    final responseJsonData = await _apiService.getResponse(url, token!);
+    String accessToken = responseJsonData['access_token'];
+    if (AppConstants.kDebugMode) {
+      print("responseJsonData: order $responseJsonData");
+    }
+    print("Access Token: $responseJsonData");
+    return responseJsonData;
   }
 }

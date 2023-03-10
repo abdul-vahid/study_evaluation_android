@@ -326,7 +326,13 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NotificationView()),
+                      builder: (context) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (_) => BaseListViewModel())
+                            ],
+                            child: const NotificationView(),
+                          )),
                 );
               }),
           Divider(),

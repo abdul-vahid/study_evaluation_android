@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   UserListViewModel userListViewModel = UserListViewModel();
   int _selectedIndex = 0;
+  int counter = 0;
+
   CategoryListViewModel? categoriesVM;
   SliderImageListViewModel? slidersVM;
   FeedbackListViewModel? feedbacksVM;
@@ -51,9 +55,46 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       drawer: const AppDrawerWidget(),
       appBar: AppBar(
-        backgroundColor: AppColor.appBarColor,
-        centerTitle: true,
-        title: const Text('Home'),
+        title: Center(child: Text("Home")),
+        actions: <Widget>[
+          // Using Stack to show Notification Badge
+          Stack(
+            children: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () {
+                    setState(() {
+                      counter = 3;
+                    });
+                  }),
+              counter != 0
+                  ? Positioned(
+                      right: 11,
+                      top: 11,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
+                        child: Text(
+                          '$counter',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
+        ],
       ),
       body: _getBody(context, homeController),
     );
