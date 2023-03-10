@@ -17,7 +17,7 @@ import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:study_evaluation/view/views/notification_view.dart';
+import 'package:study_evaluation/view/views/notifications_view.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
@@ -27,6 +27,7 @@ import '../../core/models/base_list_view_model.dart';
 import '../../utils/app_constants.dart';
 import '../../view_models/feedback_list_vm.dart';
 import '../../view_models/follow_us_list_vm.dart';
+import '../../view_models/notifications_list_vm.dart';
 import '../../view_models/slider_image_list_vm.dart';
 import '../views/feedback_view.dart';
 import '../views/feedbackalertdialog.dart';
@@ -329,7 +330,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                       builder: (context) => MultiProvider(
                             providers: [
                               ChangeNotifierProvider(
-                                  create: (_) => BaseListViewModel())
+                                  create: (_) => NotificationsListViewModel())
                             ],
                             child: const NotificationView(),
                           )),
