@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/models/package_model/package_model.dart';
 import 'package:study_evaluation/models/package_model/result_model.dart';
@@ -12,9 +11,9 @@ import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view/views/result_view_old.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
+import 'package:study_evaluation/view_models/result_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageDetailView extends StatefulWidget {
@@ -214,7 +213,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               MultiProvider(
                   providers: [
                     ChangeNotifierProvider(
-                      create: (_) => BaseListViewModel(),
+                      create: (_) => ResultListViewModel(),
                     )
                   ],
                   child: ResultView(
@@ -251,7 +250,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       MaterialPageRoute(
           builder: (context) => MultiProvider(
                   providers: [
-                    ChangeNotifierProvider(create: (_) => BaseListViewModel())
+                    ChangeNotifierProvider(create: (_) => ExamListViewModel())
                   ],
                   child: ExamView(
                     examId: testSeries.examId!,

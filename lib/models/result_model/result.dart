@@ -6,14 +6,15 @@ class Result {
   String? status;
   String? remainingExamTime;
   String? id;
+  String? userId;
 
-  Result({
-    this.examId,
-    this.studentId,
-    this.status,
-    this.remainingExamTime,
-    this.id,
-  });
+  Result(
+      {this.examId,
+      this.studentId,
+      this.status,
+      this.remainingExamTime,
+      this.id,
+      this.userId});
 
   factory Result.fromMap(Map<String, dynamic> data) => Result(
         examId: data['exam_id'] as String?,
@@ -28,6 +29,7 @@ class Result {
         'student_id': studentId,
         'status': status,
         'remaining_exam_time': remainingExamTime,
+        'user_id': userId,
         'id': id,
       };
 

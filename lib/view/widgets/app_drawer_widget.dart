@@ -21,6 +21,7 @@ import 'package:study_evaluation/view/views/notification_view.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 import '../../core/models/base_list_view_model.dart';
@@ -169,7 +170,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                     builder: (context) => MultiProvider(
                           providers: [
                             ChangeNotifierProvider(
-                                create: (_) => BaseListViewModel())
+                                create: (_) => OrderListViewModel())
                           ],
                           child: const MyOrderView(),
                         )),

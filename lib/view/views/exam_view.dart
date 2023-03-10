@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
@@ -58,12 +59,7 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   void initState() {
-    String url = AppUtils.getUrl(
-        "${AppConstants.questionAnswerAPIPath}?exam_id=${widget.examId}&student_id=${widget.studentId}");
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .get(baseModel: ExamModel(), url: url);
-    /* Provider.of<ExamListViewModel>(context, listen: false).fetchQuestionAnswer(
-        examId: widget.examId, studentId: widget.studentId); */
+    Provider.of<ExamListViewModel>(context, listen: false).fetch(widget.examId);
     timeUP = "";
     super.initState();
   }
@@ -74,7 +70,7 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    baseListViewModel = Provider.of<ExamListViewModel>(context);
 
     return WillPopScope(
       onWillPop: showExitPopup,
@@ -423,10 +419,14 @@ class _ExamViewState extends State<ExamView> {
 
   void _onPressedAlert(resultId, status) {
     Navigator.of(context).pop();
-    if (status == ResultStatus.inProgress) {
+    Navigator.of(context).pop("reload");
+    /*  if (status == ResultStatus.inProgress ||
+        (widget.reAttempt != null && (widget.reAttempt)!)) {
       Navigator.of(context).pop("reload");
+      print("reload");
       return;
-    }
+    } */
+    return;
     AppUtils.viewPush(
         context,
         MultiProvider(providers: [

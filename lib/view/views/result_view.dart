@@ -10,6 +10,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
+import 'package:study_evaluation/view_models/result_list_vm.dart';
 
 class ResultView extends StatefulWidget {
   final String resultId;
@@ -54,18 +55,8 @@ class _ResultViewState extends State<ResultView> {
   bool isRefresh = false;
   @override
   void initState() {
-    String url = AppUtils.getUrl(
-        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.studentId}");
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .get(baseModel: ExamModel(), url: url);
-    timeUP = "";
-    /* Timer(Duration(seconds: 2), () {
-      setState(() {
-        AppUtils.printDebug("INit state");
-        title = "Test 123";
-        //filtersMap = {};
-      });
-    }); */
+    Provider.of<ResultListViewModel>(context, listen: false)
+        .fetch(widget.resultId);
 
     super.initState();
   }
@@ -76,7 +67,7 @@ class _ResultViewState extends State<ResultView> {
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    baseListViewModel = Provider.of<ResultListViewModel>(context);
 
     return Scaffold(
         drawer: AppDrawerWidget(),

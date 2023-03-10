@@ -13,37 +13,20 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 class ExamListViewModel extends BaseListViewModel {
   var resultModels = [];
-  /* Future<void> fetchQuestionAnswer(
-      {required String examId, String? studentId}) async {
-    try {
-      final jsonObject = await ExamService()
-          .fetchQuestionAnswer(examId: examId, studentId: studentId);
-      final records = jsonObject["records"];
-      print(records);
-      var modelMap = records.map((item) => ExamModel.fromMap(item)).toList();
-      viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
-      status = "Completed";
-    } on AppException catch (error) {
-      status = "Error";
-      viewModels.add(BaseViewModel(model: ExamModel(appException: error)));
-    } on Exception catch (e, stacktrace) {
-      status = "Error";
-      viewModels.add(BaseViewModel(model: ExamModel(error: e)));
-    } catch (e, stacktrace) {
-      status = "Error";
-      print(e);
-      print(stacktrace);
-      //viewModels.add(BaseViewModel(model: ExamModel(error: e as Exception)));
-    }
+  Future<void> fetch(examId) async {
+    var userModel =
+        AppUtils.getSessionUser(await SharedPreferences.getInstance());
 
-    notifyListeners();
-  } */
+    String url = AppUtils.getUrl(
+        "${AppConstants.questionAnswerAPIPath}?exam_id=$examId&user_id=${userModel.id}");
+    get(baseModel: ExamModel(), url: url);
+  }
 
   Future<dynamic> submitExam(ExamModel examModel,
       {String status = "Completed"}) async {
     print("submit exam list");
     var prefs = await SharedPreferences.getInstance();
-    var studentId = AppUtils.getSessionUser(prefs).studentId;
+    var userId = AppUtils.getSessionUser(prefs).id;
     List<ResultLineItem> resultLineItems = [];
     //String status = "Completed";
 
@@ -57,7 +40,7 @@ class ExamListViewModel extends BaseListViewModel {
     Result result = Result(
         id: examModel.exam?.resultId,
         examId: examModel.exam?.id,
-        studentId: studentId,
+        userId: userId,
         status: status,
         remainingExamTime: examModel.exam?.remainingExamTime);
     ResultModel resultModel =

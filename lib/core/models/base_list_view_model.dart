@@ -36,7 +36,7 @@ class BaseListViewModel extends ChangeNotifier {
       //viewModels.add(BaseViewModel(model: ExamModel(error: e as Exception)));
     }
     print("View Models REsult");
-    print(jsonEncode(viewModels[0].model));
+    //print(jsonEncode(viewModels[0].model));
     notifyListeners();
   }
 
