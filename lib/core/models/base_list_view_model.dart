@@ -55,7 +55,7 @@ class BaseListViewModel extends ChangeNotifier {
     try {
       final jsonObject = await BaseService().post(url: url, body: body);
       final records = jsonObject[jsonKey];
-
+      print('records$records');
       var modelMap = records.map((item) => baseModel.fromMap(item)).toList();
       viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
       status = "Completed";

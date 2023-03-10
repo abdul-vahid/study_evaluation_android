@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
 import '../../core/models/base_list_view_model.dart';
 import '../../models/notification_model.dart';
+import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
@@ -20,20 +23,16 @@ class NotificationView extends StatefulWidget {
 
 class _NotificationViewState extends State<NotificationView> {
   BaseListViewModel? baseListViewModel;
+  UserModel? userModel;
 
   @override
   void initState() {
-    super.initState();
-    String url =
-        AppUtils.getUrl("${AppConstants.notificationAPIPath}?user_id=169");
-    print('url@@@$url');
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .postData(baseModel: NotificationModel(), url: url, body: '');
+    Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    baseListViewModel = Provider.of<NotificationsListViewModel>(context);
     var a = baseListViewModel!.viewModels.length;
     print('@@@a$a');
     print('@@@$baseListViewModel');
@@ -88,7 +87,7 @@ class _NotificationViewState extends State<NotificationView> {
                 ),
                 subtitle: ReadMoreText(
                   NotificationModel.message,
-                  trimLines: 1,
+                  trimLines: 2,
                   colorClickableText: Colors.pink,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read more',
