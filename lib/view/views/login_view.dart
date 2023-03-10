@@ -157,7 +157,8 @@ class _LoginViewState extends State<LoginView> {
                         create: (_) => SliderImageListViewModel()),
                     ChangeNotifierProvider(
                         create: (_) => FeedbackListViewModel()),
-                    ChangeNotifierProvider(create: (_) => BaseListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => ConfigurationListViewModel()),
                   ],
                   child: const HomeMainView(),
                 )),

@@ -35,8 +35,7 @@ class _HomeMainViewState extends State<HomeMainView> {
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
     Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
     Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .get(baseModel: ConfigurationModel(), url: url);
+    Provider.of<ConfigurationListViewModel>(context, listen: false).fetch();
   }
 
   void _onItemTapped(int index) {
@@ -50,7 +49,8 @@ class _HomeMainViewState extends State<HomeMainView> {
     final categoriesVM = Provider.of<CategoryListViewModel>(context);
     final slidersVM = Provider.of<SliderImageListViewModel>(context);
     final feedbacksVM = Provider.of<FeedbackListViewModel>(context);
-    final configListViewModel = Provider.of<BaseListViewModel>(context);
+    final configListViewModel =
+        Provider.of<ConfigurationListViewModel>(context);
     _widgetOptions = <Widget>[
       HomeView(
           categoriesVM: categoriesVM,

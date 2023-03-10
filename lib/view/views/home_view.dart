@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
@@ -14,6 +15,7 @@ import 'package:study_evaluation/view/views/motivation.dart';
 import 'package:study_evaluation/view/views/testseries.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
@@ -47,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
   CategoryListViewModel? categoriesVM;
   SliderImageListViewModel? slidersVM;
   FeedbackListViewModel? feedbacksVM;
-  FeedbackListViewModel? configListViewModel;
+  ConfigurationListViewModel? configListViewModel;
   var ctime;
   @override
   void initState() {
@@ -55,20 +57,22 @@ class _HomeViewState extends State<HomeView> {
     categoriesVM = widget.categoriesVM;
     slidersVM = widget.slidersVM;
     feedbacksVM = widget.feedbacksVM;
-    /* configListViewModel = widget.configListViewModel;
-    if ((configListViewModel != null &&
-        (configListViewModel?.viewModels.isNotEmpty)!)) {
-      ConfigurationModel configModel = configListViewModel?.viewModels[0];
-      AppUtils.printDebug(jsonEncode(configModel));
-      if (!configModel.isError) {
-        helpLineNumber = (configModel.helpLineNumber)!;
-      }
-    } */
+    configListViewModel = widget.configListViewModel;
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if ((configListViewModel != null &&
+        (configListViewModel?.viewModels.isNotEmpty)!)) {
+      ConfigurationModel configModel =
+          configListViewModel?.viewModels[0].model as ConfigurationModel;
+      AppUtils.printDebug(jsonEncode(configModel));
+      if (!configModel.isError) {
+        helpLineNumber = (configModel.helpLineNumber)!;
+      }
+    }
     HomeController homeController = HomeController(context, feedbacksVM!);
     return Scaffold(
       drawer: const AppDrawerWidget(),
