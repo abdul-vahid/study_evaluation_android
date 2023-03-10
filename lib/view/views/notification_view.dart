@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,8 @@ import '../../models/notification_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:readmore/readmore.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({super.key});
@@ -18,7 +20,6 @@ class NotificationView extends StatefulWidget {
 
 class _NotificationViewState extends State<NotificationView> {
   BaseListViewModel? baseListViewModel;
-  bool _customTileExpanded = false;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _NotificationViewState extends State<NotificationView> {
     List<Widget> widgets = [];
 
     for (var viewModel in baseListViewModel!.viewModels) {
-      widgets.add(getExpansionTile(viewModel.model));
+      widgets.add(getSlidable(viewModel.model));
 
       print('viewModel$viewModel');
       // viewModel.model
@@ -63,30 +64,48 @@ class _NotificationViewState extends State<NotificationView> {
     return widgets;
   }
 
-  ExpansionTile getExpansionTile(NotificationModel) {
-    return ExpansionTile(
-      title: Text(
-        NotificationModel.title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: const Text('Custom expansion arrow icon'),
-      trailing: Icon(
-        _customTileExpanded
-            ? Icons.arrow_drop_down_circle
-            : Icons.arrow_drop_down,
-      ),
-      children: <Widget>[
-        ListTile(
-          title: Text(
-            NotificationModel.message,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+  Slidable getSlidable(NotificationModel) {
+    return Slidable(
+        // Specify a key if the Slidable is dismissible.
+        key: const ValueKey(0),
+        endActionPane: const ActionPane(
+          motion: ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: doNothing,
+              backgroundColor: Color(0xFFFE4A49),
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+            SlidableAction(
+              onPressed: doNothing,
+              backgroundColor: Color(0xFF0392CF),
+              foregroundColor: Colors.white,
+              icon: Icons.save,
+              label: 'Save',
+            ),
+          ],
         ),
-      ],
-      onExpansionChanged: (bool expanded) {
-        setState(() => _customTileExpanded = expanded);
-      },
-    );
+
+        // The child of the Slidable is what the user sees when the
+        // component is not dragged.
+        child: Card(
+            child: ListTile(
+                title: Text(
+                  NotificationModel.title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: ReadMoreText(
+                  NotificationModel.message,
+                  trimLines: 1,
+                  colorClickableText: Colors.pink,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Show more',
+                  trimExpandedText: 'Show less',
+                  moreStyle:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ))));
   }
 
   Card getCard(NotificationModel) {
@@ -113,6 +132,9 @@ class _NotificationViewState extends State<NotificationView> {
     ));
   }
 }
+
+void doNothing(BuildContext context) {}
+
 
 //   @override
 //   Widget build(BuildContext context) {
