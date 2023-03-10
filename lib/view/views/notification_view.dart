@@ -78,18 +78,8 @@ class _NotificationViewState extends State<NotificationView> {
               icon: Icons.delete,
               label: 'Delete',
             ),
-            SlidableAction(
-              onPressed: doNothing,
-              backgroundColor: Color(0xFF0392CF),
-              foregroundColor: Colors.white,
-              icon: Icons.save,
-              label: 'Save',
-            ),
           ],
         ),
-
-        // The child of the Slidable is what the user sees when the
-        // component is not dragged.
         child: Card(
             child: ListTile(
                 title: Text(
@@ -101,7 +91,7 @@ class _NotificationViewState extends State<NotificationView> {
                   trimLines: 1,
                   colorClickableText: Colors.pink,
                   trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Show more',
+                  trimCollapsedText: 'Read more',
                   trimExpandedText: 'Show less',
                   moreStyle:
                       TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
