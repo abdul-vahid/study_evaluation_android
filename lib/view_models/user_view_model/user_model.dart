@@ -20,7 +20,9 @@ class UserModel extends BaseModel {
       this.mobileNo,
       this.status,
       this.password,
-      this.userName});
+      this.userName,
+      super.appException,
+      super.error});
 
   factory UserModel.fromMap(Map<String, dynamic> data) => UserModel(
         id: data['id'] as String?,

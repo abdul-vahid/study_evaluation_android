@@ -12,6 +12,7 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
   static bool isLoggedout = false;
@@ -287,5 +288,13 @@ class AppUtils {
     if (isLoggedout) {
       logout(context);
     }
+  }
+
+  static Future<void> makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 }

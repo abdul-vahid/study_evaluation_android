@@ -6,7 +6,8 @@ class ConfigurationModel extends BaseModel {
   String? id;
   String? helpLineNumber;
 
-  ConfigurationModel({this.id, this.helpLineNumber});
+  ConfigurationModel(
+      {this.id, this.helpLineNumber, super.appException, super.error});
 
   factory ConfigurationModel.fromMap(Map<String, dynamic> data) {
     return ConfigurationModel(

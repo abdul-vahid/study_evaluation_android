@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
+import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
@@ -23,9 +26,14 @@ class HomeView extends StatefulWidget {
   final categoriesVM;
   final slidersVM;
   final feedbacksVM;
+  final configListViewModel;
 
   const HomeView(
-      {super.key, this.categoriesVM, this.slidersVM, this.feedbacksVM});
+      {super.key,
+      this.categoriesVM,
+      this.slidersVM,
+      this.feedbacksVM,
+      this.configListViewModel});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -35,10 +43,11 @@ class _HomeViewState extends State<HomeView> {
   UserListViewModel userListViewModel = UserListViewModel();
   int _selectedIndex = 0;
   int counter = 0;
-
+  String helpLineNumber = "";
   CategoryListViewModel? categoriesVM;
   SliderImageListViewModel? slidersVM;
   FeedbackListViewModel? feedbacksVM;
+  FeedbackListViewModel? configListViewModel;
   var ctime;
   @override
   void initState() {
@@ -46,6 +55,15 @@ class _HomeViewState extends State<HomeView> {
     categoriesVM = widget.categoriesVM;
     slidersVM = widget.slidersVM;
     feedbacksVM = widget.feedbacksVM;
+    /* configListViewModel = widget.configListViewModel;
+    if ((configListViewModel != null &&
+        (configListViewModel?.viewModels.isNotEmpty)!)) {
+      ConfigurationModel configModel = configListViewModel?.viewModels[0];
+      AppUtils.printDebug(jsonEncode(configModel));
+      if (!configModel.isError) {
+        helpLineNumber = (configModel.helpLineNumber)!;
+      }
+    } */
     super.initState();
   }
 
@@ -147,9 +165,15 @@ class _HomeViewState extends State<HomeView> {
   }
 
   InkWell _footer() {
+    return _getHelpLineNumberWidget();
+  }
+
+  InkWell _getHelpLineNumberWidget() {
     return InkWell(
       onTap: () {
-        launch("tel:0987654321");
+        if (helpLineNumber.isNotEmpty) {
+          AppUtils.makePhoneCall(helpLineNumber);
+        }
       },
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -163,10 +187,10 @@ class _HomeViewState extends State<HomeView> {
                 borderRadius: BorderRadius.circular(10.0),
                 //boxShadow: [BoxShadow(blurRadius: 12.0)],
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
                 child: Text(
-                  'Helpline No. 0987654321',
+                  'Helpline No. $helpLineNumber',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

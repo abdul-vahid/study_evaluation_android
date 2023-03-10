@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/forgetpassword_view.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
@@ -155,6 +157,7 @@ class _LoginViewState extends State<LoginView> {
                         create: (_) => SliderImageListViewModel()),
                     ChangeNotifierProvider(
                         create: (_) => FeedbackListViewModel()),
+                    ChangeNotifierProvider(create: (_) => BaseListViewModel()),
                   ],
                   child: const HomeMainView(),
                 )),

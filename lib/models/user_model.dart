@@ -23,25 +23,26 @@ class UserModel extends BaseModel {
   String? state;
   String? roleName;
 
-  UserModel({
-    this.id,
-    this.roleId,
-    this.name,
-    this.email,
-    this.mobileNo,
-    this.status,
-    this.password,
-    this.userName,
-    this.profileUrl,
-    this.studentId,
-    this.firstName,
-    this.lastName,
-    this.dob,
-    this.gender,
-    this.city,
-    this.state,
-    this.roleName,
-  });
+  UserModel(
+      {this.id,
+      this.roleId,
+      this.name,
+      this.email,
+      this.mobileNo,
+      this.status,
+      this.password,
+      this.userName,
+      this.profileUrl,
+      this.studentId,
+      this.firstName,
+      this.lastName,
+      this.dob,
+      this.gender,
+      this.city,
+      this.state,
+      this.roleName,
+      super.appException,
+      super.error});
 
   factory UserModel.fromMap(Map<String, dynamic> data) => UserModel(
         id: data['id'] as String?,

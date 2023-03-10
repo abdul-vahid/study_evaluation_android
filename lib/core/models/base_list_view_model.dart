@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_model.dart';
@@ -21,17 +23,20 @@ class BaseListViewModel extends ChangeNotifier {
       status = "Completed";
     } on AppException catch (error) {
       status = "Error";
-      viewModels.add(BaseViewModel(model: BaseModel(appException: error)));
+      viewModels.add(
+          BaseViewModel(model: BaseModel(appException: error, error: null)));
     } on Exception catch (e, stacktrace) {
       status = "Error";
-      viewModels.add(BaseViewModel(model: BaseModel(error: e)));
+      viewModels
+          .add(BaseViewModel(model: BaseModel(appException: null, error: e)));
     } catch (e, stacktrace) {
       status = "Error";
       print(e);
       print(stacktrace);
       //viewModels.add(BaseViewModel(model: ExamModel(error: e as Exception)));
     }
-
+    print("View Models REsult");
+    print(viewModels);
     notifyListeners();
   }
 
@@ -56,10 +61,12 @@ class BaseListViewModel extends ChangeNotifier {
       status = "Completed";
     } on AppException catch (error) {
       status = "Error";
-      viewModels.add(BaseViewModel(model: BaseModel(appException: error)));
+      viewModels.add(
+          BaseViewModel(model: BaseModel(appException: error, error: null)));
     } on Exception catch (e, stacktrace) {
       status = "Error";
-      viewModels.add(BaseViewModel(model: BaseModel(error: e)));
+      viewModels
+          .add(BaseViewModel(model: BaseModel(appException: null, error: e)));
     } catch (e, stacktrace) {
       status = "Error";
       print(e);

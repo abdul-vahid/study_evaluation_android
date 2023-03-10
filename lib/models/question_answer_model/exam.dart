@@ -24,7 +24,9 @@ class Exam extends BaseModel {
       this.status,
       this.remainingExamTime,
       this.resultId,
-      this.result});
+      this.result,
+      super.appException,
+      super.error});
 
   factory Exam.fromMap(Map<String, dynamic> data) => Exam(
         id: data['id'] as String?,

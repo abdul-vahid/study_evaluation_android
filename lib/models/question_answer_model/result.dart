@@ -18,22 +18,23 @@ class Result extends BaseModel {
   String? accuracy;
   String? correctAnswers;
 
-  Result({
-    this.id,
-    this.examId,
-    this.studentId,
-    this.status,
-    this.isPrimary,
-    this.percentage,
-    this.totalMarks,
-    this.positiveMarking,
-    this.negativeMarking,
-    this.remainingExamTime,
-    this.averageTimeQuestion,
-    this.attempt,
-    this.accuracy,
-    this.correctAnswers,
-  });
+  Result(
+      {this.id,
+      this.examId,
+      this.studentId,
+      this.status,
+      this.isPrimary,
+      this.percentage,
+      this.totalMarks,
+      this.positiveMarking,
+      this.negativeMarking,
+      this.remainingExamTime,
+      this.averageTimeQuestion,
+      this.attempt,
+      this.accuracy,
+      this.correctAnswers,
+      super.appException,
+      super.error});
 
   factory Result.fromMap(Map<String, dynamic> data) => Result(
         id: data['id'] as String?,
