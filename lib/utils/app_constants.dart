@@ -87,7 +87,7 @@ abstract class AppConstants {
   static const String otpVerificationAPIPath = '/apis/verification';
   static const String resultAPIPath = '/apis/result';
   static const String changePasswordAPIPath = '/apis/auth/forget_password';
-  static const String orderAPIPath = '/apis/my_orders';
+  static const String orderAPIPath = '/apis/orders';
   static const String leaderboardAPIPath = '/apis/leaderboard';
   static const String configurationAPIPath = '/apis/configuration';
   static const String notificationAPIPath = '/apis/notified_user';

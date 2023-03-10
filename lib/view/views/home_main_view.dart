@@ -5,8 +5,10 @@ import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
+import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
+import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
@@ -30,12 +32,6 @@ class _HomeMainViewState extends State<HomeMainView> {
   @override
   void initState() {
     super.initState();
-    String url = AppUtils.getUrl(AppConstants.configurationAPIPath);
-
-    Provider.of<CategoryListViewModel>(context, listen: false).fetch();
-    Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
-    Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
-    Provider.of<ConfigurationListViewModel>(context, listen: false).fetch();
   }
 
   void _onItemTapped(int index) {
@@ -46,21 +42,7 @@ class _HomeMainViewState extends State<HomeMainView> {
 
   @override
   Widget build(BuildContext context) {
-    final categoriesVM = Provider.of<CategoryListViewModel>(context);
-    final slidersVM = Provider.of<SliderImageListViewModel>(context);
-    final feedbacksVM = Provider.of<FeedbackListViewModel>(context);
-    final configListViewModel =
-        Provider.of<ConfigurationListViewModel>(context);
-    _widgetOptions = <Widget>[
-      HomeView(
-          categoriesVM: categoriesVM,
-          slidersVM: slidersVM,
-          feedbacksVM: feedbacksVM,
-          configListViewModel: configListViewModel),
-      AboutUsScreen(),
-      const MyOrderView(),
-      const LearderbordView()
-    ];
+    _initTabs();
     return Scaffold(
       body: Center(
         child: _widgetOptions?.elementAt(_selectedIndex),
@@ -68,5 +50,19 @@ class _HomeMainViewState extends State<HomeMainView> {
       bottomNavigationBar: bottom_navi_widget
           .getBottomNavigation(_selectedIndex, onItemTap: _onItemTapped),
     );
+  }
+
+  void _initTabs(
+      /* CategoryListViewModel categoriesVM,
+      SliderImageListViewModel slidersVM,
+      FeedbackListViewModel feedbacksVM,
+      ConfigurationListViewModel configListViewModel */
+      ) {
+    _widgetOptions = <Widget>[
+      const HomeView(),
+      const CategoryListView(),
+      const MyOrderView(),
+      const ProfileView()
+    ];
   }
 }

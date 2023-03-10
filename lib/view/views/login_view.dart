@@ -12,6 +12,7 @@ import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
@@ -159,6 +160,9 @@ class _LoginViewState extends State<LoginView> {
                         create: (_) => FeedbackListViewModel()),
                     ChangeNotifierProvider(
                         create: (_) => ConfigurationListViewModel()),
+                    ChangeNotifierProvider(create: (_) => OrderListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => CategoryListViewModel()),
                   ],
                   child: const HomeMainView(),
                 )),

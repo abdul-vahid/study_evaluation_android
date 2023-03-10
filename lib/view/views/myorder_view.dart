@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
+
 import 'package:study_evaluation/view/views/package_detail_view.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
 
 import '../../models/order_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/enum.dart';
 import '../../view_models/package_list_vm.dart';
-import '../widgets/widget_utils.dart';
 
 class MyOrderView extends StatefulWidget {
   const MyOrderView({super.key});
@@ -23,15 +23,12 @@ class _MyOrderViewState extends State<MyOrderView> {
   @override
   void initState() {
     super.initState();
-    String url = AppUtils.getUrl("${AppConstants.orderAPIPath}?student_id=12");
-    print('url@@@$url');
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .get(baseModel: OrderModel(), url: url);
+    Provider.of<OrderListViewModel>(context, listen: false).fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    baseListViewModel = Provider.of<OrderListViewModel>(context);
     print('@@@$baseListViewModel');
     return Scaffold(
       appBar: AppBar(

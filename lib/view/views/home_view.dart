@@ -54,16 +54,24 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     NotificationUtil.initialize(context);
-    categoriesVM = widget.categoriesVM;
+    /* categoriesVM = widget.categoriesVM;
     slidersVM = widget.slidersVM;
     feedbacksVM = widget.feedbacksVM;
-    configListViewModel = widget.configListViewModel;
-
+    configListViewModel = widget.configListViewModel; */
+    Provider.of<CategoryListViewModel>(context, listen: false).fetch();
+    Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
+    Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
+    Provider.of<ConfigurationListViewModel>(context, listen: false).fetch();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    categoriesVM = Provider.of<CategoryListViewModel>(context);
+    slidersVM = Provider.of<SliderImageListViewModel>(context);
+    feedbacksVM = Provider.of<FeedbackListViewModel>(context);
+    configListViewModel = Provider.of<ConfigurationListViewModel>(context);
+
     if ((configListViewModel != null &&
         (configListViewModel?.viewModels.isNotEmpty)!)) {
       ConfigurationModel configModel =
