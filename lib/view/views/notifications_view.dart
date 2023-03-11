@@ -2,15 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
-
 import '../../core/models/base_list_view_model.dart';
-import '../../models/notification_model.dart';
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
-import '../../utils/app_constants.dart';
-import '../../utils/app_utils.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:readmore/readmore.dart';
 
@@ -24,49 +21,44 @@ class NotificationView extends StatefulWidget {
 class _NotificationViewState extends State<NotificationView> {
   BaseListViewModel? baseListViewModel;
   UserModel? userModel;
-
+  List<GlobalKey>? _keys;
   @override
   void initState() {
     Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     baseListViewModel = Provider.of<NotificationsListViewModel>(context);
-    var a = baseListViewModel!.viewModels.length;
-    print('@@@a$a');
-    print('@@@$baseListViewModel');
+    //var a = baseListViewModel!.viewModels.length;
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: const BackButton(color: Colors.white),
-          title: const Text("Notification"),
-          elevation: .1,
-          backgroundColor: AppColor.appBarColor,
-        ),
-        body: ListView(
-            padding: const EdgeInsets.all(8),
-            children: _getNotificationWidgets));
+      appBar: AppUtils.getAppbar("Notifications"),
+      body: ListView(
+          padding: const EdgeInsets.all(8), children: _getNotificationWidgets),
+      drawer: const AppDrawerWidget(),
+    );
   }
 
   List<Widget> get _getNotificationWidgets {
     List<Widget> widgets = [];
-
+    _keys = List.generate(
+        baseListViewModel!.viewModels.length, (index) => GlobalKey());
+    int index = 0;
+    setState(() {
+      AppUtils.notificationCount = baseListViewModel!.viewModels.length;
+    });
     for (var viewModel in baseListViewModel!.viewModels) {
-      widgets.add(getSlidable(viewModel.model));
-
-      print('viewModel$viewModel');
-      // viewModel.model
-      print('viewModel.model@@ ${viewModel.model}');
+      widgets.add(getSlidable(viewModel.model, index++));
     }
 
     return widgets;
   }
 
-  Slidable getSlidable(NotificationModel) {
+  Slidable getSlidable(notificationModel, index) {
     return Slidable(
         // Specify a key if the Slidable is dismissible.
-        key: const ValueKey(0),
+        key: _keys?[index],
         endActionPane: const ActionPane(
           motion: ScrollMotion(),
           children: [
@@ -79,22 +71,35 @@ class _NotificationViewState extends State<NotificationView> {
             ),
           ],
         ),
-        child: Card(
-            child: ListTile(
-                title: Text(
-                  NotificationModel.title,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: ReadMoreText(
-                  NotificationModel.message,
-                  trimLines: 2,
-                  colorClickableText: Colors.pink,
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Read more',
-                  trimExpandedText: 'Show less',
-                  moreStyle:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ))));
+        child: _getCard(notificationModel));
+  }
+
+  Card _getCard(notificationModel) {
+    return Card(
+        child: ListTile(
+            title: Text(
+              notificationModel.title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: ReadMoreText(
+              notificationModel.message,
+              trimLines: 2,
+              colorClickableText: Colors.pink,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: 'Read more...',
+              trimExpandedText: '<<<Show less',
+              moreStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.appBarColor),
+              lessStyle: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.appBarColor),
+              callback: (val) {
+                print("ReadMoreText $val");
+              },
+            )));
   }
 
   Card getCard(NotificationModel) {

@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_new
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,58 +97,57 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _loadProfileData();
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: const BackButton(color: Colors.white),
-          title: const Text('My Profile'),
-          elevation: .1,
-          backgroundColor: AppColor.appBarColor,
-        ),
-        body: SingleChildScrollView(
-            child: Column(children: [
-          Form(
-            key: _feedbackFormKey,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                getTextField(ProfileConstants.firstNameLabel,
-                    ProfileConstants.firstNameHint, _firstNameController),
-                getTextField(ProfileConstants.lastNameLabel,
-                    ProfileConstants.lastNameHint, _lastNameController),
-                getTextField(ProfileConstants.mobileLabel,
-                    ProfileConstants.mobileHint, _mobileController,
-                    validator: validatePhone),
-                getDropdown(ProfileConstants.genderLabel,
-                    ProfileConstants.genderHint, _genderController),
-                getDateTextField(ProfileConstants.dobLabel,
-                    ProfileConstants.dobHint, _dobController),
-                getDropdownState(ProfileConstants.stateLabel,
-                    ProfileConstants.stateHint, _stateController),
-                getTextField(ProfileConstants.cityLabel,
-                    ProfileConstants.cityHint, _cityController),
-                getButton()
-              ],
+        appBar: AppUtils.getAppbar("Edit Profile",
+            leading: const BackButton(
+              color: Colors.white,
+            )),
+        body: _getBody());
+  }
+
+  SingleChildScrollView _getBody() {
+    return SingleChildScrollView(
+        child: Column(children: [
+      Form(
+        key: _feedbackFormKey,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          )
-        ])));
+            getTextField(ProfileConstants.firstNameLabel,
+                ProfileConstants.firstNameHint, _firstNameController),
+            getTextField(ProfileConstants.lastNameLabel,
+                ProfileConstants.lastNameHint, _lastNameController),
+            getTextField(ProfileConstants.mobileLabel,
+                ProfileConstants.mobileHint, _mobileController,
+                validator: validatePhone),
+            getDropdown(ProfileConstants.genderLabel,
+                ProfileConstants.genderHint, _genderController),
+            getDateTextField(ProfileConstants.dobLabel,
+                ProfileConstants.dobHint, _dobController),
+            getDropdownState(ProfileConstants.stateLabel,
+                ProfileConstants.stateHint, _stateController),
+            getTextField(ProfileConstants.cityLabel, ProfileConstants.cityHint,
+                _cityController),
+            getButton()
+          ],
+        ),
+      )
+    ]));
   }
 
   Padding getButton() {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -177,10 +177,6 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   void _save() {
-    print('@@mobileController${_mobileController.text}');
-    print('@@userModel${(userModel?.mobileNo)!}');
-
-    // print('@@@123${resrponse}');
     if (_mobileController.text != (userModel?.mobileNo)!) {
       _displayDialog(context).then((value) {
         if (value == "update_user") {
@@ -201,13 +197,25 @@ class _EditProfileViewState extends State<EditProfileView> {
     userModel?.state = _selectedState;
     userModel?.gender = _selectedGender;
     AppUtils.onLoading(context, "Saving...");
-    UserListViewModel().updateStudentProfile(userModel!).then((value) {
-      print("success");
-      Navigator.pop(context);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const ProfileView()));
-    }).catchError((error) {
-      AppUtils.onError(context, error);
+    UserListViewModel()
+        .updateStudentProfile(userModel!)
+        .then(_onSuccess)
+        .catchError(_onError);
+  }
+
+  _onError(error, stacktrace) {
+    AppUtils.onError(context, error);
+  }
+
+  FutureOr<void> _onSuccess(value) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs
+          .setString(SharedPrefsConstants.userKey, userModel!.toJson())
+          .then((value) {
+        Navigator.pop(context);
+        AppUtils.launchTab(context,
+            selectedIndex: HomeTabsOptions.profile.index);
+      });
     });
   }
 
@@ -229,6 +237,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           ),
           const SizedBox(height: 8),
           TextFormField(
+            readOnly: true,
             controller: contorller,
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(
@@ -237,7 +246,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 color: AppColor.buttonColor,
               ),
               hintText: text,
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
             ), //editing controller of this TextField
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
@@ -253,8 +262,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                   contorller.text =
                       formattedDate; //set output date to TextField value.
                 });
-              } else {
-                print("Date is not selected");
               }
             },
           ),

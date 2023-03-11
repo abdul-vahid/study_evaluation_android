@@ -8,6 +8,7 @@ import 'package:study_evaluation/view/views/category_list_view.dart';
 
 import 'package:study_evaluation/view/views/home_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 
 /* Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   LocalNotificationService.initialize();
+
+  FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   runApp(MyApp());
 }
 

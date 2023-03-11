@@ -131,14 +131,7 @@ class _LoginViewState extends State<LoginView> {
       _userController?.login(_userName!, _password!).then((records) {
         Navigator.pop(context);
         if (records.isNotEmpty) {
-          /* Navigator.pushReplacementNamed(context, "/",
-              arguments: MultiProvider(providers: [
-                ChangeNotifierProvider(create: (_) => CategoryListViewModel()),
-                ChangeNotifierProvider(
-                    create: (_) => SliderImageListViewModel()),
-                ChangeNotifierProvider(create: (_) => FeedbackListViewModel())
-              ])); */
-          _pushHomePage();
+          AppUtils.launchTab(context);
         }
       }).catchError((error) {
         Navigator.pop(context);
@@ -146,30 +139,5 @@ class _LoginViewState extends State<LoginView> {
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
     }
-  }
-
-  void _pushHomePage() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider(
-                        create: (_) => CategoryListViewModel()),
-                    ChangeNotifierProvider(
-                        create: (_) => SliderImageListViewModel()),
-                    ChangeNotifierProvider(
-                        create: (_) => FeedbackListViewModel()),
-                    ChangeNotifierProvider(
-                        create: (_) => ConfigurationListViewModel()),
-                    ChangeNotifierProvider(create: (_) => OrderListViewModel()),
-                    ChangeNotifierProvider(
-                        create: (_) => CategoryListViewModel()),
-                  ],
-                  child: HomeMainView(
-                    selectedIndex: 0,
-                  ),
-                )),
-        (Route<dynamic> route) => false).then((value) => _isLoggedIn());
   }
 }

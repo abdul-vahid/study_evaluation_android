@@ -17,12 +17,14 @@ import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
   static bool isLoggedout = false;
+  static int notificationCount = 0;
   static void onLoading(BuildContext? context, String? label) {
     print("On Loading..");
     showDialog(
@@ -322,7 +324,9 @@ class AppUtils {
                         create: (_) => ConfigurationListViewModel()),
                     ChangeNotifierProvider(create: (_) => OrderListViewModel()),
                     ChangeNotifierProvider(
-                        create: (_) => CategoryListViewModel())
+                        create: (_) => CategoryListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => NotificationsListViewModel())
                   ],
                   child: HomeMainView(
                     selectedIndex: selectedIndex,

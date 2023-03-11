@@ -8,6 +8,7 @@ class NotificationModel extends BaseModel {
   String? notificationId;
   String? message;
   String? title;
+  String? status;
 
   NotificationModel(
       {this.id,
@@ -16,7 +17,8 @@ class NotificationModel extends BaseModel {
       this.message,
       this.title,
       super.appException,
-      super.error});
+      super.error,
+      this.status});
 
   factory NotificationModel.fromMap(Map<String, dynamic> data) {
     return NotificationModel(
@@ -25,6 +27,7 @@ class NotificationModel extends BaseModel {
       notificationId: data['notification_id'] as String?,
       message: data['message'] as String?,
       title: data['title'] as String?,
+      status: data['status'] as String?,
     );
   }
 
@@ -35,6 +38,7 @@ class NotificationModel extends BaseModel {
         'notification_id': notificationId,
         'message': message,
         'title': title,
+        'status': status,
       };
 
   @override

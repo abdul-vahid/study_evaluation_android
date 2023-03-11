@@ -62,6 +62,9 @@ class UserModel extends BaseModel {
         state: data['state'] as String?,
         roleName: data['role_name'] as String?,
       );
+  String get fullName {
+    return "$firstName $lastName";
+  }
 
   Map<String, dynamic> toMap() => {
         'id': id,

@@ -15,6 +15,7 @@ class ConfigurationModel extends BaseModel {
       helpLineNumber: data['help_line_number'] as String?,
     );
   }
+
   @override
   Map<String, dynamic> toMap() => {
         'id': id,

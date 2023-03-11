@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -5,6 +7,7 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/services/login_service.dart';
 import 'package:study_evaluation/services/user_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_vm.dart';
 
 class UserListViewModel extends BaseListViewModel {
@@ -18,32 +21,23 @@ class UserListViewModel extends BaseListViewModel {
   }
 
   Future<dynamic> updateStudentProfile(UserModel userModel) async {
-    //print("signup lis");
-    return await UserService().updateStudentProfile(userModel);
+    String url = AppUtils.getUrl(
+        "${AppConstants.studentProfileAPIPath}/${userModel.studentId}");
+
+    return await post(url: url, body: userModel.toJson());
   }
 
   Future<dynamic> getOTP(String mobileNo, String reason) async {
-    print("otpVerification lis");
     var records = await UserService().getOTP(mobileNo, reason);
-
-    print("@@@Records ${records}");
-    //var r = records["message"];
-    //print('####rr${r}');
     return records["message"];
   }
 
   Future<dynamic> ChangePasword(String mobileNo, String password) async {
-    print("otpVerification lis");
     var records = await UserService().changePassword(mobileNo, password);
-
-    print("@@@Records ${records}");
-    //var r = records["message"];
-    //print('####rr${r}');
     return records["message"];
   }
 
   Future<List<dynamic>> login(String username, String password) async {
-    print("loggin called");
     final result = await UserService().login(username, password);
     if (AppConstants.kDebugMode) {
       print(result["records"]);

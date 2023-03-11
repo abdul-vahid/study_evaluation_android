@@ -20,7 +20,7 @@ class BaseService {
     printLongString("body = $body");
     final responseJsonData = await _apiService.postResponse(url, body, token!);
     if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
+      AppUtils.printDebug("responseJsonData: $responseJsonData");
     }
     return responseJsonData;
   }

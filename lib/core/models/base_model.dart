@@ -11,12 +11,12 @@ class BaseModel {
   factory BaseModel.fromMap(Map<String, dynamic> data) {
     return BaseModel(error: null, appException: null);
   }
-
-  Map<String, dynamic> toMap() => {};
-
   factory BaseModel.fromJson(String data) {
     return BaseModel(error: null, appException: null);
   }
+
+  Map<String, dynamic> toMap() => {};
+
   BaseModel fromMap(Map<String, dynamic> data) {
     return BaseModel.fromMap(data);
   }

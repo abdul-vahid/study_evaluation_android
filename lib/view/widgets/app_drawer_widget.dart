@@ -285,23 +285,14 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                 color: AppColor.navBarIconColor,
               ),
               title: Text(
-                'Notification',
+                'Notifications',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => NotificationsListViewModel())
-                            ],
-                            child: const NotificationView(),
-                          )),
-                );
+                AppUtils.launchTab(context,
+                    selectedIndex: HomeTabsOptions.notifications.index);
               }),
           Divider(),
           ListTile(
