@@ -25,17 +25,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../utils/app_color.dart';
 
 class HomeView extends StatefulWidget {
-  final categoriesVM;
-  final slidersVM;
-  final feedbacksVM;
-  final configListViewModel;
-
-  const HomeView(
-      {super.key,
-      this.categoriesVM,
-      this.slidersVM,
-      this.feedbacksVM,
-      this.configListViewModel});
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -43,7 +33,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   UserListViewModel userListViewModel = UserListViewModel();
-  int _selectedIndex = 0;
   int counter = 0;
   String helpLineNumber = "";
   CategoryListViewModel? categoriesVM;
@@ -54,10 +43,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     NotificationUtil.initialize(context);
-    /* categoriesVM = widget.categoriesVM;
-    slidersVM = widget.slidersVM;
-    feedbacksVM = widget.feedbacksVM;
-    configListViewModel = widget.configListViewModel; */
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
     Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
     Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
@@ -304,9 +289,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() {});
   }
 
   void onCurrentAffairs() {

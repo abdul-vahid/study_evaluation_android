@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -10,8 +11,14 @@ import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
+import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
+import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
+import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
@@ -296,5 +303,31 @@ class AppUtils {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
+  }
+
+  static Future<Object?> launchTab(BuildContext context,
+      {selectedIndex = 0}) async {
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                        create: (_) => CategoryListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => SliderImageListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => FeedbackListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => ConfigurationListViewModel()),
+                    ChangeNotifierProvider(create: (_) => OrderListViewModel()),
+                    ChangeNotifierProvider(
+                        create: (_) => CategoryListViewModel())
+                  ],
+                  child: HomeMainView(
+                    selectedIndex: selectedIndex,
+                  ),
+                )),
+        (Route<dynamic> route) => false);
   }
 }

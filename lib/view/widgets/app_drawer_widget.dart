@@ -21,6 +21,7 @@ import 'package:study_evaluation/view/views/notifications_view.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
+import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
@@ -137,20 +138,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => CategoryListViewModel()),
-                              ChangeNotifierProvider(
-                                  create: (_) => SliderImageListViewModel()),
-                              ChangeNotifierProvider(
-                                  create: (_) => FeedbackListViewModel()),
-                            ],
-                            child: const HomeMainView(),
-                          )));
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.home.index);
             },
           ),
           ListTile(
@@ -165,21 +154,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MultiProvider(
-                          providers: [
-                            ChangeNotifierProvider(
-                                create: (_) => OrderListViewModel())
-                          ],
-                          child: const MyOrderView(),
-                        )),
-              );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const FollowUsView()),
-              // )
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.myOrder.index);
             },
           ),
           ListTile(
@@ -224,10 +200,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileView()),
-              );
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.profile.index);
             },
           ),
           Divider(),
@@ -262,16 +236,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => CategoryListViewModel()),
-                            ],
-                            child: const CategoryListView(),
-                          )));
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.testSeries.index);
             },
           ),
           Divider(),

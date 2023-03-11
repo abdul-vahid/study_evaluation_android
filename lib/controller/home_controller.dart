@@ -26,21 +26,13 @@ class HomeController {
   }
 
   void _onHomeTiles(id) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider(
-                        create: (_) => CategoryListViewModel()),
-                  ],
-                  child: const CategoryListView(),
-                )));
-    print("Test pressed!!!");
+    AppUtils.launchTab(context,
+        selectedIndex: HomeTabsOptions.testSeries.index);
   }
 
   void _onVideo(id) {
-    AppUtils.getAlert(context, ["App is Under Construction!"]);
+    AppUtils.getAlert(
+        context, ["This functionality is currenlty unavailable!"]);
   }
 
   Widget _getGridView() {

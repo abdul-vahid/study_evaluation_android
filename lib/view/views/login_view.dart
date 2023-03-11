@@ -42,7 +42,9 @@ class _LoginViewState extends State<LoginView> {
   void _isLoggedIn() {
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey(SharedPrefsConstants.prefsAccessTokenKey)) {
-        _pushHomePage();
+        //_pushHomePage();
+        AppUtils.launchTab(context, selectedIndex: HomeTabsOptions.home.index)
+            .then((value) => _isLoggedIn());
       } else {
         setState(() {
           displayLogin = true;
@@ -164,7 +166,9 @@ class _LoginViewState extends State<LoginView> {
                     ChangeNotifierProvider(
                         create: (_) => CategoryListViewModel()),
                   ],
-                  child: const HomeMainView(),
+                  child: HomeMainView(
+                    selectedIndex: 0,
+                  ),
                 )),
         (Route<dynamic> route) => false).then((value) => _isLoggedIn());
   }

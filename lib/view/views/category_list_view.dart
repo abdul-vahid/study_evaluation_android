@@ -4,6 +4,7 @@ import 'package:study_evaluation/models/category_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/views/package_list_view.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
@@ -29,14 +30,9 @@ class _CategoryListViewState extends State<CategoryListView> {
   Widget build(BuildContext context) {
     categoriesVM = Provider.of<CategoryListViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: const BackButton(color: Colors.white),
-        title: const Text("Test Series"),
-        elevation: .1,
-        backgroundColor: AppColor.appBarColor,
-      ),
+      appBar: AppUtils.getAppbar("Test Series"),
       body: AppUtils.getAppBody(categoriesVM!, _getDataBody),
+      drawer: const AppDrawerWidget(),
     );
   }
 

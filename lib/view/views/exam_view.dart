@@ -170,24 +170,22 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _initDuration(ExamModel model) {
+    print("reattempt = ${widget.reAttempt}");
     if (model.exam?.remainingExamTime != null &&
-        (model.exam?.remainingExamTime?.isNotEmpty)!) {
-      if (model.exam?.remainingExamTime != null &&
-          (model.exam?.remainingExamTime?.isNotEmpty)!) {
-        String remainingTime = (model.exam?.remainingExamTime)!;
-        //print("remaingTime $remainingTime");
-        List<String> remainingTimes = remainingTime.split(":");
-        int hours = int.tryParse(remainingTimes[0])!;
-        int minutes = int.tryParse(remainingTimes[1])!;
-        int seconds = int.tryParse(remainingTimes[2])!;
-        //print("hours = $hours, min = $minutes, seconds = $seconds");
-        myDuration ??=
-            Duration(hours: hours, minutes: minutes, seconds: seconds);
-      } else {
-        //print("remaingTime blank");
-        var duration = int.tryParse(model.exam!.duration!);
-        myDuration ??= Duration(minutes: duration!);
-      }
+        (model.exam?.remainingExamTime?.isNotEmpty)! &&
+        !widget.reAttempt!) {
+      String remainingTime = (model.exam?.remainingExamTime)!;
+      //print("remaingTime $remainingTime");
+      List<String> remainingTimes = remainingTime.split(":");
+      int hours = int.tryParse(remainingTimes[0])!;
+      int minutes = int.tryParse(remainingTimes[1])!;
+      int seconds = int.tryParse(remainingTimes[2])!;
+      //print("hours = $hours, min = $minutes, seconds = $seconds");
+      myDuration ??= Duration(hours: hours, minutes: minutes, seconds: seconds);
+    } else {
+      //print("duration = ${model.exam!.duration!}");
+      var duration = int.tryParse(model.exam!.duration!);
+      myDuration ??= Duration(minutes: duration!);
     }
   }
 
@@ -419,14 +417,14 @@ class _ExamViewState extends State<ExamView> {
 
   void _onPressedAlert(resultId, status) {
     Navigator.of(context).pop();
-    Navigator.of(context).pop("reload");
-    /*  if (status == ResultStatus.inProgress ||
+    //Navigator.of(context).pop("reload");
+    if (status == ResultStatus.inProgress ||
         (widget.reAttempt != null && (widget.reAttempt)!)) {
       Navigator.of(context).pop("reload");
-      print("reload");
+      //print("reload");
       return;
-    } */
-    return;
+    }
+
     AppUtils.viewPush(
         context,
         MultiProvider(providers: [
@@ -674,6 +672,7 @@ class _ExamViewState extends State<ExamView> {
   // Step 6
   void setCountDown() {
     const reduceSecondsBy = 1;
+
     final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
     if (seconds1 < 0) {
       timeUP = "Time UP!";

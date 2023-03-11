@@ -12,6 +12,8 @@ abstract class ResultStatus {
   static const String inProgress = "In Progress";
 }
 
+enum HomeTabsOptions { home, testSeries, myOrder, profile }
+
 abstract class ProfileConstants {
   static const String firstNameLabel = "First Name";
   static const String lastNameLabel = "Last Name";

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 
 import 'package:study_evaluation/view/views/package_detail_view.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/order_list_vm.dart';
 
 import '../../models/order_model.dart';
@@ -31,14 +32,17 @@ class _MyOrderViewState extends State<MyOrderView> {
     baseListViewModel = Provider.of<OrderListViewModel>(context);
     print('@@@$baseListViewModel');
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppUtils.getAppbar(
+          "My Order") /* AppBar(
         centerTitle: true,
         leading: const BackButton(color: Colors.white),
         title: const Text("My Order"),
         elevation: .1,
         backgroundColor: AppColor.appBarColor,
-      ),
+      ) */
+      ,
       body: AppUtils.getAppBody(baseListViewModel!, _getDataBody),
+      drawer: const AppDrawerWidget(),
     );
   }
 

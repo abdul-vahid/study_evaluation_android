@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
-import 'package:study_evaluation/utils/app_utils.dart';
 
 class NotificationUtil {
   static FirebaseMessaging? _firebaseMessaging;
@@ -10,15 +9,6 @@ class NotificationUtil {
     NotificationUtil.context = context;
     _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging?.requestPermission();
-
-    /*
-      FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? remoteMessage) {
-      onMessageReceived(remoteMessage);
-    });
-
-    */
     // 1. This method call when app in terminated state and you get a notification
     // when you click on notification app open from terminated state and you can get notification data in this method
     _firebaseMessaging?.getInitialMessage().then(

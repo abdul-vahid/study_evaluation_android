@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
@@ -38,6 +39,8 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawerWidget(),
+      appBar: AppUtils.getAppbar("My Profile"),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -51,7 +54,7 @@ class _ProfileViewState extends State<ProfileView> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ListTile(
+                    /* ListTile(
                       leading: IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -65,7 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
                         fontSize: 18,
                         color: Colors.white,
                       ),
-                    )),
+                    )), */
                     const SizedBox(
                       height: 20,
                     ),

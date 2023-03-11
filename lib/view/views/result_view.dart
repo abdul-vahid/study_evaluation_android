@@ -41,15 +41,7 @@ class _ResultViewState extends State<ResultView> {
   String? _selectedFont = "15";
   String? _selectedFilter = "all";
   String title = "Result";
-  String timeUP = "";
   int timerMaxSeconds = 60;
-  Duration? myDuration;
-  var duration;
-  int currentSeconds = 0;
-  Timer? countdownTimer;
-  var hours = "0";
-  var minutes = "0";
-  var seconds = "0";
   int? totalQuestions = 30;
   Map<String, int> filtersMap = {};
   bool isRefresh = false;
@@ -59,10 +51,6 @@ class _ResultViewState extends State<ResultView> {
         .fetch(widget.resultId);
 
     super.initState();
-  }
-
-  String get timerText {
-    return '$hours:$minutes:$seconds';
   }
 
   @override
@@ -237,6 +225,7 @@ class _ResultViewState extends State<ResultView> {
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {
       model.index = i++;
+      print("isWrong ${model.isWrong}");
       if (_selectedFilter == "all" ||
           (_selectedFilter == "favourite" && model.isFavourite) ||
           (_selectedFilter == "skipped" && model.isSkipped) ||
@@ -251,7 +240,8 @@ class _ResultViewState extends State<ResultView> {
   }
 
   Color getBackgroundColor(String label) {
-    if (label.toLowerCase().contains("all") && _selectedFilter == "all") {
+    if (label.toLowerCase().contains("favourite") &&
+        _selectedFilter == "favourite") {
       return Colors.blue;
     } else if (label.toLowerCase().contains("correct") &&
         _selectedFilter == "correct") {
@@ -261,6 +251,9 @@ class _ResultViewState extends State<ResultView> {
       return Colors.blue;
     } else if (label.toLowerCase().contains("skipped") &&
         _selectedFilter == "skipped") {
+      return Colors.blue;
+    } else if (label.toLowerCase().contains("all") &&
+        _selectedFilter == "all") {
       return Colors.blue;
     }
 
@@ -268,7 +261,8 @@ class _ResultViewState extends State<ResultView> {
   }
 
   Color getSelectedButtonTextColor(String label) {
-    if (label.toLowerCase().contains("all") && _selectedFilter == "all") {
+    if (label.toLowerCase().contains("favourite") &&
+        _selectedFilter == "favourite") {
       return Colors.white;
     } else if (label.toLowerCase().contains("correct") &&
         _selectedFilter == "correct") {
@@ -278,6 +272,9 @@ class _ResultViewState extends State<ResultView> {
       return Colors.white;
     } else if (label.toLowerCase().contains("skipped") &&
         _selectedFilter == "skipped") {
+      return Colors.white;
+    } else if (label.toLowerCase().contains("all") &&
+        _selectedFilter == "all") {
       return Colors.white;
     }
 
@@ -342,56 +339,6 @@ class _ResultViewState extends State<ResultView> {
     filtersMap[key] = favCount;
   }
 
-  Container _getTopBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.containerBoxColor,
-        borderRadius: BorderRadius.circular(20),
-        //more than 50% of width makes circle
-      ),
-      height: 40,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // ignore: prefer_const_literals_to_create_immutables
-        children: _topBarChildren,
-      ),
-    );
-  }
-
-  List<Widget> get _topBarChildren {
-    return [
-      // ignore: prefer_const_constructors
-      Padding(
-        padding: const EdgeInsets.only(left: 10),
-        // ignore: prefer_const_constructors
-        child: Text(
-          '$totalQuestions Questions',
-          style: const TextStyle(color: Colors.white, fontSize: 15),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // ignore: prefer_const_constructors
-            Icon(
-              Icons.timer,
-              color: Colors.white,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text(
-              timerText,
-              style: TextStyle(color: Colors.white),
-            )
-          ],
-        ),
-      )
-    ];
-  }
-
   IconButton _getFilterButton() {
     return IconButton(
         onPressed: () {
@@ -433,66 +380,6 @@ class _ResultViewState extends State<ResultView> {
   //     child: Container(height: 10, width: 100, child: const Text("Button")),
   //   );
   // }
-
-  ElevatedButton _getSubmitButton() {
-    return AppUtils.getElevatedButton('Submit',
-        onPressed: _onSubmit,
-        buttonStyle:
-            ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor));
-  }
-
-  ElevatedButton _getSaveButton() {
-    return AppUtils.getElevatedButton('Save', onPressed: () {
-      _onSubmit(status: ResultStatus.inProgress);
-    },
-        buttonStyle:
-            ElevatedButton.styleFrom(backgroundColor: AppColor.buttonColor));
-  }
-
-  ElevatedButton _getCancelButton() {
-    return AppUtils.getElevatedButton('Cancel',
-        onPressed: _onCancel,
-        textStyle: const TextStyle(color: Colors.black),
-        buttonStyle:
-            ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
-  }
-
-  void _onSubmit({String status = "Completed"}) {
-    //print("submit");
-    ExamModel examModel = baseListViewModel?.viewModels[0].model;
-    examModel.exam?.remainingExamTime = timerText;
-    var message = status == ResultStatus.completed
-        ? "$timeUP Submitting Your Exam..."
-        : "$timeUP Saving Your Exam...";
-    var successMessage = status == ResultStatus.completed
-        ? "$timeUP Exam Submitted!"
-        : "$timeUP Exam Saved!";
-    AppUtils.onLoading(context, "$timeUP Submitting Your Exam...");
-    /* BaseListViewModel().submitExam(examModel, status: status).then((value) {
-      Navigator.pop(context);
-      AppUtils.getAlert(context, [successMessage], onPressed: _onPressedAlert);
-      stopTimer();
-    }).catchError((error) {
-      if (AppConstants.kDebugMode) {
-        print(error.toString());
-      }
-      AppUtils.onError(context, error);
-    }); */
-  }
-
-  void _onPressedAlert() {
-    Navigator.of(context).pop();
-    /* AppUtils.viewPush(
-        context,
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => BaseListViewModel())
-          ],
-          child: const ResultView(),
-        )); */
-  }
-
-  void _onCancel() {}
 
   Widget _getDropdown() {
     return Container(
@@ -745,36 +632,6 @@ class _ResultViewState extends State<ResultView> {
       children: widgets,
     );
     //return widgets;
-  }
-
-  void startTimer() {
-    countdownTimer ??=
-        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
-  }
-
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  // Step 6
-  void setCountDown() {
-    const reduceSecondsBy = 1;
-    final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
-    if (seconds1 < 0) {
-      timeUP = "Time UP!";
-      stopTimer();
-      _onSubmit();
-    } else {
-      myDuration = Duration(seconds: seconds1);
-    }
-    //print("$seconds1 == ${myDuration!.inSeconds}");
-
-    setState(() {
-      String strDigits(int n) => n.toString().padLeft(2, '0');
-      hours = strDigits(myDuration!.inHours.remainder(24));
-      minutes = strDigits(myDuration!.inMinutes.remainder(60));
-      seconds = strDigits(myDuration!.inSeconds.remainder(60));
-    });
   }
 
   _getSelectedColor(QuestionModel model, String value) {

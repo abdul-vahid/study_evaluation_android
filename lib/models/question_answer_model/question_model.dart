@@ -57,7 +57,10 @@ class QuestionModel {
   }
 
   bool get isWrong {
-    return answer != submittedAnswer;
+    //AppUtils.printDebug("submittedAnswer = $submittedAnswer, answer = $answer");
+    return submittedAnswer != null &&
+        submittedAnswer!.isNotEmpty &&
+        answer != submittedAnswer;
   }
 
   bool get isSkipped {
