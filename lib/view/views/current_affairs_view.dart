@@ -1,29 +1,25 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
 
-class CurrentAffairScreen extends StatefulWidget {
-  const CurrentAffairScreen({super.key});
+class CurrentAffairsView extends StatefulWidget {
+  const CurrentAffairsView({super.key});
 
   @override
-  State<CurrentAffairScreen> createState() => _CurrentAffairScreenState();
+  State<CurrentAffairsView> createState() => _CurrentAffairsViewState();
 }
 
-class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
+class _CurrentAffairsViewState extends State<CurrentAffairsView> {
   late VideoPlayerController controller;
 
-  var currentAffairsListVM;
+  CurrentAffairsListViewModel? baseListViewModel;
   CurrentAffairsModel? currentAffairsModel;
   @override
   void initState() {
@@ -51,7 +47,7 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
-    currentAffairsListVM = Provider.of<CurrentAffairsListViewModel>(context);
+    baseListViewModel = Provider.of<CurrentAffairsListViewModel>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -61,18 +57,11 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
             title: const Text(
               'Current Affairs',
             )),
-        body: currentAffairsListVM.status == "Loading"
-            ? _getLoader()
-            : currentAffairsListVM.status == "Error"
-                ? AppUtils.getErrorWidget(
-                    currentAffairsListVM.viewModels[0].model)
-                : currentAffairsListVM.viewModels.isNotEmpty
-                    ? _getBody()
-                    : _noRecord());
+        body: AppUtils.getAppBody(baseListViewModel!, _getBody));
   }
 
-  Center _getLoader() => Center(child: const CircularProgressIndicator());
-  Center _noRecord() => const Center(child: Text("No Record Found!!"));
+  //Center _getLoader() => Center(child: const CircularProgressIndicator());
+  //Center _noRecord() => const Center(child: Text("No Record Found!!"));
 
   SingleChildScrollView _getBody() {
     return SingleChildScrollView(
@@ -95,7 +84,7 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
 
   List<Widget> get _getCurrentAffairVideoWidgets {
     List<Widget> widgets = [];
-    currentAffairsListVM.viewModels.forEach((key, viewModels) {
+    baseListViewModel?.currentAffairsData.forEach((key, viewModels) {
       List<Widget> videoBottomSheetWidgets = [];
       videoBottomSheetWidgets.add(Container(
           child: Padding(
@@ -115,13 +104,11 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
       )));
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
-
-        if (viewModel.model.videoUrl != null &&
-            viewModel.model.videoUrl.endsWith(".mp4")) {
-          tempWidgets
-              .add(_getCurrentAffairsModelVideo(viewModel.model.videoUrl));
+        CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
+        if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
+          tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
-        tempWidgets.add(_bottomSheet(viewModel.model));
+        tempWidgets.add(_bottomSheet(model));
 
         videoBottomSheetWidgets.add(Padding(
           padding: const EdgeInsets.all(10.0),
@@ -296,7 +283,6 @@ class _VideoPlayerState extends State<_VideoPlayer> {
   void initState() {
     super.initState();
 
-    print('@@@@videoUrl ${videoUrl}');
     _controller = VideoPlayerController.network(videoUrl);
 
     _controller.addListener(() {

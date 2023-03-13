@@ -16,6 +16,7 @@ class FollowUsModel extends BaseModel {
         url: data['url'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'title': title,
         'image': image,

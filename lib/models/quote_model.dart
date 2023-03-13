@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:study_evaluation/core/models/base_model.dart';
-
-import '../core/apis/app_exception.dart';
 
 class QuoteModel extends BaseModel {
   String? id;
@@ -33,9 +30,6 @@ class QuoteModel extends BaseModel {
       this.updatedBy,
       super.error,
       super.appException});
-  bool get isError {
-    return error != null || appException != null;
-  }
 
   factory QuoteModel.fromMap(Map<String, dynamic> data) => QuoteModel(
         id: data['id'] as String?,
@@ -52,6 +46,12 @@ class QuoteModel extends BaseModel {
         updatedBy: data['updated_by'] as String?,
       );
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return QuoteModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'quote': quote,
@@ -70,6 +70,7 @@ class QuoteModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [QuoteModel].
+  @override
   factory QuoteModel.fromJson(String data) {
     return QuoteModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }

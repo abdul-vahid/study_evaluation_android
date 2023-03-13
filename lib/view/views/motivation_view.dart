@@ -12,17 +12,17 @@ import 'package:video_player/video_player.dart';
 
 import '../../utils/app_constants.dart';
 
-class MotivationScreen extends StatefulWidget {
-  const MotivationScreen({super.key});
+class MotivationView extends StatefulWidget {
+  const MotivationView({super.key});
 
   @override
-  State<MotivationScreen> createState() => _MotivationScreenState();
+  State<MotivationView> createState() => _MotivationViewState();
 }
 
-class _MotivationScreenState extends State<MotivationScreen> {
+class _MotivationViewState extends State<MotivationView> {
   late VideoPlayerController controller;
 
-  var quoteListVM;
+  var baseListViewModel;
   QuoteModel? quoteModel;
   @override
   void initState() {
@@ -51,23 +51,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
-    quoteListVM = Provider.of<QuoteListViewModel>(context);
+    baseListViewModel = Provider.of<QuoteListViewModel>(context);
     //return quoteListVM.viewModels.isNotEmpty ? _getBody() : _getLoader();
     return Scaffold(
-        appBar: AppBar(
-            leading: const BackButton(color: Colors.white),
-            backgroundColor: AppColor.appBarColor,
-            centerTitle: true,
-            title: const Text(
-              'Motivation',
-            )),
-        body: quoteListVM.status == "Loading"
-            ? AppUtils.getLoader()
-            : quoteListVM.status == "Error"
-                ? AppUtils.getErrorWidget(quoteListVM.viewModels[0].model)
-                : quoteListVM.viewModels.isNotEmpty
-                    ? _getBody()
-                    : AppUtils.getNoRecordWidget());
+        appBar: AppUtils.getAppbar("Motivation",
+            leading: const BackButton(color: Colors.white)),
+        body: AppUtils.getAppBody(baseListViewModel, _getBody));
   }
 
   SingleChildScrollView _getBody() {
@@ -98,7 +87,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
   List<Widget> get _getQuoteVideoWidgets {
     List<Widget> widgets = [];
 
-    for (var viewModel in quoteListVM.viewModels) {
+    for (var viewModel in baseListViewModel.viewModels) {
       List<Widget> tempWidgets = [];
       tempWidgets.add(_getQuote(viewModel.model));
       tempWidgets.add(

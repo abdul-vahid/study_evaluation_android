@@ -29,7 +29,6 @@ class NotificationUtil {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage? remoteMessage) {
-        print("FirebaseMessaging.onMessageOpenedApp.listen");
         onMessageReceived(remoteMessage!);
       },
     );
@@ -52,7 +51,7 @@ class NotificationUtil {
       AppUtils.printDebug("FCM Token = $token");
       UserListViewModel().registerFCMToken(token!).then((value) {},
           onError: (error) {
-        //AppUtils.onError(AppUtils.currentContext!, error);
+        AppUtils.printDebug("FCM Error: $error");
       });
     });
   }

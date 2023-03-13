@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view/views/signup_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
-import 'package:study_evaluation/view_models/role_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class LoginHome extends StatefulWidget {
@@ -17,7 +15,7 @@ class LoginHome extends StatefulWidget {
 class _LoginHomeState extends State<LoginHome>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-  var roleListVM;
+
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
@@ -41,7 +39,6 @@ class _LoginHomeState extends State<LoginHome>
         children: [
           Container(
             height: 100,
-            // color: Color(AppConstants.primaryColorApp),
           ),
           Container(
             decoration: const BoxDecoration(
@@ -73,17 +70,17 @@ class _LoginHomeState extends State<LoginHome>
     return Container(
       // height: 440,
       child: Padding(
-        padding: EdgeInsets.all(1),
+        padding: const EdgeInsets.all(1),
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Container(
                 // height: 50,
                 width: 300,
                 decoration: BoxDecoration(
-                    color: Color(0xFFfef5e6),
+                    color: const Color(0xFFfef5e6),
                     borderRadius: BorderRadius.circular(30)),
                 child: _getTabBarColumns(),
               ),
@@ -101,7 +98,7 @@ class _LoginHomeState extends State<LoginHome>
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           child: WidgetUtils.getTabBar(tabController),
         ),
       ],

@@ -11,6 +11,7 @@ import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
+import 'package:study_evaluation/view_models/result_list_vm.dart';
 
 class ExamView extends StatefulWidget {
   final String examId;
@@ -428,7 +429,7 @@ class _ExamViewState extends State<ExamView> {
         context,
         MultiProvider(providers: [
           ChangeNotifierProvider(
-            create: (_) => BaseListViewModel(),
+            create: (_) => ResultListViewModel(),
           )
         ], child: ResultView(resultId: resultId, studentId: widget.studentId)));
     //Navigator.of(context).pop("reload");

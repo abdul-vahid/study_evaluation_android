@@ -33,15 +33,7 @@ class _MyOrderViewState extends State<MyOrderView> {
     baseListViewModel = Provider.of<OrderListViewModel>(context);
     print('@@@$baseListViewModel');
     return Scaffold(
-      appBar: AppUtils.getAppbar(
-          "My Order") /* AppBar(
-        centerTitle: true,
-        leading: const BackButton(color: Colors.white),
-        title: const Text("My Order"),
-        elevation: .1,
-        backgroundColor: AppColor.appBarColor,
-      ) */
-      ,
+      appBar: AppUtils.getAppbar("My Order"),
       body: AppUtils.getAppBody(baseListViewModel!, _getDataBody),
       drawer: const AppDrawerWidget(),
     );

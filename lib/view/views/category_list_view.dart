@@ -9,8 +9,6 @@ import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 
-import '../../utils/app_color.dart';
-
 class CategoryListView extends StatefulWidget {
   const CategoryListView({super.key});
 
@@ -59,7 +57,6 @@ class _CategoryListViewState extends State<CategoryListView> {
   }
 
   void _onTap(id) {
-    print("id is $id");
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -70,7 +67,6 @@ class _CategoryListViewState extends State<CategoryListView> {
               )),
           settings: RouteSettings(arguments: id)),
     );
-    print("Test pressed!!!");
   }
 
   Widget _getGridView(categoriesVM) {

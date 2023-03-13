@@ -38,6 +38,12 @@ class CategoryModel extends BaseModel {
         updatedBy: data['updated_by'] as String?,
       );
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return CategoryModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'name': name,

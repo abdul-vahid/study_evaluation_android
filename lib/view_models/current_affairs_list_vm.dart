@@ -1,43 +1,25 @@
-import 'package:flutter/material.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
-import 'package:study_evaluation/services/current_affairs_service.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
-import '../core/apis/app_exception.dart';
+class CurrentAffairsListViewModel extends BaseListViewModel {
+  Map<String, List<BaseViewModel>> currentAffairsData =
+      <String, List<BaseViewModel>>{};
 
-class CurrentAffairsListViewModel extends ChangeNotifier {
-  Map<String, List<BaseViewModel>> viewModels = <String, List<BaseViewModel>>{};
-  var status = "Loading";
   Future<void> fetch({String jsonRecordKey = "records"}) async {
-    try {
-      final jsonObject = await CurrentAffairsService().fetch();
-      final records = jsonObject[jsonRecordKey];
-      var modelMap =
-          records.map((item) => CurrentAffairsModel.fromMap(item)).toList();
-      var vmList = modelMap.map((item) => BaseViewModel(model: item)).toList();
+    String url = AppUtils.getUrl(AppConstants.currentAffairsAPIPath);
+    await get(baseModel: CurrentAffairsModel(), url: url);
 
-      for (var vm in vmList) {
-        List<BaseViewModel>? caList = viewModels[vm.model.type];
-        caList ??= [];
-        caList.add(vm);
-        viewModels[vm.model.type] = caList;
-      }
-
-      status = "Completed";
-    } on AppException catch (error) {
-      status = "Error";
-      List<BaseViewModel> caList = [];
-      caList
-          .add(BaseViewModel(model: CurrentAffairsModel(appException: error)));
-      viewModels["error"] = caList;
-    } on Exception catch (e) {
-      status = "Error";
-      List<BaseViewModel> caList = [];
-      caList.add(BaseViewModel(model: CurrentAffairsModel(error: e)));
-      viewModels["error"] = caList;
-
-      //print("Exception:" + e.toString());
+    for (var vm in viewModels) {
+      CurrentAffairsModel model = vm.model as CurrentAffairsModel;
+      List<BaseViewModel>? caList = currentAffairsData[model.type];
+      caList ??= [];
+      caList.add(vm);
+      currentAffairsData[model.type!] = caList;
     }
+
     notifyListeners();
   }
 }

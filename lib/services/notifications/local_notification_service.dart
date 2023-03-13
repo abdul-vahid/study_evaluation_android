@@ -17,17 +17,11 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (details) {
-        print("Notification Recevied");
-        print("$details");
-
-        print("${details.payload}");
-      },
+      onDidReceiveNotificationResponse: (details) {},
     );
   }
 
   static void displayNotification(RemoteMessage message) async {
-    print("Display Notification Called");
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
@@ -48,27 +42,8 @@ class LocalNotificationService {
         notificationDetails,
         payload: message.data['id'],
       );
-      print("after show");
     } on Exception catch (e) {
-      print(e);
+      AppUtils.printDebug(e);
     }
-  }
-
-  static final APIService _apiService = APIService();
-  Future<dynamic> fetch({String userId = "152"}) async {
-    //Map<String, String> requestData = {'email': username, 'password': password};
-    String url = AppConstants.baseUrl + AppConstants.notificationAPIPath;
-    if (userId.isNotEmpty) {
-      url += "/$userId";
-    }
-    //print("URL: ${url.toString()}");
-    var token = await AppUtils.getToken();
-    final responseJsonData = await _apiService.getResponse(url, token!);
-    String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: order $responseJsonData");
-    }
-    print("Access Token: $responseJsonData");
-    return responseJsonData;
   }
 }

@@ -77,6 +77,7 @@ class Package extends BaseModel {
         status: data['status'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'category_id': categoryId,
@@ -99,12 +100,19 @@ class Package extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [Package].
+  @override
   factory Package.fromJson(String data) {
     return Package.fromMap(json.decode(data) as Map<String, dynamic>);
+  }
+
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return Package.fromMap(data);
   }
 
   /// `dart:convert`
   ///
   /// Converts [Package] to a JSON string.
+
   String toJson() => json.encode(toMap());
 }

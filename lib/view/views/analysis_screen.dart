@@ -44,7 +44,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ClipRRect(
-                          borderRadius: new BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           child: Image(
                             fit: BoxFit.fill,
                             image: AssetImage('assets/images/total-marks.png'),
@@ -102,7 +102,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               fit: BoxFit.fill,
                               image: AssetImage('assets/images/rank.png'),
@@ -157,7 +157,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ClipRRect(
-                          borderRadius: new BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           child: Image(
                             fit: BoxFit.fill,
                             image: AssetImage('assets/images/total-marks.png'),
@@ -215,7 +215,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               // fit: BoxFit.fill,
                               image: AssetImage('assets/images/attempt.png'),
@@ -278,7 +278,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               // fit: BoxFit.fill,
                               image: AssetImage('assets/images/time.png'),
@@ -337,7 +337,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               // fit: BoxFit.fill,
                               image: AssetImage('assets/images/time.png'),
@@ -400,7 +400,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               // fit: BoxFit.fill,
                               image: AssetImage('assets/images/attempt.png'),
@@ -459,7 +459,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                               //more than 50% of width makes circle
                               ),
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             child: Image(
                               fit: BoxFit.fill,
                               image: AssetImage('assets/images/rank.png'),

@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/core/apis/api_response.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
@@ -14,7 +12,6 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
@@ -56,10 +53,12 @@ class AppUtils {
 
   static List<Widget> _getTextWidgets(List<String> values) {
     List<Widget> widgets = [];
-    values.forEach((value) => widgets.add(Text(
-          value,
-          style: AppColor.themeNormal,
-        )));
+    for (var value in values) {
+      widgets.add(Text(
+        value,
+        style: AppColor.themeNormal,
+      ));
+    }
     return widgets;
   }
 
@@ -68,7 +67,7 @@ class AppUtils {
     AppUtils.printDebug("getAlert");
     showDialog<void>(
       context: context,
-      //barrierDismissible: false,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -96,6 +95,10 @@ class AppUtils {
     return prefs.getString(SharedPrefsConstants.accessTokenKey);
   }
 
+  static String getAccessToken(prefs) {
+    return prefs.getString(SharedPrefsConstants.accessTokenKey);
+  }
+
   static UserModel getSessionUser(SharedPreferences prefs) {
     return UserModel.fromMap(
         jsonDecode(prefs.getString(SharedPrefsConstants.userKey)!));
@@ -112,7 +115,7 @@ class AppUtils {
 
   static showAlertDialog(BuildContext context, String title, String text) {
     Widget okButton = TextButton(
-      child: Text('Ok', style: AppColor.themeNormal),
+      child: const Text('Ok', style: AppColor.themeNormal),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -146,15 +149,11 @@ class AppUtils {
   }
 
   static List<String> getErrorMessages(exception) {
-    print("exception ");
+    //print("exception ");
     List<String> errorMessages = [];
     if (exception is AppException) {
-      print("exception type app ");
-
       Map<String, dynamic> data = jsonDecode(exception.getMessage());
-      printDebug(data);
       data.forEach((key, value) {
-        printDebug("key = $key, value = $value");
         errorMessages.add(value);
         isLoggedout = value.toString().toLowerCase() == "expired token";
       });
@@ -215,6 +214,7 @@ class AppUtils {
   static Widget getAppBody(
       BaseListViewModel baseListViewModel, Widget Function() callBack,
       {context}) {
+    printDebug("baseListViewModel.Status = ${baseListViewModel.status} ");
     if (baseListViewModel.status == "Loading") {
       return AppUtils.getLoader();
     } else if (baseListViewModel.status == "Error") {
@@ -236,7 +236,6 @@ class AppUtils {
       Center(child: Text(message));
 
   static String getImageUrl(logoUrl) {
-    print("Image URL = ${AppConstants.imagePath}/$logoUrl");
     return '${AppConstants.baseUrl}${AppConstants.imagePath}/$logoUrl';
   }
 
@@ -248,7 +247,6 @@ class AppUtils {
   }
 
   static String getUrl(String path) {
-    print("PATH = $path");
     return AppConstants.baseUrl + path;
   }
 

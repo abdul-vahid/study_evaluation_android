@@ -2,10 +2,9 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/view/views/profile_view.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 import 'package:intl/intl.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -27,7 +26,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   UserModel? userModel;
   String? mobileNo;
   String? reason;
-  var otp;
+  String otp = "";
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
@@ -37,7 +36,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   final TextEditingController _stateController = TextEditingController();
   OtpFieldController otpController = OtpFieldController();
 
-  var otpVerification;
+  String otpVerification = "";
   // ignore: prefer_final_fields
   List<String> _gender = ['Male', 'Female', 'Other']; // Option 2
   String? _selectedGender; // Option 2
@@ -405,11 +404,6 @@ class _EditProfileViewState extends State<EditProfileView> {
         .getOTP(mobileNo!, "UPDATE_USER")
         .then((records) => showDialogOTP(records))
         .catchError((onError) {
-      print('@@@Error${onError}');
-      // Navigator.pop(context);
-      // AppUtils.showAlertDialog(context, 'Error Alert',
-      //     'This contact number already exist. Please try another contact number.');
-
       Navigator.pop(context);
       List<String> errorMessages = AppUtils.getErrorMessages(onError);
       AppUtils.getAlert(context, errorMessages, title: "Error Alert");
@@ -434,12 +428,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                 outlineBorderRadius: 15,
                 style: const TextStyle(fontSize: 17),
                 onChanged: (pin) {
-                  print("Changed: " + pin);
                   otpVerification = pin;
                 },
-                onCompleted: (pin) {
-                  print("Completed: " + pin);
-                }),
+                onCompleted: (pin) {}),
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -480,16 +471,11 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   void _submit(otp) {
-    print('otpController@@${otp}');
-    print('otpController##@@${otpVerification}');
-
     if (otpVerification == otp.toString()) {
-      print('enter');
       Navigator.pop(context, "update_user");
     } else {
       Navigator.pop(context);
       AppUtils.showAlertDialog(context, 'Error', 'Wrong otp entered');
-      print('OTP not verified!!');
     }
   }
 }

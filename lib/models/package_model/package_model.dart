@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_model.dart';
-
 import 'document.dart';
 import 'package.dart';
 import 'test_series.dart';
@@ -17,9 +14,6 @@ class PackageModel extends BaseModel {
       this.testSeries,
       super.error,
       super.appException});
-  bool get isError {
-    return error != null || appException != null;
-  }
 
   factory PackageModel.fromMap(Map<String, dynamic> data) => PackageModel(
         package: data['package'] == null
@@ -33,6 +27,12 @@ class PackageModel extends BaseModel {
             .toList(),
       );
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return PackageModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'package': package?.toMap(),
         'documents': documents?.map((e) => e.toMap()).toList(),
@@ -42,6 +42,7 @@ class PackageModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [PackageModel].
+  @override
   factory PackageModel.fromJson(String data) {
     return PackageModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }

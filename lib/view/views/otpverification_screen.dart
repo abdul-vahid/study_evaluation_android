@@ -92,11 +92,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       outlineBorderRadius: 15,
                       style: const TextStyle(fontSize: 17),
                       onChanged: (pin) {
-                        print("Changed: " + pin);
+                        //print("Changed: " + pin);
                         otpVerification = pin;
                       },
                       onCompleted: (pin) {
-                        print("Completed: " + pin);
+                        //print("Completed: " + pin);
                       }),
                   const SizedBox(
                     height: 30,
@@ -123,11 +123,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   void onButtonPressed() {
-    print('otpController@@${widget.otp}');
-    print('otpController##@@${otpVerification}');
-
-    print('otpController##@@${widget.userName}');
-
     if (otpVerification.toString() == widget.otp.toString()) {
       Navigator.push(
         context,
@@ -135,10 +130,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
             builder: (context) =>
                 ConfirmPasswordScreen(userName: widget.userName)),
       );
-      print("Login Button pressed!!!");
     } else {
       AppUtils.showAlertDialog(context, 'Error', 'Wrong otp entered');
-      print('OTP not verified!!');
     }
   }
 }

@@ -16,7 +16,8 @@ class ResultView extends StatefulWidget {
   final String resultId;
   final String studentId;
 
-  ResultView({super.key, required this.resultId, required this.studentId});
+  const ResultView(
+      {super.key, required this.resultId, required this.studentId});
 
   @override
   State<ResultView> createState() => _ResultViewState();
@@ -59,7 +60,7 @@ class _ResultViewState extends State<ResultView> {
     baseListViewModel = Provider.of<ResultListViewModel>(context);
 
     return Scaffold(
-        drawer: AppDrawerWidget(),
+        drawer: const AppDrawerWidget(),
         appBar: AppUtils.getAppbar(title, actions: [
           IconButton(
               // ignore: prefer_const_constructors

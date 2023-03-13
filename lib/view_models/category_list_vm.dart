@@ -1,11 +1,18 @@
-import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/category_model.dart';
-import 'package:study_evaluation/services/category_service.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class CategoryListViewModel extends BaseListViewModel {
   Future<void> fetch({String categoryId = ""}) async {
+    String url = AppUtils.getUrl(AppConstants.categoryAPIPath);
+    if (categoryId.isNotEmpty) {
+      url += "/$categoryId";
+    }
+    get(baseModel: CategoryModel(), url: url);
+  }
+
+  /* Future<void> fetch({String categoryId = ""}) async {
     try {
       final jsonObject = await CategoryService().fetch(categoryId: categoryId);
       final records = jsonObject["records"];
@@ -23,5 +30,5 @@ class CategoryListViewModel extends BaseListViewModel {
     }
 
     notifyListeners();
-  }
+  } */
 }

@@ -1,22 +1,18 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
-import 'package:study_evaluation/services/login_service.dart';
-import 'package:study_evaluation/services/user_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_vm.dart';
 
 class UserListViewModel extends BaseListViewModel {
-  var viewModels = [];
-
   String? name;
 
   Future<dynamic> signup(UserModel userModel) async {
-    return await UserService().signup(userModel);
+    String url = AppUtils.getUrl(AppConstants.signupAPIPath);
+    return await post(url: url, body: userModel.toJson());
   }
 
   Future<dynamic> registerFCMToken(String token) async {
@@ -38,18 +34,36 @@ class UserListViewModel extends BaseListViewModel {
   }
 
   Future<dynamic> getOTP(String mobileNo, String reason) async {
-    var records = await UserService().getOTP(mobileNo, reason);
+    String url = AppUtils.getUrl(AppConstants.otpVerificationAPIPath);
+    Map<String, String> requestData = {
+      'contact_number': mobileNo,
+      'reason': reason
+    };
+    var records = await post(url: url, body: jsonEncode(requestData));
     return records["message"];
   }
 
   Future<dynamic> changePasword(String mobileNo, String password) async {
-    var records = await UserService().changePassword(mobileNo, password);
+    String url = AppUtils.getUrl(AppConstants.changePasswordAPIPath);
+
+    Map<String, String> requestData = {
+      'username': mobileNo,
+      'password': password
+    };
+
+    var records = await post(url: url, body: jsonEncode(requestData));
     return records["message"];
   }
 
   Future<List<dynamic>> login(String username, String password) async {
-    final result = await UserService().login(username, password);
+    //final result = await UserService().login(username, password);
+    String url = AppUtils.getUrl(AppConstants.loginAPIPath);
+    Map<String, String> requestData = {
+      'username': username,
+      'password': password
+    };
 
+    final result = await post(url: url, body: jsonEncode(requestData));
     final records = result["records"];
     var loginModelMap = records.map((item) => UserModel.fromMap(item)).toList();
     if (loginModelMap.isNotEmpty) {

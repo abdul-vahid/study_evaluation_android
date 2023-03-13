@@ -15,6 +15,7 @@ class RoleModel extends BaseModel {
         status: data['status'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'role': role,

@@ -1,9 +1,5 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
-import 'package:study_evaluation/services/feedback_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
@@ -12,28 +8,9 @@ class FeedbackListViewModel extends BaseListViewModel {
     String url = AppUtils.getUrl(AppConstants.feedbackAPIPath);
     get(baseModel: FeedbackModel(), url: url);
   }
-  /* Future<void> fetch() async {
-    try {
-      final jsonObject = await FeedbackService().fetch();
-
-      final records = jsonObject["records"];
-      var modelMap =
-          records.map((item) => FeedbackModel.fromMap(item)).toList();
-      viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
-      status = "Completed";
-    } on AppException catch (error) {
-      status = "Error";
-      viewModels.add(BaseViewModel(model: FeedbackModel(appException: error)));
-    } on Exception catch (e) {
-      status = "Error";
-      viewModels.add(BaseViewModel(model: FeedbackModel(error: e)));
-    }
-
-    notifyListeners();
-  } */
 
   Future<dynamic> submitFeedback(FeedbackModel feedbackModel) async {
-    print("Feedback lis");
-    return await FeedbackService().submitFeedback(feedbackModel);
+    String url = AppUtils.getUrl(AppConstants.feedbackAPIPath);
+    return await post(url: url, body: feedbackModel.toJson());
   }
 }

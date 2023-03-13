@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
-
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/validator_util.dart';
@@ -22,7 +20,7 @@ class ConfirmPasswordScreen extends StatefulWidget {
 class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
-  final GlobalKey<FormState> _ForgetFormKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +45,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Form(
-                    key: _ForgetFormKey,
+                    key: _forgetFormKey,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,17 +55,15 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                           const SizedBox(
                             height: 40,
                           ),
-                          Container(
-                            child: Center(
-                                child: Text(
-                              'Create New Password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: AppColor.primaryColor,
-                              ),
-                            )),
-                          ),
+                          const Center(
+                              child: Text(
+                            'Create New Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: AppColor.primaryColor,
+                            ),
+                          )),
                           const SizedBox(
                             height: 40,
                           ),
@@ -89,12 +85,12 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                               if (value!.isEmpty) {
                                 return 'Please re-enter password';
                               }
-                              print(passwordController.text);
-                              print(confirmpasswordController.text);
+
                               if (passwordController.text !=
                                   confirmpasswordController.text) {
                                 return "Password does not match";
                               }
+                              return null;
                             },
                           ),
                           const SizedBox(
@@ -127,30 +123,19 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   }
 
   void onButtonPressed() {
-    if (_ForgetFormKey.currentState!.validate()) {
+    if (_forgetFormKey.currentState!.validate()) {
       AppUtils.onLoading(context, "Please wait...");
       UserListViewModel()
           .changePasword(widget.userName, passwordController.text)
           .then((records) {
-        print("success");
-
-        print('records.isNotEmpty$records');
-
         Navigator.pop(context);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const SignupSuccess()));
       }).catchError((onError) {
-        print('@@@Error${onError}');
-
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(onError);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-      // );
-      print("Login Button pressed!!!");
     }
   }
 }

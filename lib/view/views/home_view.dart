@@ -8,8 +8,8 @@ import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
-import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
-import 'package:study_evaluation/view/views/motivation.dart';
+import 'package:study_evaluation/view/views/current_affairs_view.dart';
+import 'package:study_evaluation/view/views/motivation_view.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
@@ -271,7 +271,7 @@ class _HomeViewState extends State<HomeView> {
                 providers: [
                   ChangeNotifierProvider(create: (_) => QuoteListViewModel())
                 ],
-                child: const MotivationScreen(),
+                child: const MotivationView(),
               )),
     );
   }
@@ -285,7 +285,7 @@ class _HomeViewState extends State<HomeView> {
                   ChangeNotifierProvider(
                       create: (_) => CurrentAffairsListViewModel())
                 ],
-                child: const CurrentAffairScreen(),
+                child: const CurrentAffairsView(),
               )),
     );
   }

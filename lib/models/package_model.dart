@@ -74,6 +74,7 @@ class PackageModel extends BaseModel {
         status: data['status'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'categoriesId': categoriesId,
         'id': id,

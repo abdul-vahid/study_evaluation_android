@@ -1,4 +1,4 @@
-import 'dart:convert';
+/* import 'dart:convert';
 import 'package:study_evaluation/models/result_model/result_model.dart';
 import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -15,9 +15,7 @@ class ExamService {
     url = AppUtils.getUrl(url);
     var token = await AppUtils.getToken();
     final responseJsonData = await _apiService.getResponse(url, token!);
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
-    }
+    AppUtils.printDebug("responseJsonData: $responseJsonData");
     return responseJsonData;
   }
 
@@ -25,7 +23,7 @@ class ExamService {
     String url = AppUtils.getUrl(AppConstants.submitExamAPIPath);
     var token = await AppUtils.getToken();
     var body = resultModel.toJson();
-    printLongString("body = $body");
+    //printLongString("body = $body");
     final responseJsonData = await _apiService.postResponse(url, body, token!);
     if (AppConstants.kDebugMode) {
       print("responseJsonData: $responseJsonData");
@@ -41,3 +39,4 @@ class ExamService {
         .forEach((RegExpMatch match) => print(match.group(0)));
   }
 }
+ */

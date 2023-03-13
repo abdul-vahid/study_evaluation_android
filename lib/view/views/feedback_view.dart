@@ -105,10 +105,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     return DropdownButtonHideUnderline(
       child: DropdownButtonFormField<String>(
         key: _dropdownKey,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-        ),
+        decoration: const InputDecoration(border: OutlineInputBorder()),
         hint: const Text('Select Reason'),
         value: _selectedReason,
         isDense: true,
@@ -118,13 +115,12 @@ class _FeedbackViewState extends State<FeedbackView> {
         onChanged: (newValue) {
           setState(() {
             _selectedReason = newValue;
-            print('_selectedReason ${_selectedReason}');
           });
         },
         items: _subject.map((state) {
           return DropdownMenuItem(
-            child: new Text(state),
             value: state,
+            child: Text(state),
           );
         }).toList(),
       ),
@@ -143,7 +139,6 @@ class _FeedbackViewState extends State<FeedbackView> {
         status: "Inactive",
       );
       submitFeedback(feedbackModel);
-      print('feedbackModel');
     }
   }
 
@@ -162,7 +157,6 @@ class _FeedbackViewState extends State<FeedbackView> {
       //Navigator.push(
       //  context, MaterialPageRoute(builder: (context) => const HomeView()));
     }).catchError((onError) {
-      print("Error");
       Navigator.pop(context);
       List<String> errorMessages = AppUtils.getErrorMessages(onError);
       AppUtils.getAlert(context, errorMessages, title: "Error Alert");

@@ -1,14 +1,17 @@
-import 'dart:convert';
-
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/quote_model.dart';
-import 'package:study_evaluation/services/quote_service.dart';
-
-import '../core/apis/app_exception.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class QuoteListViewModel extends BaseListViewModel {
   Future<void> fetch(
+      {String jsonRecordKey = "records", String filterDate = ""}) async {
+    String url = AppUtils.getUrl(AppConstants.quotesAPIPath);
+    url += filterDate.isNotEmpty ? "?date=$filterDate" : "";
+    get(baseModel: QuoteModel(), url: url);
+  }
+
+  /* Future<void> fetch(
       {String jsonRecordKey = "records", String filterDate = ""}) async {
     try {
       final jsonObject = await QuoteService().fetch(filterDate: filterDate);
@@ -28,5 +31,5 @@ class QuoteListViewModel extends BaseListViewModel {
     }
 
     notifyListeners();
-  }
+  } */
 }

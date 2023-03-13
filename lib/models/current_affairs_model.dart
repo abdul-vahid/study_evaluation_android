@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:study_evaluation/core/models/base_model.dart';
-
-import '../core/apis/app_exception.dart';
 
 class CurrentAffairsModel extends BaseModel {
   String? id;
@@ -31,9 +28,6 @@ class CurrentAffairsModel extends BaseModel {
       this.updatesBy,
       super.error,
       super.appException});
-  bool get isError {
-    return error != null || appException != null;
-  }
 
   factory CurrentAffairsModel.fromMap(Map<String, dynamic> data) {
     return CurrentAffairsModel(
@@ -51,6 +45,12 @@ class CurrentAffairsModel extends BaseModel {
     );
   }
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return CurrentAffairsModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'title': title,
@@ -68,6 +68,8 @@ class CurrentAffairsModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [CurrentAffairsModel].
+
+  @override
   factory CurrentAffairsModel.fromJson(String data) {
     return CurrentAffairsModel.fromMap(
         json.decode(data) as Map<String, dynamic>);

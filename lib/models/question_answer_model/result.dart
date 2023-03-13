@@ -53,6 +53,7 @@ class Result extends BaseModel {
         correctAnswers: data['correct_answers'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'exam_id': examId,

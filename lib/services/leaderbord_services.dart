@@ -14,10 +14,7 @@ class LeaderBoardService {
     //print("URL: ${url.toString()}");
     var token = await AppUtils.getToken();
     final responseJsonData = await _apiService.getResponse(url, token!);
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: order $responseJsonData");
-    }
+
     //print("Access Token: $responseJsonData");
     return responseJsonData;
   }

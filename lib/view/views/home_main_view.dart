@@ -45,7 +45,7 @@ class _HomeMainViewState extends State<HomeMainView> {
   int getNewNotficationCount(viewModels) {
     int count = 0;
     for (var vm in viewModels) {
-      BaseModel model = vm.model as NotificationModel;
+      NotificationModel model = vm.model as NotificationModel;
       if (model.status?.toLowerCase() == "unread") {
         count++;
       }

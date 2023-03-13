@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/view/views/category_list_view.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
-import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 
 class HomeController {
-  var context;
+  BuildContext context;
   FeedbackListViewModel feedbackListViewModel;
   SliderImageListViewModel? viewModelList;
   HomeController(this.context, this.feedbackListViewModel);
@@ -175,7 +172,7 @@ class HomeController {
 
   Container _nameAndFeedbackWidget(model) {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 4),
+      margin: const EdgeInsets.only(top: 10, left: 4),
       child: ListTile(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 4.0),
@@ -189,7 +186,7 @@ class HomeController {
   Text _getParaWidget(model) {
     return Text(
       "${model.comment}",
-      style: TextStyle(fontSize: 17),
+      style: const TextStyle(fontSize: 17),
       maxLines: 4,
     );
   }

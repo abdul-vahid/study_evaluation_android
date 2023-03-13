@@ -66,6 +66,12 @@ class UserModel extends BaseModel {
     return "$firstName $lastName";
   }
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return UserModel.fromMap(data);
+  }
+
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'role_id': roleId,

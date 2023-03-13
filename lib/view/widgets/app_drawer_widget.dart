@@ -1,39 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/models/login_model/user.dart';
-import 'package:study_evaluation/models/package_model/test_series.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
-import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/views/contact_us_view.dart';
 import 'package:study_evaluation/view/views/follow_us_view.dart';
-import 'package:study_evaluation/view/views/leardeboard_view.dart';
-import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:study_evaluation/view/views/notifications_view.dart';
-import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
-import 'package:study_evaluation/view_models/category_list_vm.dart';
-import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
-import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
-
-import '../../core/models/base_list_view_model.dart';
-import '../../utils/app_constants.dart';
-import '../../view_models/feedback_list_vm.dart';
 import '../../view_models/follow_us_list_vm.dart';
-import '../../view_models/notifications_list_vm.dart';
-import '../../view_models/slider_image_list_vm.dart';
 import '../views/feedback_view.dart';
-import '../views/feedbackalertdialog.dart';
-import '../views/home_main_view.dart';
 
 class AppDrawerWidget extends StatefulWidget {
   const AppDrawerWidget({super.key});

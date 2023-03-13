@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:study_evaluation/services/base_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import '../core/apis/app_exception.dart';
-import '../utils/app_constants.dart';
 
-class APIService extends BaseService {
-  @override
+class APIService {
   Future getResponse(String url, String token) async {
+    //AppUtils.printDebug("Token ----> $token");
     AppUtils.printDebug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
@@ -26,7 +24,6 @@ class APIService extends BaseService {
     return responseJson;
   }
 
-  @override
   Future postResponse(String url, var body, String token) async {
     AppUtils.printDebug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
@@ -44,13 +41,9 @@ class APIService extends BaseService {
     return responseJson;
   }
 
-  @override
   Future deleteResponse(String url, String token) async {
     dynamic responseJson;
     try {
-      if (AppConstants.kDebugMode) {
-        print("URL = $url");
-      }
       final response = await http.delete(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -64,7 +57,6 @@ class APIService extends BaseService {
     return responseJson;
   }
 
-  @override
   Future getMultipartResponse(String url, Map<String, String> data) async {
     dynamic responseJson;
     try {
@@ -104,10 +96,8 @@ class APIService extends BaseService {
         throw UnauthorisedException(response.body.toString());
       case 500:
       default:
-        print("500 = ${response.body}");
         throw FetchDataException(
-            'Error occured while communication with server' +
-                ' with status code : ${response.statusCode}');
+            'Error occured while communication with server with status code : ${response.statusCode}');
     }
   }
 
@@ -126,8 +116,7 @@ class APIService extends BaseService {
       case 500:
       default:
         throw FetchDataException(
-            'Error occured while communication with server' +
-                ' with status code : ${response.statusCode}');
+            'Error occured while communication with server with status code : ${response.statusCode}');
     }
   }
 }

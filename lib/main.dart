@@ -21,18 +21,16 @@ void main() async {
   LocalNotificationService.initialize();
 
   FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> _backgroundHandler(RemoteMessage message) async {
-  print("_backgroundHandler message");
-  print(message.data.toString());
-  print(message.notification!.title);
-  print(message.notification!.body);
   return Future.value();
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     //NotificationUtil(context);

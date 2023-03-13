@@ -11,14 +11,11 @@ class FollowUSListViewModel extends BaseListViewModel {
     try {
       final jsonObject = jsonDecode(AppConstants.followUSData);
       final records = jsonObject["records"];
-      print(records);
       var modelMap =
           records.map((item) => FollowUsModel.fromMap(item)).toList();
       viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
-      print("data loaded: $viewModels");
 
       Future<void>.delayed(Duration.zero, () {
-        print("Future.delayed Event");
         notifyListeners();
       });
     } on AppException catch (error) {

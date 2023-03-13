@@ -1,4 +1,4 @@
-import 'package:study_evaluation/core/apis/app_exception.dart';
+/* import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/role_model.dart';
@@ -24,3 +24,4 @@ class RoleListViewModel extends BaseListViewModel {
     notifyListeners();
   }
 }
+ */

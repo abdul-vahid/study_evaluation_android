@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class HomeTilesModel {
   String title;
   String imagePath;
