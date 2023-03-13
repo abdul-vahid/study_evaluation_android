@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view/views/result_view_old.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -70,6 +68,7 @@ class _ExamViewState extends State<ExamView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<ExamListViewModel>(context);
 
     return WillPopScope(

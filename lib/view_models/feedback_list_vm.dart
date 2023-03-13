@@ -1,11 +1,18 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/services/feedback_service.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class FeedbackListViewModel extends BaseListViewModel {
   Future<void> fetch() async {
+    String url = AppUtils.getUrl(AppConstants.feedbackAPIPath);
+    get(baseModel: FeedbackModel(), url: url);
+  }
+  /* Future<void> fetch() async {
     try {
       final jsonObject = await FeedbackService().fetch();
 
@@ -23,7 +30,7 @@ class FeedbackListViewModel extends BaseListViewModel {
     }
 
     notifyListeners();
-  }
+  } */
 
   Future<dynamic> submitFeedback(FeedbackModel feedbackModel) async {
     print("Feedback lis");

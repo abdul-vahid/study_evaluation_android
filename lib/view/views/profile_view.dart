@@ -38,6 +38,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
       drawer: const AppDrawerWidget(),
       appBar: AppUtils.getAppbar("My Profile"),

@@ -16,8 +16,18 @@ class UserListViewModel extends BaseListViewModel {
   String? name;
 
   Future<dynamic> signup(UserModel userModel) async {
-    print("signup lis");
     return await UserService().signup(userModel);
+  }
+
+  Future<dynamic> registerFCMToken(String token) async {
+    String url = AppUtils.getUrl(AppConstants.registerFCMTokenAPIPath);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userModel = AppUtils.getSessionUser(prefs);
+    Map<String, String> body = {
+      "registration_id": token,
+      "user_id": userModel.id!
+    };
+    return post(url: url, body: jsonEncode(body));
   }
 
   Future<dynamic> updateStudentProfile(UserModel userModel) async {
@@ -32,29 +42,31 @@ class UserListViewModel extends BaseListViewModel {
     return records["message"];
   }
 
-  Future<dynamic> ChangePasword(String mobileNo, String password) async {
+  Future<dynamic> changePasword(String mobileNo, String password) async {
     var records = await UserService().changePassword(mobileNo, password);
     return records["message"];
   }
 
   Future<List<dynamic>> login(String username, String password) async {
     final result = await UserService().login(username, password);
-    if (AppConstants.kDebugMode) {
-      print(result["records"]);
-    }
 
     final records = result["records"];
     var loginModelMap = records.map((item) => UserModel.fromMap(item)).toList();
     if (loginModelMap.isNotEmpty) {
       final prefs = await SharedPreferences.getInstance();
-      print("Access Token@@@ = ${result["access_token"]}");
-      await prefs.setString("access_token", result["access_token"]);
+
       await prefs.setString(
-          SharedPrefsConstants.profileUrl, loginModelMap[0].profileUrl);
+          SharedPrefsConstants.accessTokenKey, result["access_token"]);
       await prefs.setString(
-          SharedPrefsConstants.mobileNo, loginModelMap[0].mobileNo);
-      await prefs.setString(SharedPrefsConstants.name, loginModelMap[0].name);
-      await prefs.setString("user", loginModelMap[0].toJson());
+          SharedPrefsConstants.refreshTokenKey, result["refresh_token"]);
+      await prefs.setString(
+          SharedPrefsConstants.profileUrlKey, loginModelMap[0].profileUrl);
+      await prefs.setString(
+          SharedPrefsConstants.mobileNoKey, loginModelMap[0].mobileNo);
+      await prefs.setString(
+          SharedPrefsConstants.nameKey, loginModelMap[0].name);
+      await prefs.setString(
+          SharedPrefsConstants.userKey, loginModelMap[0].toJson());
     }
     return loginModelMap.map((item) => UserViewModel(model: item)).toList();
   }

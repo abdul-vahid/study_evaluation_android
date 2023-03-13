@@ -3,7 +3,7 @@ import 'package:study_evaluation/core/apis/app_exception.dart';
 class BaseModel {
   Exception? error;
   AppException? appException;
-
+  String? status;
   BaseModel({required this.error, required this.appException});
 
   bool get isError => error != null || appException != null;

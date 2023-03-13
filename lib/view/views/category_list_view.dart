@@ -28,6 +28,7 @@ class _CategoryListViewState extends State<CategoryListView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     categoriesVM = Provider.of<CategoryListViewModel>(context);
     return Scaffold(
       appBar: AppUtils.getAppbar("Test Series"),

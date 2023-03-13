@@ -49,6 +49,8 @@ class NotificationModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [NotificationModel].
+
+  @override
   factory NotificationModel.fromJson(String data) {
     return NotificationModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
@@ -56,5 +58,6 @@ class NotificationModel extends BaseModel {
   /// `dart:convert`
   ///
   /// Converts [NotificationModel] to a JSON string.
+
   String toJson() => json.encode(toMap());
 }

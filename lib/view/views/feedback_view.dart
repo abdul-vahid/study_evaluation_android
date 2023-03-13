@@ -28,6 +28,7 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,

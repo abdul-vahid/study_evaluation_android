@@ -9,7 +9,7 @@ class RoleService {
     print("Path = ${AppConstants.roleAPIPath}");
     print("Base URL = ${AppConstants.baseUrl}");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+    var token = prefs.getString(SharedPrefsConstants.accessTokenKey);
     print("Access Token = $token");
 
     final responseJsonData = await _apiService.getResponse(url, token!);

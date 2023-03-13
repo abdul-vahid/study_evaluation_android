@@ -1,9 +1,10 @@
 /// Environment variables and shared app constants.
 abstract class SharedPrefsConstants {
-  static const String prefsAccessTokenKey = "access_token";
-  static const String profileUrl = "profile_url";
-  static const String mobileNo = "mobile_no";
-  static const String name = "name";
+  static const String accessTokenKey = "access_token";
+  static const String refreshTokenKey = "refresh_token";
+  static const String profileUrlKey = "profile_url";
+  static const String mobileNoKey = "mobile_no";
+  static const String nameKey = "name";
   static const String userKey = "user";
 }
 
@@ -93,6 +94,8 @@ abstract class AppConstants {
   static const String leaderboardAPIPath = '/apis/leaderboard';
   static const String configurationAPIPath = '/apis/configuration';
   static const String notificationAPIPath = '/apis/notified_user';
+  static const String registerFCMTokenAPIPath = '/apis/register_fcm_token';
+  static const String refreshTokenAPIPath = '/apis/auth/refresh_token';
 
   static const String followUSData =
       '{"records":[{"title":"Follow Us on Facebook","image":"assets/images/facebook.png","url":"https://www.facebook.com/profile.php?id=100090658115759"},{"title":"Follow Us on Instagram","image":"assets/images/instagram.png","url":"https://instagram.com/studyevaluation?igshid=ZDdkNTZiNTM="},{"title":"Follow Us on Youtube","image":"assets/images/youtube.png","url":"https://www.youtube.com/@studysevaluation"},{"title":"Contact Us","image":"assets/images/taligram.png","url":"https://t.me/studyevaluation"}]}';

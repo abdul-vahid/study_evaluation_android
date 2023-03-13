@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/core/apis/api_response.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
@@ -25,8 +26,8 @@ import 'package:url_launcher/url_launcher.dart';
 class AppUtils {
   static bool isLoggedout = false;
   static int notificationCount = 0;
+  static BuildContext? currentContext;
   static void onLoading(BuildContext? context, String? label) {
-    print("On Loading..");
     showDialog(
         context: context!,
         barrierDismissible: false,
@@ -92,7 +93,7 @@ class AppUtils {
 
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+    return prefs.getString(SharedPrefsConstants.accessTokenKey);
   }
 
   static UserModel getSessionUser(SharedPreferences prefs) {

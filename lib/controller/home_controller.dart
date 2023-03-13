@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
@@ -129,9 +130,12 @@ class HomeController {
 
   List<Widget> _getFeedbackWidgets() {
     List<Widget> widgets = [];
-    feedbackListViewModel.viewModels.forEach((viewModel) {
-      widgets.add(_getFeedbackWidget(viewModel.getViewModel));
-    });
+    if (feedbackListViewModel.isError) {
+      return widgets;
+    }
+    for (var viewModel in feedbackListViewModel.viewModels) {
+      widgets.add(_getFeedbackWidget(viewModel.model as FeedbackModel));
+    }
     return widgets;
   }
 

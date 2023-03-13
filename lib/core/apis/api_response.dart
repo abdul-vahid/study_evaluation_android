@@ -3,6 +3,12 @@ class ApiResponse<T> {
   T? data;
   String? message;
 
+  static const int ok = 200;
+  static const int badRequest = 400;
+  static const int resourceNotFound = 404;
+  static const int unAuthorizedRequest = 403;
+  static const int internalError = 500;
+
   ApiResponse.initial(this.message) : status = Status.INITIAL;
 
   ApiResponse.loading(this.message) : status = Status.LOADING;

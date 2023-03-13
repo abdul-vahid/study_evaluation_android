@@ -55,6 +55,7 @@ class _ResultViewState extends State<ResultView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<ResultListViewModel>(context);
 
     return Scaffold(

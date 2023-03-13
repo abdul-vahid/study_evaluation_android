@@ -29,6 +29,7 @@ class _PackageListViewState extends State<PackageListView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
       appBar: AppBar(

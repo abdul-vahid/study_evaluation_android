@@ -29,6 +29,7 @@ class _MyOrderViewState extends State<MyOrderView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<OrderListViewModel>(context);
     print('@@@$baseListViewModel');
     return Scaffold(

@@ -1,11 +1,18 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/apis/app_exception.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/services/slider_service.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class SliderImageListViewModel extends BaseListViewModel {
-  Future<void> fetch({String categoryId = ""}) async {
+  Future<void> fetch() async {
+    String url = AppUtils.getUrl(AppConstants.appearanceAPIPath);
+    get(baseModel: SliderImageModel(), url: url);
+  }
+  /*  Future<void> fetch({String categoryId = ""}) async {
     try {
       final jsonObject = await SliderImageService().fetch();
       final records = jsonObject["records"];
@@ -23,5 +30,5 @@ class SliderImageListViewModel extends BaseListViewModel {
     }
 
     notifyListeners();
-  }
+  } */
 }

@@ -26,6 +26,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -129,7 +130,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
     if (_ForgetFormKey.currentState!.validate()) {
       AppUtils.onLoading(context, "Please wait...");
       UserListViewModel()
-          .ChangePasword(widget.userName, passwordController.text)
+          .changePasword(widget.userName, passwordController.text)
           .then((records) {
         print("success");
 

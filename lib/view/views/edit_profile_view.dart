@@ -103,6 +103,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         appBar: AppUtils.getAppbar("Edit Profile",
             leading: const BackButton(

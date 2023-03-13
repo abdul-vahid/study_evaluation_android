@@ -3,17 +3,16 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:study_evaluation/services/base_service.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import '../core/apis/app_exception.dart';
 import '../utils/app_constants.dart';
 
 class APIService extends BaseService {
   @override
   Future getResponse(String url, String token) async {
+    AppUtils.printDebug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
-      if (AppConstants.kDebugMode) {
-        print("URL = $url");
-      }
       final response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -23,17 +22,15 @@ class APIService extends BaseService {
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
+    AppUtils.printDebug("responseData --> $responseJson");
     return responseJson;
   }
 
   @override
   Future postResponse(String url, var body, String token) async {
+    AppUtils.printDebug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
-      if (AppConstants.kDebugMode) {
-        print("URL = $url");
-        print("Body = $body");
-      }
       final response = await http.post(Uri.parse(url), body: body, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -103,6 +100,7 @@ class APIService extends BaseService {
         throw BadRequestException(response.body.toString());
       case 401:
       case 403:
+        AppUtils.printDebug("Un Authorise");
         throw UnauthorisedException(response.body.toString());
       case 500:
       default:

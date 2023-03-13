@@ -30,14 +30,19 @@ class _NotificationViewState extends State<NotificationView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<NotificationsListViewModel>(context);
     //var a = baseListViewModel!.viewModels.length;
     return Scaffold(
       appBar: AppUtils.getAppbar("Notifications"),
-      body: ListView(
-          padding: const EdgeInsets.all(8), children: _getNotificationWidgets),
+      body: AppUtils.getAppBody(baseListViewModel!, _getBody), //_getBody(),
       drawer: const AppDrawerWidget(),
     );
+  }
+
+  ListView _getBody() {
+    return ListView(
+        padding: const EdgeInsets.all(8), children: _getNotificationWidgets);
   }
 
   List<Widget> get _getNotificationWidgets {
@@ -48,6 +53,7 @@ class _NotificationViewState extends State<NotificationView> {
     setState(() {
       AppUtils.notificationCount = baseListViewModel!.viewModels.length;
     });
+
     for (var viewModel in baseListViewModel!.viewModels) {
       widgets.add(getSlidable(viewModel.model, index++));
     }

@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
-import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/forgetpassword_view.dart';
-import 'package:study_evaluation/view/views/home_main_view.dart';
-import 'package:study_evaluation/view_models/category_list_vm.dart';
-import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
-import 'package:study_evaluation/view_models/feedback_list_vm.dart';
-import 'package:study_evaluation/view_models/exam_list_vm.dart';
-import 'package:study_evaluation/view_models/order_list_vm.dart';
-import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
 import '../widgets/widget_utils.dart';
@@ -41,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
 
   void _isLoggedIn() {
     SharedPreferences.getInstance().then((prefs) {
-      if (prefs.containsKey(SharedPrefsConstants.prefsAccessTokenKey)) {
+      if (prefs.containsKey(SharedPrefsConstants.accessTokenKey)) {
         //_pushHomePage();
         AppUtils.launchTab(context, selectedIndex: HomeTabsOptions.home.index)
             .then((value) => _isLoggedIn());
@@ -55,6 +45,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     _userController = UserController(context);
     return displayLogin ? _getBody(context) : const CircularProgressIndicator();
   }

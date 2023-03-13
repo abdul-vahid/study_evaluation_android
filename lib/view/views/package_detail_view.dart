@@ -43,6 +43,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
         appBar: AppUtils.getAppbar("Package Detail"),

@@ -3,16 +3,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
-import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/currentaffairs_screen.dart';
 import 'package:study_evaluation/view/views/motivation.dart';
-import 'package:study_evaluation/view/views/testseries.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
@@ -21,7 +18,6 @@ import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../utils/app_color.dart';
 
 class HomeView extends StatefulWidget {
@@ -52,6 +48,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     categoriesVM = Provider.of<CategoryListViewModel>(context);
     slidersVM = Provider.of<SliderImageListViewModel>(context);
     feedbacksVM = Provider.of<FeedbackListViewModel>(context);
@@ -266,14 +263,6 @@ class _HomeViewState extends State<HomeView> {
         ));
   }
 
-  void onTestSeries() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const TestSeriesScreen()),
-    );
-    print("Login Button pressed!!!");
-  }
-
   void onButtonPressed() {
     Navigator.push(
       context,
@@ -285,11 +274,6 @@ class _HomeViewState extends State<HomeView> {
                 child: const MotivationScreen(),
               )),
     );
-    print("Login Button pressed!!!");
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {});
   }
 
   void onCurrentAffairs() {
@@ -304,7 +288,6 @@ class _HomeViewState extends State<HomeView> {
                 child: const CurrentAffairScreen(),
               )),
     );
-    print("Login Button pressed!!!");
   }
 
   Future<bool> onWillPop() async {

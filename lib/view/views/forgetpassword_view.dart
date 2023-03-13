@@ -23,6 +23,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(

@@ -28,6 +28,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   // String username = userName;
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(

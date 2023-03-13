@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 import '../../utils/app_color.dart';
 
@@ -14,6 +15,7 @@ class AnalysisScreen extends StatefulWidget {
 class _AnalysisScreenState extends State<AnalysisScreen> {
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         appBar: AppBar(
             leading: BackButton(color: Colors.white),

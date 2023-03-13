@@ -8,7 +8,7 @@ class QuoteService {
     String url = AppConstants.baseUrl + AppConstants.quotesAPIPath;
     url += filterDate.isNotEmpty ? "?date=$filterDate" : "";
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString(SharedPrefsConstants.prefsAccessTokenKey);
+    var token = prefs.getString(SharedPrefsConstants.accessTokenKey);
     print("Access Token = $token");
 
     final responseJsonData = await _apiService.getResponse(url, token!);

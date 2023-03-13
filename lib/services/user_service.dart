@@ -11,13 +11,7 @@ class UserService {
     String url = AppConstants.baseUrl + AppConstants.signupAPIPath;
     var token = "";
     var body = userModel.toJson();
-    print(body);
     final responseJsonData = await _apiService.postResponse(url, body, token);
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
-    }
-    //print("Access Token: $responseJsonData");
     return responseJsonData;
   }
 
@@ -27,14 +21,9 @@ class UserService {
       'password': password
     };
     String url = AppConstants.baseUrl + AppConstants.loginAPIPath;
-    print(url);
     final responseJsonData =
         await _apiService.getMultipartResponse(url, requestData);
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("Access Token: $responseJsonData");
-    }
-    //print("Access Token: $responseJsonData");
+
     return responseJsonData;
   }
 
@@ -44,39 +33,27 @@ class UserService {
 
     var token = await AppUtils.getToken();
     var body = userModel.toJson();
-    print(body);
+    AppUtils.printDebug(body);
     final responseJsonData = await _apiService.postResponse(url, body, token!);
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
-    }
-    //print("Access Token: $responseJsonData");
+    AppUtils.printDebug("responseJsonData: $responseJsonData");
     return responseJsonData;
   }
 
   Future<dynamic> getOTP(String mobileNo, String reason) async {
-    String url = AppUtils.getUrl("${AppConstants.otpVerificationAPIPath}");
-    print('url@@ ${url}');
+    String url = AppUtils.getUrl(AppConstants.otpVerificationAPIPath);
+
     Map<String, String> requestData = {
       'contact_number': mobileNo,
       'reason': reason
     };
-
-    var token = await AppUtils.getToken();
     var body = jsonEncode(requestData);
-    print('body@@ ${body}');
     final responseJsonData = await _apiService.postResponse(url, body, '');
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
-    }
-    print("Otp@@: $responseJsonData");
     return responseJsonData;
   }
 
   Future<dynamic> changePassword(String mobileNo, String password) async {
-    String url = AppUtils.getUrl("${AppConstants.changePasswordAPIPath}");
-    print('url@@ ${url}');
+    String url = AppUtils.getUrl(AppConstants.changePasswordAPIPath);
+
     Map<String, String> requestData = {
       'username': mobileNo,
       'password': password
@@ -84,13 +61,7 @@ class UserService {
 
     var token = await AppUtils.getToken();
     var body = jsonEncode(requestData);
-    print('body@@ ${body}');
     final responseJsonData = await _apiService.postResponse(url, body, token!);
-    //String accessToken = responseJsonData['access_token'];
-    if (AppConstants.kDebugMode) {
-      print("responseJsonData: $responseJsonData");
-    }
-    print("changepassword@@: $responseJsonData");
     return responseJsonData;
   }
 }

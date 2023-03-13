@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class FeedbackAlertDialog extends StatefulWidget {
   const FeedbackAlertDialog({super.key});
@@ -11,7 +12,7 @@ class FeedbackAlertDialog extends StatefulWidget {
 }
 
 class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
-  List<String> _subject = [
+  final List<String> _subject = [
     'Select Subject',
     'Your Review',
     'App Related Issues',
@@ -23,9 +24,10 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
   String? _selectedSubject; // Option 2
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Dialog(
       elevation: 0,
-      backgroundColor: Color(0xffffffff),
+      backgroundColor: const Color(0xffffffff),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -35,7 +37,7 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
           Container(
             height: 50,
             color: AppColor.containerBoxColor,
-            child: Center(
+            child: const Center(
                 child: Text(
               'FeedBack',
               style: TextStyle(
@@ -44,11 +46,11 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
               ),
             )),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(children: [
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Select Reason',
                     style: TextStyle(
@@ -57,16 +59,16 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
                         color: Colors.grey,
                         letterSpacing: 1)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               InputDecorator(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    hint: Text('Select Subject'),
+                    hint: const Text('Select Subject'),
                     // Not necessary for Option 1
                     value: _selectedSubject,
                     isDense: true,
@@ -79,8 +81,8 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
                     },
                     items: _subject.map((state) {
                       return DropdownMenuItem(
-                        child: new Text(state),
                         value: state,
+                        child: Text(state),
                       );
                     }).toList(),
                   ),
@@ -93,22 +95,20 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
                 controller: textarea,
                 keyboardType: TextInputType.multiline,
                 maxLines: 4,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Write Message....",
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.buttonColor,
                   ),
-                  onPressed: () {
-                    print(textarea.text);
-                  },
-                  child: Text("Sumbmit"))
+                  onPressed: () {},
+                  child: const Text("Sumbmit"))
             ]),
           ),
         ],

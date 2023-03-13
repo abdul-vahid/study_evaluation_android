@@ -50,6 +50,7 @@ class _CurrentAffairScreenState extends State<CurrentAffairScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     currentAffairsListVM = Provider.of<CurrentAffairsListViewModel>(context);
 
     return Scaffold(

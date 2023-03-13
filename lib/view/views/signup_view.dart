@@ -36,6 +36,7 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     userController = UserController(context);
     return SingleChildScrollView(
       child: Form(

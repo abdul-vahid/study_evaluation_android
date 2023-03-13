@@ -32,6 +32,7 @@ class _LearderbordViewState extends State<LearderbordView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<BaseListViewModel>(context);
 
     print('@@@$baseListViewModel');

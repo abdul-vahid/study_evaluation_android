@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class TermsConditionsView extends StatefulWidget {
   const TermsConditionsView({super.key});
@@ -19,6 +20,7 @@ class _TermsConditionsViewState extends State<TermsConditionsView> {
   var subTitle2 = Colors.black;
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
       appBar: AppBar(
         // ignore: prefer_const_constructors

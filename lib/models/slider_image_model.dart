@@ -47,7 +47,7 @@ class SliderImageModel extends BaseModel {
         createdBy: data['created_by'] as String?,
         updatedBy: data['updated_by'] as String?,
       );
-
+  @override
   Map<String, dynamic> toMap() => {
         'id': id,
         'title': title,
@@ -63,9 +63,15 @@ class SliderImageModel extends BaseModel {
         'updated_by': updatedBy,
       };
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return SliderImageModel.fromMap(data);
+  }
+
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [Record].
+  @override
   factory SliderImageModel.fromJson(String data) {
     return SliderImageModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }

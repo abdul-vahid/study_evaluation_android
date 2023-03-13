@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/core/models/base_list_view_model.dart';
+import 'package:study_evaluation/core/models/base_model.dart';
+import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/category_list_view.dart';
 import 'package:study_evaluation/view/views/myorder_view.dart';
@@ -20,7 +23,7 @@ class HomeMainView extends StatefulWidget {
 class _HomeMainViewState extends State<HomeMainView> {
   int _selectedIndex = 0;
   var ctime;
-  var baseListViewModel;
+  BaseListViewModel? baseListViewModel;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget>? _widgetOptions;
@@ -42,20 +45,24 @@ class _HomeMainViewState extends State<HomeMainView> {
   int getNewNotficationCount(viewModels) {
     int count = 0;
     for (var vm in viewModels) {
-      if (vm.model.status.toLowerCase() == "unread") {
+      BaseModel model = vm.model as NotificationModel;
+      if (model.status?.toLowerCase() == "unread") {
         count++;
       }
     }
-    print("Total $count");
     return count;
   }
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     baseListViewModel = Provider.of<NotificationsListViewModel>(context);
-    int newNotifcationCount =
-        getNewNotficationCount(baseListViewModel?.viewModels);
-    AppUtils.notificationCount = baseListViewModel?.viewModels.length;
+    if (!(baseListViewModel?.isError)!) {
+      int newNotifcationCount =
+          getNewNotficationCount(baseListViewModel?.viewModels);
+      AppUtils.notificationCount = (baseListViewModel?.viewModels.length)!;
+    }
+
     _initTabs();
     return WillPopScope(
         onWillPop: onWillPop,

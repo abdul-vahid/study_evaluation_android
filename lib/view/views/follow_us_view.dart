@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/app_color.dart';
@@ -23,6 +24,7 @@ class _FollowUsViewState extends State<FollowUsView> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     followListVM = Provider.of<FollowUSListViewModel>(context);
     return Scaffold(
         appBar: AppBar(

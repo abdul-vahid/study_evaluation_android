@@ -50,6 +50,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     quoteListVM = Provider.of<QuoteListViewModel>(context);
     //return quoteListVM.viewModels.isNotEmpty ? _getBody() : _getLoader();
     return Scaffold(

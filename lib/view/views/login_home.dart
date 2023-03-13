@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/login_view.dart';
 import 'package:study_evaluation/view/views/signup_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
@@ -31,6 +32,7 @@ class _LoginHomeState extends State<LoginHome>
 
   @override
   Widget build(BuildContext context) {
+    AppUtils.currentContext = context;
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(

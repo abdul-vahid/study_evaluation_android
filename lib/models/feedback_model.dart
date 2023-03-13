@@ -50,6 +50,7 @@ class FeedbackModel extends BaseModel {
         updatedBy: data['updated_by'] as String?,
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         'student_firstname': studentFirstname,
         'student_lastname': studentLastname,
@@ -66,9 +67,17 @@ class FeedbackModel extends BaseModel {
         'updated_by': updatedBy,
       };
 
+  @override
+  BaseModel fromMap(Map<String, dynamic> data) {
+    return FeedbackModel.fromMap(data);
+  }
+
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [Feedback].
+  ///
+
+  @override
   factory FeedbackModel.fromJson(String data) {
     return FeedbackModel.fromMap(json.decode(data) as Map<String, dynamic>);
   }
