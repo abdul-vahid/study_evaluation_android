@@ -12,6 +12,11 @@ class OrderModel extends BaseModel {
   String? createdDate;
   String? expiryDate;
   String? amount;
+  String? currentStatus;
+  String? validity;
+  String? orderNumber;
+  String? paymentType;
+  String? paymentStatus;
 
   OrderModel(
       {this.packagesTitle,
@@ -23,6 +28,11 @@ class OrderModel extends BaseModel {
       this.createdDate,
       this.expiryDate,
       this.amount,
+      this.currentStatus,
+      this.validity,
+      this.orderNumber,
+      this.paymentType,
+      this.paymentStatus,
       super.appException,
       super.error});
 
@@ -36,6 +46,11 @@ class OrderModel extends BaseModel {
         createdDate: data['created_date'] as String?,
         expiryDate: data['expiry_date'] as String?,
         amount: data['amount'] as String?,
+        currentStatus: data['current_status'] as String?,
+        validity: data['validity'] as String?,
+        orderNumber: data['order_number'] as String?,
+        paymentType: data['payment_type'] as String?,
+        paymentStatus: data['payment_status'] as String?,
       );
 
   @override
@@ -54,6 +69,11 @@ class OrderModel extends BaseModel {
         'created_date': createdDate,
         'expiry_date': expiryDate,
         'amount': amount,
+        'current_status': currentStatus,
+        'validity': validity,
+        'order_number': orderNumber,
+        'payment_type': paymentType,
+        'payment_status': paymentStatus,
       };
 
   /// `dart:convert`

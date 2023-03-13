@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -21,6 +23,7 @@ class MyOrderView extends StatefulWidget {
 
 class _MyOrderViewState extends State<MyOrderView> {
   BaseListViewModel? baseListViewModel;
+  String? profileUrl;
   @override
   void initState() {
     super.initState();
@@ -49,104 +52,287 @@ class _MyOrderViewState extends State<MyOrderView> {
 
   SingleChildScrollView _getDataBody() {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          _getorderWidget(baseListViewModel),
-        ],
-      ),
+      child: Column(children: _getLeaderBordWidgets),
     );
   }
 
-  Widget _getorderWidget(orderVM) {
-    var count = orderVM.viewModels.length;
-    var height = count > 8 ? (count * 100.0) : 800.0;
-    return Container(
-        width: double.infinity,
-        height: height,
-        margin: const EdgeInsets.all(15.0),
-        // width: 200,
-        child: _getGridView(orderVM));
+  List<Widget> get _getLeaderBordWidgets {
+    List<Widget> widgets = [];
+
+    for (var viewModel in baseListViewModel!.viewModels) {
+      widgets.add(getCard(viewModel.model));
+
+      print('viewModel$viewModel');
+      // viewModel.model
+      print('viewModel.model@@ ${viewModel.model}');
+    }
+
+    return widgets;
   }
 
-  void _onTap(id) {
-    print("id is $id");
-  }
+  // Widget _getorderWidget(orderVM) {
+  //   var count = orderVM.viewModels.length;
+  //   var height = count > 8 ? (count * 100.0) : 800.0;
+  //   return Container(
+  //       width: double.infinity,
+  //       height: height,
+  //       margin: const EdgeInsets.all(15.0),
+  //       // width: 200,
+  //       child: _getGridView(orderVM));
+  // }
 
-  Widget _getGridView(orderVM) {
-    return orderVM.viewModels.isNotEmpty
-        ? _getBody(orderVM)
-        : AppUtils.getLoader();
-  }
+  // void _onTap(id) {
+  //   print("id is $id");
+  // }
 
-  GridView _getBody(orderVM) {
-    return GridView.builder(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: orderVM.viewModels.length,
-        itemBuilder: (context, index) {
-          OrderModel orderyModel =
-              orderVM.viewModels[index].model as OrderModel;
-          var url = AppUtils.getImageUrl(orderyModel.logoUrl);
-          //print(categoryModel.logoUrl);
-          return getCard(orderyModel.packagesTitle!, url, orderyModel.amount!,
-              orderyModel.packageId!, _onTap,
-              imageHeight: 70.0,
-              imageType: ImageType.network,
-              data: orderyModel.packagesTitle);
-        });
-  }
+  // Widget _getGridView(orderVM) {
+  //   return orderVM.viewModels.isNotEmpty
+  //       ? _getBody(orderVM)
+  //       : AppUtils.getLoader();
+  // }
 
-  getCard(String lable, String imagePath, String amount, String packageId,
-      void Function(dynamic) voidCallback,
-      {imageHeight = 120.0,
-      fontSize = 15.0,
-      imageType = ImageType.assets,
-      data}) {
-    return Card(
-      color: AppColor.boxColor,
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18.0),
-      ),
-      margin: EdgeInsets.all(10.0),
+  // GridView _getBody(orderVM) {
+  //   return GridView.builder(
+  //       gridDelegate:
+  //           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+  //       physics: const NeverScrollableScrollPhysics(),
+  //       itemCount: orderVM.viewModels.length,
+  //       itemBuilder: (context, index) {
+  //         OrderModel orderyModel =
+  //             orderVM.viewModels[index].model as OrderModel;
+  //         var url = AppUtils.getImageUrl(orderyModel.logoUrl);
+  //         //print(categoryModel.logoUrl);
+  //         return getCard(orderyModel.packagesTitle!, url, orderyModel.amount!,
+  //             orderyModel.packageId!, _onTap,
+  //             imageHeight: 70.0,
+  //             imageType: ImageType.network,
+  //             data: orderyModel.packagesTitle);
+  //       });
+  // }
+
+  getCard(myOrder) {
+    if (myOrder?.logoUrl != null) {
+      profileUrl = AppUtils.getImageUrl(myOrder?.logoUrl);
+    }
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          onButtonPressed(packageId);
-          print('packageId@@@!${packageId}');
+          onButtonPressed(myOrder.packageId);
+          print('packageId@@@!${myOrder.packageId}');
         },
-        child: Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Text(
-              lable,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSize,
-                color: AppColor.textColor,
+        child: Card(
+          elevation: 5,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: CircleAvatar(
+                        backgroundImage: profileUrl == null
+                            ? const NetworkImage(
+                                'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+                            : NetworkImage(profileUrl!),
+                        radius: 30.0,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: <Widget>[
+                          Text(
+                              // myborder.amount,
+                              myOrder.packagesTitle,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text(
+                            myOrder.name,
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 7,
-            ),
-            _getImage(imagePath, imageType, imageHeight: imageHeight),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              amount == null ? 'N/A' : '₹${amount}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSize,
-                color: AppColor.textColor,
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Order Number',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey),
+                          ),
+                          Text(
+                            'Subscription',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            myOrder.orderNumber,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '₹${myOrder.amount}',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  // getText('Order Date', myOrder.createdDate),
+                  getText('Order Number', myOrder.orderNumber),
+                  getText('Order Amount', '₹${myOrder.amount}'),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  //  getText('Order Date', myOrder.createdDate),
+                  getText('Order Date', myOrder.currentStatus),
+                  getText('Expiry Date ', myOrder.expiryDate),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  //getText('Order Date', myOrder.createdDate),
+                  getText('Payment Types', myOrder.paymentType),
+                  getText('Payment Status', myOrder.paymentStatus),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  // getText('Order Date', myOrder.createdDate),
+                  getText('Validity', myOrder.validity),
+
+                  getText('Status', myOrder.currentStatus),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Padding getText(String label, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      // ignore: prefer_const_literals_to_create_immutables
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            '${label}:',
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            text,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+  //   return Card(
+  //     color: AppColor.boxColor,
+  //     elevation: 3,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(18.0),
+  //     ),
+  //     margin: EdgeInsets.all(10.0),
+  //     child: InkWell(
+  //       onTap: () {
+  //         onButtonPressed(packageId);
+  //         print('packageId@@@!${packageId}');
+  //       },
+  //       child: Center(
+  //         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+  //           Text(
+  //             lable,
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.bold,
+  //               fontSize: fontSize,
+  //               color: AppColor.textColor,
+  //             ),
+  //           ),
+  //           const SizedBox(
+  //             height: 7,
+  //           ),
+  //           _getImage(imagePath, imageType, imageHeight: imageHeight),
+  //           const SizedBox(
+  //             height: 5,
+  //           ),
+  //           Text(
+  //             amount == null ? 'N/A' : '₹${amount}',
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.bold,
+  //               fontSize: fontSize,
+  //               color: AppColor.textColor,
+  //             ),
+  //           ),
+  //         ]),
+  //       ),
+  //     ),
+  //   );
 
   _getImage(url, imageType, {imageHeight}) {
     if (imageType == ImageType.assets) {
