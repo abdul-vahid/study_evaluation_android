@@ -28,7 +28,7 @@ class BaseListViewModel extends ChangeNotifier {
       var modelMap = records.map((item) => baseModel.fromMap(item)).toList();
       viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
       status = "Completed";
-    } /* on UnauthorisedException {
+    } on UnauthorisedException {
       String refreshTokenUrl =
           AppUtils.getUrl(AppConstants.refreshTokenAPIPath);
       try {
@@ -36,6 +36,11 @@ class BaseListViewModel extends ChangeNotifier {
         String refreshToken = "";
         if (prefs.containsKey(SharedPrefsConstants.refreshTokenKey)) {
           refreshToken = prefs.getString(SharedPrefsConstants.refreshTokenKey)!;
+        }
+        if (prefs.containsKey(SharedPrefsConstants.sessionTimeKey)) {
+          var sessionTime =
+              prefs.getString(SharedPrefsConstants.sessionTimeKey)!;
+          AppUtils.printDebug("sessionTime = $sessionTime");
         }
 
         Map<String, String> body = {"refresh_token": refreshToken};
@@ -49,6 +54,8 @@ class BaseListViewModel extends ChangeNotifier {
         await prefs.setString(SharedPrefsConstants.accessTokenKey, accessToken);
         await prefs.setString(
             SharedPrefsConstants.refreshTokenKey, refreshToken);
+        await prefs.setString(
+            SharedPrefsConstants.sessionTimeKey, DateTime.now().toString());
 
         APIService apiService = APIService();
         final jsonObjectRequest =
@@ -88,8 +95,7 @@ class BaseListViewModel extends ChangeNotifier {
       status = "Error";
       viewModels.add(BaseViewModel(
           model: BaseModel(appException: AppException(""), error: null)));
-    } */
-    on AppException catch (error) {
+    } on AppException catch (error) {
       status = "Error";
       viewModels.add(
           BaseViewModel(model: BaseModel(appException: error, error: null)));

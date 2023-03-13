@@ -2,6 +2,7 @@
 abstract class SharedPrefsConstants {
   static const String accessTokenKey = "access_token";
   static const String refreshTokenKey = "refresh_token";
+  static const String sessionTimeKey = "session_time";
   static const String profileUrlKey = "profile_url";
   static const String mobileNoKey = "mobile_no";
   static const String nameKey = "name";
