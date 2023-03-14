@@ -479,24 +479,37 @@ class _ResultViewState extends State<ResultView> {
 
   Widget _getDescription(QuestionModel model) {
     return Card(
-      elevation: 5,
+      shape: RoundedRectangleBorder(
+          //<-- SEE HERE
+          side: BorderSide(color: Colors.yellow)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: const Text(
-                "Explanation",
-                style: TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
+          Container(
+            height: 35,
+            color: Colors.yellow[200],
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 20,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  "Explanation",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: _getContent(
-                "${model.descriptionHindi}", "${model.descriptionEnglish}"),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: _getContent(
+                  "${model.descriptionHindi}", "${model.descriptionEnglish}"),
+            ),
           )
         ],
       ),
@@ -642,8 +655,8 @@ class _ResultViewState extends State<ResultView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            title: Center(child: Text(title)),
-            children: children,
+            title: Center(child: const Text('Select Font Size ')),
+            children: _getFontOptionsWidgets,
           );
         });
   } */
