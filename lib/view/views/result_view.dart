@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_new
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +83,69 @@ class _ResultViewState extends State<ResultView> {
                           )),
                 );
               }),
-          _getFilterButton()
+          //  _getFilterButton(),
+          PopupMenuButton(
+              // add icon, by default "3 dot" icon
+              // icon: Icon(Icons.book)
+              itemBuilder: (context) {
+            return [
+              PopupMenuItem<int>(
+                value: 0,
+                child: Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Icon(
+                      Icons.apps_rounded,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text("Filter")
+                  ],
+                ),
+              ),
+              PopupMenuItem<int>(
+                  value: 1,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Icon(
+                        Icons.language,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text("Language")
+                    ],
+                  )),
+              PopupMenuItem<int>(
+                value: 2,
+                child: Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Icon(
+                      Icons.font_download,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text("Font-Size")
+                  ],
+                ),
+              ),
+            ];
+          }, onSelected: (value) {
+            if (value == 0) {
+              _onPressedFilter();
+            } else if (value == 1) {
+              _onPressedLanguages(context);
+            } else if (value == 2) {
+              _onPressedFontSize(context);
+            }
+          }),
         ]),
         body: RefreshIndicator(
             onRefresh: _pullRefresh,
@@ -184,21 +248,21 @@ class _ResultViewState extends State<ResultView> {
     _loadFilters();
 
     widgets.add(Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
           //_getTopBar(),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getLanguageDropdown(),
-              _getFontDropdown(),
-            ],
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   // crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     _getLanguageDropdown(),
+          //     _getFontDropdown(),
+          //   ],
+          // ),
 
           SizedBox(
             height: 10,
@@ -343,37 +407,39 @@ class _ResultViewState extends State<ResultView> {
 
   IconButton _getFilterButton() {
     return IconButton(
-        onPressed: () {
-          if (baseListViewModel?.viewModels[0].model.questionModels == null ||
-              baseListViewModel?.viewModels[0].model.questionModels.isEmpty) {
-            return;
-          }
-          showDialog(
-            barrierColor: Colors.black26,
-            context: context,
-            builder: (context) {
-              return CustomAlertDialog(
-                  questionModels:
-                      baseListViewModel?.viewModels[0].model.questionModels);
-            },
-          ).then((value) {
-            //print("Dialog Value = $value");
-
-            if (value != null) {
-              Scrollable.ensureVisible(
-                (_keys?[value].currentContext)!,
-                duration: const Duration(milliseconds: 350),
-                curve: Curves.easeOut,
-                alignment: 0.5,
-              );
-            }
-          });
-        },
+        onPressed: _onPressedFilter,
         icon: const Icon(
           Icons.apps_rounded,
           size: 30,
           color: Colors.white, // add custom icons also
         ));
+  }
+
+  void _onPressedFilter() {
+    if (baseListViewModel?.viewModels[0].model.questionModels == null ||
+        baseListViewModel?.viewModels[0].model.questionModels.isEmpty) {
+      return;
+    }
+    showDialog(
+      barrierColor: Colors.black26,
+      context: context,
+      builder: (context) {
+        return CustomAlertDialog(
+            questionModels:
+                baseListViewModel?.viewModels[0].model.questionModels);
+      },
+    ).then((value) {
+      //print("Dialog Value = $value");
+
+      if (value != null) {
+        Scrollable.ensureVisible(
+          (_keys?[value].currentContext)!,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeOut,
+          alignment: 0.5,
+        );
+      }
+    });
   }
 
   // Padding _getBottomButtons() {
@@ -638,9 +704,9 @@ class _ResultViewState extends State<ResultView> {
 
   _getSelectedColor(QuestionModel model, String value) {
     if (model.answer == value) {
-      return Colors.green;
+      return Colors.green[200];
     } else if (model.submittedAnswer == value) {
-      return Colors.red;
+      return Colors.red[100];
     }
   }
 
@@ -656,5 +722,115 @@ class _ResultViewState extends State<ResultView> {
         .get(baseModel: ExamModel(), url: url);
     baseListViewModel = Provider.of<BaseListViewModel>(context, listen: false);
     print("length = ${baseListViewModel?.viewModels.length}");
+  }
+
+  _onPressedLanguages(
+    BuildContext context,
+  ) {
+    String? languages = 'English';
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (
+          BuildContext context,
+        ) {
+          return SimpleDialog(
+            //   shape: EdgeInsets.all(value),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            title: Center(child: const Text('Select Languages ')),
+            children: <Widget>[
+              new Divider(
+                color: Colors.grey.shade300,
+              ),
+              RadioListTile(
+                title: Text("English"),
+                value: "English",
+                groupValue: languages,
+                onChanged: (value) {
+                  setState(() {
+                    languages = value.toString();
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text("Hindi"),
+                value: "Hindi",
+                groupValue: languages,
+                onChanged: (value) {
+                  setState(() {
+                    languages = value.toString();
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text("Both"),
+                value: "Both",
+                groupValue: languages,
+                onChanged: (value) {
+                  setState(() {
+                    languages = value.toString();
+                  });
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  _onPressedFontSize(
+    BuildContext context,
+  ) {
+    String? fontSize = 'Small';
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (
+          BuildContext context,
+        ) {
+          return SimpleDialog(
+            //   shape: EdgeInsets.all(value),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            title: Center(child: const Text('Select Font Size ')),
+            children: <Widget>[
+              new Divider(
+                color: Colors.grey.shade300,
+              ),
+              RadioListTile(
+                title: Text("Small"),
+                value: "Small",
+                groupValue: fontSize,
+                onChanged: (value) {
+                  setState(() {
+                    fontSize = value.toString();
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text("Medium"),
+                value: "medium",
+                groupValue: fontSize,
+                onChanged: (value) {
+                  setState(() {
+                    fontSize = value.toString();
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text("Large"),
+                value: "Large",
+                groupValue: fontSize,
+                onChanged: (value) {
+                  setState(() {
+                    fontSize = value.toString();
+                  });
+                },
+              )
+            ],
+          );
+        });
   }
 }
