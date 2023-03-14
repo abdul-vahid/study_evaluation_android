@@ -719,7 +719,7 @@ class _ResultViewState extends State<ResultView> {
   _onPressedLanguages(
     BuildContext context,
   ) {
-    _getSimpleDialog(context,
+    AppUtils.getSimpleDialog(context,
         title: 'Select Language', children: _getLanguageOptionsWidgets);
   }
 
@@ -783,11 +783,11 @@ class _ResultViewState extends State<ResultView> {
   _onPressedFontSize(
     BuildContext context,
   ) {
-    _getSimpleDialog(context,
+    AppUtils.getSimpleDialog(context,
         title: 'Select Font Size', children: _getFontOptionsWidgets);
   }
 
-  Future<dynamic> _getSimpleDialog(BuildContext context,
+  /* Future<dynamic> _getSimpleDialog(BuildContext context,
       {required String title, List<Widget>? children}) {
     return showDialog(
         context: context,
@@ -804,5 +804,5 @@ class _ResultViewState extends State<ResultView> {
             children: children,
           );
         });
-  }
+  } */
 }

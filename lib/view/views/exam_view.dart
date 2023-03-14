@@ -7,6 +7,7 @@ import 'package:study_evaluation/models/question_answer_model/question_model.dar
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
@@ -38,13 +39,13 @@ class _ExamViewState extends State<ExamView> {
     "22": "Large"
   };
 
-  String _selectedLanguage = "Hindi";
+  String _selectedLanguage = "hindi";
   String? _selectedFont = "15";
   String title = "Test";
   String timeUP = "";
   int timerMaxSeconds = 60;
   Duration? myDuration;
-  var duration;
+
   int currentSeconds = 0;
   Timer? countdownTimer;
   var hours = "0";
@@ -72,8 +73,150 @@ class _ExamViewState extends State<ExamView> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-          appBar: AppUtils.getAppbar(title, actions: [_getFilterButton()]),
+          appBar:
+              AppUtils.getAppbar(title, actions: [_getPopMenuButton(context)]),
           body: AppUtils.getAppBody(baseListViewModel!, _getBody)),
+    );
+  }
+
+  PopupMenuButton<int> _getPopMenuButton(BuildContext context) {
+    return PopupMenuButton(
+        // add icon, by default "3 dot" icon
+        // icon: Icon(Icons.book)
+        itemBuilder: (context) {
+      return [
+        _getPopupMenuItem(
+            label: "Filter", value: 0, iconData: Icons.apps_rounded),
+        _getPopupMenuItem(
+            label: "Language", value: 1, iconData: Icons.language),
+        _getPopupMenuItem(
+            label: "Font Size", value: 2, iconData: Icons.font_download),
+      ];
+    }, onSelected: (value) {
+      if (value == 0) {
+        _onPressedFilter();
+      } else if (value == 1) {
+        _onPressedLanguages(context);
+      } else if (value == 2) {
+        _onPressedFontSize(context);
+      }
+    });
+  }
+
+  _onPressedFontSize(
+    BuildContext context,
+  ) {
+    AppUtils.getSimpleDialog(context,
+        title: 'Select Font Size', children: _getFontOptionsWidgets);
+  }
+
+  List<Widget> get _getFontOptionsWidgets {
+    List<Widget> widgets = [];
+    widgets.add(Divider(
+      color: Colors.grey.shade300,
+    ));
+
+    fontOptions.forEach((key, value) {
+      widgets.add(_getFontRadioListTile(label: value, value: key));
+    });
+
+    return widgets;
+  }
+
+  RadioListTile<String> _getFontRadioListTile(
+      {required String label, required String value}) {
+    return RadioListTile<String>(
+      title: Text(label),
+      value: value,
+      groupValue: _selectedFont,
+      onChanged: (value) {
+        setState(() {
+          _selectedFont = value!;
+          //AppUtils.printDebug("_selectedLanguage = $_selectedLanguage");
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
+
+  _onPressedLanguages(
+    BuildContext context,
+  ) {
+    AppUtils.getSimpleDialog(context,
+        title: 'Select Language', children: _getLanguageOptionsWidgets);
+  }
+
+  List<Widget> get _getLanguageOptionsWidgets {
+    List<Widget> widgets = [];
+    widgets.add(Divider(
+      color: Colors.grey.shade300,
+    ));
+    for (var language in languageOptions) {
+      widgets.add(_getLanguageRadioListTile(
+          label: language, value: language.toLowerCase()));
+    }
+    return widgets;
+  }
+
+  RadioListTile<String> _getLanguageRadioListTile(
+      {required String label, required String value}) {
+    return RadioListTile<String>(
+      title: Text(label),
+      value: value,
+      groupValue: _selectedLanguage,
+      onChanged: (value) {
+        setState(() {
+          _selectedLanguage = value!;
+          debug("_selectedLanguage = $_selectedLanguage");
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
+
+  void _onPressedFilter() {
+    if (baseListViewModel?.viewModels[0].model.questionModels == null ||
+        baseListViewModel?.viewModels[0].model.questionModels.isEmpty) {
+      return;
+    }
+    showDialog(
+      barrierColor: Colors.black26,
+      context: context,
+      builder: (context) {
+        return CustomAlertDialog(
+            questionModels:
+                baseListViewModel?.viewModels[0].model.questionModels);
+      },
+    ).then((value) {
+      //print("Dialog Value = $value");
+
+      if (value != null) {
+        Scrollable.ensureVisible(
+          (_keys?[value].currentContext)!,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeOut,
+          alignment: 0.5,
+        );
+      }
+    });
+  }
+
+  PopupMenuItem<int> _getPopupMenuItem(
+      {int? value, required String label, required IconData iconData}) {
+    return PopupMenuItem<int>(
+      value: value,
+      child: Row(
+        children: [
+          Icon(
+            iconData,
+            color: Colors.black,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(label)
+        ],
+      ),
     );
   }
 
@@ -93,15 +236,29 @@ class _ExamViewState extends State<ExamView> {
 
   List<Widget> _getPopActions(BuildContext context) {
     List<Widget> widgets = [];
-    widgets.add(_getPopCancelButton(context));
+
+    widgets.add(_getPopContinueButton(context));
     if (!widget.reAttempt!) {
       widgets.add(_getPopSaveButton(context));
+    } else {
+      widgets.add(_getPopCancelButton(context));
     }
     widgets.add(_getPopSubmitButton(context));
     return widgets;
   }
 
   ElevatedButton _getPopCancelButton(BuildContext context) {
+    return AppUtils.getElevatedButton("Cancel", onPressed: () {
+      //stopTimer();
+      Navigator.of(context).pop(false);
+      Navigator.pop(context);
+    },
+        textStyle: const TextStyle(color: Colors.black),
+        buttonStyle:
+            ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
+  }
+
+  ElevatedButton _getPopContinueButton(BuildContext context) {
     return AppUtils.getElevatedButton("Continue", onPressed: () {
       //stopTimer();
       Navigator.of(context).pop(false);
@@ -167,7 +324,6 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _initDuration(ExamModel model) {
-    print("reattempt = ${widget.reAttempt}");
     if (model.exam?.remainingExamTime != null &&
         (model.exam?.remainingExamTime?.isNotEmpty)! &&
         !widget.reAttempt!) {
@@ -222,11 +378,11 @@ class _ExamViewState extends State<ExamView> {
           const SizedBox(
             height: 20,
           ),
-          Row(
+          /* Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [_getLanguageDropdown(), _getFontDropdown()],
-          ),
+          ), */
         ],
       ),
     ));
@@ -357,6 +513,11 @@ class _ExamViewState extends State<ExamView> {
       widgets.add(const SizedBox(
         width: 10,
       ));
+    } else {
+      widgets.add(_getCancelButton());
+      widgets.add(const SizedBox(
+        width: 10,
+      ));
     }
     widgets.add(_getSubmitButton());
     return widgets;
@@ -404,10 +565,7 @@ class _ExamViewState extends State<ExamView> {
       AppUtils.getAlert(context, [successMessage],
           onPressed: () => _onPressedAlert(resultId, status));
     }).catchError((error, stacktrace) {
-      if (AppConstants.kDebugMode) {
-        print(error.toString());
-        print(stacktrace);
-      }
+      debug(stacktrace);
       AppUtils.onError(context, error);
     });
   }
@@ -446,60 +604,8 @@ class _ExamViewState extends State<ExamView> {
     //Navigator.of(context).pop("reload"); */
   }
 
-  void _onCancel() {}
-
-  Widget _getFontDropdown() {
-    return Container(
-        width: 120,
-        height: 60,
-        child: DropdownButtonHideUnderline(
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-              ),
-              hint: const Text('Font'),
-              // Not necessary for Option 1
-              value: int.parse(_selectedFont.toString()).toString(),
-              //validator: (value) => value == null ? 'Required' : null,
-              //isDense: true,
-              isExpanded: false,
-              menuMaxHeight: 350,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedFont = newValue!;
-                });
-              },
-              items: getFontSizes()),
-        ));
-  }
-
-  Widget _getLanguageDropdown() {
-    return Container(
-        width: 120,
-        height: 60,
-        child: DropdownButtonHideUnderline(
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-              ),
-              hint: const Text('Language'),
-              // Not necessary for Option 1
-              value: _selectedLanguage,
-              validator: (value) => value == null ? 'Required' : null,
-              isDense: true,
-              isExpanded: false,
-              menuMaxHeight: 300,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedLanguage = newValue!;
-                });
-              },
-              items: getItems()),
-        ));
+  void _onCancel() {
+    Navigator.pop(context);
   }
 
   Padding _getQuestionOptionWidget(model) {

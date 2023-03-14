@@ -332,4 +332,23 @@ class AppUtils {
                 )),
         (Route<dynamic> route) => false);
   }
+
+  static Future<dynamic> getSimpleDialog(BuildContext context,
+      {required String title, List<Widget>? children}) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (
+          BuildContext context,
+        ) {
+          return SimpleDialog(
+            //   shape: EdgeInsets.all(value),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            title: Center(child: Text(title)),
+            children: children,
+          );
+        });
+  }
 }
