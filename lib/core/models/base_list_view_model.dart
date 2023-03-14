@@ -39,13 +39,15 @@ class BaseListViewModel extends ChangeNotifier {
           refreshToken = prefs.getString(SharedPrefsConstants.refreshTokenKey)!;
         }
         //if (prefs.containsKey(SharedPrefsConstants.sessionTimeKey)) {
-        var sessionTime = prefs.getString(SharedPrefsConstants.sessionTimeKey)!;
-        AppUtils.printDebug("sessionTime = $sessionTime");
+        String sessionTime;
+        int minutes = 0;
+        if (prefs.containsKey(SharedPrefsConstants.sessionTimeKey)) {
+          sessionTime = prefs.getString(SharedPrefsConstants.sessionTimeKey)!;
+          var sessionDT = DateFormat('yyyy-MM-dd HH:mm:ss').parse(sessionTime);
+          minutes = DateTime.now().difference(sessionDT).inMinutes;
+        }
 
-        var sessionDT = DateFormat('yyyy-MM-dd HH:mm:ss').parse(sessionTime);
-        int minutes = DateTime.now().difference(sessionDT).inSeconds;
-        AppUtils.printDebug("minutes: $minutes");
-        if (minutes > 20) {
+        if (minutes > 119) {
           Map<String, String> body = {"refresh_token": refreshToken};
           final jsonObject =
               await post(url: refreshTokenUrl, body: jsonEncode(body));

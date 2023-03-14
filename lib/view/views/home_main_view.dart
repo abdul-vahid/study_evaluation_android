@@ -60,7 +60,7 @@ class _HomeMainViewState extends State<HomeMainView> {
     if (!(baseListViewModel?.isError)!) {
       int newNotifcationCount =
           getNewNotficationCount(baseListViewModel?.viewModels);
-      AppUtils.notificationCount = (baseListViewModel?.viewModels.length)!;
+      AppUtils.notificationCount = newNotifcationCount;
     }
 
     _initTabs();

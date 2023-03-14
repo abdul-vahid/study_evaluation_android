@@ -7,7 +7,12 @@ import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 class NotificationUtil {
   static FirebaseMessaging? _firebaseMessaging;
   static BuildContext? context;
-  static void initialize(context) {
+  static bool isInitialized = false;
+  void initialize(context) {
+    if (isInitialized) {
+      return;
+    }
+
     NotificationUtil.context = context;
     _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging?.requestPermission();
@@ -34,6 +39,9 @@ class NotificationUtil {
     );
 
     registerToken();
+    if (!isInitialized) {
+      isInitialized = true;
+    }
   }
 
   static Future<void> onMessageReceived(RemoteMessage? remoteMessage) {
@@ -49,9 +57,11 @@ class NotificationUtil {
       //TokenService tokenService = TokenService();
 
       AppUtils.printDebug("FCM Token = $token");
-      UserListViewModel().registerFCMToken(token!).then((value) {},
-          onError: (error) {
+      UserListViewModel().registerFCMToken(token!).then((value) {
+        AppUtils.printDebug("value = $value");
+      }, onError: (error, stackTrace) {
         AppUtils.printDebug("FCM Error: $error");
+        AppUtils.printDebug("FCM Error: $stackTrace");
       });
     });
   }
