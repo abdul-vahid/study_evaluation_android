@@ -710,22 +710,8 @@ class _ResultViewState extends State<ResultView> {
   _onPressedLanguages(
     BuildContext context,
   ) {
-    String? languages = 'English';
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (
-          BuildContext context,
-        ) {
-          return SimpleDialog(
-            //   shape: EdgeInsets.all(value),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            title: Center(child: const Text('Select Language')),
-            children: _getLanguageOptionsWidgets,
-          );
-        });
+    _getSimpleDialog(context,
+        title: 'Select Language', children: _getLanguageOptionsWidgets);
   }
 
   List<Widget> get _getLanguageOptionsWidgets {
@@ -788,7 +774,13 @@ class _ResultViewState extends State<ResultView> {
   _onPressedFontSize(
     BuildContext context,
   ) {
-    showDialog(
+    _getSimpleDialog(context,
+        title: 'Select Font Size', children: _getFontOptionsWidgets);
+  }
+
+  Future<dynamic> _getSimpleDialog(BuildContext context,
+      {required String title, List<Widget>? children}) {
+    return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (
@@ -799,8 +791,8 @@ class _ResultViewState extends State<ResultView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            title: Center(child: const Text('Select Font Size ')),
-            children: _getFontOptionsWidgets,
+            title: Center(child: Text(title)),
+            children: children,
           );
         });
   }
