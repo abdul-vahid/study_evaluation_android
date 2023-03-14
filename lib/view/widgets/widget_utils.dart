@@ -86,6 +86,39 @@ class WidgetUtils {
     );
   }
 
+  static Widget getTextFormFieldPassword(
+      String labelText, String hintText, IconData iconData,
+      {controller,
+      void Function(String?)? onSaved,
+      String? Function(String?)? onValidator,
+      bool obscureText = false,
+      String? initialValue,
+      TextInputType? keyboardType,
+      Widget? suffix}) {
+    return TextFormField(
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      controller: controller,
+      onSaved: onSaved,
+      validator: onValidator,
+      initialValue: initialValue,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        prefixIcon: Icon(iconData, color: AppColor.iconColor),
+        isDense: false,
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: 10.0,
+          minHeight: 10.0,
+        ),
+        suffixIcon: suffix,
+        labelText: labelText,
+        hintText: hintText,
+      ),
+    );
+  }
+
   //Button
 
   static Widget getButton(String label,

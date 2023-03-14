@@ -22,12 +22,15 @@ class _LoginViewState extends State<LoginView> {
   final passwordController = TextEditingController();
   String? _userName;
   String? _password;
+  bool passwordVisible = false;
+
   UserController? _userController;
   bool displayLogin = false;
   @override
   void initState() {
     _isLoggedIn();
     super.initState();
+    passwordVisible = true;
   }
 
   void _isLoggedIn() {
@@ -77,13 +80,34 @@ class _LoginViewState extends State<LoginView> {
             const SizedBox(
               height: 20,
             ),
-            WidgetUtils.getTextFormField(
-                'Password', 'Enter Password', Icons.lock,
-                onValidator: validatePassword,
-                initialValue: "Admin@123", onSaved: ((value) {
-              _password = value;
-              print('_Password @@@@ $_password');
-            }), obscureText: true),
+            WidgetUtils.getTextFormFieldPassword(
+              'Password',
+              'Enter Password',
+              Icons.lock,
+              onValidator: validatePassword,
+              initialValue: "Admin@123",
+              onSaved: ((value) {
+                _password = value;
+                print('_Password @@@@ $_password');
+              }),
+              obscureText: passwordVisible,
+              suffix: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10.0),
+                child: InkWell(
+                  child: Icon(
+                    // Based on passwordVisible state choose the icon
+                    passwordVisible ? Icons.visibility_off : Icons.visibility,
+                    color: AppColor.iconColor,
+                  ),
+                  onTap: () {
+                    // Update the state i.e. toogle the state of passwordVisible variable
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),

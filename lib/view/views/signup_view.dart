@@ -19,20 +19,24 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   UserController? userController;
   final GlobalKey<FormState> _registrationFormKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
+  bool passwordVisible = false;
+  bool confirmPasswordVisible = false;
 
   String? _mobileNumber;
   String? _password;
   String? _firstName;
   String? _lastName;
+
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+    confirmPasswordVisible = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,26 +87,46 @@ class _SignupViewState extends State<SignupView> {
             const SizedBox(
               height: 20,
             ),
-            WidgetUtils.getTextFormField(
-                'Password', 'Enter Password', Icons.lock, onSaved: ((value) {
-              _password = value;
+            WidgetUtils.getTextFormFieldPassword(
+              'Password',
+              'Enter Password',
+              Icons.lock,
+              onSaved: ((value) {
+                _password = value;
 
-              print('_password @@@@ $_password');
-            }),
-                onValidator: validatePassword,
-                obscureText: true,
-                controller: passwordController),
+                print('_password @@@@ $_password');
+              }),
+              onValidator: validatePassword,
+              obscureText: passwordVisible,
+              controller: passwordController,
+              suffix: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10.0),
+                child: InkWell(
+                  child: Icon(
+                    // Based on passwordVisible state choose the icon
+                    passwordVisible ? Icons.visibility_off : Icons.visibility,
+                    color: AppColor.iconColor,
+                  ),
+                  onTap: () {
+                    // Update the state i.e. toogle the state of passwordVisible variable
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),
-            WidgetUtils.getTextFormField(
+            WidgetUtils.getTextFormFieldPassword(
               'Confirm Password',
               'Enter Confirm Password',
               Icons.lock,
               onSaved: ((value) {
                 print('_confirmPassword @@@@ $_password');
               }),
-              obscureText: true,
+              obscureText: confirmPasswordVisible,
               controller: confirmpasswordController,
               onValidator: (String? value) {
                 if (value!.isEmpty) {
@@ -114,6 +138,24 @@ class _SignupViewState extends State<SignupView> {
                   return "Password does not match";
                 }
               },
+              suffix: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10.0),
+                child: InkWell(
+                  child: Icon(
+                    // Based on passwordVisible state choose the icon
+                    confirmPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: AppColor.iconColor,
+                  ),
+                  onTap: () {
+                    // Update the state i.e. toogle the state of passwordVisible variable
+                    setState(() {
+                      confirmPasswordVisible = !confirmPasswordVisible;
+                    });
+                  },
+                ),
+              ),
             ),
             const SizedBox(
               height: 20,

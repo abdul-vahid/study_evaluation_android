@@ -28,20 +28,16 @@ class _ContactUsViewState extends State<ContactUsView> {
             child: Padding(
                 padding: EdgeInsets.all(20),
                 child: Column(children: [
-                  getCard('Contact Us', '+91 86199-90680'),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  getCard('Address',
-                      'Study Evaluation Police Line, Ajmer, Rajasthan 305001'),
+                  getCard('Contact Us', '+91 86199-90680',
+                      'studyevaluation@gmail.com'),
                 ]))));
   }
 
-  Card getCard(String lable, String text) {
+  Card getCard(String lable, String text, String textEmail) {
     return Card(
       elevation: 5,
       child: Container(
-          height: 130,
+          height: 150,
           width: 350,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
@@ -68,12 +64,42 @@ class _ContactUsViewState extends State<ContactUsView> {
                 height: 25,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 45, right: 45),
+                padding: const EdgeInsets.only(left: 60, right: 20, bottom: 10),
                 child: Center(
-                    child: Text(
-                  text,
-                  style: TextStyle(fontSize: 15, color: Colors.black),
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      text,
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ],
                 )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 60, right: 20, bottom: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.email, color: Colors.black),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      textEmail,
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ],
+                ),
               )
             ],
           )),
