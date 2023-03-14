@@ -73,12 +73,12 @@ class UserListViewModel extends BaseListViewModel {
           SharedPrefsConstants.accessTokenKey, result["access_token"]);
       await prefs.setString(
           SharedPrefsConstants.refreshTokenKey, result["refresh_token"]);
+      await prefs.setString(SharedPrefsConstants.profileUrlKey,
+          loginModelMap[0].profileUrl ?? "");
       await prefs.setString(
-          SharedPrefsConstants.profileUrlKey, loginModelMap[0].profileUrl);
+          SharedPrefsConstants.mobileNoKey, loginModelMap[0].mobileNo ?? "");
       await prefs.setString(
-          SharedPrefsConstants.mobileNoKey, loginModelMap[0].mobileNo);
-      await prefs.setString(
-          SharedPrefsConstants.nameKey, loginModelMap[0].name);
+          SharedPrefsConstants.nameKey, loginModelMap[0].name ?? "");
       await prefs.setString(
           SharedPrefsConstants.userKey, loginModelMap[0].toJson());
       var sessionTime = DateTime.now().toString();

@@ -16,10 +16,9 @@ import 'package:study_evaluation/view_models/result_list_vm.dart';
 
 class ResultView extends StatefulWidget {
   final String resultId;
-  final String studentId;
+  final String userId;
 
-  const ResultView(
-      {super.key, required this.resultId, required this.studentId});
+  const ResultView({super.key, required this.resultId, required this.userId});
 
   @override
   State<ResultView> createState() => _ResultViewState();
@@ -50,6 +49,7 @@ class _ResultViewState extends State<ResultView> {
   bool isRefresh = false;
   @override
   void initState() {
+    AppUtils.printDebug("resultview init");
     Provider.of<ResultListViewModel>(context, listen: false)
         .fetch(widget.resultId);
 
@@ -61,29 +61,36 @@ class _ResultViewState extends State<ResultView> {
     AppUtils.currentContext = context;
     baseListViewModel = Provider.of<ResultListViewModel>(context);
 
-    return Scaffold(
-        drawer: const AppDrawerWidget(),
-        appBar: AppUtils.getAppbar(title, actions: [
-          IconButton(
-              // ignore: prefer_const_constructors
-              icon: Icon(
-                Icons.leaderboard,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (_) => BaseListViewModel())
-                            ],
-                            child: const LearderbordView(),
-                          )),
-                );
-              }),
-          //  _getFilterButton(),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context); //Removing Self
+        Navigator.of(context).pop(
+            "reload"); //Going back to Package Detail Page, Skipping ExamView
+        return Future.value(true);
+      },
+      child: Scaffold(
+          drawer: const AppDrawerWidget(),
+          appBar: AppUtils.getAppbar(title, actions: [
+            IconButton(
+                // ignore: prefer_const_constructors
+                icon: Icon(
+                  Icons.leaderboard,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (_) => BaseListViewModel())
+                              ],
+                              child: const LearderbordView(),
+                            )),
+                  );
+                }),
+            //  _getFilterButton(),
           PopupMenuButton(
               // add icon, by default "3 dot" icon
               // icon: Icon(Icons.book)
@@ -146,10 +153,11 @@ class _ResultViewState extends State<ResultView> {
               _onPressedFontSize(context);
             }
           }),
-        ]),
-        body: RefreshIndicator(
-            onRefresh: _pullRefresh,
-            child: AppUtils.getAppBody(baseListViewModel!, _getBody)));
+          ]),
+          body: RefreshIndicator(
+              onRefresh: _pullRefresh,
+              child: AppUtils.getAppBody(baseListViewModel!, _getBody))),
+    );
   }
 
   Widget _getBody() {
@@ -709,15 +717,15 @@ class _ResultViewState extends State<ResultView> {
   Future<void> _pullRefresh() async {
     baseListViewModel?.viewModels.clear();
     baseListViewModel = null;
-    print("pull refresh");
+    //print("pull refresh");
     isRefresh = true;
     AppUtils.onLoading(context, "Refreshing");
     String url = AppUtils.getUrl(
-        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.studentId}");
-    Provider.of<BaseListViewModel>(context, listen: false)
+        "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.userId}");
+    Provider.of<ResultListViewModel>(context, listen: false)
         .get(baseModel: ExamModel(), url: url);
-    baseListViewModel = Provider.of<BaseListViewModel>(context, listen: false);
-    print("length = ${baseListViewModel?.viewModels.length}");
+    baseListViewModel =
+        Provider.of<ResultListViewModel>(context, listen: false);
   }
 
   _onPressedLanguages(

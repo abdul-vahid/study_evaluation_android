@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/login",
       routes: {
-        "/": (context) => const HomeView(),
         "/login": (context) => const LoginHome(),
         "/testseries": (context) => const CategoryListView()
       },

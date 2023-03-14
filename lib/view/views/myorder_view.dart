@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/view/views/order_detail_view.dart';
 
 import 'package:study_evaluation/view/views/package_detail_view.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
@@ -111,7 +110,7 @@ class _MyOrderViewState extends State<MyOrderView> {
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          onButtonPressed();
+          onButtonPressed(myOrder.packageId);
           print('packageId@@@!${myOrder.packageId}');
         },
         child: Card(
@@ -157,50 +156,99 @@ class _MyOrderViewState extends State<MyOrderView> {
                   ],
                 ),
               ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: <Widget>[
-              //     // ignore: prefer_const_literals_to_create_immutables
-              //     // getText('Order Date', myOrder.createdDate),
-              //     getText('Order Number', myOrder.orderNumber),
-              //     getText('Order Amount', '₹${myOrder.amount}'),
-              //   ],
-              // ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: <Widget>[
-              //     // ignore: prefer_const_literals_to_create_immutables
-              //     //  getText('Order Date', myOrder.createdDate),
-              //     getText('Order Date', myOrder.currentStatus),
-              //     getText('Expiry Date ', myOrder.expiryDate),
-              //   ],
-              // ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: <Widget>[
-              //     // ignore: prefer_const_literals_to_create_immutables
-              //     //getText('Order Date', myOrder.createdDate),
-              //     getText('Payment Types', myOrder.paymentType),
-              //     getText('Payment Status', myOrder.paymentStatus),
-              //   ],
-              // ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: <Widget>[
-              //     // ignore: prefer_const_literals_to_create_immutables
-              //     // getText('Order Date', myOrder.createdDate),
-              //     getText('Validity', myOrder.validity),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Order Number',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey),
+                          ),
+                          Text(
+                            'Subscription',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            myOrder.orderNumber,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '₹${myOrder.amount}',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  // getText('Order Date', myOrder.createdDate),
+                  getText('Order Number', myOrder.orderNumber),
+                  getText('Order Amount', '₹${myOrder.amount}'),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  //  getText('Order Date', myOrder.createdDate),
+                  getText('Order Date', myOrder.currentStatus),
+                  getText('Expiry Date ', myOrder.expiryDate),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  //getText('Order Date', myOrder.createdDate),
+                  getText('Payment Types', myOrder.paymentType),
+                  getText('Payment Status', myOrder.paymentStatus),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // ignore: prefer_const_literals_to_create_immutables
+                  // getText('Order Date', myOrder.createdDate),
+                  getText('Validity', myOrder.validity),
 
-              //     getText('Status', myOrder.currentStatus),
-              //   ],
-              // ),
-              // SizedBox(
-              //   height: 10,
-              // ),
+                  getText('Status', myOrder.currentStatus),
+                ],
+              ),
             ],
           ),
         ),
@@ -210,40 +258,25 @@ class _MyOrderViewState extends State<MyOrderView> {
 
   Padding getText(String label, String text) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 10, bottom: 5),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      // ignore: prefer_const_literals_to_create_immutables
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey),
-                ),
-              ],
-            ),
+          Text(
+            '${label}:',
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey),
           ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            text,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -307,22 +340,18 @@ class _MyOrderViewState extends State<MyOrderView> {
     }
   }
 
-  void onButtonPressed() {
+  void onButtonPressed(packageId) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OrderDetailView()),
+      MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+                create: (_) => PackageListViewModel(),
+                child: PackageDetailView(
+                  packageLineItemId: packageId,
+                ),
+              ),
+          settings: RouteSettings(arguments: 9)),
     );
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => ChangeNotifierProvider(
-    //             create: (_) => PackageListViewModel(),
-    //             child: PackageDetailView(
-    //               packageLineItemId: packageId,
-    //             ),
-    //           ),
-    //       settings: RouteSettings(arguments: 9)),
-    // );
     print("Login Button pressed!!!");
   }
 }

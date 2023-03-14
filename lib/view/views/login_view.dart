@@ -125,7 +125,8 @@ class _LoginViewState extends State<LoginView> {
         if (records.isNotEmpty) {
           AppUtils.launchTab(context);
         }
-      }).catchError((error) {
+      }).catchError((error, stackTrace) {
+        AppUtils.printDebug("error = $stackTrace");
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(error);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");

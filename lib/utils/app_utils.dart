@@ -214,7 +214,6 @@ class AppUtils {
   static Widget getAppBody(
       BaseListViewModel baseListViewModel, Widget Function() callBack,
       {context}) {
-    printDebug("baseListViewModel.Status = ${baseListViewModel.status} ");
     if (baseListViewModel.status == "Loading") {
       return AppUtils.getLoader();
     } else if (baseListViewModel.status == "Error") {

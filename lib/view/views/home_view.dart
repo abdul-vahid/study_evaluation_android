@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
   var ctime;
   @override
   void initState() {
-    NotificationUtil.initialize(context);
+    NotificationUtil().initialize(context);
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
     Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
     Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
