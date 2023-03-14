@@ -419,7 +419,7 @@ class _ExamViewState extends State<ExamView> {
     if (status == ResultStatus.inProgress ||
         (widget.reAttempt != null && (widget.reAttempt)!)) {
       Navigator.of(context).pop("reload");
-      
+
       return;
     }
 
@@ -546,9 +546,9 @@ class _ExamViewState extends State<ExamView> {
       ),
       Container(
         height: 50,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColor.containerBoxColor,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10.0),
               bottomRight: Radius.circular(10.0)),
         ),

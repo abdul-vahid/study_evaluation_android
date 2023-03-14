@@ -39,7 +39,7 @@ class _ResultViewState extends State<ResultView> {
     "22": "Large"
   };
 
-  String _selectedLanguage = "Hindi";
+  String _selectedLanguage = "hindi";
   String? _selectedFont = "15";
   String? _selectedFilter = "all";
   String title = "Result";
@@ -107,9 +107,9 @@ class _ResultViewState extends State<ResultView> {
         _getPopupMenuItem(
             label: "Filter", value: 0, iconData: Icons.apps_rounded),
         _getPopupMenuItem(
-            label: "Language", value: 0, iconData: Icons.language),
+            label: "Language", value: 1, iconData: Icons.language),
         _getPopupMenuItem(
-            label: "Font Size", value: 0, iconData: Icons.font_download),
+            label: "Font Size", value: 2, iconData: Icons.font_download),
       ];
     }, onSelected: (value) {
       if (value == 0) {
@@ -145,8 +145,6 @@ class _ResultViewState extends State<ResultView> {
     if (baseListViewModel!.viewModels.isNotEmpty &&
         baseListViewModel!.viewModels[0].model != null) {
       ExamModel model = baseListViewModel!.viewModels[0].model;
-      print("hello");
-
       if (model.questionModels == null || model.questionModels!.isEmpty) {
         return const Center(
           child: Text("No Results Found!"),
@@ -160,7 +158,7 @@ class _ResultViewState extends State<ResultView> {
       setState(() {
         //isRefresh = false;
         title = model.exam!.title!;
-        print("title = $title");
+
         totalQuestions =
             model.questionModels != null ? model.questionModels!.length : 0;
       });
@@ -493,7 +491,7 @@ class _ResultViewState extends State<ResultView> {
         ));
   }
 
-  Widget _getLanguageDropdown() {
+  /* Widget _getLanguageDropdown() {
     return Container(
         width: 120,
         height: 60,
@@ -518,7 +516,7 @@ class _ResultViewState extends State<ResultView> {
               },
               items: getItems()),
         ));
-  }
+  } */
 
   Padding _getQuestionOptionWidget(model) {
     return Padding(
@@ -729,47 +727,63 @@ class _ResultViewState extends State<ResultView> {
               borderRadius: BorderRadius.circular(15.0),
             ),
             title: Center(child: const Text('Select Language')),
-            children: <Widget>[
-              new Divider(
-                color: Colors.grey.shade300,
-              ),
-              _getRadioListTile(label: "Hindi", value: "hindi"),
-              _getRadioListTile(label: "English", value: "english"),
-              _getRadioListTile(label: "Both", value: "both"),
-              /*  RadioListTile(
-                title: Text("Hindi"),
-                value: "Hindi",
-                groupValue: languages,
-                onChanged: (value) {
-                  setState(() {
-                    languages = value.toString();
-                  });
-                },
-              ),
-              RadioListTile(
-                title: Text("Both"),
-                value: "Both",
-                groupValue: languages,
-                onChanged: (value) {
-                  setState(() {
-                    languages = value.toString();
-                  });
-                },
-              ) */
-            ],
+            children: _getLanguageOptionsWidgets,
           );
         });
   }
 
-  RadioListTile<String> _getRadioListTile(
+  List<Widget> get _getLanguageOptionsWidgets {
+    List<Widget> widgets = [];
+    widgets.add(Divider(
+      color: Colors.grey.shade300,
+    ));
+    for (var language in languageOptions) {
+      widgets.add(_getLanguageRadioListTile(
+          label: language, value: language.toLowerCase()));
+    }
+    return widgets;
+  }
+
+  List<Widget> get _getFontOptionsWidgets {
+    List<Widget> widgets = [];
+    widgets.add(Divider(
+      color: Colors.grey.shade300,
+    ));
+
+    fontOptions.forEach((key, value) {
+      widgets.add(_getFontRadioListTile(label: value, value: key));
+    });
+
+    return widgets;
+  }
+
+  RadioListTile<String> _getLanguageRadioListTile(
       {required String label, required String value}) {
-    return RadioListTile(
+    return RadioListTile<String>(
       title: Text(label),
       value: value,
       groupValue: _selectedLanguage,
       onChanged: (value) {
         setState(() {
           _selectedLanguage = value!;
+          AppUtils.printDebug("_selectedLanguage = $_selectedLanguage");
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
+
+  RadioListTile<String> _getFontRadioListTile(
+      {required String label, required String value}) {
+    return RadioListTile<String>(
+      title: Text(label),
+      value: value,
+      groupValue: _selectedFont,
+      onChanged: (value) {
+        setState(() {
+          _selectedFont = value!;
+          //AppUtils.printDebug("_selectedLanguage = $_selectedLanguage");
+          Navigator.pop(context);
         });
       },
     );
@@ -778,7 +792,6 @@ class _ResultViewState extends State<ResultView> {
   _onPressedFontSize(
     BuildContext context,
   ) {
-    String? fontSize = 'Small';
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -791,41 +804,7 @@ class _ResultViewState extends State<ResultView> {
               borderRadius: BorderRadius.circular(15.0),
             ),
             title: Center(child: const Text('Select Font Size ')),
-            children: <Widget>[
-              new Divider(
-                color: Colors.grey.shade300,
-              ),
-              RadioListTile(
-                title: Text("Small"),
-                value: "Small",
-                groupValue: fontSize,
-                onChanged: (value) {
-                  setState(() {
-                    fontSize = value.toString();
-                  });
-                },
-              ),
-              RadioListTile(
-                title: Text("Medium"),
-                value: "medium",
-                groupValue: fontSize,
-                onChanged: (value) {
-                  setState(() {
-                    fontSize = value.toString();
-                  });
-                },
-              ),
-              RadioListTile(
-                title: Text("Large"),
-                value: "Large",
-                groupValue: fontSize,
-                onChanged: (value) {
-                  setState(() {
-                    fontSize = value.toString();
-                  });
-                },
-              )
-            ],
+            children: _getFontOptionsWidgets,
           );
         });
   }
