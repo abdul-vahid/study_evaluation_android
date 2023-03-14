@@ -72,7 +72,6 @@ class _ResultViewState extends State<ResultView> {
           drawer: const AppDrawerWidget(),
           appBar: AppUtils.getAppbar(title, actions: [
             IconButton(
-                // ignore: prefer_const_constructors
                 icon: Icon(
                   Icons.leaderboard,
                   color: Colors.white,
@@ -91,72 +90,54 @@ class _ResultViewState extends State<ResultView> {
                   );
                 }),
             //  _getFilterButton(),
-          PopupMenuButton(
-              // add icon, by default "3 dot" icon
-              // icon: Icon(Icons.book)
-              itemBuilder: (context) {
-            return [
-              PopupMenuItem<int>(
-                value: 0,
-                child: Row(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    Icon(
-                      Icons.apps_rounded,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text("Filter")
-                  ],
-                ),
-              ),
-              PopupMenuItem<int>(
-                  value: 1,
-                  child: Row(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Icon(
-                        Icons.language,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text("Language")
-                    ],
-                  )),
-              PopupMenuItem<int>(
-                value: 2,
-                child: Row(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    Icon(
-                      Icons.font_download,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text("Font-Size")
-                  ],
-                ),
-              ),
-            ];
-          }, onSelected: (value) {
-            if (value == 0) {
-              _onPressedFilter();
-            } else if (value == 1) {
-              _onPressedLanguages(context);
-            } else if (value == 2) {
-              _onPressedFontSize(context);
-            }
-          }),
+            _getPopMenuButton(context),
           ]),
           body: RefreshIndicator(
               onRefresh: _pullRefresh,
               child: AppUtils.getAppBody(baseListViewModel!, _getBody))),
+    );
+  }
+
+  PopupMenuButton<int> _getPopMenuButton(BuildContext context) {
+    return PopupMenuButton(
+        // add icon, by default "3 dot" icon
+        // icon: Icon(Icons.book)
+        itemBuilder: (context) {
+      return [
+        _getPopupMenuItem(
+            label: "Filter", value: 0, iconData: Icons.apps_rounded),
+        _getPopupMenuItem(
+            label: "Language", value: 0, iconData: Icons.language),
+        _getPopupMenuItem(
+            label: "Font Size", value: 0, iconData: Icons.font_download),
+      ];
+    }, onSelected: (value) {
+      if (value == 0) {
+        _onPressedFilter();
+      } else if (value == 1) {
+        _onPressedLanguages(context);
+      } else if (value == 2) {
+        _onPressedFontSize(context);
+      }
+    });
+  }
+
+  PopupMenuItem<int> _getPopupMenuItem(
+      {int? value, required String label, required IconData iconData}) {
+    return PopupMenuItem<int>(
+      value: value,
+      child: Row(
+        children: [
+          Icon(
+            iconData,
+            color: Colors.black,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(label)
+        ],
+      ),
     );
   }
 
@@ -747,22 +728,15 @@ class _ResultViewState extends State<ResultView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            title: Center(child: const Text('Select Languages ')),
+            title: Center(child: const Text('Select Language')),
             children: <Widget>[
               new Divider(
                 color: Colors.grey.shade300,
               ),
-              RadioListTile(
-                title: Text("English"),
-                value: "English",
-                groupValue: languages,
-                onChanged: (value) {
-                  setState(() {
-                    languages = value.toString();
-                  });
-                },
-              ),
-              RadioListTile(
+              _getRadioListTile(label: "Hindi", value: "hindi"),
+              _getRadioListTile(label: "English", value: "english"),
+              _getRadioListTile(label: "Both", value: "both"),
+              /*  RadioListTile(
                 title: Text("Hindi"),
                 value: "Hindi",
                 groupValue: languages,
@@ -781,10 +755,24 @@ class _ResultViewState extends State<ResultView> {
                     languages = value.toString();
                   });
                 },
-              )
+              ) */
             ],
           );
         });
+  }
+
+  RadioListTile<String> _getRadioListTile(
+      {required String label, required String value}) {
+    return RadioListTile(
+      title: Text(label),
+      value: value,
+      groupValue: _selectedLanguage,
+      onChanged: (value) {
+        setState(() {
+          _selectedLanguage = value!;
+        });
+      },
+    );
   }
 
   _onPressedFontSize(
