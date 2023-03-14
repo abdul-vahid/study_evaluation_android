@@ -636,19 +636,28 @@ class _ResultViewState extends State<ResultView> {
   }
 
   Widget _getDescription(QuestionModel model) {
-    return Column(
-      children: [
-        const Text(
-          "Description",
-          style: TextStyle(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: _getContent(
-              "${model.descriptionHindi}", "${model.descriptionEnglish}"),
-        )
-      ],
+    return Card(
+      elevation: 5,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Explanation",
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: _getContent(
+                "${model.descriptionHindi}", "${model.descriptionEnglish}"),
+          )
+        ],
+      ),
     );
   }
 

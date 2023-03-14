@@ -93,7 +93,7 @@ abstract class AppConstants {
   static const String orderAPIPath = '/apis/orders';
   static const String leaderboardAPIPath = '/apis/leaderboard';
   static const String configurationAPIPath = '/apis/configuration';
-  static const String notificationAPIPath = '/apis/notified_user';
+  static const String notificationAPIPath = '/apis/notifications';
   static const String registerFCMTokenAPIPath = '/apis/register_fcm_token';
   static const String refreshTokenAPIPath = '/apis/auth/refresh_token';
 
