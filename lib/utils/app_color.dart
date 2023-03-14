@@ -10,7 +10,7 @@ abstract class AppColor {
   static const Color boxColor = Color(0xFFF8FAFF);
   static final Color iconColor = Colors.grey.shade600;
   static const Color motivationCar1Color = Color(0xFFFF2C55);
-  static const Color selectedItemColor = Color.fromARGB(255, 228, 234, 60);
+  static const Color selectedItemColor = Color.fromARGB(255, 247, 255, 6);
   static const Color containerBoxColor = Color(0xFF009DDC);
   static const TextStyle themeNormal = TextStyle(color: Colors.black);
   static const TextStyle themeBold =

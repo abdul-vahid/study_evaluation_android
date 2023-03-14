@@ -590,13 +590,9 @@ class _ResultViewState extends State<ResultView> {
         children: [
           getIconButton(
             'Favourite',
-            Icons.star_border_purple500_sharp,
-            textColor: model.isFavourite
-                ? const Color.fromARGB(255, 248, 248, 9)
-                : Colors.white,
-            iconColor: model.isFavourite
-                ? const Color.fromARGB(255, 248, 248, 9)
-                : Colors.white,
+            Icons.star,
+            textColor: model.isFavourite ? Colors.yellow : Colors.white,
+            iconColor: model.isFavourite ? Colors.yellow : Colors.white,
             onPressed: () {},
           ),
         ],
