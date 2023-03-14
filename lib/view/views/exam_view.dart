@@ -15,14 +15,11 @@ import 'package:study_evaluation/view_models/result_list_vm.dart';
 
 class ExamView extends StatefulWidget {
   final String examId;
-  final String studentId;
+  final String userId;
   bool? reAttempt = false;
   bool? noQuestions = false;
   ExamView(
-      {super.key,
-      required this.examId,
-      required this.studentId,
-      this.reAttempt});
+      {super.key, required this.examId, required this.userId, this.reAttempt});
 
   @override
   State<ExamView> createState() => _ExamViewState();
@@ -416,23 +413,37 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onPressedAlert(resultId, status) {
+    AppUtils.printDebug("resultId = $resultId, status = $status");
     Navigator.of(context).pop();
     //Navigator.of(context).pop("reload");
     if (status == ResultStatus.inProgress ||
         (widget.reAttempt != null && (widget.reAttempt)!)) {
       Navigator.of(context).pop("reload");
-      //print("reload");
+      
       return;
     }
 
-    AppUtils.viewPush(
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => ResultListViewModel(),
+                    )
+                  ],
+                  child: ResultView(
+                      resultId: resultId.toString(), userId: widget.userId))),
+    );
+
+    /* AppUtils.viewPush(
         context,
         MultiProvider(providers: [
           ChangeNotifierProvider(
             create: (_) => ResultListViewModel(),
           )
-        ], child: ResultView(resultId: resultId, studentId: widget.studentId)));
-    //Navigator.of(context).pop("reload");
+        ], child: ResultView(resultId: resultId, userId: widget.userId)));
+    //Navigator.of(context).pop("reload"); */
   }
 
   void _onCancel() {}

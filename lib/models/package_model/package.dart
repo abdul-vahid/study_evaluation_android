@@ -19,6 +19,7 @@ class Package extends BaseModel {
   String? description;
   String? logoUrl;
   String? status;
+  String? validityStatus;
 
   Package(
       {this.id,
@@ -38,7 +39,8 @@ class Package extends BaseModel {
       this.logoUrl,
       this.status,
       super.error,
-      super.appException});
+      super.appException,
+      this.validityStatus});
 
   String getShortDescription(int start, {int? end}) {
     int? len = description?.length;
@@ -75,6 +77,7 @@ class Package extends BaseModel {
         description: data['description'] as String?,
         logoUrl: data['logo_url'] as String?,
         status: data['status'] as String?,
+        validityStatus: data['validityStatus'] as String?,
       );
 
   @override
@@ -95,6 +98,7 @@ class Package extends BaseModel {
         'description': description,
         'logo_url': logoUrl,
         'status': status,
+        'validityStatus': validityStatus
       };
 
   /// `dart:convert`

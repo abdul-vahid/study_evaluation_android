@@ -51,7 +51,6 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   }
 
   SingleChildScrollView _getBody() {
-    print("body");
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
     return SingleChildScrollView(
@@ -62,10 +61,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         top: 10,
       ),
       child: Column(children: [
-        _getBuyNowButton(
-          'Buy Now',
-          onPressed: () {},
-        ),
+        (userModel?.roleName?.toLowerCase()) == "student" &&
+                (package?.validityStatus != "purchased")
+            ? _getBuyNowButton(
+                'Buy Now',
+                onPressed: () {},
+              )
+            : Container(),
 
         _getPackageContainer(),
         for (var testSeries in model!.testSeries!)
@@ -219,7 +221,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   ],
                   child: ResultView(
                       resultId: (testSeries.result?.id)!,
-                      studentId: (userModel?.id)!)));
+                      userId: (userModel?.id)!)));
         },
       ));
     }
@@ -254,8 +256,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                     ChangeNotifierProvider(create: (_) => ExamListViewModel())
                   ],
                   child: ExamView(
-                    examId: testSeries.examId!,
-                    studentId: (userModel?.studentId)!,
+                    examId: testSeries.examId ?? "",
+                    userId: (userModel?.id)!,
                     reAttempt: reAttempt,
                   ))),
     ).then((value) {
@@ -277,7 +279,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             ],
             child: ExamView(
               examId: examId,
-              studentId: (userModel?.studentId)!,
+              userId: (userModel?.studentId)!,
             )));
   }
 
