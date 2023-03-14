@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
+import 'package:study_evaluation/view/views/order_detail_view.dart';
 
 import 'package:study_evaluation/view/views/package_detail_view.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
@@ -110,147 +111,108 @@ class _MyOrderViewState extends State<MyOrderView> {
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          onButtonPressed(myOrder.packageId);
-          print('packageId@@@!${myOrder.packageId}');
+          onButtonPressed();
         },
         child: Card(
           elevation: 5,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: CircleAvatar(
-                        backgroundImage: profileUrl == null
-                            ? const NetworkImage(
-                                'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
-                            : NetworkImage(profileUrl!),
-                        radius: 30.0,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: CircleAvatar(
+                          backgroundImage: profileUrl == null
+                              ? const NetworkImage(
+                                  'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+                              : NetworkImage(profileUrl!),
+                          radius: 30.0,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: <Widget>[
-                          Text(
-                              // myborder.amount,
-                              myOrder.packagesTitle,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: <Widget>[
+                            Text(
+                                // myborder.amount,
+                                myOrder.packagesTitle,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            Text(
+                              myOrder.name,
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                          Text(
-                            myOrder.name,
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey),
-                          ),
-                        ],
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Order Number',
-                            style: TextStyle(
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Text(
+                              'Order Number',
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
-                                color: Colors.grey),
-                          ),
-                          Text(
-                            'Subscription',
-                            style: TextStyle(
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                            Text(
+                              'Order Amount',
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
-                                color: Colors.grey),
-                          ),
-                        ],
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            myOrder.orderNumber,
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '₹${myOrder.amount}',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              myOrder.orderNumber,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '₹${myOrder.amount}',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // ignore: prefer_const_literals_to_create_immutables
-                  // getText('Order Date', myOrder.createdDate),
-                  getText('Order Number', myOrder.orderNumber),
-                  getText('Order Amount', '₹${myOrder.amount}'),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // ignore: prefer_const_literals_to_create_immutables
-                  //  getText('Order Date', myOrder.createdDate),
-                  getText('Order Date', myOrder.currentStatus),
-                  getText('Expiry Date ', myOrder.expiryDate),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // ignore: prefer_const_literals_to_create_immutables
-                  //getText('Order Date', myOrder.createdDate),
-                  getText('Payment Types', myOrder.paymentType),
-                  getText('Payment Status', myOrder.paymentStatus),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // ignore: prefer_const_literals_to_create_immutables
-                  // getText('Order Date', myOrder.createdDate),
-                  getText('Validity', myOrder.validity),
-
-                  getText('Status', myOrder.currentStatus),
-                ],
-              ),
-            ],
-          ),
+              ]),
         ),
       ),
     );
@@ -326,31 +288,24 @@ class _MyOrderViewState extends State<MyOrderView> {
   //     ),
   //   );
 
-  _getImage(url, imageType, {imageHeight}) {
-    if (imageType == ImageType.assets) {
-      return Image.asset(
-        url,
-        height: imageHeight,
-      );
-    } else {
-      return Image.network(
-        url,
-        height: imageHeight,
-      );
-    }
-  }
+  // _getImage(url, imageType, {imageHeight}) {
+  //   if (imageType == ImageType.assets) {
+  //     return Image.asset(
+  //       url,
+  //       height: imageHeight,
+  //     );
+  //   } else {
+  //     return Image.network(
+  //       url,
+  //       height: imageHeight,
+  //     );
+  //   }
+  // }
 
-  void onButtonPressed(packageId) {
+  void onButtonPressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider(
-                create: (_) => PackageListViewModel(),
-                child: PackageDetailView(
-                  packageLineItemId: packageId,
-                ),
-              ),
-          settings: RouteSettings(arguments: 9)),
+      MaterialPageRoute(builder: (context) => OrderDetailView()),
     );
     print("Login Button pressed!!!");
   }

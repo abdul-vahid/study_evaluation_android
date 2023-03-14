@@ -71,6 +71,7 @@ abstract class AppConstants {
     defaultValue: '',
   );
   static const String imagePath = '/study_evaluation/public';
+  static const String videoPath = '/study_evaluation/public';
   static const bool kDebugMode = true;
 
   static const String categoryAPIPath = '/apis/category';

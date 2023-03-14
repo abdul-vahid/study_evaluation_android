@@ -181,7 +181,7 @@ class AppUtils {
     homeTilesModels.add(HomeTilesModel(
         title: "Test Series", imagePath: "assets/images/test-series.png"));
     homeTilesModels.add(HomeTilesModel(
-        title: "Recorded Video Course", imagePath: "assets/images/course.png"));
+        title: "Recorded Courses", imagePath: "assets/images/course.png"));
     homeTilesModels.add(HomeTilesModel(
         title: "Combo Package", imagePath: "assets/images/combo-package.png"));
     homeTilesModels.add(HomeTilesModel(

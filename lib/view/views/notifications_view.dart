@@ -63,6 +63,26 @@ class _NotificationViewState extends State<NotificationView> {
 
   Slidable getSlidable(notificationModel, index) {
     return Slidable(
+        startActionPane: ActionPane(
+          // A motion is a widget used to control how the pane animates.
+          motion: const ScrollMotion(),
+
+          // A pane can dismiss the Slidable.
+          dismissible: DismissiblePane(onDismissed: () {}),
+
+          // All actions are defined in the children parameter.
+          children: const [
+            // A SlidableAction can have an icon and/or a label.
+
+            SlidableAction(
+              onPressed: doNothing,
+              backgroundColor: AppColor.buttonColor,
+              foregroundColor: Colors.white,
+              icon: Icons.chat_outlined,
+              label: 'Read',
+            ),
+          ],
+        ),
         // Specify a key if the Slidable is dismissible.
         key: _keys?[index],
         endActionPane: const ActionPane(
@@ -89,6 +109,7 @@ class _NotificationViewState extends State<NotificationView> {
             ),
             subtitle: ReadMoreText(
               notificationModel.message,
+              style: TextStyle(color: Colors.grey[700]),
               trimLines: 2,
               colorClickableText: Colors.pink,
               trimMode: TrimMode.Line,

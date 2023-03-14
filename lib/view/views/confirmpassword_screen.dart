@@ -21,6 +21,16 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
   final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
+  bool passwordVisible = false;
+  bool confirmPasswordVisible = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    passwordVisible = true;
+    confirmPasswordVisible = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +77,39 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                           const SizedBox(
                             height: 40,
                           ),
-                          WidgetUtils.getTextFormField(
-                              'Password', 'Enter New Password', Icons.lock,
-                              obscureText: true,
-                              controller: passwordController,
-                              onValidator: validatePassword),
+                          WidgetUtils.getTextFormFieldPassword(
+                            'Password', 'Enter New Password', Icons.lock,
+                            // obscureText: true,
+                            controller: passwordController,
+                            onValidator: validatePassword,
+                            obscureText: passwordVisible,
+                            suffix: Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(end: 10.0),
+                              child: InkWell(
+                                child: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColor.iconColor,
+                                ),
+                                onTap: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
-                          WidgetUtils.getTextFormField(
+                          WidgetUtils.getTextFormFieldPassword(
                             'Password',
                             'Enter Confirm Password',
-                            obscureText: true,
+                            obscureText: confirmPasswordVisible,
                             Icons.lock,
                             controller: confirmpasswordController,
                             onValidator: (String? value) {
@@ -92,6 +123,26 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                               }
                               return null;
                             },
+                            suffix: Padding(
+                              padding:
+                                  const EdgeInsetsDirectional.only(end: 10.0),
+                              child: InkWell(
+                                child: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  confirmPasswordVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColor.iconColor,
+                                ),
+                                onTap: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    confirmPasswordVisible =
+                                        !confirmPasswordVisible;
+                                  });
+                                },
+                              ),
+                            ),
                           ),
                           const SizedBox(
                             height: 20,

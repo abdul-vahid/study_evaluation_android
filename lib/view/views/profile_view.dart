@@ -141,10 +141,10 @@ class _ProfileViewState extends State<ProfileView> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            color: Colors.grey,
+            color: Colors.grey[700],
           ),
         ),
 
@@ -154,15 +154,15 @@ class _ProfileViewState extends State<ProfileView> {
         ),
         Text(
           profileInput,
-          style: const TextStyle(
-            color: Colors.grey,
+          style: TextStyle(
+            color: Colors.grey[700],
           ),
         ),
         const SizedBox(
           height: 3,
         ),
-        const Divider(
-          color: Colors.grey,
+        Divider(
+          color: Colors.grey[700],
         ),
         const SizedBox(
           height: 20,
