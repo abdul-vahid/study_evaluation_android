@@ -342,32 +342,6 @@ class _ExamViewState extends State<ExamView> {
     }
   }
 
-  List<DropdownMenuItem<String>>? getItems() {
-    return languageOptions.map<DropdownMenuItem<String>>((value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(
-          value,
-          style: const TextStyle(fontSize: 15),
-        ),
-      );
-    }).toList();
-  }
-
-  List<DropdownMenuItem<String>>? getFontSizes() {
-    List<DropdownMenuItem<String>>? dropDownItems = [];
-    fontOptions.forEach((key, value) {
-      dropDownItems.add(DropdownMenuItem<String>(
-        value: key,
-        child: Text(
-          value,
-          style: const TextStyle(fontSize: 15),
-        ),
-      ));
-    });
-    return dropDownItems;
-  }
-
   List<Widget> _getQuestionOptionWidgets() {
     List<Widget> widgets = [];
     widgets.add(Padding(
@@ -378,11 +352,6 @@ class _ExamViewState extends State<ExamView> {
           const SizedBox(
             height: 20,
           ),
-          /* Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_getLanguageDropdown(), _getFontDropdown()],
-          ), */
         ],
       ),
     ));
@@ -392,17 +361,7 @@ class _ExamViewState extends State<ExamView> {
 
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {
-      if (AppConstants.kDebugMode) {
-        //print("Submitted ${model.submittedAnswer}");
-      }
       selectedValues.add(model.submittedAnswer!);
-      /* if (isBlankSelValues) {
-        if (model.hasSubmittedAnswer) {
-          
-        } else {
-          selectedValues.add("0");
-        }
-      } */
 
       model.index = i++;
       widgets.add(_getQuestionOptionWidget(model));

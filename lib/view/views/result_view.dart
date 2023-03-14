@@ -169,22 +169,9 @@ class _ResultViewState extends State<ResultView> {
         child: Column(children: _getQuestionOptionWidgets()));
   }
 
-  List<DropdownMenuItem<String>>? getItems() {
-    return languageOptions.map<DropdownMenuItem<String>>((value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(
-          value,
-          style: const TextStyle(fontSize: 15),
-        ),
-      );
-    }).toList();
-  }
-
   List<Widget> getButtonWidgets() {
     List<Widget> list = [];
     filtersMap.forEach((key, value) {
-      print('@@${value}');
       list.add(
           getButtons('${AppUtils.capitalize(key)}(${value})', onPressed: () {
         setState(() {
@@ -194,37 +181,6 @@ class _ResultViewState extends State<ResultView> {
       }));
     });
     return list;
-  }
-
-  List<DropdownMenuItem<String>>? getFilters() {
-    print("Filters");
-    List<DropdownMenuItem<String>>? dropDownItems = [];
-    filtersMap.forEach((key, value) {
-      print("@@@kay $key = $value");
-
-      dropDownItems.add(DropdownMenuItem<String>(
-        value: key,
-        child: Text(
-          "${AppUtils.capitalize(key)}($value)",
-          style: const TextStyle(fontSize: 15),
-        ),
-      ));
-    });
-    return dropDownItems;
-  }
-
-  List<DropdownMenuItem<String>>? getFontSizes() {
-    List<DropdownMenuItem<String>>? dropDownItems = [];
-    fontOptions.forEach((key, value) {
-      dropDownItems.add(DropdownMenuItem<String>(
-        value: key,
-        child: Text(
-          value,
-          style: const TextStyle(fontSize: 15),
-        ),
-      ));
-    });
-    return dropDownItems;
   }
 
   List<Widget> _getQuestionOptionWidgets() {
@@ -238,19 +194,6 @@ class _ResultViewState extends State<ResultView> {
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
-          //_getTopBar(),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   // crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     _getLanguageDropdown(),
-          //     _getFontDropdown(),
-          //   ],
-          // ),
-
           SizedBox(
             height: 10,
           ),
@@ -259,18 +202,6 @@ class _ResultViewState extends State<ResultView> {
             child: ListView(
                 scrollDirection: Axis.horizontal, children: getButtonWidgets()),
           ),
-
-          ///  _getDropdown()
-          /*  _getDropdown(
-              hint: "Select",
-              value: _selectedFilter,
-              type: "filter",
-              onChanged: (value) => {
-                    setState(() {
-                      _selectedFilter = value!;
-                    })
-                  },
-              items: getFilters()) */
         ],
       ),
     ));
@@ -428,95 +359,6 @@ class _ResultViewState extends State<ResultView> {
       }
     });
   }
-
-  // Padding _getBottomButtons() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(20.0),
-  //     child: Container(height: 10, width: 100, child: const Text("Button")),
-  //   );
-  // }
-
-  Widget _getDropdown() {
-    return Container(
-        width: 120,
-        height: 55,
-        padding: EdgeInsets.zero,
-        child: DropdownButtonHideUnderline(
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-
-                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-              ),
-              hint: const Text("Filters"),
-              // Not necessary for Option 1
-              value: _selectedFilter,
-              //validator: (value) => value == null ? 'Required' : null,
-              //isDense: true,
-              isExpanded: false,
-              menuMaxHeight: 350,
-              onChanged: (value) => setState(() {
-                    print("Value $value");
-                    _selectedFilter = value;
-                  }),
-              items: getFilters()),
-        ));
-  }
-
-  Widget _getFontDropdown() {
-    return Container(
-        width: 120,
-        height: 60,
-        child: DropdownButtonHideUnderline(
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-              ),
-              hint: const Text('Font'),
-              // Not necessary for Option 1
-              value: int.parse(_selectedFont.toString()).toString(),
-              //validator: (value) => value == null ? 'Required' : null,
-              //isDense: true,
-              isExpanded: false,
-              menuMaxHeight: 350,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedFont = newValue!;
-                });
-              },
-              items: getFontSizes()),
-        ));
-  }
-
-  /* Widget _getLanguageDropdown() {
-    return Container(
-        width: 120,
-        height: 60,
-        child: DropdownButtonHideUnderline(
-          child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                // prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-              ),
-              hint: const Text('Language'),
-              // Not necessary for Option 1
-              value: _selectedLanguage,
-              validator: (value) => value == null ? 'Required' : null,
-              isDense: true,
-              isExpanded: false,
-              menuMaxHeight: 300,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedLanguage = newValue!;
-                });
-              },
-              items: getItems()),
-        ));
-  } */
 
   Padding _getQuestionOptionWidget(model) {
     return Padding(
