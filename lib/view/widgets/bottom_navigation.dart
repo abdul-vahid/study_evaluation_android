@@ -18,6 +18,7 @@ Widget getBottomNavigation(selectedIndex, {Function(int)? onItemTap}) =>
       type: BottomNavigationBarType.fixed,
       backgroundColor: AppColor.appBarColor,
       selectedItemColor: AppColor.selectedItemColor,
+      unselectedItemColor: Colors.white,
       onTap: onItemTap,
       showSelectedLabels: true,
       showUnselectedLabels: true,
