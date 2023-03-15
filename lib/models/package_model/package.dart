@@ -5,6 +5,7 @@ import 'package:study_evaluation/core/models/base_model.dart';
 class Package extends BaseModel {
   String? id;
   String? categoryId;
+  String? category;
   String? title;
   String? publishType;
   String? packageType;
@@ -40,7 +41,8 @@ class Package extends BaseModel {
       this.status,
       super.error,
       super.appException,
-      this.validityStatus});
+      this.validityStatus,
+      this.category});
 
   String getShortDescription(int start, {int? end}) {
     int? len = description?.length;
@@ -63,6 +65,7 @@ class Package extends BaseModel {
   factory Package.fromMap(Map<String, dynamic> data) => Package(
         id: data['id'] as String?,
         categoryId: data['category_id'] as String?,
+        category: data['category'] as String?,
         title: data['title'] as String?,
         publishType: data['publish_type'] as String?,
         packageType: data['package_type'] as String?,
@@ -84,6 +87,7 @@ class Package extends BaseModel {
   Map<String, dynamic> toMap() => {
         'id': id,
         'category_id': categoryId,
+        'category': category,
         'title': title,
         'publish_type': publishType,
         'package_type': packageType,

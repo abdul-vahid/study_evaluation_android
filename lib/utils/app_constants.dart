@@ -79,7 +79,7 @@ abstract class AppConstants {
   static const String feedbackAPIPath = '/apis/feedback';
   static const String signupAPIPath = '/apis/auth/register';
   static const String loginAPIPath = '/apis/auth/login';
-  static const String packageAPIPath = '/apis/category_by_package';
+  static const String packageAPIPath = '/apis/packages';
   static const String currentAffairsAPIPath = '/apis/current_affairs';
   static const String quotesAPIPath = '/apis/quote';
   static const String packageLineItemsAPIPath = '/apis/fetch_package_entries';

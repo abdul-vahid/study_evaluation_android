@@ -10,8 +10,12 @@ import 'package:study_evaluation/view_models/package_list_vm.dart';
 import '../../utils/app_color.dart';
 
 class PackageListView extends StatefulWidget {
-  final String categoryId;
-  const PackageListView({super.key, required this.categoryId});
+  String? categoryId;
+  String? packageType;
+  String? publishType;
+
+  PackageListView(
+      {super.key, this.categoryId, this.packageType, this.publishType});
 
   @override
   State<PackageListView> createState() => _PackageListViewState();
@@ -21,8 +25,10 @@ class _PackageListViewState extends State<PackageListView> {
   PackageListViewModel? packageListVM;
   @override
   void initState() {
-    Provider.of<PackageListViewModel>(context, listen: false)
-        .fetch(categoryId: widget.categoryId);
+    Provider.of<PackageListViewModel>(context, listen: false).fetch(
+        categoryId: widget.categoryId ?? "",
+        publishType: widget.publishType ?? "",
+        packageType: widget.packageType ?? "");
     //final id = ModalRoute.of(context)!.settings.arguments;
     super.initState();
   }
@@ -90,7 +96,7 @@ class _PackageListViewState extends State<PackageListView> {
       ),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 220,
+        height: 250,
         child: getCard(context, model),
       ),
     );
@@ -113,9 +119,9 @@ class _PackageListViewState extends State<PackageListView> {
           children: [
             Container(
               height: 10,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.containerBoxColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8.0),
                     topLeft: Radius.circular(8.0)),
               ),
@@ -125,6 +131,10 @@ class _PackageListViewState extends State<PackageListView> {
                 _getImageContainer(model),
                 _getContentContainer(model),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Html(data: model.getShortDescription(0, end: 150)),
             ),
           ],
         ),
@@ -146,8 +156,10 @@ class _PackageListViewState extends State<PackageListView> {
                   fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1)),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Html(data: model.getShortDescription(1, end: 50)),
+          padding: const EdgeInsets.all(5.0),
+          child: Text("${model.category}",
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
         ),
       ],
     ));

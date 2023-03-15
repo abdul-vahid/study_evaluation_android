@@ -9,6 +9,7 @@ import 'package:study_evaluation/models/question_answer_model/question_model.dar
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/leardeboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
@@ -185,7 +186,6 @@ class _ResultViewState extends State<ResultView> {
 
   List<Widget> _getQuestionOptionWidgets() {
     List<Widget> widgets = [];
-    bool isBlankSelValues = selectedValues.isEmpty;
     var i = 0;
 
     _loadFilters();
@@ -209,13 +209,12 @@ class _ResultViewState extends State<ResultView> {
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {
       model.index = i++;
-      print("isWrong ${model.isWrong}");
+
       if (_selectedFilter == "all" ||
           (_selectedFilter == "favourite" && model.isFavourite) ||
           (_selectedFilter == "skipped" && model.isSkipped) ||
           (_selectedFilter == "wrong" && model.isWrong) ||
           (_selectedFilter == "correct" && model.isCorrect)) {
-        print("_selectedFilter = $_selectedFilter");
         widgets.add(_getQuestionOptionWidget(model));
       }
     }
@@ -223,28 +222,29 @@ class _ResultViewState extends State<ResultView> {
     return widgets;
   }
 
-  Color getBackgroundColor(String label) {
-    if (label.toLowerCase().contains("favourite") &&
-        _selectedFilter == "favourite") {
-      return Colors.blue;
-    } else if (label.toLowerCase().contains("correct") &&
-        _selectedFilter == "correct") {
-      return Colors.blue;
-    } else if (label.toLowerCase().contains("wrong") &&
-        _selectedFilter == "wrong") {
-      return Colors.blue;
-    } else if (label.toLowerCase().contains("skipped") &&
-        _selectedFilter == "skipped") {
-      return Colors.blue;
-    } else if (label.toLowerCase().contains("all") &&
-        _selectedFilter == "all") {
-      return Colors.blue;
+  Color _getFilterColor(String label, {type = ""}) {
+    if ((label.toLowerCase().contains("favourite") &&
+            _selectedFilter == "favourite") ||
+        (label.toLowerCase().contains("correct") &&
+            _selectedFilter == "correct") ||
+        (label.toLowerCase().contains("wrong") && _selectedFilter == "wrong") ||
+        (label.toLowerCase().contains("skipped") &&
+            _selectedFilter == "skipped") ||
+        (label.toLowerCase().contains("all") && _selectedFilter == "all")) {
+      if (type == "background") {
+        return Colors.blue;
+      } else {
+        return Colors.white;
+      }
     }
-
-    return Colors.white;
+    if (type == "background") {
+      return Colors.white;
+    } else {
+      return AppColor.textColor;
+    }
   }
 
-  Color getSelectedButtonTextColor(String label) {
+  /* Color getSelectedButtonTextColor(String label) {
     if (label.toLowerCase().contains("favourite") &&
         _selectedFilter == "favourite") {
       return Colors.white;
@@ -263,7 +263,7 @@ class _ResultViewState extends State<ResultView> {
     }
 
     return AppColor.textColor;
-  }
+  } */
 
   Padding getButtons(btnLabel,
       {required void Function()? onPressed, buttonStyle, textStyle}) {
@@ -271,7 +271,7 @@ class _ResultViewState extends State<ResultView> {
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: getBackgroundColor(btnLabel),
+                backgroundColor: _getFilterColor(btnLabel, type: "background"),
                 side: BorderSide(
                   width: 1.0,
                   color: AppColor.containerBoxColor,
@@ -279,7 +279,7 @@ class _ResultViewState extends State<ResultView> {
             onPressed: onPressed,
             child: Text(
               btnLabel,
-              style: TextStyle(color: getSelectedButtonTextColor(btnLabel)),
+              style: TextStyle(color: _getFilterColor(btnLabel, type: "text")),
             )));
   }
 
@@ -451,7 +451,8 @@ class _ResultViewState extends State<ResultView> {
 
   ListTile _getOption(label, labelEnglish, value, QuestionModel model) {
     return ListTile(
-      title: _getContent(label, labelEnglish),
+      title: _getContent(label, labelEnglish,
+          fontSize: double.tryParse(_selectedFont!)!),
       tileColor: _getSelectedColor(model, value),
       shape: _getListTileShape(model, value),
     );
@@ -473,22 +474,22 @@ class _ResultViewState extends State<ResultView> {
       alignment: Alignment.centerLeft,
       key: _keys?[model.index],
       child: _getContent("${model.questionHindi}", "${model.questionEnglish}",
-          questionNumber: model.index + 1),
+          questionNumber: model.index + 1,
+          fontSize: double.tryParse(_selectedFont!)!,
+          fontWeight: FontWeight.bold),
     );
   }
 
   Widget _getDescription(QuestionModel model) {
     return Card(
-      shape: RoundedRectangleBorder(
-          //<-- SEE HERE
-          side: BorderSide(color: Colors.yellow)),
+      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.orange)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: 35,
-            color: Colors.yellow[200],
+            color: Colors.orange,
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 20,
@@ -506,17 +507,23 @@ class _ResultViewState extends State<ResultView> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
             child: Align(
-              alignment: Alignment.centerLeft,
-              child: _getContent(
-                  "${model.descriptionHindi}", "${model.descriptionEnglish}"),
-            ),
-          )
+                alignment: Alignment.centerLeft,
+                child: _getContent(
+                    "${model.descriptionHindi}", "${model.descriptionEnglish}",
+                    color: Colors.green,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold)),
+          ),
         ],
       ),
     );
   }
 
-  Widget _getContent(labelHindi, labelEnglish, {questionNumber}) {
+  Widget _getContent(labelHindi, labelEnglish,
+      {questionNumber,
+      Color? color,
+      double fontSize = 15.0,
+      FontWeight fontWeight = FontWeight.normal}) {
     List<Widget> widgets = [];
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
@@ -525,16 +532,23 @@ class _ResultViewState extends State<ResultView> {
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi;
       widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti', fontSize: double.tryParse(_selectedFont!)!));
+          fontFamily: 'Kruti',
+          fontSize: (fontSize + 4),
+          color: color,
+          fontWeight: fontWeight));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "english")) {
-      labelEnglish = questionNumber != null
+      /* labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
-          : labelEnglish;
-      widgets.add(AppUtils.getHtmlData("$labelEnglish"));
+          : labelEnglish; */
+      widgets.add(Divider(
+        height: 10,
+      ));
+      widgets.add(AppUtils.getHtmlData(labelEnglish,
+          fontSize: fontSize, color: color, fontWeight: fontWeight));
     }
 
     if (widgets.isNotEmpty) {

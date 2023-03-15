@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import '../../core/models/base_list_view_model.dart';
@@ -61,21 +63,24 @@ class _NotificationViewState extends State<NotificationView> {
     return widgets;
   }
 
-  Slidable getSlidable(notificationModel, index) {
+  Slidable getSlidable(NotificationModel model, index) {
     return Slidable(
+        key: _keys?[index],
         startActionPane: ActionPane(
           // A motion is a widget used to control how the pane animates.
           motion: const ScrollMotion(),
 
           // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
+          //dismissible: DismissiblePane(onDismissed: () {}),
 
           // All actions are defined in the children parameter.
-          children: const [
+          children: [
             // A SlidableAction can have an icon and/or a label.
 
             SlidableAction(
-              onPressed: doNothing,
+              onPressed: (context) {
+                onSlideAction((model.id)!, "read");
+              },
               backgroundColor: AppColor.buttonColor,
               foregroundColor: Colors.white,
               icon: Icons.chat_outlined,
@@ -84,12 +89,14 @@ class _NotificationViewState extends State<NotificationView> {
           ],
         ),
         // Specify a key if the Slidable is dismissible.
-        key: _keys?[index],
-        endActionPane: const ActionPane(
+
+        endActionPane: ActionPane(
           motion: ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: doNothing,
+              onPressed: (context) {
+                onSlideAction((model.id)!, "delete");
+              },
               backgroundColor: Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -97,18 +104,18 @@ class _NotificationViewState extends State<NotificationView> {
             ),
           ],
         ),
-        child: _getCard(notificationModel));
+        child: _getCard(model));
   }
 
-  Card _getCard(notificationModel) {
+  Card _getCard(NotificationModel model) {
     return Card(
         child: ListTile(
             title: Text(
-              notificationModel.title,
+              model.title!,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: ReadMoreText(
-              notificationModel.message,
+              model.message!,
               style: TextStyle(color: Colors.grey[700]),
               trimLines: 2,
               colorClickableText: Colors.pink,
@@ -124,20 +131,20 @@ class _NotificationViewState extends State<NotificationView> {
                   fontWeight: FontWeight.bold,
                   color: AppColor.appBarColor),
               callback: (val) {
-                print("ReadMoreText $val");
+                onSlideAction(model.id!, "read");
               },
             )));
   }
 
-  Card getCard(NotificationModel) {
+  Card getCard(NotificationModel model) {
     return Card(
         child: ListTile(
       title: Text(
-        NotificationModel.title,
+        (model.title)!,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
-        NotificationModel.message,
+        (model.message)!,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       // // ignore: unnecessary_null_comparison
@@ -152,9 +159,19 @@ class _NotificationViewState extends State<NotificationView> {
       ),
     ));
   }
+
+  void onSlideAction(String id, String action) {
+    AppUtils.onLoading(context, "Please Wait...");
+    NotificationsListViewModel().updateStatus(id, action).then((value) {
+      Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
+      baseListViewModel =
+          Provider.of<NotificationsListViewModel>(context, listen: false);
+      Navigator.pop(context);
+    });
+  }
 }
 
-void doNothing(BuildContext context) {}
+
 
 
 //   @override

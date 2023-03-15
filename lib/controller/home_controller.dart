@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
+import 'package:study_evaluation/view/views/package_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 
 class HomeController {
@@ -28,7 +31,20 @@ class HomeController {
         selectedIndex: HomeTabsOptions.testSeries.index);
   }
 
-  void _onVideo(id) {
+  void _onComboTiles(id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+            create: (_) => PackageListViewModel(),
+            child: PackageListView(
+              packageType: "combo",
+            )),
+      ),
+    );
+  }
+
+  void _onTilesTap(id) {
     AppUtils.getAlert(
         context, ["This functionality is currenlty unavailable!"]);
   }
@@ -37,12 +53,12 @@ class HomeController {
     List<HomeTilesModel> homeTilesModels = AppUtils.getHomeTilesModels();
 
     return homeTilesModels.isNotEmpty
-        ? _getBody(homeTilesModels, _onVideo)
+        ? _getBody(homeTilesModels, _onTilesTap)
         : AppUtils.getLoader();
   }
 
-  GridView _getBody(
-      List<HomeTilesModel> homeTilesModels, void Function(dynamic id) onVideo) {
+  GridView _getBody(List<HomeTilesModel> homeTilesModels,
+      void Function(dynamic id) onTilesTap) {
     return GridView.builder(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
@@ -53,8 +69,10 @@ class HomeController {
           void Function(dynamic id) callBack;
           if (homeTilesModel.title.toLowerCase() == "test series") {
             callBack = _onHomeTiles;
+          } else if (homeTilesModel.title.toLowerCase() == "combo package") {
+            callBack = _onComboTiles;
           } else {
-            callBack = onVideo;
+            callBack = onTilesTap;
           }
           return WidgetUtils.getCard(
               homeTilesModel.title, homeTilesModel.imagePath, callBack,

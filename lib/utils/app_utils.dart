@@ -260,12 +260,19 @@ class AppUtils {
     Navigator.of(context).pop();
   }
 
-  static Html getHtmlData(data, {fontFamily = '', double fontSize = 15.0}) {
+  static Html getHtmlData(data,
+      {fontFamily = '',
+      double fontSize = 15.0,
+      Color? color,
+      fontWeight = FontWeight.normal}) {
     return Html(
         data: data,
         style: {
           "span": Style(fontFamily: fontFamily),
-          "body, span, p, font, div": Style(fontSize: FontSize(fontSize))
+          "body, span, p, font, div": Style(
+              fontSize: FontSize(fontSize),
+              color: color,
+              fontWeight: fontWeight)
         },
         customRender: {
           "o:p": (RenderContext context, Widget child) {
