@@ -135,6 +135,7 @@ class AppUtils {
       ],
     );
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return alert;

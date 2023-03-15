@@ -167,7 +167,7 @@ class _EditProfileViewState extends State<EditProfileView> {
             ),
             onPressed: _save,
             child: const Text(
-              'Save',
+              'Update',
               style: TextStyle(fontSize: 15),
             ),
           ),
@@ -414,6 +414,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   Future<dynamic> showDialogOTP(otp) {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(

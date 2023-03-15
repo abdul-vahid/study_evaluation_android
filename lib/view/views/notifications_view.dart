@@ -67,7 +67,6 @@ class _NotificationViewState extends State<NotificationView> {
     return Slidable(
         key: _keys?[index],
         startActionPane: ActionPane(
-          // A motion is a widget used to control how the pane animates.
           motion: const ScrollMotion(),
 
           // A pane can dismiss the Slidable.

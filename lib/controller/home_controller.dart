@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
@@ -223,7 +224,10 @@ class HomeController {
           Align(
             child: TextButton.icon(
               // <-- TextButton
-              onPressed: () {},
+              onPressed: () {
+                Share.share('com.example.share_app',
+                    subject: 'Welcome Message');
+              },
               icon: const Icon(
                 Icons.share,
                 size: 20.0,

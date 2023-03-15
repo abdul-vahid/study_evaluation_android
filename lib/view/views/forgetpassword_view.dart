@@ -70,7 +70,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       key: _ForgetFormKey,
                       child: Column(children: [
                         WidgetUtils.getTextFormField('Mobile',
-                            'Enter Mobile Number', Icons.mobile_screen_share,
+                            'Enter Mobile Number', Icons.phone_android,
                             onValidator: validatePhone,
                             keyboardType: TextInputType.phone,
                             controller: _mobileController),

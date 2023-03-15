@@ -1,13 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:otp_text_field/otp_field.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
-import 'package:study_evaluation/view_models/role_list_vm.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
+import '../../view_models/user_view_model/user_list_vm.dart';
 import '../widgets/widget_utils.dart';
 
 class SignupView extends StatefulWidget {
@@ -25,6 +26,9 @@ class _SignupViewState extends State<SignupView> {
   final confirmpasswordController = TextEditingController();
   bool passwordVisible = false;
   bool confirmPasswordVisible = false;
+  String otpVerification = "";
+  OtpFieldController otpController = OtpFieldController();
+  final TextEditingController _mobileController = TextEditingController();
 
   String? _mobileNumber;
   String? _password;
@@ -53,6 +57,7 @@ class _SignupViewState extends State<SignupView> {
             WidgetUtils.getTextFormField(
                 'First Name', 'Enter First Name', Icons.person,
                 onSaved: ((value) {
+              debug("onsave firstname = $value");
               _firstName = value;
             }), onValidator: validateName),
             const SizedBox(
@@ -69,20 +74,12 @@ class _SignupViewState extends State<SignupView> {
             WidgetUtils.getTextFormField(
               'Mobile',
               'Enter Mobile Number',
-              Icons.mobile_screen_share,
+              Icons.phone_android,
               onSaved: ((value) {
                 _mobileNumber = value;
               }),
               keyboardType: TextInputType.phone,
-              onValidator: (value) {
-                if (value!.isEmpty) {
-                  return "Please Enter a Phone Number";
-                } else if (!RegExp(
-                        r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$')
-                    .hasMatch(value)) {
-                  return "Please Enter a Valid Phone Number";
-                }
-              },
+              onValidator: validatePhone,
             ),
             const SizedBox(
               height: 20,
@@ -206,15 +203,91 @@ class _SignupViewState extends State<SignupView> {
 
   void onButtonPressed() {
     if (_registrationFormKey.currentState!.validate()) {
-      AppUtils.onLoading(context, "Please wait...");
+      // AppUtils.onLoading(context, "Please wait...");
+      debug("onbutton pressed _firstName = $_firstName");
       _registrationFormKey.currentState!.save();
+      _displayDialog(context);
+    }
+  }
 
-      int min = 5;
-      int max = 10;
-      Random rnd = new Random();
-      var val = min + rnd.nextInt(max - min);
-      print("$val is in the range of $min and $max");
+  _displayDialog(BuildContext context, {OtpFieldController? controller}) async {
+    AppUtils.onLoading(context, "Please Wait...");
 
+    UserListViewModel()
+        .getOTP(_mobileNumber!, "REGISTRATION")
+        .then((records) => showDialogOTP(records))
+        .catchError((onError) {
+      Navigator.pop(context);
+      List<String> errorMessages = AppUtils.getErrorMessages(onError);
+      AppUtils.getAlert(context, errorMessages, title: "Error Alert");
+    });
+
+    // Navigator.pop(context);
+  }
+
+  Future<dynamic> showDialogOTP(otp) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(child: Text('${otp}')),
+            content: OTPTextField(
+                controller: otpController,
+                length: 4,
+                width: MediaQuery.of(context).size.width,
+                textFieldAlignment: MainAxisAlignment.spaceAround,
+                fieldWidth: 45,
+                //fieldStyle: FieldStyle.box,
+                outlineBorderRadius: 15,
+                style: const TextStyle(fontSize: 17),
+                onChanged: (pin) {
+                  otpVerification = pin;
+                },
+                onCompleted: (pin) {}),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFfef5e6),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(fontSize: 15, color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.buttonColor,
+                      ),
+                      onPressed: (() {
+                        _submit(otp);
+                        // AppUtils.onLoading(context, "Saving...");
+                      }),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _submit(otp) {
+    //AppUtils.onLoading(context, "Logging You, please wait...");
+    debug("_firstName = $_firstName");
+    if (otpVerification == otp.toString()) {
       UserModel userModel = UserModel(
         roleName: "student",
         firstName: _firstName,
@@ -234,6 +307,10 @@ class _SignupViewState extends State<SignupView> {
         List<String> errorMessages = AppUtils.getErrorMessages(onError);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
+      Navigator.pop(context, "Registration");
+    } else {
+      // Navigator.pop(context);
+      AppUtils.showAlertDialog(context, 'Error', 'Wrong otp entered');
     }
   }
 

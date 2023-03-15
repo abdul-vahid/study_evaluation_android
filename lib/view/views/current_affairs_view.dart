@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -106,6 +108,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         List<Widget> tempWidgets = [];
         CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
         if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
+          print('Video URL : ${model.videoUrl}');
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
         tempWidgets.add(_bottomSheet(model));
@@ -283,7 +286,8 @@ class _VideoPlayerState extends State<_VideoPlayer> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(videoUrl);
+    _controller = VideoPlayerController.network(
+        AppConstants.baseUrl + AppConstants.videoPath + '/' + videoUrl);
 
     _controller.addListener(() {
       setState(() {});
