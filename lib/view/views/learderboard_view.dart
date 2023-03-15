@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:study_evaluation/view_models/leaderboard_list_vm.dart';
 
 import '../../core/models/base_list_view_model.dart';
 import '../../models/leader_board_model.dart';
@@ -10,7 +11,8 @@ import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
 
 class LearderbordView extends StatefulWidget {
-  const LearderbordView({super.key});
+  final examId;
+  const LearderbordView({super.key, required this.examId});
 
   @override
   State<LearderbordView> createState() => _LearderbordViewState();
@@ -23,17 +25,13 @@ class _LearderbordViewState extends State<LearderbordView> {
   @override
   void initState() {
     super.initState();
-    String url =
-        AppUtils.getUrl("${AppConstants.leaderboardAPIPath}?exam_id=96");
-    print('url@@@$url');
-    Provider.of<BaseListViewModel>(context, listen: false)
-        .get(baseModel: LeaderBoardModel(), url: url);
+    Provider.of<LeaderBoardListViewModel>(context, listen: false).fetch(widget.examId);
   }
 
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
-    baseListViewModel = Provider.of<BaseListViewModel>(context);
+    baseListViewModel = Provider.of<LeaderBoardListViewModel>(context);
 
     print('@@@$baseListViewModel');
     return Scaffold(
@@ -55,6 +53,7 @@ class _LearderbordViewState extends State<LearderbordView> {
       widgets.add(getCard(viewModel.model));
 
       print('viewModel$viewModel');
+
       // viewModel.model
       print('viewModel.model@@ ${viewModel.model}');
     }

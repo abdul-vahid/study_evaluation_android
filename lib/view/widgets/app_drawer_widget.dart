@@ -290,7 +290,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Share.share('com.example.share_app', subject: 'Welcome Message');
+              Share.share('https://www.google.com/',
+                  subject: 'Welcome Message');
             },
           ),
           Divider(),
