@@ -64,16 +64,8 @@ class _NotificationViewState extends State<NotificationView> {
   Slidable getSlidable(notificationModel, index) {
     return Slidable(
         startActionPane: ActionPane(
-          // A motion is a widget used to control how the pane animates.
           motion: const ScrollMotion(),
-
-          // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
-
-          // All actions are defined in the children parameter.
           children: const [
-            // A SlidableAction can have an icon and/or a label.
-
             SlidableAction(
               onPressed: doNothing,
               backgroundColor: AppColor.buttonColor,
@@ -100,33 +92,36 @@ class _NotificationViewState extends State<NotificationView> {
         child: _getCard(notificationModel));
   }
 
-  Card _getCard(notificationModel) {
-    return Card(
-        child: ListTile(
-            title: Text(
-              notificationModel.title,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: ReadMoreText(
-              notificationModel.message,
-              style: TextStyle(color: Colors.grey[700]),
-              trimLines: 2,
-              colorClickableText: Colors.pink,
-              trimMode: TrimMode.Line,
-              trimCollapsedText: 'Read more...',
-              trimExpandedText: '<<<Show less',
-              moreStyle: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.appBarColor),
-              lessStyle: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.appBarColor),
-              callback: (val) {
-                print("ReadMoreText $val");
-              },
-            )));
+  Padding _getCard(notificationModel) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          child: ListTile(
+              title: Text(
+                notificationModel.title,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: ReadMoreText(
+                notificationModel.message,
+                style: TextStyle(color: Colors.grey[700], fontSize: 15),
+                trimLines: 2,
+                colorClickableText: Colors.pink,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: 'Read more...',
+                trimExpandedText: '<<<Show less',
+                moreStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.appBarColor),
+                lessStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.appBarColor),
+                callback: (val) {
+                  print("ReadMoreText $val");
+                },
+              ))),
+    );
   }
 
   Card getCard(NotificationModel) {

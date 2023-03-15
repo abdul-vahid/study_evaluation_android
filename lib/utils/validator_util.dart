@@ -40,8 +40,9 @@ bool isNumeric(value) {
 String? validatePhone(String? value) {
   value = value!.trim();
   if (value == '') return 'Required';
-  if (value.contains(' ') || !isNumeric(value)) return 'Invalid Mobile Number';
-  if (value.length < 10) return 'Mobile need to be 10 digit long.';
+  if (value.contains(' ') || !isNumeric(value))
+    return 'Please enter valid Phone number';
+  if (!(value.length == 10)) return 'Please enter valid Phone number';
 
   return null;
 }

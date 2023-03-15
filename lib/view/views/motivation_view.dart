@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -316,8 +316,8 @@ class _VideoPlayerState extends State<_VideoPlayer> {
     super.initState();
 
     print('@@@@videoUrl ${videoUrl}');
-    _controller = VideoPlayerController.network(videoUrl);
-
+    _controller = VideoPlayerController.network(
+        AppConstants.baseUrl + AppConstants.videoPath + '/' + videoUrl);
     _controller.addListener(() {
       setState(() {});
     });

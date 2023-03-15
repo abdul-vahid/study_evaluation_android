@@ -5,6 +5,7 @@ import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_vm.dart';
 
 class UserListViewModel extends BaseListViewModel {
@@ -12,6 +13,7 @@ class UserListViewModel extends BaseListViewModel {
 
   Future<dynamic> signup(UserModel userModel) async {
     String url = AppUtils.getUrl(AppConstants.signupAPIPath);
+    debug(userModel.toJson());
     return await post(url: url, body: userModel.toJson());
   }
 

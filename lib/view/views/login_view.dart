@@ -67,13 +67,13 @@ class _LoginViewState extends State<LoginView> {
             WidgetUtils.getTextFormField(
               'Mobile',
               'Enter Mobile Number',
-              Icons.mobile_screen_share,
+              Icons.phone_android,
               onSaved: ((value) {
                 _userName = value;
 
                 print('_userName @@@@ $_userName');
               }),
-              onValidator: validateUserName,
+              onValidator: validatePhone,
               initialValue: "0987654326",
               keyboardType: TextInputType.phone,
             ),
