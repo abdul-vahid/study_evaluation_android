@@ -18,6 +18,7 @@ Widget getBottomNavigation(selectedIndex, {Function(int)? onItemTap}) =>
       type: BottomNavigationBarType.fixed,
       backgroundColor: AppColor.appBarColor,
       selectedItemColor: AppColor.selectedItemColor,
+      unselectedItemColor: Colors.white,
       onTap: onItemTap,
       showSelectedLabels: true,
       showUnselectedLabels: true,
@@ -42,8 +43,8 @@ _getNotifcationIcon(counter) {
       const Icon(Icons.notifications),
       counter != 0
           ? Positioned(
-              right: 11,
-              top: 11,
+              right: 5,
+              top: 5,
               child: Container(
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
