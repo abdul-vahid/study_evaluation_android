@@ -6,14 +6,21 @@ Widget getBottomNavigation(selectedIndex, {Function(int)? onItemTap}) =>
     BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         _barItem('Home', Icons.home),
-        _barItem('Test Series', Icons.text_snippet_outlined),
-        _barItem('My Order', Icons.ramen_dining),
+        _barItem('Test Series', Icons.edit_note),
+        _barItem('My Order', Icons.shopping_cart),
         _barItem('Notifications', Icons.notifications),
         _barItem('Profile', Icons.person),
       ],
       currentIndex: selectedIndex,
+      //iconSize: 10,
+      selectedFontSize: 10,
+      unselectedFontSize: 10,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: AppColor.appBarColor,
       selectedItemColor: AppColor.selectedItemColor,
       onTap: onItemTap,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
     );
 
 BottomNavigationBarItem _barItem(String label, IconData iconData,

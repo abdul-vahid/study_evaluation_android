@@ -123,9 +123,43 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                   selectedIndex: HomeTabsOptions.home.index);
             },
           ),
+          Divider(),
           ListTile(
             leading: Icon(
-              Icons.task_sharp,
+              Icons.edit_note,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Test Series',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.testSeries.index);
+            },
+          ),
+          Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.notification_add,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'Notifications',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                AppUtils.launchTab(context,
+                    selectedIndex: HomeTabsOptions.notifications.index);
+              }),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.shopping_cart,
               color: AppColor.navBarIconColor,
             ),
             title: Text(
@@ -139,6 +173,81 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                   selectedIndex: HomeTabsOptions.myOrder.index);
             },
           ),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.feedback,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Feedback',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeedbackView()),
+              );
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              color: AppColor.navBarIconColor,
+            ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.profile.index);
+            },
+          ),
+          Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.info_outlined,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'About Us',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutUsScreen()),
+                );
+              }),
+          Divider(),
+          ListTile(
+              leading: Icon(
+                Icons.alternate_email,
+                color: AppColor.navBarIconColor,
+              ),
+              title: Text(
+                'Contact Us',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ContactUsView()),
+                );
+              }),
+          Divider(),
           ListTile(
             leading: Icon(
               Icons.touch_app,
@@ -171,79 +280,23 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
           Divider(),
           ListTile(
             leading: Icon(
-              Icons.feedback,
+              Icons.share,
               color: AppColor.navBarIconColor,
             ),
             title: Text(
-              'Profile',
+              'Share App',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             onTap: () {
-              AppUtils.launchTab(context,
-                  selectedIndex: HomeTabsOptions.profile.index);
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.feedback,
-              color: AppColor.navBarIconColor,
-            ),
-            title: Text(
-              'Feedback',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FeedbackView()),
-              );
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.feedback,
-              color: AppColor.navBarIconColor,
-            ),
-            title: Text(
-              'Test Series',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              AppUtils.launchTab(context,
-                  selectedIndex: HomeTabsOptions.testSeries.index);
+              Share.share('com.example.share_app', subject: 'Welcome Message');
             },
           ),
           Divider(),
           ListTile(
               leading: Icon(
-                Icons.location_history_rounded,
-                color: AppColor.navBarIconColor,
-              ),
-              title: Text(
-                'About Us',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AboutUsScreen()),
-                );
-              }),
-          Divider(),
-          ListTile(
-              leading: Icon(
-                Icons.location_history_rounded,
+                Icons.sticky_note_2_outlined,
                 color: AppColor.navBarIconColor,
               ),
               title: Text(
@@ -259,57 +312,6 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                       builder: (context) => const TermsConditionsView()),
                 );
               }),
-          Divider(),
-          ListTile(
-              leading: Icon(
-                Icons.notification_add,
-                color: AppColor.navBarIconColor,
-              ),
-              title: Text(
-                'Notifications',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () {
-                AppUtils.launchTab(context,
-                    selectedIndex: HomeTabsOptions.notifications.index);
-              }),
-          Divider(),
-          ListTile(
-              leading: Icon(
-                Icons.location_history_rounded,
-                color: AppColor.navBarIconColor,
-              ),
-              title: Text(
-                'Contact Us',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ContactUsView()),
-                );
-              }),
-          Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.share,
-              color: AppColor.navBarIconColor,
-            ),
-            title: Text(
-              'Share App',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Share.share('com.example.share_app', subject: 'Welcome Message');
-            },
-          ),
           Divider(),
           ListTile(
             leading: Icon(

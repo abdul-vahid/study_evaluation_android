@@ -362,7 +362,7 @@ class _ResultViewState extends State<ResultView> {
 
   Padding _getQuestionOptionWidget(model) {
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         left: 10,
         right: 10,
         top: 10,
@@ -374,7 +374,7 @@ class _ResultViewState extends State<ResultView> {
           elevation: 5,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: Theme.of(context).colorScheme.outline,
+              color: Color.fromARGB(255, 181, 179, 179),
             ),
             borderRadius: const BorderRadius.all(Radius.circular(8.0)),
           ),
@@ -407,7 +407,7 @@ class _ResultViewState extends State<ResultView> {
 
   Container _getQuestionBottom(QuestionModel model) {
     return Container(
-      height: 50,
+      height: 35,
       decoration: BoxDecoration(
         color: AppColor.containerBoxColor,
         borderRadius: const BorderRadius.only(
