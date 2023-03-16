@@ -92,16 +92,23 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           child: Padding(
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            key,
-            style: const TextStyle(
-              // fontWeight: FontWeight.bold,
-              fontSize: 18,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                key,
+                style: const TextStyle(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 18, fontWeight: FontWeight.bold,
+                  color: AppColor.textColor,
+                ),
+              ),
+            ),
+            Divider(
               color: Colors.grey,
             ),
-          ),
+          ],
         ),
       )));
       for (var viewModel in viewModels) {
@@ -111,7 +118,9 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           print('Video URL : ${model.videoUrl}');
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
-        tempWidgets.add(_bottomSheet(model));
+        if (model.documentUrl != null) {
+          tempWidgets.add(_bottomSheet(model));
+        }
 
         videoBottomSheetWidgets.add(Padding(
           padding: const EdgeInsets.all(10.0),
@@ -140,7 +149,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
 
   Padding _bottomSheet(currentAffairsModel) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -169,7 +178,10 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
               )),
           TextButton.icon(
               onPressed: () => {
-                    Share.share('com.example.share_app',
+                    Share.share(
+                        '${AppConstants.baseUrl}' +
+                            '/study_evaluation/public/' +
+                            '${currentAffairsModel?.documentUrl}',
                         subject: 'Welcome Message')
                   },
               icon: Icon(
@@ -236,15 +248,14 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+            decoration: const BoxDecoration(color: Colors.white,
+                //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black12,
-                      offset: Offset(0, 10),
-                      blurRadius: 10,
-                      spreadRadius: 2)
+                      //offset: Offset(0, 0),
+                      blurRadius: 5,
+                      spreadRadius: 1)
                 ]),
             child: Column(
               children: [
