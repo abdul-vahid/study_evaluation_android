@@ -35,6 +35,7 @@ class _NotificationViewState extends State<NotificationView> {
     baseListViewModel = Provider.of<NotificationsListViewModel>(context);
     //var a = baseListViewModel!.viewModels.length;
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppUtils.getAppbar("Notifications"),
       body: AppUtils.getAppBody(baseListViewModel!, _getBody), //_getBody(),
       drawer: const AppDrawerWidget(),
@@ -107,39 +108,43 @@ class _NotificationViewState extends State<NotificationView> {
         child: _getCard(model));
   }
 
-  Card _getCard(NotificationModel model) {
-    return Card(
-        child: ListTile(
-            title: Text(
-              model.title!,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: ReadMoreText(
-              model.message!,
-              style: TextStyle(
-                  color: Colors.grey[700],
-                  fontWeight: model.status == "unread"
-                      ? FontWeight.bold
-                      : FontWeight.normal),
-              trimLines: 2,
-              colorClickableText: Colors.pink,
-              trimMode: TrimMode.Line,
-              trimCollapsedText: 'Read more...',
-              trimExpandedText: '<<<Show less',
-              moreStyle: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.appBarColor),
-              lessStyle: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.appBarColor),
-              callback: (val) {
-                if (model.status != "read") {
-                  onSlideAction(model.id!, "read");
-                }
-              },
-            )));
+  Padding _getCard(NotificationModel model) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 1, bottom: 5),
+      child: Card(
+          color: Colors.white,
+          child: ListTile(
+              title: Text(
+                model.title!,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: ReadMoreText(
+                model.message!,
+                style: TextStyle(
+                    color: Colors.grey[700],
+                    fontWeight: model.status == "unread"
+                        ? FontWeight.bold
+                        : FontWeight.normal),
+                trimLines: 2,
+                colorClickableText: Colors.pink,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: 'Read more...',
+                trimExpandedText: '<<<Show less',
+                moreStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.appBarColor),
+                lessStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.appBarColor),
+                callback: (val) {
+                  if (model.status != "read") {
+                    onSlideAction(model.id!, "read");
+                  }
+                },
+              ))),
+    );
   }
 
   Card getCard(NotificationModel model) {
