@@ -10,9 +10,10 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/view/views/leardeboard_view.dart';
+import 'package:study_evaluation/view/views/learderboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
+import 'package:study_evaluation/view_models/leaderboard_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
 
 class ResultView extends StatefulWidget {
@@ -44,6 +45,7 @@ class _ResultViewState extends State<ResultView> {
   String? _selectedFont = "15";
   String? _selectedFilter = "all";
   String title = "Result";
+  String? examId;
   int timerMaxSeconds = 60;
   int? totalQuestions = 30;
   Map<String, int> filtersMap = {};
@@ -84,9 +86,9 @@ class _ResultViewState extends State<ResultView> {
                         builder: (context) => MultiProvider(
                               providers: [
                                 ChangeNotifierProvider(
-                                    create: (_) => BaseListViewModel())
+                                    create: (_) => LeaderBoardListViewModel())
                               ],
-                              child: const LearderbordView(),
+                              child: LearderbordView(examId:examId),
                             )),
                   );
                 }),
@@ -159,6 +161,7 @@ class _ResultViewState extends State<ResultView> {
       setState(() {
         //isRefresh = false;
         title = model.exam!.title!;
+        examId = model.exam!.id!;
 
         totalQuestions =
             model.questionModels != null ? model.questionModels!.length : 0;

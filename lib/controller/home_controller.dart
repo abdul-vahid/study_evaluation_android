@@ -182,7 +182,10 @@ class HomeController {
           ),
           Expanded(
               child: Column(
-            children: [_nameAndFeedbackWidget(model), _shareButton()],
+            children: [
+              _nameAndFeedbackWidget(model),
+              //_shareButton()
+            ],
           )),
         ],
       ),
@@ -216,29 +219,29 @@ class HomeController {
             fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1));
   }
 
-  Container _shareButton() {
-    return Container(
-      padding: const EdgeInsets.only(left: 150),
-      child: Row(
-        children: [
-          Align(
-            child: TextButton.icon(
-              // <-- TextButton
-              onPressed: () {
-                Share.share('com.example.share_app',
-                    subject: 'Welcome Message');
-              },
-              icon: const Icon(
-                Icons.share,
-                size: 20.0,
-              ),
-              label: const Text('SHARE'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Container _shareButton() {
+  //   return Container(
+  //     padding: const EdgeInsets.only(left: 150),
+  //     child: Row(
+  //       children: [
+  //         Align(
+  //           child: TextButton.icon(
+  //             // <-- TextButton
+  //             onPressed: () {
+  //               Share.share('com.example.share_app',
+  //                   subject: 'Welcome Message');
+  //             },
+  //             icon: const Icon(
+  //               Icons.share,
+  //               size: 20.0,
+  //             ),
+  //             label: const Text('SHARE'),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Container _feedbackCardContainer(model) {
     return Container(

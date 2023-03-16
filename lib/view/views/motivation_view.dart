@@ -138,11 +138,11 @@ class _MotivationViewState extends State<MotivationView> {
               icon: const Icon(
                 Icons.picture_as_pdf,
                 color: Colors.black,
-                size: 10,
+                size: 15,
               ),
               label: const Text(
                 'View PDF',
-                style: TextStyle(color: Color(0xFFFB83ADC), fontSize: 10),
+                style: TextStyle(color: Color(0xFFFB83ADC), fontSize: 15),
               )),
           TextButton.icon(
               onPressed: () => {
@@ -152,11 +152,11 @@ class _MotivationViewState extends State<MotivationView> {
               icon: Icon(
                 Icons.share,
                 color: Colors.black,
-                size: 10,
+                size: 15,
               ),
               label: Text(
                 'SHARE',
-                style: TextStyle(color: Colors.black, fontSize: 10),
+                style: TextStyle(color: Colors.black, fontSize: 15),
               )),
         ],
       ),

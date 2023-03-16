@@ -241,6 +241,7 @@ class _EditProfileViewState extends State<EditProfileView> {
             controller: contorller,
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(
+              // ignore: prefer_const_constructors
               suffix: Icon(
                 Icons.calendar_today,
                 color: AppColor.buttonColor,
