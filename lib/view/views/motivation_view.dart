@@ -100,7 +100,10 @@ class _MotivationViewState extends State<MotivationView> {
           viewModel.model.videoUrl.endsWith(".mp4")) {
         tempWidgets.add(_getQuoteVideo(viewModel.model.videoUrl));
       }
-      tempWidgets.add(_bottomSheet(viewModel.model));
+
+      if (viewModel.model.pdfUrl != null) {
+        tempWidgets.add(_bottomSheet(viewModel.model));
+      }
 
       widgets.add(Padding(
         padding: const EdgeInsets.all(10.0),
@@ -118,7 +121,7 @@ class _MotivationViewState extends State<MotivationView> {
 
   Padding _bottomSheet(quoteModel) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -146,7 +149,10 @@ class _MotivationViewState extends State<MotivationView> {
               )),
           TextButton.icon(
               onPressed: () => {
-                    Share.share('com.example.share_app',
+                    Share.share(
+                        '${AppConstants.baseUrl}' +
+                            '/study_evaluation/public/' +
+                            '${quoteModel?.pdfUrl}',
                         subject: 'Welcome Message')
                   },
               icon: Icon(
@@ -193,7 +199,7 @@ class _MotivationViewState extends State<MotivationView> {
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor: Colors.white),
                   onPressed: (() {
-                    Share.share('com.example.share_app',
+                    Share.share('${(quoteModel?.quote)!}',
                         subject: 'Welcome Message');
                   }),
                   label: const Text(
@@ -265,15 +271,14 @@ class _MotivationViewState extends State<MotivationView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+            decoration: const BoxDecoration(color: Colors.white,
+                //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black12,
-                      offset: Offset(0, 10),
-                      blurRadius: 10,
-                      spreadRadius: 2)
+                      //offset: Offset(0, 0),
+                      blurRadius: 5,
+                      spreadRadius: 1)
                 ]),
             child: Column(
               children: [

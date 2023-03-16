@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:study_evaluation/view/views/package_detail_view.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
+import '../../view_models/package_list_vm.dart';
 
 class OrderDetailView extends StatefulWidget {
-  const OrderDetailView({super.key});
+  final myOrder;
+  const OrderDetailView({super.key, required this.myOrder});
 
   @override
   State<OrderDetailView> createState() => _OrderDetailViewState();
@@ -27,14 +31,17 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
                   children: [
-                    getColumn('Order Number', '9876543213'),
-                    getColumn('Order Amount', '99.99'),
-                    getColumn('Order Date', '23-03-2023'),
-                    getColumn('Expiry Date', '23-06-2023'),
-                    getColumn('Payment Types', 'Bank'),
-                    getColumn('Payment Status', 'Confirm'),
-                    getColumn('Validity', '365'),
-                    getColumn('Status', 'ACTIVE'),
+                    getColumn('Package Title', widget.myOrder.packagesTitle),
+                    getColumn('Package Name', widget.myOrder.name),
+                    getColumn('Order Amount', widget.myOrder.amount),
+                    getColumn('Order Number', widget.myOrder.orderNumber),
+                    getColumn('Order Amount', widget.myOrder.amount),
+                    getColumn('Order Date', widget.myOrder.createdDate),
+                    getColumn('Expiry Date', widget.myOrder.expiryDate),
+                    getColumn('Payment Types', widget.myOrder.paymentType),
+                    getColumn('Payment Status', widget.myOrder.paymentStatus),
+                    getColumn('Validity', widget.myOrder.validity),
+                    getColumn('Status', widget.myOrder.status),
                     getButton(),
                   ],
                 ),
@@ -66,7 +73,9 @@ class _OrderDetailViewState extends State<OrderDetailView> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor,
             ),
-            onPressed: (() {}),
+            onPressed: (() {
+              onButtonPressed(widget.myOrder.packageId);
+            }),
             child: const Text(
               'Show Package',
               style: TextStyle(fontSize: 15),
@@ -113,5 +122,20 @@ class _OrderDetailViewState extends State<OrderDetailView> {
         ),
       ],
     );
+  }
+
+  void onButtonPressed(id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+                create: (_) => PackageListViewModel(),
+                child: PackageDetailView(
+                  packageLineItemId: id,
+                ),
+              ),
+          settings: RouteSettings(arguments: 9)),
+    );
+    print("Login Button pressed!!!");
   }
 }

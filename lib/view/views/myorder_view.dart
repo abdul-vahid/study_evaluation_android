@@ -111,7 +111,7 @@ class _MyOrderViewState extends State<MyOrderView> {
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
         onTap: () {
-          onButtonPressed();
+          onButtonPressed(myOrder);
         },
         child: Card(
           elevation: 5,
@@ -172,15 +172,18 @@ class _MyOrderViewState extends State<MyOrderView> {
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             Text(
-                              'Order Number',
+                              'Order Amount',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey[700],
                               ),
                             ),
+                            SizedBox(
+                              height: 3,
+                            ),
                             Text(
-                              'Order Amount',
+                              'Expiry Date',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
@@ -197,12 +200,15 @@ class _MyOrderViewState extends State<MyOrderView> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              myOrder.orderNumber,
+                              '₹${myOrder.amount}',
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
+                            SizedBox(
+                              height: 3,
+                            ),
                             Text(
-                              '₹${myOrder.amount}',
+                              myOrder.expiryDate,
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
@@ -302,10 +308,10 @@ class _MyOrderViewState extends State<MyOrderView> {
   //   }
   // }
 
-  void onButtonPressed() {
+  void onButtonPressed(myOrder) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OrderDetailView()),
+      MaterialPageRoute(builder: (context) => OrderDetailView(myOrder:myOrder)),
     );
     print("Login Button pressed!!!");
   }
