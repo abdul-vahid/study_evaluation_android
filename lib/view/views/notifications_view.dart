@@ -168,11 +168,16 @@ class _NotificationViewState extends State<NotificationView> {
 
   void onSlideAction(String id, String action) {
     AppUtils.onLoading(context, "Please Wait...");
+    int currentCount = (baseListViewModel?.viewModels.length)!;
     NotificationsListViewModel().updateStatus(id, action).then((value) {
       Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
       baseListViewModel =
           Provider.of<NotificationsListViewModel>(context, listen: false);
-      Navigator.pop(context);
+
+      if (baseListViewModel?.status == "Completed" ||
+          (baseListViewModel?.isError)!) {
+        Navigator.pop(context);
+      }
     });
   }
 }
