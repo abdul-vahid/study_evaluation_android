@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import '../../core/models/base_list_view_model.dart';
@@ -173,29 +172,3 @@ class _NotificationViewState extends State<NotificationView> {
     });
   }
 }
-
-
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Center(child: const Text("Notification"))),
-//       body: ListView.builder(
-//           itemCount: 5,
-//           itemBuilder: (BuildContext context, int index) {
-//             return Padding(
-//               padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-//               child: Card(
-//                 child: ListTile(
-//                     // leading: const Icon(Icons.list),
-//                     trailing: const Icon(
-//                       Icons.more_vert,
-//                     ),
-//                     title: Text("List item $index")),
-//               ),
-//             );
-//           }),
-//     );
-//   }
-// }
