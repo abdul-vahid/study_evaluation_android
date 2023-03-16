@@ -108,68 +108,138 @@ class _NotificationViewState extends State<NotificationView> {
         child: _getCard(model));
   }
 
-  Padding _getCard(NotificationModel model) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8, top: 1, bottom: 5),
-      child: Card(
-          color: Colors.white,
-          child: ListTile(
-              title: Text(
-                model.title!,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: ReadMoreText(
-                model.message!,
-                style: TextStyle(
-                    color: Colors.grey[700],
-                    fontWeight: model.status == "unread"
-                        ? FontWeight.bold
-                        : FontWeight.normal),
-                trimLines: 2,
-                colorClickableText: Colors.pink,
-                trimMode: TrimMode.Line,
-                trimCollapsedText: 'Read more...',
-                trimExpandedText: '<<<Show less',
-                moreStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.appBarColor),
-                lessStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.appBarColor),
-                callback: (val) {
-                  if (model.status != "read") {
-                    onSlideAction(model.id!, "read");
-                  }
-                },
-              ))),
-    );
-  }
+  // Padding _getCard(NotificationModel model) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 8, right: 8, top: 1, bottom: 5),
+  //     child: Card(
+  //         color: Colors.white,
+  //         child: ListTile(
+  //             title: Text(
+  //               model.title!,
+  //               style: TextStyle(fontWeight: FontWeight.bold),
+  //             ),
+  //             subtitle: ReadMoreText(
+  //               model.message!,
+  //               style: TextStyle(
+  //                   color: Colors.grey[700],
+  //                   fontWeight: model.status == "unread"
+  //                       ? FontWeight.bold
+  //                       : FontWeight.normal),
+  //               trimLines: 2,
+  //               colorClickableText: Colors.pink,
+  //               trimMode: TrimMode.Line,
+  //               trimCollapsedText: 'Read more...',
+  //               trimExpandedText: '<<<Show less',
+  //               moreStyle: TextStyle(
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: AppColor.appBarColor),
+  //               lessStyle: TextStyle(
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: AppColor.appBarColor),
+  //               callback: (val) {
+  //                 if (model.status != "read") {
+  //                   onSlideAction(model.id!, "read");
+  //                 }
+  //               },
+  //             ))),
+  //   );
+  // }
 
-  Card getCard(NotificationModel model) {
+  Card _getCard(NotificationModel model) {
     return Card(
-        child: ListTile(
-      title: Text(
-        (model.title)!,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(
-        (model.message)!,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      // // ignore: unnecessary_null_comparison
-      // leading: CircleAvatar(
-      //     // ignore: unnecessary_null_comparison
-      //     backgroundImage: profileUrl == null
-      //         ? const NetworkImage(
-      //             'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
-      //         : NetworkImage(profileUrl!)),
-      trailing: const Icon(
-        Icons.notification_add,
-      ),
-    ));
+        color: Colors.white,
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                //  mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: <Widget>[
+                  Text(
+                    model.title!,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  ReadMoreText(
+                    model.message!,
+                    style: TextStyle(
+                        color: Colors.grey[700],
+                        fontWeight: model.status == "unread"
+                            ? FontWeight.bold
+                            : FontWeight.normal),
+                    trimLines: 2,
+                    colorClickableText: Colors.pink,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'Read more...',
+                    trimExpandedText: '<<<Show less',
+                    moreStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.appBarColor),
+                    lessStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.appBarColor),
+                    callback: (val) {
+                      if (model.status != "read") {
+                        onSlideAction(model.id!, "read");
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Icon(
+                        Icons.date_range,
+                        size: 13,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        model.formattedCreatedDate!,
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ]),
+          ),
+        ));
   }
+  // Card getCard(NotificationModel model) {
+  //   return Card(
+  //       child: ListTile(
+  //     title: Text(
+  //       (model.title)!,
+  //       style: TextStyle(fontWeight: FontWeight.bold),
+  //     ),
+  //     subtitle: Text(
+  //       (model.message)!,
+  //       style: TextStyle(fontWeight: FontWeight.bold),
+  //     ),
+  //     // // ignore: unnecessary_null_comparison
+  //     // leading: CircleAvatar(
+  //     //     // ignore: unnecessary_null_comparison
+  //     //     backgroundImage: profileUrl == null
+  //     //         ? const NetworkImage(
+  //     //             'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+  //     //         : NetworkImage(profileUrl!)),
+  //     trailing: const Icon(
+  //       Icons.notification_add,
+  //     ),
+  //   ));
+  // }
 
   void onSlideAction(String id, String action) {
     AppUtils.onLoading(context, "Please Wait...");

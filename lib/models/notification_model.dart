@@ -9,16 +9,19 @@ class NotificationModel extends BaseModel {
   String? message;
   String? title;
   String? status;
+  String? formattedCreatedDate;
 
-  NotificationModel(
-      {this.id,
-      this.userId,
-      this.notificationId,
-      this.message,
-      this.title,
-      super.appException,
-      super.error,
-      this.status});
+  NotificationModel({
+    this.id,
+    this.userId,
+    this.notificationId,
+    this.message,
+    this.title,
+    super.appException,
+    super.error,
+    this.status,
+    this.formattedCreatedDate,
+  });
 
   factory NotificationModel.fromMap(Map<String, dynamic> data) {
     return NotificationModel(
@@ -28,6 +31,7 @@ class NotificationModel extends BaseModel {
       message: data['message'] as String?,
       title: data['title'] as String?,
       status: data['status'] as String?,
+      formattedCreatedDate: data['formatted_created_date'] as String?,
     );
   }
 
@@ -39,6 +43,7 @@ class NotificationModel extends BaseModel {
         'message': message,
         'title': title,
         'status': status,
+        'formatted_created_date': formattedCreatedDate,
       };
 
   @override
