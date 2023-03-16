@@ -78,7 +78,9 @@ class _NotificationViewState extends State<NotificationView> {
 
             SlidableAction(
               onPressed: (context) {
-                onSlideAction((model.id)!, "read");
+                if (model.status != "read") {
+                  onSlideAction((model.id)!, "read");
+                }
               },
               backgroundColor: AppColor.buttonColor,
               foregroundColor: Colors.white,
@@ -130,7 +132,9 @@ class _NotificationViewState extends State<NotificationView> {
                   fontWeight: FontWeight.bold,
                   color: AppColor.appBarColor),
               callback: (val) {
-                onSlideAction(model.id!, "read");
+                if (model.status != "read") {
+                  onSlideAction(model.id!, "read");
+                }
               },
             )));
   }
