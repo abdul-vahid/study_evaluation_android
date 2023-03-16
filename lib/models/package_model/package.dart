@@ -21,6 +21,7 @@ class Package extends BaseModel {
   String? logoUrl;
   String? status;
   String? validityStatus;
+  String? plainDescription;
 
   Package(
       {this.id,
@@ -42,23 +43,24 @@ class Package extends BaseModel {
       super.error,
       super.appException,
       this.validityStatus,
-      this.category});
+      this.category,
+      this.plainDescription});
 
   String getShortDescription(int start, {int? end}) {
-    int? len = description?.length;
+    int? len = plainDescription?.length;
     if (end != null) {
       if (len! < end) {
-        return description!;
+        return plainDescription!;
       }
     } else {
       if (len! < start) {
-        return description!;
+        return plainDescription!;
       }
     }
     if (end != null) {
-      return "${(description?.substring(start, end))!}...";
+      return "${(plainDescription?.substring(start, end))!}...";
     } else {
-      return "${(description?.substring(start))!}...";
+      return "${(plainDescription?.substring(start))!}...";
     }
   }
 
@@ -81,6 +83,7 @@ class Package extends BaseModel {
         logoUrl: data['logo_url'] as String?,
         status: data['status'] as String?,
         validityStatus: data['validityStatus'] as String?,
+        plainDescription: data['plain_description'] as String?,
       );
 
   @override
@@ -102,7 +105,8 @@ class Package extends BaseModel {
         'description': description,
         'logo_url': logoUrl,
         'status': status,
-        'validityStatus': validityStatus
+        'validity_status': validityStatus,
+        'plain_description': plainDescription,
       };
 
   /// `dart:convert`

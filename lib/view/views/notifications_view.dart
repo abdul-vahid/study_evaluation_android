@@ -116,7 +116,11 @@ class _NotificationViewState extends State<NotificationView> {
             ),
             subtitle: ReadMoreText(
               model.message!,
-              style: TextStyle(color: Colors.grey[700]),
+              style: TextStyle(
+                  color: Colors.grey[700],
+                  fontWeight: model.status == "unread"
+                      ? FontWeight.bold
+                      : FontWeight.normal),
               trimLines: 2,
               colorClickableText: Colors.pink,
               trimMode: TrimMode.Line,

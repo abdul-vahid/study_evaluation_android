@@ -1,7 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/enum.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
+import 'package:study_evaluation/view/views/notifications_view.dart';
+import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 class NotificationUtil {
@@ -20,13 +26,19 @@ class NotificationUtil {
     // when you click on notification app open from terminated state and you can get notification data in this method
     _firebaseMessaging?.getInitialMessage().then(
       (RemoteMessage? remoteMessage) {
-        onMessageReceived(remoteMessage);
+        debug("display notifcation app getInitialMessage");
+        //onMessageReceived(remoteMessage);
+        if (remoteMessage != null && remoteMessage.notification != null) {
+          AppUtils.launchTab(context,
+              selectedIndex: HomeTabsOptions.notifications.index);
+        }
       },
     );
 
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage? remoteMessage) {
+        debug("display notifcation app opened foregroud");
         onMessageReceived(remoteMessage);
       },
     );
@@ -34,7 +46,10 @@ class NotificationUtil {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage? remoteMessage) {
-        onMessageReceived(remoteMessage!);
+        debug("display notifcation app background");
+        AppUtils.launchTab(context,
+            selectedIndex: HomeTabsOptions.notifications.index);
+        //onMessageReceived(remoteMessage!);
       },
     );
 

@@ -1,14 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
+import 'package:study_evaluation/utils/notification_utils.dart';
 
 import 'package:study_evaluation/view/views/category_list_view.dart';
 
 import 'package:study_evaluation/view/views/home_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:study_evaluation/view/views/notifications_view.dart';
+import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
 /* Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +30,18 @@ void main() async {
 }
 
 Future<void> _backgroundHandler(RemoteMessage message) async {
-  return Future.value();
+  debug("_backgroundHandler");
+
+  /* Navigator.push(
+      NotificationUtil.context!,
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                      create: (_) => NotificationsListViewModel())
+                ],
+                child: const NotificationView(),
+              ))); */
 }
 
 class MyApp extends StatelessWidget {

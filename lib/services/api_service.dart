@@ -20,7 +20,7 @@ class APIService {
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
-    AppUtils.printDebug("responseData --> $responseJson");
+    //AppUtils.printDebug("responseData --> $responseJson");
     return responseJson;
   }
 

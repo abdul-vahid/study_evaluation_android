@@ -38,13 +38,8 @@ class _PackageListViewState extends State<PackageListView> {
     AppUtils.currentContext = context;
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: const BackButton(color: Colors.white),
-        title: const Text("Packages"),
-        elevation: .1,
-        backgroundColor: AppColor.appBarColor,
-      ),
+      appBar: AppUtils.getAppbar("Packages",
+          leading: const BackButton(color: Colors.white)),
       body: AppUtils.getAppBody(packageListVM!, _getBody),
     );
   }
@@ -96,7 +91,7 @@ class _PackageListViewState extends State<PackageListView> {
       ),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 250,
+        height: 300,
         child: getCard(context, model),
       ),
     );
@@ -127,6 +122,8 @@ class _PackageListViewState extends State<PackageListView> {
               ),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _getImageContainer(model),
                 _getContentContainer(model),
@@ -145,6 +142,7 @@ class _PackageListViewState extends State<PackageListView> {
   Expanded _getContentContainer(Package model) {
     return Expanded(
         child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
           height: 5,
@@ -155,21 +153,27 @@ class _PackageListViewState extends State<PackageListView> {
               style: const TextStyle(
                   fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1)),
         ),
+        const Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Text(
+            "Category",
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: Text("${model.category}",
               style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1)),
+                  fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)),
         ),
       ],
     ));
   }
 
   Container _getImageContainer(Package model) {
-    print("Image Path: ${AppConstants.imagePath}/${model.logoUrl}");
     return Container(
-      height: 80,
-      width: 120,
+      height: 100,
+      width: 100,
       //padding: EdgeInsets.only(top: 0),
       margin: const EdgeInsets.only(bottom: 50, left: 5),
       decoration: BoxDecoration(
