@@ -14,6 +14,7 @@ import 'package:study_evaluation/utils/function_lib.dart';
 class BaseListViewModel extends ChangeNotifier {
   var viewModels = [];
   var status = "Loading";
+  Exception? exception;
   bool get isError {
     return status == "Error";
   }
@@ -39,16 +40,19 @@ class BaseListViewModel extends ChangeNotifier {
       status = "Completed";
     } on AppException catch (error) {
       status = "Error";
+      exception = error;
       viewModels.add(
           BaseViewModel(model: BaseModel(appException: error, error: null)));
     } on Exception catch (e, stackTrace) {
       status = "Error";
-      AppUtils.printDebug(stackTrace);
+      exception = exception;
+      debug(stackTrace);
+
       viewModels
           .add(BaseViewModel(model: BaseModel(appException: null, error: e)));
     } catch (e, stackTrace) {
       status = "Error";
-      AppUtils.printDebug(stackTrace);
+      debug(stackTrace);
 
       viewModels.add(BaseViewModel(
           model:

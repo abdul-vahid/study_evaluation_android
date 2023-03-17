@@ -10,6 +10,7 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
+import 'package:study_evaluation/view/views/analysis_view.dart';
 import 'package:study_evaluation/view/views/learderboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
@@ -52,7 +53,6 @@ class _ResultViewState extends State<ResultView> {
   bool isRefresh = false;
   @override
   void initState() {
-    AppUtils.printDebug("resultview init");
     Provider.of<ResultListViewModel>(context, listen: false)
         .fetch(widget.resultId);
 
@@ -108,6 +108,8 @@ class _ResultViewState extends State<ResultView> {
         itemBuilder: (context) {
       return [
         _getPopupMenuItem(
+            label: "Analysis", value: 3, iconData: Icons.analytics),
+        _getPopupMenuItem(
             label: "Filter", value: 0, iconData: Icons.apps_rounded),
         _getPopupMenuItem(
             label: "Language", value: 1, iconData: Icons.language),
@@ -121,6 +123,8 @@ class _ResultViewState extends State<ResultView> {
         _onPressedLanguages(context);
       } else if (value == 2) {
         _onPressedFontSize(context);
+      } else if (value == 4) {
+        _onPressedAnalysis(context);
       }
     });
   }
@@ -657,5 +661,12 @@ class _ResultViewState extends State<ResultView> {
   ) {
     AppUtils.getSimpleDialog(context,
         title: 'Select Font Size', children: _getFontOptionsWidgets);
+  }
+
+  _onPressedAnalysis(
+    BuildContext context,
+  ) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AnalysisView()));
   }
 }

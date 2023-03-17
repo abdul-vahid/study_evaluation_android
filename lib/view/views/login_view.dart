@@ -70,8 +70,6 @@ class _LoginViewState extends State<LoginView> {
               Icons.phone_android,
               onSaved: ((value) {
                 _userName = value;
-
-                print('_userName @@@@ $_userName');
               }),
               onValidator: validatePhone,
               initialValue: "0987654326",
@@ -130,7 +128,7 @@ class _LoginViewState extends State<LoginView> {
           MaterialPageRoute(builder: (context) => const ForgetPasswordView()),
         );
       },
-      child: Text(
+      child: const Text(
         'Forgot Password',
         style: TextStyle(color: AppColor.textColor),
       ),

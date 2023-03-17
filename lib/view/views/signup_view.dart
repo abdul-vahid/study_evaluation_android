@@ -157,30 +157,6 @@ class _SignupViewState extends State<SignupView> {
             const SizedBox(
               height: 20,
             ),
-            // DropdownButtonHideUnderline(
-            //   child: DropdownButtonFormField<String>(
-            //       decoration: InputDecoration(
-            //         border: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(25)),
-            //         prefixIcon: Icon(Icons.person, color: AppColor.iconColor),
-            //       ),
-            //       hint: const Text('Select Role'),
-            //       // Not necessary for Option 1
-            //       value: _selectedRole,
-            //       validator: (value) => value == null ? 'Required' : null,
-            //       isDense: true,
-            //       isExpanded: false,
-            //       menuMaxHeight: 350,
-            //       onChanged: (newValue) {
-            //         setState(() {
-            //           _selectedRole = newValue;
-            //         });
-            //       },
-            //       items: getItems()),
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             getSubmitButtonContainer(),
             const SizedBox(
               height: 20,
@@ -203,14 +179,14 @@ class _SignupViewState extends State<SignupView> {
 
   void onButtonPressed() {
     if (_registrationFormKey.currentState!.validate()) {
-      // AppUtils.onLoading(context, "Please wait...");
-      debug("onbutton pressed _firstName = $_firstName");
+      //AppUtils.onLoading(context, "Please wait...");
+      //debug("onbutton pressed _firstName = $_firstName");
       _registrationFormKey.currentState!.save();
       _displayDialog(context);
     }
   }
 
-  _displayDialog(BuildContext context, {OtpFieldController? controller}) async {
+  _displayDialog(BuildContext context) async {
     AppUtils.onLoading(context, "Please Wait...");
 
     UserListViewModel()
