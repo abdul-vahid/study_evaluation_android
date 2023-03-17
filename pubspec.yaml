@@ -69,8 +69,15 @@ dependencies:
   firebase_remote_config: ^3.0.14
   firebase_crashlytics: ^3.0.16
   firebase_dynamic_links: ^5.0.16
+
+  #slidable
   flutter_slidable: ^2.0.0
 
+  #App Icon
+  flutter_launcher_icons: ^0.12.0
+
+  
+    
 
 
 dev_dependencies:
@@ -84,6 +91,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+flutter_icons:
+  android: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+   # can specify file name here e.g. "ic_launcher"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -105,6 +117,8 @@ flutter:
     - family: Montserrat
       fonts:
       - asset: assets/fonts/Montserrat_VariableFont.ttf
+
+  
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
