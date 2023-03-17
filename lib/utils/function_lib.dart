@@ -6,4 +6,3 @@ void debug(message) {
     print(message);
   }
 }
-

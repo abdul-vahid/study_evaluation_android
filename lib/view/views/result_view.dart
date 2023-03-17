@@ -88,7 +88,7 @@ class _ResultViewState extends State<ResultView> {
                                 ChangeNotifierProvider(
                                     create: (_) => LeaderBoardListViewModel())
                               ],
-                              child: LearderbordView(examId:examId),
+                              child: LearderbordView(examId: examId),
                             )),
                   );
                 }),

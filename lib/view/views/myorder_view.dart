@@ -311,7 +311,8 @@ class _MyOrderViewState extends State<MyOrderView> {
   void onButtonPressed(myOrder) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OrderDetailView(myOrder:myOrder)),
+      MaterialPageRoute(
+          builder: (context) => OrderDetailView(myOrder: myOrder)),
     );
     print("Login Button pressed!!!");
   }

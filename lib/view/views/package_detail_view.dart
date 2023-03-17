@@ -11,11 +11,15 @@ import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
+import 'package:study_evaluation/view/views/signup_success.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
 import '../../utils/app_color.dart';
+import '../../view_models/order_payment_list_vm.dart';
 
 class PackageDetailView extends StatefulWidget {
   final String packageLineItemId;
@@ -69,7 +73,22 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 package?.validityStatus != "purchased"
             ? _getBuyNowButton(
                 'Buy Now',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MultiProvider(
+                                providers: [
+                                  ChangeNotifierProvider(
+                                      create: (context) => OrderListViewModel())
+                                ],
+                                child: PlaceOrderView(
+                                  packageId: (package?.id)!,
+                                  amount: (package?.listPrice)!,
+                                ),
+                              )));
+                },
               )
             : Container(),
 
