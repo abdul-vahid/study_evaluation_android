@@ -51,6 +51,9 @@ class _ResultViewState extends State<ResultView> {
   int? totalQuestions = 30;
   Map<String, int> filtersMap = {};
   bool isRefresh = false;
+
+  ExamModel? model;
+
   @override
   void initState() {
     Provider.of<ResultListViewModel>(context, listen: false)
@@ -123,8 +126,8 @@ class _ResultViewState extends State<ResultView> {
         _onPressedLanguages(context);
       } else if (value == 2) {
         _onPressedFontSize(context);
-      } else if (value == 4) {
-        _onPressedAnalysis(context);
+      } else if (value == 3) {
+        _onPressedAnalysis();
       }
     });
   }
@@ -151,8 +154,8 @@ class _ResultViewState extends State<ResultView> {
   Widget _getBody() {
     if (baseListViewModel!.viewModels.isNotEmpty &&
         baseListViewModel!.viewModels[0].model != null) {
-      ExamModel model = baseListViewModel!.viewModels[0].model;
-      if (model.questionModels == null || model.questionModels!.isEmpty) {
+      model = baseListViewModel!.viewModels[0].model;
+      if (model?.questionModels == null || (model?.questionModels!.isEmpty)!) {
         return const Center(
           child: Text("No Results Found!"),
         );
@@ -164,11 +167,11 @@ class _ResultViewState extends State<ResultView> {
       }
       setState(() {
         //isRefresh = false;
-        title = model.exam!.title!;
-        examId = model.exam!.id!;
+        title = (model?.exam!.title)!;
+        examId = model?.exam!.id!;
 
         totalQuestions =
-            model.questionModels != null ? model.questionModels!.length : 0;
+            model?.questionModels != null ? model?.questionModels!.length : 0;
       });
 
       _keys = List.generate(totalQuestions!, (index) => GlobalKey());
@@ -663,10 +666,12 @@ class _ResultViewState extends State<ResultView> {
         title: 'Select Font Size', children: _getFontOptionsWidgets);
   }
 
-  _onPressedAnalysis(
-    BuildContext context,
-  ) {
+  _onPressedAnalysis() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AnalysisView()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => AnalysisView(
+                  examModel: model!,
+                )));
   }
 }

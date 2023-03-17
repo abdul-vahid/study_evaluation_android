@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
 import '../../utils/app_color.dart';
 
 class AnalysisView extends StatefulWidget {
-  const AnalysisView({super.key});
+  ExamModel examModel;
+  AnalysisView({super.key, required this.examModel});
 
   @override
   State<AnalysisView> createState() => _AnalysisViewState();
