@@ -82,7 +82,7 @@ class Package extends BaseModel {
         description: data['description'] as String?,
         logoUrl: data['logo_url'] as String?,
         status: data['status'] as String?,
-        validityStatus: data['validityStatus'] as String?,
+        validityStatus: data['validity_status'] as String?,
         plainDescription: data['plain_description'] as String?,
       );
 

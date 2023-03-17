@@ -94,10 +94,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           Container(
             //  color: Colors.amberAccent,
             height: height,
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
             child: _getGridView(questionModels),
           ),
         ],
