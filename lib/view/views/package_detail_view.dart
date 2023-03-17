@@ -9,6 +9,7 @@ import 'package:study_evaluation/models/package_model/test_series.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
@@ -33,8 +34,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   String? _selectedFont = "15";
   @override
   void initState() {
-    SharedPreferences.getInstance()
-        .then((prefs) => userModel = AppUtils.getSessionUser(prefs));
+    SharedPreferences.getInstance().then((prefs) {
+      userModel = AppUtils.getSessionUser(prefs);
+      debug("userrole = ${userModel?.role}");
+    });
+
     super.initState();
     //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
@@ -61,8 +65,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         top: 10,
       ),
       child: Column(children: [
-        (userModel?.roleName?.toLowerCase()) == "student" &&
-                (package?.validityStatus != "purchased")
+        userModel?.role?.toLowerCase() == "student" &&
+                package?.validityStatus != "purchased"
             ? _getBuyNowButton(
                 'Buy Now',
                 onPressed: () {},

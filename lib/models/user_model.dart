@@ -21,7 +21,7 @@ class UserModel extends BaseModel {
 
   String? city;
   String? state;
-  String? roleName;
+  String? role;
 
   UserModel(
       {this.id,
@@ -40,7 +40,7 @@ class UserModel extends BaseModel {
       this.gender,
       this.city,
       this.state,
-      this.roleName,
+      this.role,
       super.appException,
       super.error});
 
@@ -60,10 +60,14 @@ class UserModel extends BaseModel {
         gender: data['gender'] as String?,
         city: data['city'] as String?,
         state: data['state'] as String?,
-        roleName: data['role_name'] as String?,
+        role: data['role'] as String?,
       );
   String get fullName {
-    return "$firstName $lastName";
+    if (firstName != null && lastName != null) {
+      return "$firstName $lastName";
+    } else {
+      return name!;
+    }
   }
 
   @override
@@ -88,7 +92,7 @@ class UserModel extends BaseModel {
         'gender': gender,
         'city': city,
         'state': state,
-        'role_name': roleName,
+        'role': role,
       };
 
   /// `dart:convert`
