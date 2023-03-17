@@ -68,45 +68,6 @@ class _HomeViewState extends State<HomeView> {
       drawer: const AppDrawerWidget(),
       appBar: AppBar(
         title: Center(child: Text("Home")),
-        actions: <Widget>[
-          // Using Stack to show Notification Badge
-          Stack(
-            children: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.notifications),
-                  onPressed: () {
-                    setState(() {
-                      counter = 3;
-                    });
-                  }),
-              counter != 0
-                  ? Positioned(
-                      right: 11,
-                      top: 11,
-                      child: Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 14,
-                          minHeight: 14,
-                        ),
-                        child: Text(
-                          '$counter',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  : Container()
-            ],
-          ),
-        ],
       ),
       body: _getBody(context, homeController),
     );
