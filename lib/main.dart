@@ -77,12 +77,6 @@ class MyApp extends StatelessWidget {
             ),
         "/feedback": (context) => const FeedbackView(),
         "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
-        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
       },
     );
   }
