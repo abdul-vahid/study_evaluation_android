@@ -187,15 +187,15 @@ class _AnalysisViewState extends State<AnalysisView> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           Text(
-            '45',
+            (widget.examModel.exam?.result?.correctQuestionCount)!,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            '13',
+            (widget.examModel.exam?.result?.incorrectQuestionCount)!,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            '123.3',
+            (widget.examModel.exam?.result?.totalMarks)!,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
@@ -266,7 +266,7 @@ class _AnalysisViewState extends State<AnalysisView> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       Text(
-                        '144/30',
+                        (widget.examModel.exam?.result?.attempt)!,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -325,7 +325,7 @@ class _AnalysisViewState extends State<AnalysisView> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       Text(
-                        '44.3',
+                        (widget.examModel.exam?.result?.accuracy)!,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -410,7 +410,7 @@ class _AnalysisViewState extends State<AnalysisView> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       Text(
-                        '20 SEC',
+                        (widget.examModel.exam?.result?.averageTimeQuestion)!,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -456,7 +456,7 @@ class _AnalysisViewState extends State<AnalysisView> {
       // ignore: prefer_const_literals_to_create_immutables
       children: [
         Text(
-          '45.30',
+          (widget.examModel.exam?.result?.remainingExamTime)!,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -508,7 +508,7 @@ class _AnalysisViewState extends State<AnalysisView> {
       // ignore: prefer_const_literals_to_create_immutables
       children: [
         Text(
-          '144/300',
+          (widget.examModel.exam?.result?.negativeMarking)!,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -558,7 +558,7 @@ class _AnalysisViewState extends State<AnalysisView> {
       // ignore: prefer_const_literals_to_create_immutables
       children: [
         Text(
-          '144.30',
+          (widget.examModel.exam?.result?.positiveMarking)!,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -576,7 +576,7 @@ class _AnalysisViewState extends State<AnalysisView> {
   List<Widget> get _getRank {
     return [
       Text(
-        '143/456',
+        (widget.examModel.exam?.result?.ranks)!,
         style: TextStyle(
             color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
@@ -617,7 +617,7 @@ class _AnalysisViewState extends State<AnalysisView> {
       // ignore: prefer_const_literals_to_create_immutables
       children: [
         Text(
-          '144/130',
+          (widget.examModel.exam?.result?.totalEarnedMarks)!,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),

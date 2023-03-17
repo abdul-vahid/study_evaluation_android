@@ -17,6 +17,10 @@ class Result extends BaseModel {
   String? attempt;
   String? accuracy;
   String? correctAnswers;
+  String? ranks;
+  String? totalEarnedMarks;
+  String? correctQuestionCount;
+  String? incorrectQuestionCount;
 
   Result(
       {this.id,
@@ -32,7 +36,11 @@ class Result extends BaseModel {
       this.averageTimeQuestion,
       this.attempt,
       this.accuracy,
+      this.ranks,
       this.correctAnswers,
+      this.totalEarnedMarks,
+      this.correctQuestionCount,
+      this.incorrectQuestionCount,
       super.appException,
       super.error});
 
@@ -51,6 +59,10 @@ class Result extends BaseModel {
         attempt: data['attempt'] as String?,
         accuracy: data['accuracy'] as String?,
         correctAnswers: data['correct_answers'] as String?,
+        ranks: data['ranks'] as String?,
+        totalEarnedMarks: data['total_earned_marks'] as String?,
+        correctQuestionCount: data['correct_question_count'] as String?,
+        incorrectQuestionCount: data['incorrect_question_count'] as String?,
       );
 
   @override
@@ -69,6 +81,10 @@ class Result extends BaseModel {
         'attempt': attempt,
         'accuracy': accuracy,
         'correct_answers': correctAnswers,
+        'ranks': ranks,
+        'total_earned_marks': totalEarnedMarks,
+        'correct_question_count': correctQuestionCount,
+        'incorrect_question_count': incorrectQuestionCount,
       };
 
   /// `dart:convert`
