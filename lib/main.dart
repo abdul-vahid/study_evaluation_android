@@ -6,13 +6,36 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
+import 'package:study_evaluation/view/views/aboutus_view.dart';
 
 import 'package:study_evaluation/view/views/category_list_view.dart';
+import 'package:study_evaluation/view/views/contact_us_view.dart';
+import 'package:study_evaluation/view/views/current_affairs_view.dart';
+import 'package:study_evaluation/view/views/edit_profile_view.dart';
+import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/feedback_view.dart';
+import 'package:study_evaluation/view/views/feedbackalertdialog.dart';
+import 'package:study_evaluation/view/views/feedbacks_view.dart';
+import 'package:study_evaluation/view/views/follow_us_view.dart';
+import 'package:study_evaluation/view/views/forgetpassword_view.dart';
+import 'package:study_evaluation/view/views/home_main_view.dart';
 
 import 'package:study_evaluation/view/views/home_view.dart';
+import 'package:study_evaluation/view/views/learderboard_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:study_evaluation/view/views/motivation_view.dart';
+import 'package:study_evaluation/view/views/myorder_view.dart';
 import 'package:study_evaluation/view/views/notifications_view.dart';
+import 'package:study_evaluation/view/views/order_detail_view.dart';
+import 'package:study_evaluation/view/views/package_detail_view.dart';
+import 'package:study_evaluation/view/views/package_list_view.dart';
+import 'package:study_evaluation/view/views/place_order_view.dart';
+import 'package:study_evaluation/view/views/profile_view.dart';
+import 'package:study_evaluation/view/views/result_view.dart';
+import 'package:study_evaluation/view/views/signup_success.dart';
+import 'package:study_evaluation/view/views/signup_view.dart';
+import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
 /* Future<void> mainCommon() async {
@@ -59,7 +82,48 @@ class MyApp extends StatelessWidget {
       initialRoute: "/login",
       routes: {
         "/login": (context) => const LoginHome(),
-        "/testseries": (context) => const CategoryListView()
+        "/testseries": (context) => const CategoryListView(),
+        "/about_us": (context) => const AboutUsScreen(),
+        "/contact_us": (context) => const ContactUsView(),
+        "/current_affairs": (context) => const CurrentAffairsView(),
+        "/edit_profile": (context) => const EditProfileView(),
+        "/exam": (context) => ExamView(
+              examId: '',
+              userId: '',
+            ),
+        "/feedback_alertdialog": (context) => const FeedbackAlertDialog(),
+        "/feedback": (context) => const FeedbackView(),
+        "/feedBacks": (context) => const FeedBacksView(),
+        "/follow_us": (context) => const FollowUsView(),
+        "/forget_password": (context) => const ForgetPasswordView(),
+        "/home": (context) => const HomeView(),
+        "/home_main": (context) => HomeMainView(),
+        "/learderbord": (context) => const LearderbordView(
+              examId: null,
+            ),
+        "/motivation": (context) => const MotivationView(),
+        "/myorder": (context) => const MyOrderView(),
+        "/notification": (context) => const NotificationView(),
+        "/orderdetail": (context) => const OrderDetailView(
+              myOrder: null,
+            ),
+        "/package_detail": (context) => const PackageDetailView(
+              packageLineItemId: '',
+            ),
+        "/package_list": (context) => PackageListView(),
+        // ignore: prefer_const_constructors
+        "/place_order": (context) => PlaceOrderView(
+              amount: '',
+              packageId: '',
+            ),
+        "/profile": (context) => const ProfileView(),
+        "/result": (context) => const ResultView(
+              resultId: '',
+              userId: '',
+            ),
+        "/signup_success": (context) => const SignupSuccess(),
+        "/signup": (context) => const SignupView(),
+        "/terms_conditions": (context) => const TermsConditionsView(),
       },
     );
   }

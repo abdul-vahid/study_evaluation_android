@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:study_evaluation/utils/app_utils.dart';
 
 class TermsConditionsView extends StatefulWidget {
   const TermsConditionsView({super.key});

@@ -102,6 +102,37 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     height: 30,
                   ),
                   getSubmitButtonContainer(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Text(
+                          'Do not send OTP?',
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            
+                          },
+                          child: Text(
+                            'Send OTP',
+                            style: TextStyle(
+                              fontSize: 14,
+                              // fontWeight: FontWeight.bold,
+                              color: AppColor.textColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

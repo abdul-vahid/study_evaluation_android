@@ -35,7 +35,6 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                     getColumn('Package Name', widget.myOrder.name),
                     getColumn('Order Amount', widget.myOrder.amount),
                     getColumn('Order Number', widget.myOrder.orderNumber),
-                    getColumn('Order Amount', widget.myOrder.amount),
                     getColumn('Order Date', widget.myOrder.createdDate),
                     getColumn('Expiry Date', widget.myOrder.expiryDate),
                     getColumn('Payment Types', widget.myOrder.paymentType),

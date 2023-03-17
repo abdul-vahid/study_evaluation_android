@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -126,6 +128,9 @@ class _PackageListViewState extends State<PackageListView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _getImageContainer(model),
+                SizedBox(
+                  width: 5,
+                ),
                 _getContentContainer(model),
               ],
             ),
@@ -175,7 +180,7 @@ class _PackageListViewState extends State<PackageListView> {
       height: 100,
       width: 100,
       //padding: EdgeInsets.only(top: 0),
-      margin: const EdgeInsets.only(bottom: 50, left: 5),
+      margin: const EdgeInsets.only(bottom: 50, left: 5, top: 5),
       decoration: BoxDecoration(
         image: DecorationImage(
           scale: 5,

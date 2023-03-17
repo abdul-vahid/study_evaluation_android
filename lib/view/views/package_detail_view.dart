@@ -61,6 +61,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   SingleChildScrollView _getBody() {
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
+    debug('package@@@$package');
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.only(
@@ -70,11 +71,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       ),
       child: Column(children: [
         userModel?.role?.toLowerCase() == "student" &&
-                package?.validityStatus != "purchased"
+                package?.validityStatus != "PURCHASED"
             ? _getBuyNowButton(
                 'Buy Now',
                 onPressed: () {
-                  Navigator.pop(context);
+                  debug('package?.validityStatus@ ${package?.validityStatus}');
+
+                  //  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

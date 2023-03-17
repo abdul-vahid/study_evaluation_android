@@ -1,24 +1,11 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:study_evaluation/models/package_model/package.dart';
-import 'package:study_evaluation/models/package_model/package_model.dart';
-import 'package:study_evaluation/models/package_model/result_model.dart';
-import 'package:study_evaluation/models/package_model/test_series.dart';
-import 'package:study_evaluation/models/user_model.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/view/views/exam_view.dart';
-import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
-import 'package:study_evaluation/view_models/order_list_vm.dart';
-import 'package:study_evaluation/view_models/package_list_vm.dart';
-import 'package:study_evaluation/view_models/exam_list_vm.dart';
-import 'package:study_evaluation/view_models/result_list_vm.dart';
-import '../../utils/app_color.dart';
-import '../../view_models/order_payment_list_vm.dart';
+
+import '../../models/user_model.dart';
+import '../../utils/app_utils.dart';
+import '../../view_models/order_list_vm.dart';
 
 class PlaceOrderView extends StatefulWidget {
   final String packageId;
@@ -52,9 +39,54 @@ class _PlaceOrderViewState extends State<PlaceOrderView> {
   }
 
   SingleChildScrollView _getBody() {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
         child: Center(
-      child: Text("Your order has been placed!"),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              height: 400,
+              width: 400,
+              child: Column(
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      color: Colors.white,
+                      size: 120,
+                    ),
+                    radius: 60,
+                    backgroundColor: Colors.green,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Thank You!',
+                      style: TextStyle(
+                          fontSize: 45,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Your order has been placed!',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     ));
   }
 }
