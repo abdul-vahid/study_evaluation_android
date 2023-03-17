@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import '../../core/models/base_list_view_model.dart';
@@ -96,7 +97,8 @@ class _NotificationViewState extends State<NotificationView> {
           children: [
             SlidableAction(
               onPressed: (context) {
-                onSlideAction((model.id)!, "delete");
+                showAlertDialog(model);
+                //   onSlideAction((model.id)!, "delete");
               },
               backgroundColor: Color(0xFFFE4A49),
               foregroundColor: Colors.white,
@@ -106,6 +108,42 @@ class _NotificationViewState extends State<NotificationView> {
           ],
         ),
         child: _getCard(model));
+  }
+
+  showAlertDialog(model) {
+    Widget noButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        debug("No");
+        Navigator.pop(context);
+      },
+    );
+    // set up the buttons
+    Widget yesButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        onSlideAction((model.id)!, "delete");
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete"),
+      content: Text("Are you sure you want to delete this item?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   // Padding _getCard(NotificationModel model) {

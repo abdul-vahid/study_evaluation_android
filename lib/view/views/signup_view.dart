@@ -289,7 +289,7 @@ class _SignupViewState extends State<SignupView> {
     debug("_firstName = $_firstName");
     if (otpVerification == otp.toString()) {
       UserModel userModel = UserModel(
-        roleName: "student",
+        role: "student",
         firstName: _firstName,
         lastName: _lastName,
         userName: _mobileNumber,

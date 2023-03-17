@@ -9,12 +9,17 @@ import 'package:study_evaluation/models/package_model/test_series.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
+import 'package:study_evaluation/view/views/signup_success.dart';
+import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
 import '../../utils/app_color.dart';
+import '../../view_models/order_payment_list_vm.dart';
 
 class PackageDetailView extends StatefulWidget {
   final String packageLineItemId;
@@ -33,8 +38,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   String? _selectedFont = "15";
   @override
   void initState() {
-    SharedPreferences.getInstance()
-        .then((prefs) => userModel = AppUtils.getSessionUser(prefs));
+    SharedPreferences.getInstance().then((prefs) {
+      userModel = AppUtils.getSessionUser(prefs);
+      debug("userrole = ${userModel?.role}");
+    });
+
     super.initState();
     //final id = ModalRoute.of(context)!.settings.arguments;
     Provider.of<PackageListViewModel>(context, listen: false)
@@ -61,11 +69,26 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         top: 10,
       ),
       child: Column(children: [
-        (userModel?.roleName?.toLowerCase()) == "student" &&
-                (package?.validityStatus != "purchased")
+        userModel?.role?.toLowerCase() == "student" &&
+                package?.validityStatus != "purchased"
             ? _getBuyNowButton(
                 'Buy Now',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MultiProvider(
+                                providers: [
+                                  ChangeNotifierProvider(
+                                      create: (context) => OrderListViewModel())
+                                ],
+                                child: PlaceOrderView(
+                                  packageId: (package?.id)!,
+                                  amount: (package?.listPrice)!,
+                                ),
+                              )));
+                },
               )
             : Container(),
 

@@ -25,7 +25,8 @@ class _LearderbordViewState extends State<LearderbordView> {
   @override
   void initState() {
     super.initState();
-    Provider.of<LeaderBoardListViewModel>(context, listen: false).fetch(widget.examId);
+    Provider.of<LeaderBoardListViewModel>(context, listen: false)
+        .fetch(widget.examId);
   }
 
   @override
