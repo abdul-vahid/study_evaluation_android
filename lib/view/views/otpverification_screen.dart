@@ -23,7 +23,20 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   var otpVerification;
   int? oneTimePassword;
 
-  // String username = userName;
+  List<String> char = [];
+
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < 10; i++) {
+      if (i == 0 || i == 1 || i == 8 || i == 9) {
+        char.add(widget.userName[i]);
+      } else {
+        char.add('X');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
@@ -69,10 +82,10 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Center(
+                        Center(
                           child: Text(
-                            'Enter the OTP send to 94XXXXXXXX3',
-                            style: TextStyle(
+                            'Enter the OTP send to ${char.join("")}',
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),

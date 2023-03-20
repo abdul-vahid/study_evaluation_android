@@ -104,7 +104,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           'Modern and tech-equipped premises.',
                           'Stable learning Test series and video courses.',
                           'Regular interaction with Students and their parents/guardians.',
-                          'Here,we note only educate the studentto be succesful,but also nurture them withvalues to be better humans.',
+                          'Here,we note only educate the student to be succesful,but also nurture them with values to be better humans.',
                         ],
                         children: [],
                       ),

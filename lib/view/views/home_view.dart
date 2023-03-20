@@ -67,7 +67,8 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       drawer: const AppDrawerWidget(),
       appBar: AppBar(
-        title: Center(child: Text("Home")),
+        title: Text("Home"),
+        centerTitle: true,
       ),
       body: _getBody(context, homeController),
     );

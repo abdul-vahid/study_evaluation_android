@@ -35,7 +35,6 @@ class _MyOrderViewState extends State<MyOrderView> {
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
     baseListViewModel = Provider.of<OrderListViewModel>(context);
-    print('@@@$baseListViewModel');
     return Scaffold(
       appBar: AppUtils.getAppbar("My Order"),
       body: AppUtils.getAppBody(baseListViewModel!, _getDataBody),

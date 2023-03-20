@@ -24,6 +24,7 @@ class _LearderbordViewState extends State<LearderbordView> {
   String? profileUrl;
   @override
   void initState() {
+    rank = 0;
     super.initState();
     Provider.of<LeaderBoardListViewModel>(context, listen: false)
         .fetch(widget.examId);

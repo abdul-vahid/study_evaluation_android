@@ -263,11 +263,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     }
 
     if (resultModel == null) {
-      var scheduleDT = DateFormat('dd-MM-yyyy HH:mm aaa')
-          .parse((model?.testSeries?[0].scheduledDate)!);
+      var scheduleDT =
+          DateFormat('dd-MM-yyyy HH:mm aaa').parse((testSeries.scheduledDate)!);
 
       var currentDT = DateTime.now();
-
+      debug(
+          "${model?.testSeries?[0].scheduledDate} ===> $scheduleDT === $currentDT === ${currentDT.compareTo(scheduleDT)}");
       if (userModel?.role?.toLowerCase() != "student" ||
           (currentDT.compareTo(scheduleDT) > 0 &&
               userModel?.role?.toLowerCase() == "student" &&

@@ -74,7 +74,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                           onPressed: () {
                             onButtonPressed();
                           },
-                          child: const Text("Sumbmit"))
+                          child: const Text("Submit"))
                     ]),
                   ),
                 ],

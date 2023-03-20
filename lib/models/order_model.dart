@@ -37,9 +37,9 @@ class OrderModel extends BaseModel {
       super.error});
 
   factory OrderModel.fromMap(Map<String, dynamic> data) => OrderModel(
-        packagesTitle: data['packages_title'] as String?,
+        packagesTitle: data['package_title'] as String?,
         logoUrl: data['logo_url'] as String?,
-        name: data['name'] as String?,
+        name: data['category_name'] as String?,
         packageId: data['package_id'] as String?,
         studentId: data['student_id'] as String?,
         status: data['status'] as String?,
@@ -60,9 +60,9 @@ class OrderModel extends BaseModel {
 
   @override
   Map<String, dynamic> toMap() => {
-        'packages_title': packagesTitle,
+        'package_title': packagesTitle,
         'logo_url': logoUrl,
-        'name': name,
+        'category_name': name,
         'package_id': packageId,
         'student_id': studentId,
         'status': status,

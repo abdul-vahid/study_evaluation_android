@@ -65,10 +65,11 @@ getCardWhite(String label, String text) {
             padding: const EdgeInsets.all(18.0),
             child: Text(text,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: 'Montserrat'),
-                textAlign: TextAlign.left),
+                  color: Colors.black,
+                  fontSize: 15,
+                  // fontFamily: 'Montserrat'
+                ),
+                textAlign: TextAlign.justify),
           ),
         ),
       ),
@@ -97,10 +98,11 @@ getCardGrey(String label, String text) {
             padding: const EdgeInsets.all(18.0),
             child: Text(text,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: 'Montserrat'),
-                textAlign: TextAlign.left),
+                  color: Colors.black,
+                  fontSize: 15,
+                  //  fontFamily: 'Montserrat'
+                ),
+                textAlign: TextAlign.justify),
           ),
         ),
       ),
@@ -129,10 +131,11 @@ getCardBlue(String label, String text) {
             padding: const EdgeInsets.all(18.0),
             child: Text(text,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontFamily: 'Montserrat'),
-                textAlign: TextAlign.left),
+                  color: Colors.white,
+                  fontSize: 15,
+                  //   fontFamily: 'Montserrat'
+                ),
+                textAlign: TextAlign.justify),
           ),
         ),
       ),

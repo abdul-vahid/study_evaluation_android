@@ -13,8 +13,8 @@ class OrderListViewModel extends BaseListViewModel {
     var userModel =
         AppUtils.getSessionUser(await SharedPreferences.getInstance());
 
-    String url = AppUtils.getUrl(
-        "${AppConstants.orderAPIPath}?student_id=${userModel.studentId}");
+    String url =
+        AppUtils.getUrl("${AppConstants.orderAPIPath}?user_id=${userModel.id}");
     get(baseModel: OrderModel(), url: url);
   }
 

@@ -191,9 +191,17 @@ class WidgetUtils {
         height: imageHeight,
       );
     } else {
-      return Image.network(
-        url,
+      return FadeInImage.assetNetwork(
+        placeholder: "assets/images/loading.gif",
+        image: url,
         height: imageHeight,
+        imageErrorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'assets/images/profile-image.png',
+            height: 70,
+            width: 70,
+          );
+        },
       );
     }
   }
