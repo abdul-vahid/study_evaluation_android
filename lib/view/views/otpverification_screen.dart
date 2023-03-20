@@ -7,6 +7,7 @@ import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view/views/confirmpassword_screen.dart';
 
 import '../../utils/app_utils.dart';
+import '../../view_models/user_view_model/user_list_vm.dart';
 import '../widgets/widget_utils.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class OTPVerificationScreen extends StatefulWidget {
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   var otpVerification;
+  int? oneTimePassword;
 
   // String username = userName;
   @override
@@ -57,10 +59,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   ),
                   Container(
                     child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         Center(
                           child: Text(
-                            widget.otp.toString(),
+                            'OTP Verification',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
@@ -106,33 +109,42 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     height: 15,
                   ),
                   Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Text(
-                          'Do not send OTP?',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
+                      child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Text(
+                        'Do not receive OTP?',
+                        style: TextStyle(fontSize: 10, color: Colors.red),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          UserListViewModel()
+                              .getOTP(widget.userName, "FORGOT_PASSWORD")
+                              .then((records) {
+                            oneTimePassword = records;
+                            //showDialogOTP(records);
+                          }).catchError((onError) {
+                            Navigator.pop(context);
+                            List<String> errorMessages =
+                                AppUtils.getErrorMessages(onError);
+                            AppUtils.getAlert(context, errorMessages,
+                                title: "Error Alert");
+                          });
+                        },
+                        child: Text(
+                          'Resend OTP',
+                          style: TextStyle(
+                              fontSize: 10, color: AppColor.textColor),
                         ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            
-                          },
-                          child: Text(
-                            'Send OTP',
-                            style: TextStyle(
-                              fontSize: 14,
-                              // fontWeight: FontWeight.bold,
-                              color: AppColor.textColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    ],
+                  )),
                 ],
               ),
             ),
@@ -154,7 +166,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   void onButtonPressed() {
-    if (otpVerification.toString() == widget.otp.toString()) {
+    if (otpVerification.toString() == widget.otp.toString() ||
+        otpVerification.toString() == oneTimePassword.toString()) {
       Navigator.push(
         context,
         MaterialPageRoute(

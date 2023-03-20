@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
@@ -27,6 +29,7 @@ class _SignupViewState extends State<SignupView> {
   bool passwordVisible = false;
   bool confirmPasswordVisible = false;
   String otpVerification = "";
+  int? oneTimePassword;
   OtpFieldController otpController = OtpFieldController();
   final TextEditingController _mobileController = TextEditingController();
 
@@ -189,10 +192,10 @@ class _SignupViewState extends State<SignupView> {
   _displayDialog(BuildContext context) async {
     AppUtils.onLoading(context, "Please Wait...");
 
-    UserListViewModel()
-        .getOTP(_mobileNumber!, "REGISTRATION")
-        .then((records) => showDialogOTP(records))
-        .catchError((onError) {
+    UserListViewModel().getOTP(_mobileNumber!, "REGISTRATION").then((otp) {
+      oneTimePassword = otp;
+      showDialogOTP();
+    }).catchError((onError) {
       Navigator.pop(context);
       List<String> errorMessages = AppUtils.getErrorMessages(onError);
       AppUtils.getAlert(context, errorMessages, title: "Error Alert");
@@ -201,26 +204,72 @@ class _SignupViewState extends State<SignupView> {
     // Navigator.pop(context);
   }
 
-  Future<dynamic> showDialogOTP(otp) {
+  Future<dynamic> showDialogOTP() {
     return showDialog(
         barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Center(child: Text('${otp}')),
-            content: OTPTextField(
-                controller: otpController,
-                length: 4,
-                width: MediaQuery.of(context).size.width,
-                textFieldAlignment: MainAxisAlignment.spaceAround,
-                fieldWidth: 45,
-                //fieldStyle: FieldStyle.box,
-                outlineBorderRadius: 15,
-                style: const TextStyle(fontSize: 17),
-                onChanged: (pin) {
-                  otpVerification = pin;
-                },
-                onCompleted: (pin) {}),
+            title: Center(child: Text('OTP Verification')),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              //position
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OTPTextField(
+                    controller: otpController,
+                    length: 4,
+                    width: MediaQuery.of(context).size.width,
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldWidth: 45,
+                    //fieldStyle: FieldStyle.box,
+                    outlineBorderRadius: 15,
+                    style: const TextStyle(fontSize: 17),
+                    onChanged: (pin) {
+                      otpVerification = pin;
+                    },
+                    onCompleted: (pin) {}),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Text(
+                      'Do not receive OTP?',
+                      style: TextStyle(fontSize: 10, color: Colors.red),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        UserListViewModel()
+                            .getOTP(_mobileNumber!, "REGISTRATION")
+                            .then((records) {
+                          oneTimePassword = records;
+                          //showDialogOTP(records);
+                        }).catchError((onError) {
+                          Navigator.pop(context);
+                          List<String> errorMessages =
+                              AppUtils.getErrorMessages(onError);
+                          AppUtils.getAlert(context, errorMessages,
+                              title: "Error Alert");
+                        });
+                      },
+                      child: Text(
+                        'Resend OTP',
+                        style:
+                            TextStyle(fontSize: 10, color: AppColor.textColor),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -233,6 +282,7 @@ class _SignupViewState extends State<SignupView> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Cancel',
@@ -244,7 +294,7 @@ class _SignupViewState extends State<SignupView> {
                         backgroundColor: AppColor.buttonColor,
                       ),
                       onPressed: (() {
-                        _submit(otp);
+                        _submit();
                         // AppUtils.onLoading(context, "Saving...");
                       }),
                       child: const Text(
@@ -260,12 +310,13 @@ class _SignupViewState extends State<SignupView> {
         });
   }
 
-  void _submit(otp) {
+  void _submit() {
     //AppUtils.onLoading(context, "Logging You, please wait...");
     debug("_firstName = $_firstName");
-    if (otpVerification == otp.toString()) {
+
+    if (otpVerification == oneTimePassword.toString()) {
       UserModel userModel = UserModel(
-        role: "student",
+        role: "Student",
         firstName: _firstName,
         lastName: _lastName,
         userName: _mobileNumber,

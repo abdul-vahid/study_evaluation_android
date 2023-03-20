@@ -41,6 +41,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     SharedPreferences.getInstance().then((prefs) {
       userModel = AppUtils.getSessionUser(prefs);
       debug("userrole = ${userModel?.role}");
+      debug("userrole = ${userModel?.role?.toLowerCase()}");
     });
 
     super.initState();
@@ -58,10 +59,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         body: AppUtils.getAppBody(packageListVM!, _getBody, context: context));
   }
 
-  SingleChildScrollView _getBody() {
+  Widget _getBody() {
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
-    debug('package@@@$package');
+    if (model == null || model?.testSeries == null || package == null) {
+      return const Center(
+        child: Text("Invalid Pacakge"),
+      );
+    }
+    debug('package?.validityStatus@ ${package?.validityStatus}');
+    debug('Roles ${userModel?.role}');
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.only(
@@ -73,10 +80,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         userModel?.role?.toLowerCase() == "student" &&
                 package?.validityStatus != "PURCHASED"
             ? _getBuyNowButton(
-                'Buy Now',
+                package?.validityStatus == "EXPIRED" ? "Buy Again" : "Buy Now",
                 onPressed: () {
-                  debug('package?.validityStatus@ ${package?.validityStatus}');
-
                   //  Navigator.pop(context);
                   Navigator.push(
                       context,
@@ -189,9 +194,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             _getQuestionInfoButtons(testSeries!),
             Container(
               height: 10,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.containerBoxColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(8.0),
                     bottomRight: Radius.circular(8.0)),
               ),
@@ -222,18 +227,20 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             backgroundColor: AppColor.buttonColor, // foreground
           )));
     }
-    if (userModel?.role?.toLowerCase() != "student" ||
-        (resultModel?.resultStatus == ResultStatus.completed &&
-            userModel?.role?.toLowerCase() == "student" &&
-            package?.validityStatus == "PURCHASED")) {
-      widgets.add(AppUtils.getElevatedButton(
-        'Re-Attempt',
-        textStyle: const TextStyle(color: Colors.black),
-        buttonStyle: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFfef5e6) // foreground
-            ),
-        onPressed: () => _submitPage(testSeries, reAttempt: true),
-      ));
+    if (resultModel?.resultStatus == ResultStatus.completed) {
+      if ((userModel?.role?.toLowerCase() != "student") ||
+          (userModel?.role?.toLowerCase() == "student" &&
+              package?.validityStatus == "PURCHASED")) {
+        widgets.add(AppUtils.getElevatedButton(
+          'Re-Attempt',
+          textStyle: const TextStyle(color: Colors.black),
+          buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFfef5e6) // foreground
+              ),
+          onPressed: () => _submitPage(testSeries, reAttempt: true),
+        ));
+      }
+
       widgets.add(AppUtils.getElevatedButton(
         'Result',
         buttonStyle: ElevatedButton.styleFrom(
@@ -260,7 +267,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           .parse((model?.testSeries?[0].scheduledDate)!);
 
       var currentDT = DateTime.now();
-      AppUtils.printDebug("$currentDT ==== $scheduleDT");
+
       if (userModel?.role?.toLowerCase() != "student" ||
           (currentDT.compareTo(scheduleDT) > 0 &&
               userModel?.role?.toLowerCase() == "student" &&

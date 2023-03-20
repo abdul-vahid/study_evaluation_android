@@ -50,8 +50,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   const SizedBox(
                     height: 60,
                   ),
+                  // ignore: avoid_unnecessary_containers
                   Container(
-                    child: Center(
+                    child: const Center(
                         child: Text(
                       'Create New Password',
                       style: TextStyle(

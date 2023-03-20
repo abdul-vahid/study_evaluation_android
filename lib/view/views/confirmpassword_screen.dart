@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_evaluation/view/views/login_home.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
@@ -181,7 +182,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
           .then((records) {
         Navigator.pop(context);
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignupSuccess()));
+            MaterialPageRoute(builder: (context) => const LoginHome()));
       }).catchError((onError) {
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(onError);

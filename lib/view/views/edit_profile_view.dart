@@ -27,6 +27,8 @@ class _EditProfileViewState extends State<EditProfileView> {
   String? mobileNo;
   String? reason;
   String otp = "";
+  int? oneTimePassword;
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
@@ -127,7 +129,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 ProfileConstants.lastNameHint, _lastNameController),
             getTextField(ProfileConstants.mobileLabel,
                 ProfileConstants.mobileHint, _mobileController,
-                validator: validatePhone),
+                keyboardType: TextInputType.phone, validator: validatePhone),
             getDropdown(ProfileConstants.genderLabel,
                 ProfileConstants.genderHint, _genderController),
             getDateTextField(ProfileConstants.dobLabel,
@@ -273,7 +275,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   Padding getTextField(
       String label, String text, TextEditingController contorller,
-      {String? Function(String?)? validator}) {
+      {String? Function(String?)? validator, keyboardType}) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20,
@@ -292,7 +294,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           TextFormField(
             controller: contorller,
             validator: validator,
-            keyboardType: TextInputType.text,
+            keyboardType: keyboardType,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: text,
@@ -401,10 +403,11 @@ class _EditProfileViewState extends State<EditProfileView> {
     AppUtils.onLoading(context, "Please Wait...");
     mobileNo = _mobileController.text;
     reason = 'UPDATE_USER';
-    UserListViewModel()
-        .getOTP(mobileNo!, "UPDATE_USER")
-        .then((records) => showDialogOTP(records))
-        .catchError((onError) {
+    // ignore: avoid_single_cascade_in_expression_statements
+    UserListViewModel().getOTP(mobileNo!, "UPDATE_USER").then((otp) {
+      oneTimePassword = otp;
+      showDialogOTP();
+    }).catchError((onError) {
       Navigator.pop(context);
       List<String> errorMessages = AppUtils.getErrorMessages(onError);
       AppUtils.getAlert(context, errorMessages, title: "Error Alert");
@@ -413,26 +416,72 @@ class _EditProfileViewState extends State<EditProfileView> {
     // Navigator.pop(context);
   }
 
-  Future<dynamic> showDialogOTP(otp) {
+  Future<dynamic> showDialogOTP() {
     return showDialog(
         barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Center(child: Text('${otp}')),
-            content: OTPTextField(
-                controller: otpController,
-                length: 4,
-                width: MediaQuery.of(context).size.width,
-                textFieldAlignment: MainAxisAlignment.spaceAround,
-                fieldWidth: 45,
-                //fieldStyle: FieldStyle.box,
-                outlineBorderRadius: 15,
-                style: const TextStyle(fontSize: 17),
-                onChanged: (pin) {
-                  otpVerification = pin;
-                },
-                onCompleted: (pin) {}),
+            title: const Center(child: Text('OTP Verification')),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              //position
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OTPTextField(
+                    controller: otpController,
+                    length: 4,
+                    width: MediaQuery.of(context).size.width,
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldWidth: 45,
+                    //fieldStyle: FieldStyle.box,
+                    outlineBorderRadius: 15,
+                    style: const TextStyle(fontSize: 17),
+                    onChanged: (pin) {
+                      otpVerification = pin;
+                    },
+                    onCompleted: (pin) {}),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    const Text(
+                      'Do not receive OTP?',
+                      style: TextStyle(fontSize: 10, color: Colors.red),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        UserListViewModel()
+                            .getOTP(mobileNo!, "UPDATE_USER")
+                            .then((records) {
+                          oneTimePassword = records;
+                          //showDialogOTP(records);
+                        }).catchError((onError) {
+                          Navigator.pop(context);
+                          List<String> errorMessages =
+                              AppUtils.getErrorMessages(onError);
+                          AppUtils.getAlert(context, errorMessages,
+                              title: "Error Alert");
+                        });
+                      },
+                      child: const Text(
+                        'Resend OTP',
+                        style:
+                            TextStyle(fontSize: 10, color: AppColor.textColor),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -445,6 +494,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Cancel',
@@ -456,7 +506,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                         backgroundColor: AppColor.buttonColor,
                       ),
                       onPressed: (() {
-                        _submit(otp);
+                        _submit();
                         // AppUtils.onLoading(context, "Saving...");
                       }),
                       child: const Text(
@@ -472,8 +522,19 @@ class _EditProfileViewState extends State<EditProfileView> {
         });
   }
 
-  void _submit(otp) {
-    if (otpVerification == otp.toString()) {
+  void _submit() {
+    if (otpVerification == oneTimePassword.toString()) {
+      userModel?.firstName = _firstNameController.text;
+      userModel?.lastName = _lastNameController.text;
+      userModel?.mobileNo = _mobileController.text;
+      userModel?.dob = _dobController.text;
+      userModel?.city = _cityController.text;
+      userModel?.state = _selectedState;
+      userModel?.gender = _selectedGender;
+      UserListViewModel()
+          .updateStudentProfile(userModel!)
+          .then(_onSuccess)
+          .catchError(_onError);
       Navigator.pop(context, "update_user");
     } else {
       Navigator.pop(context);
