@@ -62,7 +62,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           WidgetUtils.getLoginImageContainer(
-                              "assets/images/logo.png"),
+                              "assets/images/logo.jpg"),
                           const SizedBox(
                             height: 40,
                           ),

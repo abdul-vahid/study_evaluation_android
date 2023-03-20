@@ -52,7 +52,7 @@ class _LoginHomeState extends State<LoginHome>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  WidgetUtils.getLoginImageContainer("assets/images/logo.png"),
+                  WidgetUtils.getLoginImageContainer("assets/images/logo.jpg"),
                   const SizedBox(
                     height: 10,
                   ),
