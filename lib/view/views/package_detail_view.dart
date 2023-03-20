@@ -222,7 +222,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             backgroundColor: AppColor.buttonColor, // foreground
           )));
     }
-    if (resultModel?.resultStatus == ResultStatus.completed) {
+    if (userModel?.role?.toLowerCase() != "student" ||
+        (resultModel?.resultStatus == ResultStatus.completed &&
+            userModel?.role?.toLowerCase() == "student" &&
+            package?.validityStatus == "PURCHASED")) {
       widgets.add(AppUtils.getElevatedButton(
         'Re-Attempt',
         textStyle: const TextStyle(color: Colors.black),
@@ -258,7 +261,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
       var currentDT = DateTime.now();
       AppUtils.printDebug("$currentDT ==== $scheduleDT");
-      if (currentDT.compareTo(scheduleDT) > 0) {
+      if (userModel?.role?.toLowerCase() != "student" ||
+          (currentDT.compareTo(scheduleDT) > 0 &&
+              userModel?.role?.toLowerCase() == "student" &&
+              package?.validityStatus == "PURCHASED")) {
         widgets.add(AppUtils.getElevatedButton('Start Now',
             onPressed: () => _submitPage(testSeries),
             buttonStyle: ElevatedButton.styleFrom(
