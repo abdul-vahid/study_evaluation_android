@@ -106,14 +106,8 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       AppUtils.onLoading(context, "Please Wait...");
 
       _userName = _mobileController.text;
-      print('_userName$_userName');
-      print('_reason$_reason');
 
       UserListViewModel().getOTP(_userName!, "FORGOT_PASSWORD").then((records) {
-        print("success");
-
-        print('records.isNotEmpty$records');
-
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -123,18 +117,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       userName: _userName!,
                     )));
       }).catchError((onError) {
-        print('@@@Error${onError}');
-
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(onError);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => const OTPVerificationScreen()),
-      // );
-      print("Login Button pressed!!!");
     }
   }
 }
