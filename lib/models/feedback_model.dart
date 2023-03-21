@@ -16,6 +16,7 @@ class FeedbackModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatedBy;
+  String? profileUrl;
 
   FeedbackModel(
       {this.studentFirstname,
@@ -31,6 +32,7 @@ class FeedbackModel extends BaseModel {
       this.updatedDate,
       this.createdBy,
       this.updatedBy,
+      this.profileUrl,
       super.appException,
       super.error});
 
@@ -48,6 +50,7 @@ class FeedbackModel extends BaseModel {
         updatedDate: data['updated_date'] as String?,
         createdBy: data['created_by'] as String?,
         updatedBy: data['updated_by'] as String?,
+        profileUrl: data['profile_url'] as String?,
       );
 
   @override
@@ -63,6 +66,7 @@ class FeedbackModel extends BaseModel {
         'status': status,
         'created_date': createdDate,
         'updated_date': updatedDate,
+        'profile_url': profileUrl,
         'created_by': createdBy,
         'updated_by': updatedBy,
       };

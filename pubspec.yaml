@@ -40,12 +40,16 @@ dependencies:
 
   intl: ^0.18.0
   url_launcher: ^6.1.10
+  image_picker: ^0.8.7
+
   
 
 
 
   # image slideshow
   flutter_image_slideshow: ^0.1.4
+  image_cropper: ^3.0.1
+
 
   youtube_player_flutter: ^8.1.1
   flutter_otp_text_field: ^1.1.1

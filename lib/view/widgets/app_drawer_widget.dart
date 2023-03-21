@@ -13,6 +13,7 @@ import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
+import '../../utils/app_constants.dart';
 import '../../view_models/follow_us_list_vm.dart';
 import '../views/feedback_view.dart';
 
@@ -58,53 +59,59 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
         // Remove padding
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: AppColor.appBarColor),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // height: 120,
-                  // width: 120,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.white),
+          InkWell(
+            onTap: () {
+              AppUtils.launchTab(context,
+                  selectedIndex: HomeTabsOptions.profile.index);
+            },
+            child: DrawerHeader(
+              decoration: BoxDecoration(color: AppColor.appBarColor),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    // height: 120,
+                    // width: 120,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.white),
 
-                    borderRadius: BorderRadius.circular(50), //<-- SEE HERE
-                  ),
-                  child: CircleAvatar(
-                    backgroundImage: profileUrl == null
-                        ? NetworkImage(
-                            'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-                        : NetworkImage(profileUrl!),
-                    radius: 40.0,
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: <Widget>[
-                    Text(
-                      userModel?.name ?? "",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20.0),
+                      borderRadius: BorderRadius.circular(50), //<-- SEE HERE
                     ),
-                    SizedBox(height: 5.0),
-                    Text(
-                      userModel?.mobileNo ?? "",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 14.0),
+                    child: CircleAvatar(
+                      backgroundImage: profileUrl == null
+                          ? NetworkImage(
+                              'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
+                          : NetworkImage(profileUrl!),
+                      radius: 40.0,
                     ),
-                  ],
-                )
-              ],
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      Text(
+                        userModel?.name ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 20.0),
+                      ),
+                      SizedBox(height: 5.0),
+                      Text(
+                        userModel?.mobileNo ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 14.0),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           ListTile(
@@ -290,8 +297,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Share.share('https://www.google.com/',
-                  subject: 'Welcome Message');
+              Share.share(AppConstants.appUrlPath, subject: 'Welcome Message');
             },
           ),
           Divider(),

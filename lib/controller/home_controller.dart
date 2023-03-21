@@ -13,8 +13,11 @@ import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 
+import '../utils/app_constants.dart';
+
 class HomeController {
   BuildContext context;
+  String? profileUrl;
   FeedbackListViewModel feedbackListViewModel;
   SliderImageListViewModel? viewModelList;
   HomeController(this.context, this.feedbackListViewModel);
@@ -244,15 +247,23 @@ class HomeController {
   // }
 
   Container _feedbackCardContainer(model) {
+    if (model?.profileUrl != null) {
+      profileUrl =
+          '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.profileUrl}';
+    }
+
     return Container(
       height: 70,
       width: 70,
       //padding: EdgeInsets.only(top: 0),
       margin: const EdgeInsets.only(bottom: 100, left: 10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
           scale: 5,
-          image: AssetImage("assets/images/profile-image.png"),
+          image: profileUrl == null
+              ? const NetworkImage(
+                  'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
+              : NetworkImage(profileUrl!),
           fit: BoxFit.fill,
         ),
         color: Colors.white,

@@ -40,7 +40,7 @@ class _LearderbordViewState extends State<LearderbordView> {
         appBar: AppBar(
           centerTitle: true,
           leading: const BackButton(color: Colors.white),
-          title: const Text("Leardebord"),
+          title: const Text("Leaderboard"),
           elevation: .1,
           backgroundColor: AppColor.appBarColor,
         ),

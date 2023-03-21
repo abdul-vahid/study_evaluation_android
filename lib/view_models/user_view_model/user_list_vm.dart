@@ -45,6 +45,14 @@ class UserListViewModel extends BaseListViewModel {
     return records["message"];
   }
 
+  Future<dynamic> updateProfilePicture(
+      String userId, String profilePicture) async {
+    String url = AppUtils.getUrl(AppConstants.profilePictureUpdateAPIPath);
+    Map<String, String> requestData = {'id': userId, 'body': profilePicture};
+    var records = await post(url: url, body: jsonEncode(requestData));
+    return records["records"]['profile_url'];
+  }
+
   Future<dynamic> changePasword(String mobileNo, String password) async {
     String url = AppUtils.getUrl(AppConstants.changePasswordAPIPath);
 

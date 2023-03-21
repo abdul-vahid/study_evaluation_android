@@ -53,14 +53,14 @@ _getNotifcationIcon(counter) {
             borderRadius: BorderRadius.circular(6),
           ),
           constraints: const BoxConstraints(
-            minWidth: 14,
-            minHeight: 14,
+            minWidth: 10,
+            minHeight: 10,
           ),
           child: Text(
             '$counter',
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 8,
+              fontSize: 10,
             ),
             textAlign: TextAlign.center,
           ),
