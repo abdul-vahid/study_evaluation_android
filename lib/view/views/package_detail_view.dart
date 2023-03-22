@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -114,7 +116,29 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           height: 10,
         ),
 
-        for (var documents in model!.documents!) getCard(documents),
+        Card(
+          elevation: 5,
+          child: Column(
+            children: [
+              Container(
+                height: 35,
+                width: 250,
+                decoration: const BoxDecoration(
+                  color: AppColor.containerBoxColor,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0)),
+                ),
+                child: const Center(
+                    child: Text(
+                  'Documents',
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                )),
+              ),
+              for (var documents in model!.documents!) getCard(documents),
+            ],
+          ),
+        ),
       ]),
     ));
   }
@@ -129,9 +153,19 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           Padding(
             padding:
                 const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-            child: Text(
-              (documents?.documentName)!,
-              style: _getTextStyleForQuesLabel(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  (documents?.documentName)!,
+                  style: _getTextStyleForQuesLabel(),
+                ),
+                Text((documents?.type)!,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: AppColor.textColor)),
+              ],
             ),
           ),
           if ((documents?.contentType) == 'video')
