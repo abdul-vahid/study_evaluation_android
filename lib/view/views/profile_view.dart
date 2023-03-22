@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 
 import '../../models/user_model.dart';
@@ -103,44 +106,21 @@ class _ProfileViewState extends State<ProfileView> {
                           child: Padding(
                             padding: const EdgeInsets.all(0), // Border radius
                             child: ClipOval(
-                                child: selectedImage != null
-                                    ? Image.file(
-                                        selectedImage!,
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                      )
-                                    : FadeInImage.assetNetwork(
-                                        placeholder:
-                                            "assets/images/loading.gif",
-                                        image: profileUrl!,
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
-                                        imageErrorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/profile-image.png',
-                                            fit: BoxFit.cover,
-                                            height: 100,
-                                            width: 100,
-                                          );
-                                        },
-                                      )
-//: profileUrl == null
-                                // ? Image.network(
-                                //     'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg',
-                                //     fit: BoxFit.cover,
-                                //     height: 100,
-                                //     width: 100,
-                                //   )
-                                // : Image.network(
-                                //     profileUrl!,
-                                //     fit: BoxFit.cover,
-                                //     height: 100,
-                                //     width: 100,
-                                //   )
-                                ),
+                                child: FadeInImage.assetNetwork(
+                              placeholder: "assets/images/loading.gif",
+                              image: profileUrl ?? "",
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 100,
+                              imageErrorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/profile-image.png',
+                                  fit: BoxFit.cover,
+                                  height: 100,
+                                  width: 100,
+                                );
+                              },
+                            )),
                           ),
                         ),
                         Positioned(
@@ -173,24 +153,6 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                   ),
-                  // Center(
-                  //   child: Container(
-                  //     // height: 120,
-                  //     // width: 120,
-                  //     decoration: BoxDecoration(
-                  //       border: Border.all(width: 2, color: Colors.white),
-
-                  //       borderRadius: BorderRadius.circular(60), //<-- SEE HERE
-                  //     ),
-                  //     child: CircleAvatar(
-                  //       backgroundImage: profileUrl == null
-                  //           ? const NetworkImage(
-                  //               'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
-                  //           : NetworkImage(profileUrl!),
-                  //       radius: 60.0,
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -206,9 +168,6 @@ class _ProfileViewState extends State<ProfileView> {
                 ],
               ),
             ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -247,32 +206,28 @@ class _ProfileViewState extends State<ProfileView> {
     // ignore: use_build_context_synchronously
     AppUtils.onLoading(context, "Please Wait...");
     String seletedImage = await chooseImage("Gallery");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (selectedImage != null) {
       UserListViewModel()
           .updateProfilePicture((userModel?.id)!, seletedImage)
           .then((records) {
-        profileUrl = AppUtils.getImageUrl(records);
-        print('profile@@#$profileUrl');
-        //Navigator.pop(context);
-        AppUtils.launchTab(context,
-            selectedIndex: HomeTabsOptions.profile.index);
+        setState(() {
+          userModel?.profileUrl = records;
+          prefs.setString(SharedPrefsConstants.userKey, (userModel?.toJson())!);
+          profileUrl = AppUtils.getImageUrl(records);
+          debug('profileUrl $profileUrl');
+        });
+        Timer(const Duration(seconds: 1), (() {
+          Navigator.pop(context);
+        }));
       }).catchError((onError) {
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(onError);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
-
-      print('profileUrl $profileUrl');
     }
   }
-  // getgall() async {
-  //   // ignore: deprecated_member_use
-  //   var img = await image.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     file = File(img!.path);
-  //   });
-  // }
 
   Column getColumn(String label, String profileInput) {
     return Column(
