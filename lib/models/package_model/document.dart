@@ -5,14 +5,21 @@ class Document {
   String? type;
   String? documentName;
   String? documentUrl;
+  String? contentType;
 
-  Document({this.id, this.type, this.documentName, this.documentUrl});
+  Document(
+      {this.id,
+      this.type,
+      this.documentName,
+      this.documentUrl,
+      this.contentType});
 
   factory Document.fromMap(Map<String, dynamic> data) => Document(
         id: data['id'] as String?,
         type: data['type'] as String?,
         documentName: data['document_name'] as String?,
         documentUrl: data['document_url'] as String?,
+        contentType: data['content_type'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -20,6 +27,7 @@ class Document {
         'type': type,
         'document_name': documentName,
         'document_url': documentUrl,
+        'content_type': contentType,
       };
 
   /// `dart:convert`
