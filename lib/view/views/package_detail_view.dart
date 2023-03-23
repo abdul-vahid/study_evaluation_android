@@ -685,13 +685,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Align _getBuyNowButton(btnLabel, {required void Function()? onPressed}) {
-    return Align(
-        alignment: Alignment.bottomRight,
-        child: AppUtils.getElevatedButton(
-          btnLabel,
-          onPressed: onPressed,
-        ));
+  Padding _getBuyNowButton(btnLabel, {required void Function()? onPressed}) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Align(
+          alignment: Alignment.bottomRight,
+          child: AppUtils.getElevatedButton(
+            btnLabel,
+            onPressed: onPressed,
+          )),
+    );
   }
 
   List<Widget> _getTestQuestionDetailWidget(TestSeries? testSeries) => [
