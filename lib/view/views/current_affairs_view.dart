@@ -305,7 +305,7 @@ class _VideoPlayerState extends State<_VideoPlayer> {
     });
     _controller.setLooping(true);
     _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+    _controller.pause();
   }
 
   @override

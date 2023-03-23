@@ -39,7 +39,7 @@ class _MotivationViewState extends State<MotivationView> {
     });
     controller.setLooping(true);
     controller.initialize().then((_) => setState(() {}));
-    controller.play();
+    controller.pause();
   }
 
   @override
