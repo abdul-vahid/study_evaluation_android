@@ -156,9 +156,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  (documents?.documentName)!,
-                  style: _getTextStyleForQuesLabel(),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    (documents?.documentName)!,
+                    style: _getTextStyleForQuesLabel(),
+                  ),
                 ),
                 Text((documents?.type)!,
                     style: const TextStyle(
