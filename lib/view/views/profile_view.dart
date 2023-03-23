@@ -172,11 +172,11 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
-                  getColumn('Mobile No.', '${userModel?.mobileNo}'),
-                  getColumn('Date of Birth', '${userModel?.dob}'),
-                  getColumn('Gender', '${userModel?.gender}'),
-                  getColumn('State', '${userModel?.state}'),
-                  getColumn('City', '${userModel?.city}'),
+                  getColumn('Mobile No.', userModel?.mobileNo ?? ''),
+                  getColumn('Date of Birth', userModel?.dob ?? ''),
+                  getColumn('Gender', userModel?.gender ?? ''),
+                  getColumn('State', userModel?.state ?? ''),
+                  getColumn('City', userModel?.city ?? ''),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: FloatingActionButton(

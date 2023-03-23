@@ -5,12 +5,12 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 class FeedbackListViewModel extends BaseListViewModel {
   Future<void> fetch() async {
-    String url = AppUtils.getUrl(AppConstants.feedbackAPIPath);
+    String url = AppUtils.getUrl("${AppConstants.feedbackAPIPath}?limit=10");
     get(baseModel: FeedbackModel(), url: url);
   }
 
   Future<dynamic> submitFeedback(FeedbackModel feedbackModel) async {
-    String url = AppUtils.getUrl(AppConstants.feedbackAPIPath);
+    String url = AppUtils.getUrl(AppConstants.submitFeedbackAPIPath);
     return await post(url: url, body: feedbackModel.toJson());
   }
 }

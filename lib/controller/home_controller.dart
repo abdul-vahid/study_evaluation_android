@@ -257,17 +257,29 @@ class HomeController {
       width: 70,
       //padding: EdgeInsets.only(top: 0),
       margin: const EdgeInsets.only(bottom: 100, left: 10),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          scale: 5,
-          image: profileUrl == null
-              ? const NetworkImage(
-                  'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg')
-              : NetworkImage(profileUrl!),
-          fit: BoxFit.fill,
+      decoration: BoxDecoration(),
+      child: CircleAvatar(
+        radius: 60,
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(0), // Border radius
+          child: ClipOval(
+              child: FadeInImage.assetNetwork(
+            placeholder: "assets/images/loading.gif",
+            image: profileUrl ?? "",
+            fit: BoxFit.cover,
+            height: 100,
+            width: 100,
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'assets/images/profile-image.png',
+                fit: BoxFit.cover,
+                height: 100,
+                width: 100,
+              );
+            },
+          )),
         ),
-        color: Colors.white,
-        shape: BoxShape.circle,
       ),
     );
   }

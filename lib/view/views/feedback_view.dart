@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import '../../models/feedback_model.dart';
+import '../../models/user_model.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/enum.dart';
 import '../../utils/validator_util.dart';
 
 class FeedbackView extends StatefulWidget {
@@ -13,6 +16,7 @@ class FeedbackView extends StatefulWidget {
 }
 
 class _FeedbackViewState extends State<FeedbackView> {
+  UserModel? userModel;
   final List<String> _subject = [
     'Select Review',
     'Review',
@@ -20,6 +24,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     'Payment Issue',
     'Other'
   ];
+
   TextEditingController textarea = TextEditingController();
   String? _selectedReason;
   String? _message;
@@ -125,16 +130,18 @@ class _FeedbackViewState extends State<FeedbackView> {
     );
   }
 
-  void onButtonPressed() {
+  void onButtonPressed() async {
     if (_feedbackFormKey.currentState!.validate()) {
       AppUtils.onLoading(context, "Please wait...");
       _feedbackFormKey.currentState!.save();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      userModel = AppUtils.getSessionUser(prefs);
 
       FeedbackModel feedbackModel = FeedbackModel(
-        studentId: "152",
+        studentId: userModel?.id,
         reason: _selectedReason,
         comment: _message,
-        status: "Inactive",
+        status: userModel?.status,
       );
       submitFeedback(feedbackModel);
     }
@@ -152,6 +159,8 @@ class _FeedbackViewState extends State<FeedbackView> {
 
       AppUtils.getAlert(context, ["Feedback Submitted Successfull!"],
           title: "Feedback Alert");
+      //AppUtils.launchTab(context, selectedIndex: HomeTabsOptions.home.index);
+
       //Navigator.push(
       //  context, MaterialPageRoute(builder: (context) => const HomeView()));
     }).catchError((onError) {
