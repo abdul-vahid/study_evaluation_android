@@ -226,6 +226,8 @@ class _ProfileViewState extends State<ProfileView> {
         List<String> errorMessages = AppUtils.getErrorMessages(onError);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");
       });
+    } else {
+      Navigator.pop(context);
     }
   }
 
