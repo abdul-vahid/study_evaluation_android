@@ -191,14 +191,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 // ignore: prefer_interpolation_to_compose_strings
                 final url =
                     '${AppConstants.baseUrl}${AppConstants.baseUrl}/$documentUrl';
-
-                if (url.isNotEmpty) {
-                  launch('${url}');
+                final uri = Uri.parse(url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
                 } else {
                   throw 'Could not launch $url';
                 }
-
-                // launch('${url}');
               },
               icon: const Icon(
                 Icons.picture_as_pdf,

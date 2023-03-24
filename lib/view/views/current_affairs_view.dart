@@ -155,17 +155,14 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         children: [
           TextButton.icon(
               onPressed: () async {
-                final url = '${AppConstants.baseUrl}' +
-                    '/study_evaluation/public/' +
-                    '${currentAffairsModel?.documentUrl}';
-
-                if (url.isNotEmpty) {
-                  launch('${url}');
+                final url =
+                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}';
+                final uri = Uri.parse(url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
                 } else {
                   throw 'Could not launch $url';
                 }
-
-                launch('${url}');
               },
               icon: const Icon(
                 Icons.picture_as_pdf,
@@ -179,9 +176,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           TextButton.icon(
               onPressed: () => {
                     Share.share(
-                        '${AppConstants.baseUrl}' +
-                            '/study_evaluation/public/' +
-                            '${currentAffairsModel?.documentUrl}',
+                        '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}',
                         subject: 'Welcome Message')
                   },
               icon: Icon(
