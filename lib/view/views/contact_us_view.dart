@@ -28,7 +28,7 @@ class _ContactUsViewState extends State<ContactUsView> {
             child: Padding(
                 padding: EdgeInsets.all(20),
                 child: Column(children: [
-                  getCard('Contact Us', '+91 86199-90680',
+                  getCard('Contact Us', '+9186199-90680',
                       'studyevaluation@gmail.com'),
                 ]))));
   }
@@ -64,7 +64,7 @@ class _ContactUsViewState extends State<ContactUsView> {
                 height: 25,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 60, right: 20, bottom: 10),
+                padding: const EdgeInsets.only(left: 50, right: 20, bottom: 10),
                 child: Center(
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -79,13 +79,13 @@ class _ContactUsViewState extends State<ContactUsView> {
                     ),
                     Text(
                       text,
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ],
                 )),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 60, right: 20, bottom: 20),
+                padding: const EdgeInsets.only(left: 50, right: 20, bottom: 20),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -96,7 +96,7 @@ class _ContactUsViewState extends State<ContactUsView> {
                     ),
                     Text(
                       textEmail,
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ],
                 ),

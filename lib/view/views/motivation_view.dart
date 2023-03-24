@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/quote_model.dart';
@@ -21,6 +22,7 @@ class MotivationView extends StatefulWidget {
 
 class _MotivationViewState extends State<MotivationView> {
   late VideoPlayerController controller;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   var baseListViewModel;
   QuoteModel? quoteModel;
@@ -29,7 +31,7 @@ class _MotivationViewState extends State<MotivationView> {
     super.initState();
 
     Provider.of<QuoteListViewModel>(context, listen: false)
-        .fetch(filterDate: "22-02-2023");
+        .fetch(filterDate: currentDate);
   }
 
   void initVideo(videoUrl) {

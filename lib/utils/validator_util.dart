@@ -1,6 +1,19 @@
+import 'package:intl/intl.dart';
+
 String? validateName(String? value) {
   value = value!.trim();
   if (value == '') return 'Required';
+  return null;
+}
+
+
+
+String? validateDate(String? value) {
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  value = value!.trim();
+  if (value == '') return 'Required';
+  if (value.contains(' ')) return 'Invalid Password';
+  if (value.length < 10) return 'User Name need to be 10 Character long.';
   return null;
 }
 

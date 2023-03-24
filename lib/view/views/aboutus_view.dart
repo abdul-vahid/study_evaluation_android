@@ -76,7 +76,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 height: 20,
               ),
               Container(
-                height: 330,
+                height: 340,
                 width: 350,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(

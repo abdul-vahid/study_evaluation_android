@@ -22,12 +22,13 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileViewState extends State<EditProfileView> {
-  final GlobalKey<FormState> _feedbackFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _FormKey = GlobalKey<FormState>();
   UserModel? userModel;
   String? mobileNo;
   String? reason;
   String otp = "";
   int? oneTimePassword;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -44,6 +45,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   String? _selectedGender; // Option 2
   // ignore: prefer_final_fields
   List<String> _states = [
+    'None',
     'Andhra Pradesh',
     'Arunachal Pradesh',
     'Assam',
@@ -91,7 +93,7 @@ class _EditProfileViewState extends State<EditProfileView> {
               : userModel?.gender;
       _selectedState =
           (userModel?.state == null || (userModel?.state?.isEmpty)!)
-              ? 'Rajasthan'
+              ? 'None'
               : userModel?.state;
     });
   }
@@ -117,16 +119,18 @@ class _EditProfileViewState extends State<EditProfileView> {
     return SingleChildScrollView(
         child: Column(children: [
       Form(
-        key: _feedbackFormKey,
+        key: _FormKey,
         child: Column(
           children: [
             const SizedBox(
               height: 20,
             ),
             getTextField(ProfileConstants.firstNameLabel,
-                ProfileConstants.firstNameHint, _firstNameController),
+                ProfileConstants.firstNameHint, _firstNameController,
+                validator: validateName),
             getTextField(ProfileConstants.lastNameLabel,
-                ProfileConstants.lastNameHint, _lastNameController),
+                ProfileConstants.lastNameHint, _lastNameController,
+                validator: validateName),
             getTextField(ProfileConstants.mobileLabel,
                 ProfileConstants.mobileHint, _mobileController,
                 keyboardType: TextInputType.phone, validator: validatePhone),
@@ -179,14 +183,16 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   void _save() {
-    if (_mobileController.text != (userModel?.mobileNo)!) {
-      _displayDialog(context).then((value) {
-        if (value == "update_user") {
-          _updateUser();
-        }
-      });
-    } else {
-      _updateUser();
+    if (_FormKey.currentState!.validate()) {
+      if (_mobileController.text != (userModel?.mobileNo)!) {
+        _displayDialog(context).then((value) {
+          if (value == "update_user") {
+            _updateUser();
+          }
+        });
+      } else {
+        _updateUser();
+      }
     }
   }
 
@@ -256,7 +262,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(1900),
-                  lastDate: DateTime(2101));
+                  lastDate: DateTime.now());
               if (pickedDate != null) {
                 String formattedDate =
                     DateFormat("dd-MM-yyyy").format(pickedDate);
