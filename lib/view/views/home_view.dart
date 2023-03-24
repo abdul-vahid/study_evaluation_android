@@ -35,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
   SliderImageListViewModel? slidersVM;
   FeedbackListViewModel? feedbacksVM;
   ConfigurationListViewModel? configListViewModel;
+  bool isRefresh = false;
   var ctime;
   @override
   void initState() {
@@ -60,6 +61,10 @@ class _HomeViewState extends State<HomeView> {
           configListViewModel?.viewModels[0].model as ConfigurationModel;
       AppUtils.printDebug(jsonEncode(configModel));
       if (!configModel.isError) {
+        if (isRefresh) {
+          Navigator.pop(context);
+          isRefresh = false;
+        }
         helpLineNumber = (configModel.helpLineNumber)!;
       }
     }
@@ -70,8 +75,30 @@ class _HomeViewState extends State<HomeView> {
         title: Text("Home"),
         centerTitle: true,
       ),
-      body: _getBody(context, homeController),
+      body: RefreshIndicator(
+          onRefresh: _pullRefresh, child: _getBody(context, homeController)),
     );
+  }
+
+  Future<void> _pullRefresh() async {
+    categoriesVM?.viewModels.clear();
+    slidersVM?.viewModels.clear();
+    feedbacksVM?.viewModels.clear();
+    configListViewModel?.viewModels.clear();
+
+    AppUtils.onLoading(context, "Refreshing");
+    Provider.of<CategoryListViewModel>(context, listen: false).fetch();
+    Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
+    Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
+    Provider.of<ConfigurationListViewModel>(context, listen: false).fetch();
+
+    categoriesVM = Provider.of<CategoryListViewModel>(context, listen: false);
+    slidersVM = Provider.of<SliderImageListViewModel>(context, listen: false);
+    feedbacksVM = Provider.of<FeedbackListViewModel>(context, listen: false);
+    configListViewModel =
+        Provider.of<ConfigurationListViewModel>(context, listen: false);
+
+    isRefresh = true;
   }
 
   WillPopScope _getBody(BuildContext context, HomeController homeController) {

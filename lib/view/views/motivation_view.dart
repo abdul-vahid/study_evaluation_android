@@ -173,7 +173,7 @@ class _MotivationViewState extends State<MotivationView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        height: 160,
+        height: 180,
         width: 350,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(

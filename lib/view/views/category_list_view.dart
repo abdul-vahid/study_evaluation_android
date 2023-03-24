@@ -35,26 +35,32 @@ class _CategoryListViewState extends State<CategoryListView> {
     );
   }
 
-  SingleChildScrollView _getDataBody() {
-    return SingleChildScrollView(
+  Widget _getDataBody() {
+    return _getGridView(
+        categoriesVM); /* SingleChildScrollView(
       child: Column(
         children: [
           _getCategoryWidget(categoriesVM),
         ],
       ),
-    );
+    ); */
   }
 
-  Widget _getCategoryWidget(categoriesVM) {
+  /* Widget _getCategoryWidget(categoriesVM) {
     var count = categoriesVM.viewModels.length;
-    var height = count > 8 ? (count * 100.0) : 800.0;
+    var height = 600.0;
+    if (count > 6) {
+      count - 6
+    } else {
+      height = 600.0;
+    }
     return Container(
         width: double.infinity,
         height: height,
         margin: const EdgeInsets.all(15.0),
         // width: 200,
         child: _getGridView(categoriesVM));
-  }
+  } */
 
   void _onTap(id) {
     Navigator.push(
@@ -79,7 +85,6 @@ class _CategoryListViewState extends State<CategoryListView> {
     return GridView.builder(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: categoriesVM.viewModels.length,
         itemBuilder: (context, index) {
           CategoryModel categoryModel = categoriesVM.viewModels[index].model;

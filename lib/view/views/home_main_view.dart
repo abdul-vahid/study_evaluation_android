@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -11,6 +15,7 @@ import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import '../widgets/bottom_navigation.dart' as bottom_navi_widget;
 import 'package:study_evaluation/view/views/home_view.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class HomeMainView extends StatefulWidget {
   int? selectedIndex = 0;
@@ -27,12 +32,34 @@ class _HomeMainViewState extends State<HomeMainView> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget>? _widgetOptions;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+  late StreamSubscription subscription;
 
   @override
   void initState() {
+    getConnectivity();
+
     _selectedIndex = widget.selectedIndex ?? 0;
     Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
     super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   void _onItemTapped(int index) {
@@ -98,4 +125,27 @@ class _HomeMainViewState extends State<HomeMainView> {
 
     return Future.value(true);
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

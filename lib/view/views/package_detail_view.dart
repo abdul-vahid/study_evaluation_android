@@ -189,9 +189,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           TextButton.icon(
               onPressed: () async {
                 // ignore: prefer_interpolation_to_compose_strings
-                final url = '${AppConstants.baseUrl}' +
-                    '/study_evaluation/public/' +
-                    '$documentUrl';
+                final url =
+                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/$documentUrl';
 
                 if (url.isNotEmpty) {
                   launch('${url}');
@@ -369,7 +368,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           )));
     }
     if (resultModel?.resultStatus == ResultStatus.completed) {
-      if ((userModel?.role?.toLowerCase() != "student") ||
+      if (userModel?.role?.toLowerCase() != "student") {
+        widgets.add(AppUtils.getElevatedButton(
+          'Re-Attempt',
+          textStyle: const TextStyle(color: Colors.black),
+          buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFfef5e6) // foreground
+              ),
+          onPressed: () => _submitPage(testSeries, reAttempt: true),
+        ));
+      } else if (testSeries.type == "Free" ||
           (userModel?.role?.toLowerCase() == "student" &&
               package?.validityStatus == "PURCHASED")) {
         widgets.add(AppUtils.getElevatedButton(
@@ -410,7 +418,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       var currentDT = DateTime.now();
       debug(
           "${model?.testSeries?[0].scheduledDate} ===> $scheduleDT === $currentDT === ${currentDT.compareTo(scheduleDT)}");
-      if (userModel?.role?.toLowerCase() != "student" ||
+      if (userModel?.role?.toLowerCase() != "student") {
+        widgets.add(AppUtils.getElevatedButton('Start Now',
+            onPressed: () => _submitPage(testSeries),
+            buttonStyle: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                )));
+      } else if (testSeries.type == "Free" ||
           (currentDT.compareTo(scheduleDT) > 0 &&
               userModel?.role?.toLowerCase() == "student" &&
               package?.validityStatus == "PURCHASED")) {

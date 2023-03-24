@@ -141,7 +141,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         studentId: userModel?.id,
         reason: _selectedReason,
         comment: _message,
-        status: userModel?.status,
+        status: 'Inactive',
       );
       submitFeedback(feedbackModel);
     }
