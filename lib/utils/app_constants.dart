@@ -102,6 +102,10 @@ abstract class AppConstants {
   static const String orderPaymentCreationAPIPath = '/apis/order_creation';
   static const String profilePictureUpdateAPIPath =
       '/apis/profile_picture_update';
+  static const String latestNewsAPIPath = '/apis/latest_news';
+
+  static const String freepackageAPIPath =
+      '/apis/packages?category_id=&user_id=&package_type=&publish_type=Free';
 
   static const String followUSData =
       '{"records":[{"title":"Follow Us on Facebook","image":"assets/images/facebook.png","url":"https://www.facebook.com/profile.php?id=100090658115759"},{"title":"Follow Us on Instagram","image":"assets/images/instagram.png","url":"https://instagram.com/studyevaluation?igshid=ZDdkNTZiNTM="},{"title":"Follow Us on Youtube","image":"assets/images/youtube.png","url":"https://www.youtube.com/@studysevaluation"},{"title":"Contact Us","image":"assets/images/taligram.png","url":"https://t.me/studyevaluation"}]}';

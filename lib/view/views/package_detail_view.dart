@@ -290,57 +290,53 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Container _getTestContainer(TestSeries? testSeries) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 274,
-      child: Card(
-        elevation: 5,
-        shape: _getTestShape(),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                _getTestTypeContainer(testSeries),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  height: 35,
-                  width: 250,
-                  decoration: const BoxDecoration(
-                    color: AppColor.containerBoxColor,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20.0),
-                        bottomRight: Radius.circular(20.0)),
-                  ),
-                  child: _getScheduleContainer(testSeries?.scheduledDate),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _getTestTitleContainer(testSeries?.title),
-            Divider(
-              color: Colors.grey.shade300,
-            ),
-            _getQuestionInfoContainer(testSeries),
-            Divider(
-              color: Colors.grey.shade300,
-            ),
-            _getQuestionInfoButtons(testSeries!),
-            Container(
-              height: 10,
-              decoration: const BoxDecoration(
-                color: AppColor.containerBoxColor,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0)),
+  Card _getTestContainer(TestSeries? testSeries) {
+    return Card(
+      elevation: 5,
+      shape: _getTestShape(),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              _getTestTypeContainer(testSeries),
+              const SizedBox(
+                width: 20,
               ),
+              Container(
+                height: 35,
+                width: 250,
+                decoration: const BoxDecoration(
+                  color: AppColor.containerBoxColor,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0)),
+                ),
+                child: _getScheduleContainer(testSeries?.scheduledDate),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          _getTestTitleContainer(testSeries?.title),
+          Divider(
+            color: Colors.grey.shade300,
+          ),
+          _getQuestionInfoContainer(testSeries),
+          Divider(
+            color: Colors.grey.shade300,
+          ),
+          _getQuestionInfoButtons(testSeries!),
+          Container(
+            height: 10,
+            decoration: const BoxDecoration(
+              color: AppColor.containerBoxColor,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

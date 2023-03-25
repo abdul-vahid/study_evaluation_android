@@ -173,54 +173,181 @@ class _MotivationViewState extends State<MotivationView> {
 
   Padding _getQuote(quoteModel) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: 180,
-        width: 350,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          color: AppColor.motivationCar1Color,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-          child: Column(
-            children: [
-              // Text(''),
-              Text(
-                (quoteModel?.quote)!,
-                style: _getTextStyle(), //Textstyle
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      backgroundColor: Colors.white),
-                  onPressed: (() {
-                    Share.share('${(quoteModel?.quote)!}',
-                        subject: 'Welcome Message');
-                  }),
-                  label: const Text(
-                    'SHARE',
-                    style: TextStyle(color: Colors.black, fontSize: 12),
+      padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Center(
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25)),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 10, right: 10, bottom: 18),
+                          child: Text(
+                            (quoteModel?.quote)!,
+                            style: _getTextStyle(), //Textstyle
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: 40,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8.0, bottom: 8),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Share.share('${(quoteModel?.quote)!}',
+                                        subject: 'Welcome Message');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    minimumSize: Size.zero, // Set this
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25.0)),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        'SHARE',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ), // <-- Text
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 0.0, top: 2, bottom: 2),
+                                        child: CircleAvatar(
+                                          child: Icon(
+                                            // <-- Icon
+                                            Icons.share,
+                                            size: 15.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        /*Container(
+                          height: 40,
+                          width: 160,
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              shape: StadiumBorder(),
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text('S H A R E',style: TextStyle(fontSize: 15,color: Colors.black),), // <-- Text
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    child:Icon(
+                                    // <-- Icon
+                                    Icons.share,
+                                    size: 15.0,
+                                    color: Colors.white,
+                                  ),
+                                  ),
+                                ),
+                                
+                              ],
+                            ),
+                          ),
+                        ),*/
+                      ],
+                    ),
                   ),
-                  icon: Icon(
-                    Icons.share,
-                    size: 12,
-                    color: AppColor.navBarIconColor,
-                  ),
-                ),
+                ],
               ),
-              //
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
+
+    // return Padding(
+    //   padding: const EdgeInsets.all(20.0),
+    //   child: Container(
+    //     height: 180,
+    //     width: 350,
+    //     decoration: BoxDecoration(
+    //       borderRadius: const BorderRadius.only(
+    //         topLeft: Radius.circular(20),
+    //         bottomRight: Radius.circular(20),
+    //       ),
+    //       color: AppColor.motivationCar1Color,
+    //     ),
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+    //       child: Column(
+    //         children: [
+    //           // Text(''),
+    //           Text(
+    //             (quoteModel?.quote)!,
+    //             style: _getTextStyle(), //Textstyle
+    //           ),
+    //           Align(
+    //             alignment: Alignment.bottomRight,
+    //             child: ElevatedButton.icon(
+    //               style: ElevatedButton.styleFrom(
+    //                   shape: RoundedRectangleBorder(
+    //                       borderRadius: BorderRadius.circular(20)),
+    //                   backgroundColor: Colors.white),
+    //               onPressed: (() {
+    //                 Share.share('${(quoteModel?.quote)!}',
+    //                     subject: 'Welcome Message');
+    //               }),
+    //               label: const Text(
+    //                 'SHARE',
+    //                 style: TextStyle(color: Colors.black, fontSize: 12),
+    //               ),
+    //               icon: Icon(
+    //                 Icons.share,
+    //                 size: 12,
+    //                 color: AppColor.navBarIconColor,
+    //               ),
+    //             ),
+    //           ),
+    //           //
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   TextStyle _getTextStyle() {

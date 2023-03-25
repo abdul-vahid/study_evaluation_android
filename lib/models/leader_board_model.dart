@@ -20,7 +20,7 @@ class LeaderBoardModel extends BaseModel {
 
   factory LeaderBoardModel.fromMap(Map<String, dynamic> data) {
     return LeaderBoardModel(
-      firstName: data['first_name'] as String?,
+      firstName: data['name'] as String?,
       lastName: data['last_name'] as String?,
       profileUrl: data['profile_url'] as String?,
       percentage: data['percentage'] as String?,
@@ -29,7 +29,7 @@ class LeaderBoardModel extends BaseModel {
   }
   @override
   Map<String, dynamic> toMap() => {
-        'first_name': firstName,
+        'name': firstName,
         'last_name': lastName,
         'profile_url': profileUrl,
         'percentage': percentage,

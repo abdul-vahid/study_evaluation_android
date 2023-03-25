@@ -45,28 +45,19 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               ),
               Card(
                 elevation: 5,
-                child: Container(
-                  height: 130,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8),
-                      ),
-                      color: Color(0xFFf8f9fa)),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      // top: 20,
-                      left: 30,
-                      right: 20,
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    // top: 20,
+                    left: 30,
+                    right: 20,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -96,7 +87,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             fontWeight: FontWeight.bold),
                       )),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       BulletList(
                         const [

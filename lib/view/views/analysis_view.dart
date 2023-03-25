@@ -456,7 +456,7 @@ class _AnalysisViewState extends State<AnalysisView> {
       // ignore: prefer_const_literals_to_create_immutables
       children: [
         Text(
-          (widget.examModel.exam?.result?.remainingExamTime)!,
+          (widget.examModel.exam?.result?.totalTimeTaken)!,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),

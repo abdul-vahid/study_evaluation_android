@@ -7,9 +7,12 @@ import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
+import 'package:study_evaluation/view/views/free_package_view.dart';
+import 'package:study_evaluation/view/views/latest_new_view.dart';
 import 'package:study_evaluation/view/views/package_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
+import 'package:study_evaluation/view_models/latest_news_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 
@@ -48,6 +51,30 @@ class HomeController {
     );
   }
 
+  void _onFreeTiles(id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+            create: (_) => PackageListViewModel(),
+            child: FreePackageView(
+              packageType: "free",
+            )),
+      ),
+    );
+  }
+
+  void _onLatestTiles(id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+            create: (_) => LatestNewsListViewModel(),
+            child: const LatestNewView()),
+      ),
+    );
+  }
+
   void _onTilesTap(id) {
     AppUtils.getAlert(
         context, ["This functionality is currenlty unavailable!"]);
@@ -75,6 +102,10 @@ class HomeController {
             callBack = _onHomeTiles;
           } else if (homeTilesModel.title.toLowerCase() == "combo package") {
             callBack = _onComboTiles;
+          } else if (homeTilesModel.title.toLowerCase() == "latest exam") {
+            callBack = _onLatestTiles;
+          } else if (homeTilesModel.title.toLowerCase() == "free content") {
+            callBack = _onFreeTiles;
           } else {
             callBack = onTilesTap;
           }

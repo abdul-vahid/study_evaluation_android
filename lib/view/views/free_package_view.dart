@@ -1,33 +1,30 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-import 'package:study_evaluation/models/package_model/package.dart';
-import 'package:study_evaluation/utils/app_constants.dart';
-import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/package_detail_view.dart';
-import 'package:study_evaluation/view_models/package_list_vm.dart';
 
+import '../../models/free_content/free_content_model.dart';
 import '../../utils/app_color.dart';
+import '../../utils/app_constants.dart';
+import '../../utils/app_utils.dart';
+import '../../view_models/package_list_vm.dart';
 
-class PackageListView extends StatefulWidget {
+class FreePackageView extends StatefulWidget {
   String? categoryId;
   String? packageType;
   String? publishType;
-
-  PackageListView(
+  FreePackageView(
       {super.key, this.categoryId, this.packageType, this.publishType});
 
   @override
-  State<PackageListView> createState() => _PackageListViewState();
+  State<FreePackageView> createState() => _FreePackageViewState();
 }
 
-class _PackageListViewState extends State<PackageListView> {
+class _FreePackageViewState extends State<FreePackageView> {
   PackageListViewModel? packageListVM;
   @override
   void initState() {
-    Provider.of<PackageListViewModel>(context, listen: false).fetch(
+    Provider.of<PackageListViewModel>(context, listen: false).fetchFree(
         categoryId: widget.categoryId ?? "",
         publishType: widget.publishType ?? "",
         packageType: widget.packageType ?? "");
@@ -67,6 +64,7 @@ class _PackageListViewState extends State<PackageListView> {
     List<Widget> widgets = [];
     if (packageListVM.viewModels.isNotEmpty) {
       packageListVM.viewModels.forEach((viewModel) {
+        // print('packagesName $viewModel.model');
         widgets.add(getPadding(context, viewModel.model));
       });
       widgets.add(const SizedBox(
@@ -84,7 +82,7 @@ class _PackageListViewState extends State<PackageListView> {
     return widgets;
   }
 
-  Padding getPadding(BuildContext context, Package model) {
+  Padding getPadding(BuildContext context, FreeContentPackageModel model) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
@@ -95,7 +93,7 @@ class _PackageListViewState extends State<PackageListView> {
     );
   }
 
-  Card getCard(BuildContext context, Package model) {
+  Card getCard(BuildContext context, FreeContentPackageModel model) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -143,7 +141,7 @@ class _PackageListViewState extends State<PackageListView> {
     );
   }
 
-  Expanded _getContentContainer(Package model) {
+  Expanded _getContentContainer(FreeContentPackageModel model) {
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +172,7 @@ class _PackageListViewState extends State<PackageListView> {
     ));
   }
 
-  Container _getImageContainer(Package model) {
+  Container _getImageContainer(FreeContentPackageModel model) {
     return Container(
       height: 100,
       width: 100,

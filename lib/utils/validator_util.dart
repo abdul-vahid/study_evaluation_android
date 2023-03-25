@@ -6,8 +6,6 @@ String? validateName(String? value) {
   return null;
 }
 
-
-
 String? validateDate(String? value) {
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   value = value!.trim();

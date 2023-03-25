@@ -73,7 +73,7 @@ class _LearderbordViewState extends State<LearderbordView> {
     return Card(
         child: ListTile(
       title: Text(
-        leaderboardModel.firstName,
+        leaderboardModel.firstName ?? "",
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       subtitle: Text(

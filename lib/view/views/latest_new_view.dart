@@ -1,33 +1,32 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:study_evaluation/models/current_affairs_model.dart';
-import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../models/latest_news_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
+import '../../view_models/latest_news_list_vm.dart';
 
-class CurrentAffairsView extends StatefulWidget {
-  const CurrentAffairsView({super.key});
+class LatestNewView extends StatefulWidget {
+  const LatestNewView({super.key});
 
   @override
-  State<CurrentAffairsView> createState() => _CurrentAffairsViewState();
+  State<LatestNewView> createState() => _LatestNewViewState();
 }
 
-class _CurrentAffairsViewState extends State<CurrentAffairsView> {
+class _LatestNewViewState extends State<LatestNewView> {
   late VideoPlayerController controller;
 
-  CurrentAffairsListViewModel? baseListViewModel;
-  CurrentAffairsModel? currentAffairsModel;
+  LatestNewsListViewModel? baseListViewModel;
+  LatestNewsModel? currentAffairsModel;
   @override
   void initState() {
     super.initState();
 
-    Provider.of<CurrentAffairsListViewModel>(context, listen: false).fetch();
+    Provider.of<LatestNewsListViewModel>(context, listen: false).fetch();
   }
 
   void initVideo(videoUrl) {
@@ -49,7 +48,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
-    baseListViewModel = Provider.of<CurrentAffairsListViewModel>(context);
+    baseListViewModel = Provider.of<LatestNewsListViewModel>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -57,7 +56,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
             backgroundColor: AppColor.appBarColor,
             centerTitle: true,
             title: const Text(
-              'Current Affairs',
+              'Latest Exam News',
             )),
         body: AppUtils.getAppBody(baseListViewModel!, _getBody));
   }
@@ -86,39 +85,49 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
 
   List<Widget> get _getCurrentAffairVideoWidgets {
     List<Widget> widgets = [];
-    baseListViewModel?.currentAffairsData.forEach((key, viewModels) {
+    baseListViewModel?.latestNewsData.forEach((key, viewModels) {
       List<Widget> videoBottomSheetWidgets = [];
-      videoBottomSheetWidgets.add(Container(
-          child: Padding(
-        padding:
-            const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                key,
-                style: const TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  fontSize: 18, fontWeight: FontWeight.bold,
-                  color: AppColor.textColor,
-                ),
-              ),
-            ),
-            Divider(
-              color: Colors.grey,
-            ),
-          ],
-        ),
-      )));
+      // videoBottomSheetWidgets.add(Container(
+      //     child: Padding(
+      //   padding:
+      //       const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+      //   child: Column(
+      //     children: [
+      //       Align(
+      //         alignment: Alignment.topLeft,
+      //         child: Text(
+      //           key,
+      //           style: const TextStyle(
+      //             // fontWeight: FontWeight.bold,
+      //             fontSize: 18, fontWeight: FontWeight.bold,
+      //             color: AppColor.textColor,
+      //           ),
+      //         ),
+      //       ),
+      //       Divider(
+      //         color: Colors.grey,
+      //       ),
+      //     ],
+      //   ),
+      // )));
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
-        CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
+        LatestNewsModel model = viewModel.model as LatestNewsModel;
+        if (model.title != null) {
+          tempWidgets.add(getTitle(model.title));
+        }
+        if (model.imageUrl != null) {
+          print('model.imageUrl ${model.imageUrl}');
+          print(
+              'model.imageUrl ${AppConstants.baseUrl}${AppConstants.baseUrl}/${model.imageUrl}');
+
+          tempWidgets.add(getImage(model.imageUrl));
+        }
         if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
           print('Video URL : ${model.videoUrl}');
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
-        if (model.documentUrl != null) {
+        if (model.pdfUrl != null) {
           tempWidgets.add(_bottomSheet(model));
         }
 
@@ -156,8 +165,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           TextButton.icon(
               onPressed: () async {
                 final url =
-                    '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl}';
-
+                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.pdfUrl}';
                 final uri = Uri.parse(url);
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
@@ -177,15 +185,15 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           TextButton.icon(
               onPressed: () => {
                     Share.share(
-                        '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl}',
+                        '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}',
                         subject: 'Welcome Message')
                   },
-              icon: Icon(
+              icon: const Icon(
                 Icons.share,
                 color: Colors.black,
                 size: 15,
               ),
-              label: Text(
+              label: const Text(
                 'SHARE',
                 style: TextStyle(color: Colors.black, fontSize: 15),
               )),
@@ -217,18 +225,32 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
     );
   }
 
-  Padding getMotivationalImage() {
+  Padding getTitle(title) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+            color: AppColor.textColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Padding getImage(image) {
+    var url = AppUtils.getImageUrl(image);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: AspectRatio(
         aspectRatio: 16 / 9,
         child: Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
               image: DecorationImage(
-                image: AssetImage("assets/images/motivational.png"),
+                image: NetworkImage(url),
                 fit: BoxFit.fill,
               )),
           //  color: Color.fromARGB(255, 209, 208, 210),

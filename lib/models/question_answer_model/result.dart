@@ -21,6 +21,7 @@ class Result extends BaseModel {
   String? totalEarnedMarks;
   String? correctQuestionCount;
   String? incorrectQuestionCount;
+  String? totalTimeTaken;
 
   Result(
       {this.id,
@@ -41,6 +42,7 @@ class Result extends BaseModel {
       this.totalEarnedMarks,
       this.correctQuestionCount,
       this.incorrectQuestionCount,
+      this.totalTimeTaken,
       super.appException,
       super.error});
 
@@ -63,6 +65,7 @@ class Result extends BaseModel {
         totalEarnedMarks: data['total_earned_marks'] as String?,
         correctQuestionCount: data['correct_question_count'] as String?,
         incorrectQuestionCount: data['incorrect_question_count'] as String?,
+        totalTimeTaken: data['total_time_taken'] as String?,
       );
 
   @override
@@ -85,6 +88,7 @@ class Result extends BaseModel {
         'total_earned_marks': totalEarnedMarks,
         'correct_question_count': correctQuestionCount,
         'incorrect_question_count': incorrectQuestionCount,
+        'total_time_taken': totalTimeTaken,
       };
 
   /// `dart:convert`
