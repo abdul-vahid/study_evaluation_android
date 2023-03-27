@@ -130,16 +130,7 @@ class _MotivationViewState extends State<MotivationView> {
         children: [
           TextButton.icon(
               onPressed: () {
-                final url = '${AppConstants.baseUrl}' +
-                    '/study_evaluation/public/' +
-                    '${quoteModel?.pdfUrl}';
-
-                if (url.isNotEmpty) {
-                  launch('${url}');
-                } else {
-                  throw 'Could not launch $url';
-                }
-                print('quoteModel?.quote Pdf ${quoteModel?.pdfUrl}');
+                AppUtils.openDocument(context, quoteModel?.pdfUrl);
               },
               icon: const Icon(
                 Icons.picture_as_pdf,
@@ -153,9 +144,7 @@ class _MotivationViewState extends State<MotivationView> {
           TextButton.icon(
               onPressed: () => {
                     Share.share(
-                        '${AppConstants.baseUrl}' +
-                            '/study_evaluation/public/' +
-                            '${quoteModel?.pdfUrl}',
+                        '${AppConstants.baseUrl}${AppConstants.publicPath}/${quoteModel?.pdfUrl}',
                         subject: 'Welcome Message')
                   },
               icon: Icon(
@@ -401,8 +390,7 @@ class _MotivationViewState extends State<MotivationView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
+            decoration: const BoxDecoration(color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(

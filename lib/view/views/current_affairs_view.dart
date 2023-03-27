@@ -157,14 +157,9 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           TextButton.icon(
               onPressed: () async {
                 // ignore: prefer_interpolation_to_compose_strings
-                final url =
-                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}';
-                final uri = Uri.parse(url);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
-                } else {
-                  throw 'Could not launch $url';
-                }
+
+                AppUtils.openDocument(
+                    context, currentAffairsModel?.documentUrl);
               },
               icon: const Icon(
                 Icons.picture_as_pdf,
@@ -245,8 +240,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
+            decoration: const BoxDecoration(color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
