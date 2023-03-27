@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
+import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -244,7 +245,8 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(color: Colors.white,
+            decoration: const BoxDecoration(
+                color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
@@ -272,11 +274,12 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: _VideoPlayer(videoUrl));
+        child: AppVideoPlayer(
+            "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl"));
   }
 }
 
-class _VideoPlayer extends StatefulWidget {
+/* class _VideoPlayer extends StatefulWidget {
   String videoUrl;
   _VideoPlayer(this.videoUrl);
 
@@ -450,4 +453,4 @@ class _ControlsOverlay extends StatelessWidget {
       ],
     );
   }
-}
+} */

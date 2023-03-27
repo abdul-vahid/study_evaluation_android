@@ -12,6 +12,7 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
+import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
@@ -82,7 +83,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         top: 10,
       ),
       child: Column(children: [
-        userModel?.role?.toLowerCase() == "student" &&
+        (package?.publishType?.toLowerCase())! != "free" &&
+                userModel?.role?.toLowerCase() == "student" &&
                 package?.validityStatus != "PURCHASED"
             ? _getBuyNowButton(
                 package?.validityStatus == "EXPIRED" ? "Buy Again" : "Buy Now",
@@ -104,18 +106,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 },
               )
             : Container(),
-
         _getPackageContainer(),
         for (var testSeries in model!.testSeries!)
           _getTestContainer(testSeries),
-        //_getContainer3(context),
-        //_getContainer4(context),
-        //_getContainer5(context),
-
         const SizedBox(
           height: 10,
         ),
-
         Card(
           elevation: 5,
           child: Column(
@@ -143,7 +139,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     ));
   }
 
-  getCard(Document? documents) {
+  getCard(Document? document) {
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -159,11 +155,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    (documents?.documentName)!,
+                    (document?.documentName)!,
                     style: _getTextStyleForQuesLabel(),
                   ),
                 ),
-                Text((documents?.type)!,
+                Text((document?.type)!,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -171,16 +167,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               ],
             ),
           ),
-          if ((documents?.contentType) == 'video')
-            _getCurrentAffairsModelVideo(documents?.documentUrl)
+          if ((document?.contentType) == 'video')
+            _getCurrentAffairsModelVideo(document!)
           else
-            _bottomSheet(documents?.documentUrl),
+            _bottomSheet(document!),
         ],
       ),
     );
   }
 
-  Padding _bottomSheet(documentUrl) {
+  Padding _bottomSheet(Document document) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
@@ -189,13 +185,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           TextButton.icon(
               onPressed: () async {
                 // ignore: prefer_interpolation_to_compose_strings
-                final url =
-                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/$documentUrl';
-                final uri = Uri.parse(url);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
+                if (userModel?.role?.toLowerCase() != "student" ||
+                    document.type == "Free" ||
+                    package?.validityStatus == "PURCHASED") {
+                  AppUtils.openDocument(context, document.documentUrl);
                 } else {
-                  throw 'Could not launch $url';
+                  AppUtils.getAlert(
+                      context, ["Please buy package to view the PDF!"]);
                 }
               },
               icon: const Icon(
@@ -213,14 +209,15 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Padding _getCurrentAffairsModelVideo(videoUrl) {
+  Padding _getCurrentAffairsModelVideo(Document document) {
     //initVideo(videoUrl);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(color: Colors.white,
+            decoration: const BoxDecoration(
+                color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
@@ -232,7 +229,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             child: Column(
               children: [
                 // Text(''),
-                _getVideoContainer(videoUrl),
+                _getVideoContainer(document),
 
                 //
               ],
@@ -241,14 +238,23 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Container _getVideoContainer(videoUrl) {
+  Container _getVideoContainer(Document document) {
+    String type = "buy";
+    if (userModel?.role?.toLowerCase() != "student" ||
+        document.type == "Free" ||
+        package?.validityStatus == "PURCHASED") {
+      type = "";
+    }
     return Container(
         // height: 2,
         padding: const EdgeInsets.all(5),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: _VideoPlayer(videoUrl));
+        child: AppVideoPlayer(
+          "${AppConstants.baseUrl + AppConstants.videoPath}/${document.documentUrl!}",
+          type: type,
+        ));
   }
 
   Expanded _getTestLabelValueExpandedWidget(label, value) {
@@ -714,180 +720,4 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         _getTestLabelValueExpandedWidget("Duration", testSeries?.duration),
         _getTestLabelValueExpandedWidget("Marks", "150"),
       ];
-}
-
-class _VideoPlayer extends StatefulWidget {
-  String videoUrl;
-  _VideoPlayer(this.videoUrl);
-
-  @override
-  _VideoPlayerState createState() => _VideoPlayerState(videoUrl);
-}
-
-class _VideoPlayerState extends State<_VideoPlayer> {
-  String videoUrl;
-  _VideoPlayerState(this.videoUrl);
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = VideoPlayerController.network(
-        AppConstants.baseUrl + AppConstants.videoPath + '/' + videoUrl);
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.pause();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          // Container(
-          //   padding: const EdgeInsets.only(top: 20.0),
-          // ),
-          AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                VideoPlayer(_controller),
-                _ControlsOverlay(controller: _controller),
-                VideoProgressIndicator(
-                  _controller,
-                  allowScrubbing: true,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({Key? key, required this.controller})
-      : super(key: key);
-
-  static const List<Duration> _exampleCaptionOffsets = <Duration>[
-    Duration(seconds: -10),
-    Duration(seconds: -3),
-    Duration(seconds: -1, milliseconds: -500),
-    Duration(milliseconds: -250),
-    Duration.zero,
-    Duration(milliseconds: 250),
-    Duration(seconds: 1, milliseconds: 500),
-    Duration(seconds: 3),
-    Duration(seconds: 10),
-  ];
-  static const List<double> _examplePlaybackRates = <double>[
-    0.25,
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-    3.0,
-    5.0,
-    10.0,
-  ];
-
-  final VideoPlayerController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 50),
-          reverseDuration: const Duration(milliseconds: 200),
-          child: controller.value.isPlaying
-              ? const SizedBox.shrink()
-              : Container(
-                  color: Colors.black26,
-                  child: const Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 100.0,
-                      semanticLabel: 'Play',
-                    ),
-                  ),
-                ),
-        ),
-        GestureDetector(
-          onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
-          },
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: PopupMenuButton<Duration>(
-            initialValue: controller.value.captionOffset,
-            tooltip: 'Caption Offset',
-            onSelected: (Duration delay) {
-              controller.setCaptionOffset(delay);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<Duration>>[
-                for (final Duration offsetDuration in _exampleCaptionOffsets)
-                  PopupMenuItem<Duration>(
-                    value: offsetDuration,
-                    child: Text('${offsetDuration.inMilliseconds}ms'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                // Using less vertical padding as the text is also longer
-                // horizontally, so it feels like it would need more spacing
-                // horizontally (matching the aspect ratio of the video).
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.captionOffset.inMilliseconds}ms'),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: PopupMenuButton<double>(
-            initialValue: controller.value.playbackSpeed,
-            tooltip: 'Playback speed',
-            onSelected: (double speed) {
-              controller.setPlaybackSpeed(speed);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<double>>[
-                for (final double speed in _examplePlaybackRates)
-                  PopupMenuItem<double>(
-                    value: speed,
-                    child: Text('${speed}x'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.playbackSpeed}'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
