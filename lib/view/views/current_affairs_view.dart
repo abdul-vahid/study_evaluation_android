@@ -155,9 +155,9 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         children: [
           TextButton.icon(
               onPressed: () async {
+                // ignore: prefer_interpolation_to_compose_strings
                 final url =
-                    '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl}';
-
+                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}';
                 final uri = Uri.parse(url);
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
