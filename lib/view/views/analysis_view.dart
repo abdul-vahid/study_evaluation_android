@@ -464,7 +464,7 @@ class _AnalysisViewState extends State<AnalysisView> {
           height: 4,
         ),
         Text(
-          'Time(Minutes)',
+          'Time(Min.)',
           style: TextStyle(color: Colors.white),
         ),
       ],
@@ -516,7 +516,7 @@ class _AnalysisViewState extends State<AnalysisView> {
           height: 4,
         ),
         Text(
-          'Neg Marks',
+          'Neg. Marks',
           style: TextStyle(color: Colors.white),
         ),
       ],
@@ -566,7 +566,7 @@ class _AnalysisViewState extends State<AnalysisView> {
           height: 4,
         ),
         Text(
-          'Positive Marks',
+          'Pos. Marks',
           style: TextStyle(color: Colors.white),
         ),
       ],

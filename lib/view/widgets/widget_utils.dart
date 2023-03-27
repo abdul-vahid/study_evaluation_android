@@ -149,7 +149,7 @@ class WidgetUtils {
   static Widget getCard(
       String lable, String imagePath, void Function(dynamic) voidCallback,
       {imageHeight = 120.0,
-      fontSize = 15.0,
+      fontSize = 14.0,
       imageType = ImageType.assets,
       data}) {
     return Card(

@@ -50,6 +50,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     // top: 20,
                     left: 30,
                     right: 20,
+                    top: 10,
+                    bottom: 10,
                   ),
                   child: Center(
                     child: Text(
@@ -64,16 +66,10 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
-              Container(
-                height: 340,
-                width: 350,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
-                    ),
-                    color: AppColor.containerBoxColor),
+              Card(
+                color: AppColor.containerBoxColor,
                 child: Padding(
                   padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Column(
@@ -87,7 +83,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             fontWeight: FontWeight.bold),
                       )),
                       SizedBox(
-                        height: 15,
+                        height: 20,
                       ),
                       BulletList(
                         const [

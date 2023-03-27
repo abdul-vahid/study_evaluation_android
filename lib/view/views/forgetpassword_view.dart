@@ -48,7 +48,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 children: [
                   WidgetUtils.getLoginImageContainer("assets/images/logo.jpg"),
                   const SizedBox(
-                    height: 60,
+                    height: 50,
                   ),
                   // ignore: avoid_unnecessary_containers
                   Container(
@@ -63,7 +63,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     )),
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 50,
                   ),
                   Container(
                     height: 460,

@@ -98,7 +98,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontSize: 20.0),
+                            fontSize: 18.0),
                       ),
                       SizedBox(height: 5.0),
                       Text(
