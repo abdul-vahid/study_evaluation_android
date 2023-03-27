@@ -12,6 +12,7 @@ class TestSeries {
   String? attemptLimit;
   String? status;
   String? totalQuestions;
+  String? totalMarks;
   ResultModel? result;
 
   TestSeries({
@@ -24,6 +25,7 @@ class TestSeries {
     this.duration,
     this.attemptLimit,
     this.status,
+    this.totalMarks,
     this.totalQuestions,
     this.result,
   });
@@ -39,6 +41,7 @@ class TestSeries {
         attemptLimit: data['attempt_limit'] as String?,
         status: data['status'] as String?,
         totalQuestions: data['total_questions'] as String?,
+        totalMarks: data['total_marks'] as String,
         result: data['result'] != null
             ? ResultModel.fromMap(data['result'] as Map<String, dynamic>)
             : null,
@@ -55,6 +58,7 @@ class TestSeries {
         'attempt_limit': attemptLimit,
         'status': status,
         'total_questions': totalQuestions,
+        'total_marks': totalMarks,
         'result': result?.toMap(),
       };
 

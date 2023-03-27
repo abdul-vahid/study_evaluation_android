@@ -216,8 +216,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
+            decoration: const BoxDecoration(color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(
@@ -718,6 +717,6 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         _getTestLabelValueExpandedWidget(
             "Question", testSeries?.totalQuestions),
         _getTestLabelValueExpandedWidget("Duration", testSeries?.duration),
-        _getTestLabelValueExpandedWidget("Marks", "150"),
+        _getTestLabelValueExpandedWidget("Marks", testSeries?.totalMarks),
       ];
 }
