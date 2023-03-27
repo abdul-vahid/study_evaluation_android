@@ -10,6 +10,7 @@ import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
@@ -360,5 +361,19 @@ class AppUtils {
             children: children,
           );
         });
+  }
+
+  static void openDocument(context, documentUrl) async {
+    final url =
+        '${AppConstants.baseUrl}${AppConstants.publicPath}/$documentUrl';
+    debug("url = $url");
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        await AppUtils.getAlert(context, ["Can't open pdf"]);
+      }
+    } else {
+      await AppUtils.getAlert(context, ["Can't open pdf"]);
+    }
   }
 }
