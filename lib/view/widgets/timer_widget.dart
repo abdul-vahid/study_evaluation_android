@@ -43,7 +43,9 @@ class _TimerWidgetState extends State<TimerWidget> {
   }
 
   void stopTimer() {
-    setState(() => countdownTimer!.cancel());
+    if (mounted) {
+      setState(() => countdownTimer!.cancel());
+    }
   }
 
   // Step 6
@@ -72,5 +74,11 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   String get timerText {
     return '$hours:$minutes:$seconds';
+  }
+
+  @override
+  void dispose() {
+    countdownTimer?.cancel();
+    super.dispose();
   }
 }
