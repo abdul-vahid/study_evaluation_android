@@ -172,23 +172,49 @@ class _FreePackageViewState extends State<FreePackageView> {
     ));
   }
 
-  Container _getImageContainer(FreeContentPackageModel model) {
-    return Container(
-      height: 100,
-      width: 100,
-      //padding: EdgeInsets.only(top: 0),
-      margin: const EdgeInsets.only(bottom: 50, left: 5, top: 5),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          scale: 5,
-          image: NetworkImage(
-              '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}'),
-          fit: BoxFit.fill,
-        ),
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
-    );
+  Padding _getImageContainer(FreeContentPackageModel model) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 10, left: 10),
+        child: CircleAvatar(
+          radius: 50,
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(0), // Border radius
+            child: ClipOval(
+                child: FadeInImage.assetNetwork(
+              placeholder: "assets/images/loading.gif",
+              image:
+                  '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}',
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/profile-image.png',
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: 100,
+                );
+              },
+            )),
+          ),
+        ));
+
+    // return Container(
+    //   height: 100,
+    //   width: 100,
+    //   //padding: EdgeInsets.only(top: 0),
+    //   margin: const EdgeInsets.only(bottom: 50, left: 5, top: 5),
+    //   decoration: BoxDecoration(
+    //     image: DecorationImage(
+    //       scale: 5,
+    //       image: NetworkImage(
+    //           '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}'),
+    //       fit: BoxFit.fill,
+    //     ),
+    //     color: Colors.white,
+    //     shape: BoxShape.circle,
+    //   ),
   }
 
   void onButtonPressed(id) {

@@ -131,7 +131,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   style: TextStyle(fontSize: 15, color: Colors.white),
                 )),
               ),
-              for (var documents in model!.documents!) getCard(documents),
+              if (model?.documents != null)
+                for (var documents in model!.documents!) getCard(documents),
             ],
           ),
         ),
@@ -214,8 +215,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
+        decoration: const BoxDecoration(color: Colors.white,
             //  borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
@@ -403,7 +403,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                     )
                   ],
                   child: ResultView(
-                      resultId: (testSeries.result?.id)!,
+                      resultId: testSeries.result != null
+                          ? (testSeries.result?.id)!
+                          : "",
                       userId: (userModel?.id)!)));
         },
       ));

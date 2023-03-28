@@ -36,73 +36,65 @@ class _ContactUsViewState extends State<ContactUsView> {
   Card getCard(String lable, String text, String textEmail) {
     return Card(
       elevation: 5,
-      child: Container(
-          height: 150,
-          width: 350,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8),
-              ),
-              color: Color(0xFFf8f9fa)),
-          child: Column(
-            children: [
-              Container(
-                height: 40,
-                width: 250,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                    color: AppColor.containerBoxColor),
-                child: Center(
-                    child: Text(
-                  lable,
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                )),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 20, bottom: 10),
-                child: Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.phone,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      text,
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                  ],
-                )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 20, bottom: 20),
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            width: 250,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                color: AppColor.containerBoxColor),
+            child: Center(
+                child: Text(
+              lable,
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            )),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 50, right: 20, bottom: 10),
+            child: Center(
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.email, color: Colors.black),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      textEmail,
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                  ],
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.phone,
+                  color: Colors.black,
                 ),
-              )
-            ],
-          )),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  text,
+                  style: TextStyle(fontSize: 14, color: Colors.black),
+                ),
+              ],
+            )),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 50, right: 20, bottom: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.email, color: Colors.black),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  textEmail,
+                  style: TextStyle(fontSize: 14, color: Colors.black),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

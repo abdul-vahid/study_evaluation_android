@@ -120,12 +120,12 @@ class _PackageListViewState extends State<PackageListView> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _getImageContainer(model),
                 SizedBox(
-                  width: 5,
+                  width: 20,
                 ),
                 _getContentContainer(model),
               ],
@@ -146,13 +146,11 @@ class _PackageListViewState extends State<PackageListView> {
   Expanded _getContentContainer(Package model) {
     return Expanded(
         child: Column(
+      // mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 5,
-        ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
           child: Text("${model.title}",
               style: const TextStyle(
                   fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1)),
@@ -174,23 +172,85 @@ class _PackageListViewState extends State<PackageListView> {
     ));
   }
 
-  Container _getImageContainer(Package model) {
-    return Container(
-      height: 100,
-      width: 100,
-      //padding: EdgeInsets.only(top: 0),
-      margin: const EdgeInsets.only(bottom: 50, left: 5, top: 5),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          scale: 5,
-          image: NetworkImage(
-              '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}'),
-          fit: BoxFit.fill,
-        ),
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
-    );
+  Padding _getImageContainer(Package model) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 10, left: 10),
+        child: CircleAvatar(
+          radius: 50,
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(0), // Border radius
+            child: ClipOval(
+                child: FadeInImage.assetNetwork(
+              placeholder: "assets/images/loading.gif",
+              image:
+                  '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}',
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/profile-image.png',
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: 100,
+                );
+              },
+            )),
+          ),
+        ));
+    // return Container(
+    //   height: 70,
+    //   width: 70,
+    //   //padding: EdgeInsets.only(top: 0),
+    //   margin: const EdgeInsets.only(
+    //     bottom: 80,
+    //     top: 10,
+    //     left: 10,
+    //   ),
+    //   decoration: BoxDecoration(),
+    //   child: CircleAvatar(
+    //     radius: 60,
+    //     backgroundColor: Colors.white,
+    //     child: Padding(
+    //       padding: const EdgeInsets.all(0), // Border radius
+    //       child: ClipOval(
+    //           child: FadeInImage.assetNetwork(
+    //         placeholder: "assets/images/loading.gif",
+    //         image:
+    //             '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}',
+    //         fit: BoxFit.cover,
+    //         height: 100,
+    //         width: 100,
+    //         imageErrorBuilder: (context, error, stackTrace) {
+    //           return Image.asset(
+    //             'assets/images/profile-image.png',
+    //             fit: BoxFit.cover,
+    //             height: 100,
+    //             width: 100,
+    //           );
+    //         },
+    //       )),
+    //     ),
+    //   ),
+    //   // return Container(
+    //   //   height: 100,
+    //   //   width: 100,
+    //   //   //padding: EdgeInsets.only(top: 0),
+    //   //   margin: const EdgeInsets.only(bottom: 50, left: 5, top: 5),
+    //   //   decoration: BoxDecoration(
+    //   //     image: DecorationImage(
+    //   //       scale: 5,
+    //   //       image: NetworkImage(
+    //   //           '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.logoUrl}'),
+    //   //       fit: BoxFit.fill,
+
+    //   //     ),
+    //   //     color: Colors.white,
+    //   //     shape: BoxShape.circle,
+
+    //   //   ),
+    // );
   }
 
   void onButtonPressed(id) {

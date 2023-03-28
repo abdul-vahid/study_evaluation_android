@@ -8,8 +8,8 @@ import '../core/apis/app_exception.dart';
 
 class APIService {
   Future getResponse(String url, String token) async {
-    //debug("url ----> $url");
-    //debug("API Serivce URL = ${url.substring(6)}");
+    debug("url ----> $url");
+    debug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
       final response = await http.get(Uri.parse(url), headers: {

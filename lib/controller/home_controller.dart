@@ -25,10 +25,12 @@ class HomeController {
   FeedbackListViewModel feedbackListViewModel;
   SliderImageListViewModel? viewModelList;
   HomeController(this.context, this.feedbackListViewModel);
+
   Widget getHomeTiles() {
     return Container(
         width: double.infinity,
-        height: 540.0,
+        height: MediaQuery.of(context).size.height / 1.5,
+        // height: 540.0,
         margin: const EdgeInsets.all(15.0),
         // width: 200,
         child: _getGridView());
@@ -156,7 +158,7 @@ class HomeController {
         image: AppUtils.getImageUrl(model.sliderUrl),
         placeholder: kTransparentImage,
         imageErrorBuilder: (context, error, stackTrace) {
-          return Image.asset('assets/images/profile-image.png',
+          return Image.asset('assets/images/motivational.png',
               fit: BoxFit.cover);
         },
         fit: BoxFit.cover,

@@ -151,9 +151,9 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   Padding getButton() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -166,6 +166,9 @@ class _EditProfileViewState extends State<EditProfileView> {
               'Cancel',
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
+          ),
+          const SizedBox(
+            width: 20,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
