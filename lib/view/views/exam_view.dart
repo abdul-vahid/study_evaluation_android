@@ -10,6 +10,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
+import 'package:study_evaluation/view/widgets/timer_widget.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
@@ -53,17 +54,18 @@ class _ExamViewState extends State<ExamView> {
   var seconds = "0";
   int? totalQuestions = 0;
   bool hasQuestions = true;
-
+  bool hasDataLoaded = false;
+  late TimerWidget timerWidget;
   @override
   void initState() {
+    hasDataLoaded = false;
+    //startTimer();
     Provider.of<ExamListViewModel>(context, listen: false).fetch(widget.examId);
     timeUP = "";
     super.initState();
   }
 
-  String get timerText {
-    return '$hours:$minutes:$seconds';
-  }
+  String timerText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -307,17 +309,18 @@ class _ExamViewState extends State<ExamView> {
           child: Text("No Questions to Start Exam!"),
         );
       }
+      debug("data loaded == $hasDataLoaded");
+      if (!hasDataLoaded) {
+        hasDataLoaded = true;
+        _initDuration(model);
+        setState(() {
+          title = model.exam!.title!;
+          totalQuestions =
+              model.questionModels != null ? model.questionModels!.length : 0;
+        });
 
-      _initDuration(model);
-
-      startTimer();
-      setState(() {
-        title = model.exam!.title!;
-        totalQuestions =
-            model.questionModels != null ? model.questionModels!.length : 0;
-      });
-
-      _keys = List.generate(totalQuestions!, (index) => GlobalKey());
+        _keys = List.generate(totalQuestions!, (index) => GlobalKey());
+      }
     }
     return SingleChildScrollView(
         child: Column(children: _getQuestionOptionWidgets()));
@@ -334,11 +337,26 @@ class _ExamViewState extends State<ExamView> {
       int minutes = int.tryParse(remainingTimes[1])!;
       int seconds = int.tryParse(remainingTimes[2])!;
       //print("hours = $hours, min = $minutes, seconds = $seconds");
-      myDuration ??= Duration(hours: hours, minutes: minutes, seconds: seconds);
+      setState(() {
+        myDuration ??=
+            Duration(hours: hours, minutes: minutes, seconds: seconds);
+        timerWidget = TimerWidget(
+          duration: myDuration!,
+          callBack: updateTimer,
+          onSubmit: _onSubmit,
+        );
+      });
     } else {
       //print("duration = ${model.exam!.duration!}");
       var duration = int.tryParse(model.exam!.duration!);
-      myDuration ??= Duration(minutes: duration!);
+      setState(() {
+        myDuration ??= Duration(minutes: duration!);
+        timerWidget = TimerWidget(
+          duration: myDuration!,
+          callBack: updateTimer,
+          onSubmit: _onSubmit,
+        );
+      });
     }
   }
 
@@ -412,10 +430,12 @@ class _ExamViewState extends State<ExamView> {
             const SizedBox(
               width: 5,
             ),
-            Text(
+
+            timerWidget
+            /* Text(
               timerText,
               style: TextStyle(color: Colors.white),
-            )
+            ) */
           ],
         ),
       )
@@ -505,7 +525,7 @@ class _ExamViewState extends State<ExamView> {
             ElevatedButton.styleFrom(backgroundColor: AppColor.greyColor));
   }
 
-  void _onSubmit({String status = "Completed"}) {
+  void _onSubmit({String status = "Completed", String timerUP = ""}) {
     //print("submit");
     ExamModel examModel = baseListViewModel?.viewModels[0].model as ExamModel;
     examModel.exam?.remainingExamTime = timerText;
@@ -728,8 +748,11 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void startTimer() {
-    countdownTimer ??=
-        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+    if (countdownTimer != null) {
+    } else {
+      countdownTimer ??=
+          Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+    }
   }
 
   void stopTimer() {
@@ -752,9 +775,14 @@ class _ExamViewState extends State<ExamView> {
 
     setState(() {
       String strDigits(int n) => n.toString().padLeft(2, '0');
-      hours = strDigits(myDuration!.inHours.remainder(24));
-      minutes = strDigits(myDuration!.inMinutes.remainder(60));
-      seconds = strDigits(myDuration!.inSeconds.remainder(60));
+      //hours = strDigits(myDuration!.inHours.remainder(24));
+      //minutes = strDigits(myDuration!.inMinutes.remainder(60));
+      //seconds = strDigits(myDuration!.inSeconds.remainder(60));
     });
+  }
+
+  void updateTimer(String value) {
+    debug("value = $value");
+    timerText = value;
   }
 }
