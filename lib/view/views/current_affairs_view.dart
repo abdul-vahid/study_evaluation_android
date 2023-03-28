@@ -113,7 +113,6 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           ],
         ),
       )));
-      int i = 0;
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
         CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
