@@ -59,14 +59,15 @@ class _TimerWidgetState extends State<TimerWidget> {
       widget.duration = Duration(seconds: seconds1);
     }
     //print("$seconds1 == ${myDuration!.inSeconds}");
-
-    setState(() {
-      String strDigits(int n) => n.toString().padLeft(2, '0');
-      hours = strDigits(widget.duration.inHours.remainder(24));
-      minutes = strDigits(widget.duration.inMinutes.remainder(60));
-      seconds = strDigits(widget.duration.inSeconds.remainder(60));
-      widget.callBack(timerText);
-    });
+    if (mounted) {
+      setState(() {
+        String strDigits(int n) => n.toString().padLeft(2, '0');
+        hours = strDigits(widget.duration.inHours.remainder(24));
+        minutes = strDigits(widget.duration.inMinutes.remainder(60));
+        seconds = strDigits(widget.duration.inSeconds.remainder(60));
+        widget.callBack(timerText);
+      });
+    }
   }
 
   String get timerText {

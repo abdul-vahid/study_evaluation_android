@@ -540,7 +540,7 @@ class _ExamViewState extends State<ExamView> {
     ExamListViewModel().submitExam(examModel, status: status).then((resultId) {
       //print("examid = $value");
       Navigator.pop(context);
-      stopTimer();
+      //stopTimer();
       AppUtils.getAlert(context, [successMessage],
           onPressed: () => _onPressedAlert(resultId, status));
     }).catchError((error, stacktrace) {
@@ -766,7 +766,7 @@ class _ExamViewState extends State<ExamView> {
     final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
     if (seconds1 < 0) {
       timeUP = "Time UP!";
-      stopTimer();
+      //stopTimer();
       _onSubmit();
     } else {
       myDuration = Duration(seconds: seconds1);
