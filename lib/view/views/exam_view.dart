@@ -48,7 +48,6 @@ class _ExamViewState extends State<ExamView> {
   Duration? myDuration;
 
   int currentSeconds = 0;
-  Timer? countdownTimer;
   var hours = "0";
   var minutes = "0";
   var seconds = "0";
@@ -745,40 +744,6 @@ class _ExamViewState extends State<ExamView> {
       children: widgets,
     );
     //return widgets;
-  }
-
-  void startTimer() {
-    if (countdownTimer != null) {
-    } else {
-      countdownTimer ??=
-          Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
-    }
-  }
-
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  // Step 6
-  void setCountDown() {
-    const reduceSecondsBy = 1;
-
-    final seconds1 = myDuration!.inSeconds - reduceSecondsBy;
-    if (seconds1 < 0) {
-      timeUP = "Time UP!";
-      //stopTimer();
-      _onSubmit();
-    } else {
-      myDuration = Duration(seconds: seconds1);
-    }
-    //print("$seconds1 == ${myDuration!.inSeconds}");
-
-    setState(() {
-      String strDigits(int n) => n.toString().padLeft(2, '0');
-      //hours = strDigits(myDuration!.inHours.remainder(24));
-      //minutes = strDigits(myDuration!.inMinutes.remainder(60));
-      //seconds = strDigits(myDuration!.inSeconds.remainder(60));
-    });
   }
 
   void updateTimer(String value) {
