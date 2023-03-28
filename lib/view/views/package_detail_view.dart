@@ -670,19 +670,35 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
   Padding _getImageContainer(logoUrl) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        height: 100,
-        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(10.0),
+        child: ClipOval(
+            child: FadeInImage.assetNetwork(
+          placeholder: "assets/images/loading.gif",
+          image: '${AppConstants.baseUrl}${AppConstants.imagePath}/${logoUrl}',
+          fit: BoxFit.cover,
+          height: 100,
+          width: 100,
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'assets/images/no_image.png',
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+            );
+          },
+        )));
+    //   child: Container(
+    //     height: 100,
+    //     width: MediaQuery.of(context).size.width,
 
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: NetworkImage(AppUtils.getImageUrl(logoUrl)),
-          fit: BoxFit.fill,
-        )),
-        //  color: Color.fromARGB(255, 209, 208, 210),
-      ),
-    );
+    //     decoration: BoxDecoration(
+    //         image: DecorationImage(
+    //       image: NetworkImage(AppUtils.getImageUrl(logoUrl)),
+    //       fit: BoxFit.fill,
+    //     )),
+    //     //  color: Color.fromARGB(255, 209, 208, 210),
+    //   ),
+    // );
   }
 
   BoxDecoration _getBoxDecoration() {

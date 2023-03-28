@@ -190,7 +190,7 @@ class _PackageListViewState extends State<PackageListView> {
               width: 100,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Image.asset(
-                  'assets/images/profile-image.png',
+                  'assets/images/no_image.png',
                   fit: BoxFit.cover,
                   height: 100,
                   width: 100,

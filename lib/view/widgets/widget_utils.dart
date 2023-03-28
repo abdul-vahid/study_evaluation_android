@@ -197,7 +197,7 @@ class WidgetUtils {
         height: imageHeight,
         imageErrorBuilder: (context, error, stackTrace) {
           return Image.asset(
-            'assets/images/profile-image.png',
+            'assets/images/no_image.png',
             height: 70,
             width: 70,
           );
