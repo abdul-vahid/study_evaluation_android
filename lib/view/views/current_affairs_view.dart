@@ -118,9 +118,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         List<Widget> tempWidgets = [];
         CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
 
-        if (model.videoUrl != null &&
-            (model.videoUrl?.endsWith(".mp4"))! &&
-            i++ % 3 == 0) {
+        if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
           debug('Video URL : ${model.videoUrl}');
 
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
@@ -245,8 +243,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
+        decoration: const BoxDecoration(color: Colors.white,
             //  borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(
