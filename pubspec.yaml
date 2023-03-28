@@ -45,13 +45,12 @@ dependencies:
   
 
 
-  
-
-
 
   # image slideshow
   flutter_image_slideshow: ^0.1.4
   image_cropper: ^3.0.1
+  transparent_image: ^2.0.1
+
   connectivity_plus: ^3.0.3
 
 

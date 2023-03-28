@@ -15,6 +15,7 @@ import 'package:study_evaluation/view_models/feedback_list_vm.dart';
 import 'package:study_evaluation/view_models/latest_news_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../utils/app_constants.dart';
 
@@ -150,15 +151,23 @@ class HomeController {
       margin: const EdgeInsets.all(6.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: NetworkImage(AppUtils.getImageUrl(model.sliderUrl)),
-          fit: BoxFit.cover,
-        ),
+      ),
+      child: FadeInImage.memoryNetwork(
+        image: AppUtils.getImageUrl(model.sliderUrl),
+        placeholder: kTransparentImage,
+        imageErrorBuilder: (context, error, stackTrace) {
+          return Image.asset('assets/images/profile-image.png',
+              fit: BoxFit.cover);
+        },
+        fit: BoxFit.cover,
       ),
     );
   }
 
   Widget getFeedbackSlideshowContainer() {
+    if (feedbackListViewModel.viewModels.isEmpty) {
+      return Container();
+    }
     return Container(
         margin: const EdgeInsets.only(left: 5.0, right: 10.0, top: 2.0),
         height: 200,

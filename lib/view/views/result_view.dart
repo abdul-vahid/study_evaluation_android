@@ -377,19 +377,15 @@ class _ResultViewState extends State<ResultView> {
         right: 10,
         top: 10,
       ),
-      child: Expanded(
-        //width: MediaQuery.of(context).size.width,
-        //height: 300,
-        child: Card(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color.fromARGB(255, 181, 179, 179),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Color.fromARGB(255, 181, 179, 179),
           ),
-          child: Column(children: _getQuestionOptions(model)),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
+        child: Column(children: _getQuestionOptions(model)),
       ),
     );
   }

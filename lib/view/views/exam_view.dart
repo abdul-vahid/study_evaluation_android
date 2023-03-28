@@ -574,24 +574,15 @@ class _ExamViewState extends State<ExamView> {
         right: 10,
         top: 10,
       ),
-      child: Expanded(
-        //width: MediaQuery.of(context).size.width,
-        //height: 300,
-        child: Card(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.outline,
           ),
-          child: InkWell(
-            onTap: () {
-              // onButtonPressed();
-            },
-            child: Column(children: _getQuestionOptions(model)),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
+        child: Column(children: _getQuestionOptions(model)),
       ),
     );
   }

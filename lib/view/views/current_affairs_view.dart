@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -112,13 +113,19 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
           ],
         ),
       )));
+      int i = 0;
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
         CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
-        if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
-          print('Video URL : ${model.videoUrl}');
+
+        if (model.videoUrl != null &&
+            (model.videoUrl?.endsWith(".mp4"))! &&
+            i++ % 3 == 0) {
+          debug('Video URL : ${model.videoUrl}');
+
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
+
         if (model.documentUrl != null) {
           tempWidgets.add(_bottomSheet(model));
         }
@@ -237,27 +244,26 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
     //initVideo(videoUrl);
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Expanded(
-          flex: 2,
-          child: Container(
-            decoration: const BoxDecoration(color: Colors.white,
-                //  borderRadius: BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      //offset: Offset(0, 0),
-                      blurRadius: 5,
-                      spreadRadius: 1)
-                ]),
-            child: Column(
-              children: [
-                // Text(''),
-                _getVideoContainer(videoUrl),
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            //  borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black12,
+                  //offset: Offset(0, 0),
+                  blurRadius: 5,
+                  spreadRadius: 1)
+            ]),
+        child: Column(
+          children: [
+            // Text(''),
+            _getVideoContainer(videoUrl),
 
-                //
-              ],
-            ),
-          )),
+            //
+          ],
+        ),
+      ),
     );
   }
 
@@ -268,12 +274,12 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: AppVideoPlayer(
+        child: _VideoPlayer(
             "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl"));
   }
 }
 
-/* class _VideoPlayer extends StatefulWidget {
+class _VideoPlayer extends StatefulWidget {
   String videoUrl;
   _VideoPlayer(this.videoUrl);
 
@@ -290,15 +296,15 @@ class _VideoPlayerState extends State<_VideoPlayer> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(
-        AppConstants.baseUrl + AppConstants.videoPath + '/' + videoUrl);
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.pause();
+    _controller = VideoPlayerController.network(videoUrl)
+      ..initialize().then((value) {
+        debug("videoUrl = $videoUrl");
+        _controller.addListener(() {
+          setState(() {});
+        });
+        _controller.setLooping(true);
+        _controller.pause();
+      });
   }
 
   @override
@@ -447,4 +453,4 @@ class _ControlsOverlay extends StatelessWidget {
       ],
     );
   }
-} */
+}
