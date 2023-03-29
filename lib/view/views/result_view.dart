@@ -58,7 +58,14 @@ class _ResultViewState extends State<ResultView> {
   void initState() {
     Provider.of<ResultListViewModel>(context, listen: false)
         .fetch(widget.resultId);
-
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        setState(
+          () {},
+        );
+      },
+    );
     super.initState();
   }
 
