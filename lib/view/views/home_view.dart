@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/current_affairs_view.dart';
 import 'package:study_evaluation/view/views/motivation_view.dart';
@@ -105,6 +106,7 @@ class _HomeViewState extends State<HomeView> {
     AppUtils.isLoggedOut(context);
     return WillPopScope(
       onWillPop: () {
+        debug("will popoup");
         DateTime now = DateTime.now();
         if (ctime == null ||
             now.difference(ctime) > const Duration(seconds: 2)) {

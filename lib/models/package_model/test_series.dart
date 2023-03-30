@@ -13,22 +13,28 @@ class TestSeries {
   String? status;
   String? totalQuestions;
   String? totalMarks;
+  String? reattemptCount;
   ResultModel? result;
 
-  TestSeries({
-    this.id,
-    this.type,
-    this.examId,
-    this.title,
-    this.announcementDate,
-    this.scheduledDate,
-    this.duration,
-    this.attemptLimit,
-    this.status,
-    this.totalMarks,
-    this.totalQuestions,
-    this.result,
-  });
+  TestSeries(
+      {this.id,
+      this.type,
+      this.examId,
+      this.title,
+      this.announcementDate,
+      this.scheduledDate,
+      this.duration,
+      this.attemptLimit,
+      this.status,
+      this.totalMarks,
+      this.totalQuestions,
+      this.result,
+      this.reattemptCount});
+
+  bool get showReattemptButton {
+    return int.tryParse(attemptLimit ?? "0")! >
+        int.tryParse(reattemptCount ?? "0")!;
+  }
 
   factory TestSeries.fromMap(Map<String, dynamic> data) => TestSeries(
         id: data['id'] as String?,
@@ -42,6 +48,7 @@ class TestSeries {
         status: data['status'] as String?,
         totalQuestions: data['total_questions'] as String?,
         totalMarks: data['total_marks'] as String,
+        reattemptCount: data['reattempt_count'] as String,
         result: data['result'] != null
             ? ResultModel.fromMap(data['result'] as Map<String, dynamic>)
             : null,
@@ -59,6 +66,7 @@ class TestSeries {
         'status': status,
         'total_questions': totalQuestions,
         'total_marks': totalMarks,
+        'reattempt_count': reattemptCount,
         'result': result?.toMap(),
       };
 

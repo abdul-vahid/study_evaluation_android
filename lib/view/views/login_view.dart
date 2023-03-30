@@ -72,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                 _userName = value;
               }),
               onValidator: validatePhone,
-              initialValue: "0987654326",
+              // initialValue: "0987654326",
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(
@@ -83,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
               'Enter Password',
               Icons.lock,
               onValidator: validatePassword,
-              initialValue: "Admin@123",
+              // initialValue: "Admin@123",
               onSaved: ((value) {
                 _password = value;
                 print('_Password @@@@ $_password');

@@ -31,7 +31,10 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text("$hours:$minutes:$seconds");
+    return Text(
+      "$hours:$minutes:$seconds",
+      style: const TextStyle(color: Colors.white),
+    );
   }
 
   void startTimer() {

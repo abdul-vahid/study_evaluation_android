@@ -102,7 +102,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                                   packageId: (package?.id)!,
                                   amount: (package?.listPrice)!,
                                 ),
-                              )));
+                              ))).then((value) {
+                    Provider.of<PackageListViewModel>(context, listen: false)
+                        .fetchPackageLineItems(widget.packageLineItemId);
+                    packageListVM = Provider.of<PackageListViewModel>(context,
+                        listen: false);
+                  });
                 },
               )
             : Container(),
@@ -116,21 +121,22 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           elevation: 5,
           child: Column(
             children: [
-              Container(
-                height: 35,
-                width: 250,
-                decoration: const BoxDecoration(
-                  color: AppColor.containerBoxColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0)),
-                ),
-                child: const Center(
-                    child: Text(
-                  'Documents',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
-                )),
-              ),
+              // Container(
+              //   height: 35,
+              //   width: 250,
+              //   decoration: const BoxDecoration(
+              //     color: AppColor.containerBoxColor,
+              //     borderRadius: BorderRadius.only(
+              //         bottomLeft: Radius.circular(20.0),
+              //         bottomRight: Radius.circular(20.0)),
+              //   ),
+              //   child: const Center(
+              //       child: Text(
+              //     'Documents',
+              //     style: TextStyle(fontSize: 15, color: Colors.white),
+              //   )),
+              // ),
+              if (model?.documents != null) getContainer(),
               if (model?.documents != null)
                 for (var documents in model!.documents!) getCard(documents),
             ],
@@ -138,6 +144,24 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         ),
       ]),
     ));
+  }
+
+  getContainer() {
+    return Container(
+      height: 35,
+      width: 250,
+      decoration: const BoxDecoration(
+        color: AppColor.containerBoxColor,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0),
+            bottomRight: Radius.circular(20.0)),
+      ),
+      child: const Center(
+          child: Text(
+        'Documents',
+        style: TextStyle(fontSize: 15, color: Colors.white),
+      )),
+    );
   }
 
   getCard(Document? document) {
@@ -366,7 +390,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           )));
     }
     if (resultModel?.resultStatus == ResultStatus.completed) {
-      if (userModel?.role?.toLowerCase() != "student") {
+      if (userModel?.role?.toLowerCase() != "student" &&
+          testSeries.showReattemptButton) {
         widgets.add(AppUtils.getElevatedButton(
           'Re-Attempt',
           textStyle: const TextStyle(color: Colors.black),
@@ -375,9 +400,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               ),
           onPressed: () => _submitPage(testSeries, reAttempt: true),
         ));
-      } else if (testSeries.type == "Free" ||
-          (userModel?.role?.toLowerCase() == "student" &&
-              package?.validityStatus == "PURCHASED")) {
+      } else if (testSeries.showReattemptButton &&
+          (testSeries.type == "Free" ||
+              (userModel?.role?.toLowerCase() == "student" &&
+                  package?.validityStatus == "PURCHASED"))) {
         widgets.add(AppUtils.getElevatedButton(
           'Re-Attempt',
           textStyle: const TextStyle(color: Colors.black),
@@ -387,7 +413,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           onPressed: () => _submitPage(testSeries, reAttempt: true),
         ));
       }
-
+      widgets.add(const SizedBox(
+        width: 10,
+      ));
       widgets.add(AppUtils.getElevatedButton(
         'Result',
         buttonStyle: ElevatedButton.styleFrom(
