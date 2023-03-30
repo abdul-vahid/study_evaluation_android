@@ -39,9 +39,9 @@ abstract class AppConstants {
   static const String channelDescription = "Study Evaluation";
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
-    //  defaultValue: 'https://studyevaluation.com/sandbox',
+    defaultValue: 'https://studyevaluation.com/sandbox',
 
-    defaultValue: 'https://studyevaluation.com/uat',
+    //defaultValue: 'https://studyevaluation.com/uat',
   );
 
   static const String clientId = String.fromEnvironment(

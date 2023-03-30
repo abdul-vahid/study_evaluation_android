@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/current_affairs_view.dart';
 import 'package:study_evaluation/view/views/motivation_view.dart';
@@ -102,51 +101,34 @@ class _HomeViewState extends State<HomeView> {
     isRefresh = true;
   }
 
-  WillPopScope _getBody(BuildContext context, HomeController homeController) {
+  Widget _getBody(BuildContext context, HomeController homeController) {
     AppUtils.isLoggedOut(context);
-    return WillPopScope(
-      onWillPop: () {
-        debug("will popoup");
-        DateTime now = DateTime.now();
-        if (ctime == null ||
-            now.difference(ctime) > const Duration(seconds: 2)) {
-          //add duration of press gap
-          ctime = now;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                  'Press Back Button Again to Exit'))); //scaffold message, you can show Toast message too.
-          return Future.value(false);
-        }
-
-        return Future.value(true);
-      },
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          homeController.getImageSlideshowContainer(slidersVM!),
-          const SizedBox(
-            height: 10,
-          ),
-          _getButtonContainer(),
-          homeController.getHomeTiles(),
-          // SizedBox(
-          //   height: 10,
-          // ),
-          _studentFeedbackHeading(),
-          // SizedBox(
-          //   height: 5,
-          // ),
-          homeController.getFeedbackSlideshowContainer(),
-          const SizedBox(
-            height: 10,
-          ),
-          _footer(),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      )),
-    );
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        homeController.getImageSlideshowContainer(slidersVM!),
+        const SizedBox(
+          height: 10,
+        ),
+        _getButtonContainer(),
+        homeController.getHomeTiles(),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        _studentFeedbackHeading(),
+        // SizedBox(
+        //   height: 5,
+        // ),
+        homeController.getFeedbackSlideshowContainer(),
+        const SizedBox(
+          height: 10,
+        ),
+        _footer(),
+        const SizedBox(
+          height: 10,
+        ),
+      ],
+    ));
   }
 
   InkWell _footer() {

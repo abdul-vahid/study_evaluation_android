@@ -35,7 +35,6 @@ class _LearderbordViewState extends State<LearderbordView> {
     AppUtils.currentContext = context;
     baseListViewModel = Provider.of<LeaderBoardListViewModel>(context);
 
-    print('@@@$baseListViewModel');
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -53,11 +52,6 @@ class _LearderbordViewState extends State<LearderbordView> {
 
     for (var viewModel in baseListViewModel!.viewModels) {
       widgets.add(getCard(viewModel.model));
-
-      print('viewModel$viewModel');
-
-      // viewModel.model
-      print('viewModel.model@@ ${viewModel.model}');
     }
 
     return widgets;
@@ -69,7 +63,7 @@ class _LearderbordViewState extends State<LearderbordView> {
     }
 
     rank = rank! + 1;
-    print('url@@@$profileUrl');
+
     return Card(
         child: ListTile(
       title: Text(
