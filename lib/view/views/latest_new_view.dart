@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -24,6 +25,10 @@ class _LatestNewViewState extends State<LatestNewView> {
   LatestNewsModel? currentAffairsModel;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
 
     Provider.of<LatestNewsListViewModel>(context, listen: false).fetch();
@@ -266,7 +271,8 @@ class _LatestNewViewState extends State<LatestNewView> {
       child: Expanded(
           flex: 2,
           child: Container(
-            decoration: const BoxDecoration(color: Colors.white,
+            decoration: const BoxDecoration(
+                color: Colors.white,
                 //  borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [
                   BoxShadow(

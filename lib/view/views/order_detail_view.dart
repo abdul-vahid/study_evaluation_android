@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/view/views/package_detail_view.dart';
 
 import '../../utils/app_color.dart';
@@ -15,6 +16,15 @@ class OrderDetailView extends StatefulWidget {
 }
 
 class _OrderDetailViewState extends State<OrderDetailView> {
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

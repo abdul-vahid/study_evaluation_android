@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/app_utils.dart';
 
@@ -12,6 +13,15 @@ class FeedBacksView extends StatefulWidget {
 }
 
 class _FeedBacksViewState extends State<FeedBacksView> {
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

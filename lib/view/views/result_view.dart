@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/question_answer_model/exam_model.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
@@ -56,6 +57,10 @@ class _ResultViewState extends State<ResultView> {
 
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     Provider.of<ResultListViewModel>(context, listen: false)
         .fetch(widget.resultId);
     Timer(

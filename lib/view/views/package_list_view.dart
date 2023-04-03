@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/package_model/package.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -27,6 +28,10 @@ class _PackageListViewState extends State<PackageListView> {
   PackageListViewModel? packageListVM;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     Provider.of<PackageListViewModel>(context, listen: false).fetch(
         categoryId: widget.categoryId ?? "",
         publishType: widget.publishType ?? "",

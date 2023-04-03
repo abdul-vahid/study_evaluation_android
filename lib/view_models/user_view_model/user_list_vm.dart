@@ -23,7 +23,7 @@ class UserListViewModel extends BaseListViewModel {
     var userModel = AppUtils.getSessionUser(prefs);
     Map<String, String> body = {
       "registration_id": token,
-      "user_id": userModel.id!
+      "user_id": userModel?.id ?? ""
     };
     return post(url: url, body: jsonEncode(body));
   }

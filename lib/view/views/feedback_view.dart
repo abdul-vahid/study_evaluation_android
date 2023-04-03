@@ -32,6 +32,15 @@ class _FeedbackViewState extends State<FeedbackView> {
   final GlobalKey<FormFieldState> _dropdownKey = GlobalKey<FormFieldState>();
 
   @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
     return Scaffold(
@@ -135,6 +144,7 @@ class _FeedbackViewState extends State<FeedbackView> {
       AppUtils.onLoading(context, "Please wait...");
       _feedbackFormKey.currentState!.save();
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
       userModel = AppUtils.getSessionUser(prefs);
 
       FeedbackModel feedbackModel = FeedbackModel(

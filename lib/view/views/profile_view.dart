@@ -66,6 +66,10 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     getProfileData();
     super.initState();
   }

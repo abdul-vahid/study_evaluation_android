@@ -80,6 +80,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userModel = AppUtils.getSessionUser(prefs);
+
       _firstNameController.text = (userModel?.firstName)!;
       _lastNameController.text = (userModel?.lastName)!;
       _mobileController.text = (userModel?.mobileNo)!;
@@ -100,6 +101,10 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     _loadProfileData();
     super.initState();
   }

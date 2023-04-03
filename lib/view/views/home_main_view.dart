@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_model.dart';
 import 'package:study_evaluation/models/notification_model.dart';
@@ -38,6 +39,10 @@ class _HomeMainViewState extends State<HomeMainView> {
 
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     getConnectivity();
 
     _selectedIndex = widget.selectedIndex ?? 0;

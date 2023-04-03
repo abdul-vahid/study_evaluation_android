@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
@@ -26,6 +27,10 @@ class _NotificationViewState extends State<NotificationView> {
   List<GlobalKey>? _keys;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
     super.initState();
   }

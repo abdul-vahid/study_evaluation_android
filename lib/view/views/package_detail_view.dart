@@ -46,8 +46,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
       userModel = AppUtils.getSessionUser(prefs);
-      debug("userrole = ${userModel?.role}");
-      debug("userrole = ${userModel?.role?.toLowerCase()}");
+      userModel ?? AppUtils.logout(context);
     });
 
     super.initState();
@@ -239,7 +238,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        decoration: const BoxDecoration(color: Colors.white,
+        decoration: const BoxDecoration(
+            color: Colors.white,
             //  borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(

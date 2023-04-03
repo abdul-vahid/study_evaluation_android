@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
 
 class TermsConditionsView extends StatefulWidget {
   const TermsConditionsView({super.key});
@@ -10,6 +12,15 @@ class TermsConditionsView extends StatefulWidget {
 }
 
 class _TermsConditionsViewState extends State<TermsConditionsView> {
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

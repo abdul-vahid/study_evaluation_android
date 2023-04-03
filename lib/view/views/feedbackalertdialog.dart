@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
@@ -22,6 +23,15 @@ class _FeedbackAlertDialogState extends State<FeedbackAlertDialog> {
   TextEditingController textarea = TextEditingController();
 
   String? _selectedSubject; // Option 2
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;

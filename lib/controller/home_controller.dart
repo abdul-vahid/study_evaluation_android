@@ -60,7 +60,7 @@ class HomeController {
       MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider(
             create: (_) => PackageListViewModel(),
-            child: FreePackageView(
+            child: PackageListView(
               packageType: "free",
             )),
       ),

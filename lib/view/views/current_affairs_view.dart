@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/current_affairs_model.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
@@ -27,6 +28,10 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
   CurrentAffairsModel? currentAffairsModel;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
 
     Provider.of<CurrentAffairsListViewModel>(context, listen: false).fetch();
@@ -242,7 +247,8 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        decoration: const BoxDecoration(color: Colors.white,
+        decoration: const BoxDecoration(
+            color: Colors.white,
             //  borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(

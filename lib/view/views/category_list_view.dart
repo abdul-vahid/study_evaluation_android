@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/category_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
@@ -20,6 +21,10 @@ class _CategoryListViewState extends State<CategoryListView> {
   CategoryListViewModel? categoriesVM;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
   }

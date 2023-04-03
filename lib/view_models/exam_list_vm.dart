@@ -14,14 +14,14 @@ class ExamListViewModel extends BaseListViewModel {
         AppUtils.getSessionUser(await SharedPreferences.getInstance());
 
     String url = AppUtils.getUrl(
-        "${AppConstants.questionAnswerAPIPath}?exam_id=$examId&user_id=${userModel.id}");
+        "${AppConstants.questionAnswerAPIPath}?exam_id=$examId&user_id=${userModel?.id}");
     get(baseModel: ExamModel(), url: url);
   }
 
   Future<dynamic> submitExam(ExamModel examModel,
       {String status = "Completed"}) async {
     var prefs = await SharedPreferences.getInstance();
-    var userId = AppUtils.getSessionUser(prefs).id;
+    var userId = AppUtils.getSessionUser(prefs)?.id;
     List<ResultLineItem> resultLineItems = [];
 
     for (var qm in examModel.questionModels!) {

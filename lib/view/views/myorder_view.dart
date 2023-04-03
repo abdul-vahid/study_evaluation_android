@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/view/views/order_detail_view.dart';
 
@@ -27,6 +28,10 @@ class _MyOrderViewState extends State<MyOrderView> {
   String? profileUrl;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
     Provider.of<OrderListViewModel>(context, listen: false).fetch();
   }

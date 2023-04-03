@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/view_models/leaderboard_list_vm.dart';
 
 import '../../core/models/base_list_view_model.dart';
@@ -24,6 +25,11 @@ class _LearderbordViewState extends State<LearderbordView> {
   String? profileUrl;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
+
     rank = 0;
     super.initState();
     Provider.of<LeaderBoardListViewModel>(context, listen: false)

@@ -8,11 +8,8 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 class LeaderBoardListViewModel extends BaseListViewModel {
   Future<void> fetch(examId) async {
-    var userModel =
-        AppUtils.getSessionUser(await SharedPreferences.getInstance());
-
     String url =
-        AppUtils.getUrl("${AppConstants.leaderboardAPIPath}?exam_id=${examId}");
+        AppUtils.getUrl("${AppConstants.leaderboardAPIPath}?exam_id=$examId");
     get(baseModel: LeaderBoardModel(), url: url);
   }
 }

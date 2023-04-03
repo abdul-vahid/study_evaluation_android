@@ -102,9 +102,13 @@ class AppUtils {
     return prefs.getString(SharedPrefsConstants.accessTokenKey);
   }
 
-  static UserModel getSessionUser(SharedPreferences prefs) {
-    return UserModel.fromMap(
-        jsonDecode(prefs.getString(SharedPrefsConstants.userKey)!));
+  static UserModel? getSessionUser(SharedPreferences prefs) {
+    if (prefs.containsKey(SharedPrefsConstants.userKey)) {
+      return UserModel.fromMap(
+          jsonDecode(prefs.getString(SharedPrefsConstants.userKey)!));
+    }
+
+    return null;
   }
 
   static ElevatedButton getElevatedButton(btnLabel,

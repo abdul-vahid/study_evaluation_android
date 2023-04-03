@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/models/quote_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/video_player.dart';
@@ -29,6 +30,10 @@ class _MotivationViewState extends State<MotivationView> {
   QuoteModel? quoteModel;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
 
     Provider.of<QuoteListViewModel>(context, listen: false)
@@ -388,7 +393,8 @@ class _MotivationViewState extends State<MotivationView> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        decoration: const BoxDecoration(color: Colors.white,
+        decoration: const BoxDecoration(
+            color: Colors.white,
             //  borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow: [
               BoxShadow(

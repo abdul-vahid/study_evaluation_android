@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user_model.dart';
 import '../../utils/app_utils.dart';
@@ -23,6 +24,10 @@ class _PlaceOrderViewState extends State<PlaceOrderView> {
   OrderListViewModel? orderListViewModel;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      var userModel = AppUtils.getSessionUser(prefs);
+      userModel ?? AppUtils.logout(context);
+    });
     super.initState();
     Provider.of<OrderListViewModel>(context, listen: false)
         .placeOrder(widget.packageId, widget.amount);
