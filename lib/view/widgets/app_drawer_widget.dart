@@ -332,12 +332,47 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               ),
             ),
             onTap: () {
-              Navigator.pop(context);
-              AppUtils.logout(context);
+              showAlertDialog();
             },
           ),
         ],
       ),
+    );
+  }
+
+  showAlertDialog() {
+    Widget noButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        // debug("No");
+        Navigator.pop(context);
+      },
+    );
+    // set up the buttons
+    Widget yesButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () {
+        Navigator.pop(context);
+        AppUtils.logout(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Logout"),
+      content: Text("Are you sure you want to Logout"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

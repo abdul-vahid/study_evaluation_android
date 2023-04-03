@@ -160,19 +160,12 @@ class _PackageListViewState extends State<PackageListView> {
               style: const TextStyle(
                   fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1)),
         ),
-        const Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Text(
-            "Category",
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text("${model.category}",
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(5.0),
+        //   child: Text("${model.category}",
+        //       style: const TextStyle(
+        //           fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1)),
+        // ),
       ],
     ));
   }

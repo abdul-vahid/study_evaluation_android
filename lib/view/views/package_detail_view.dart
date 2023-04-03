@@ -157,7 +157,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       ),
       child: const Center(
           child: Text(
-        'Documents',
+        'Schedule PDF',
         style: TextStyle(fontSize: 15, color: Colors.white),
       )),
     );
@@ -233,29 +233,25 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     );
   }
 
-  Padding _getCurrentAffairsModelVideo(Document document) {
+  Container _getCurrentAffairsModelVideo(Document document) {
     //initVideo(videoUrl);
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            //  borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12,
-                  //offset: Offset(0, 0),
-                  blurRadius: 5,
-                  spreadRadius: 1)
-            ]),
-        child: Column(
-          children: [
-            // Text(''),
-            _getVideoContainer(document),
+    return Container(
+      decoration: const BoxDecoration(color: Colors.white,
+          //  borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                //offset: Offset(0, 0),
+                blurRadius: 5,
+                spreadRadius: 1)
+          ]),
+      child: Column(
+        children: [
+          // Text(''),
+          _getVideoContainer(document),
 
-            //
-          ],
-        ),
+          //
+        ],
       ),
     );
   }
@@ -699,22 +695,22 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Padding _getImageContainer(logoUrl) {
     return Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ClipOval(
-            child: FadeInImage.assetNetwork(
-          placeholder: "assets/images/loading.gif",
-          image: '${AppConstants.baseUrl}${AppConstants.imagePath}/${logoUrl}',
-          fit: BoxFit.cover,
-          height: 100,
-          width: 100,
-          imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              'assets/images/no_image.png',
-              fit: BoxFit.cover,
-              height: 100,
-              width: 100,
-            );
-          },
-        )));
+        child: Container(
+          height: 120,
+          width: MediaQuery.of(context).size.width,
+          child: FadeInImage.assetNetwork(
+            placeholder: "assets/images/loading.gif",
+            image:
+                '${AppConstants.baseUrl}${AppConstants.imagePath}/${logoUrl}',
+            fit: BoxFit.fill,
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'assets/images/no_image.png',
+                fit: BoxFit.fill,
+              );
+            },
+          ),
+        ));
     //   child: Container(
     //     height: 100,
     //     width: MediaQuery.of(context).size.width,

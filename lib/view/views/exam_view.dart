@@ -80,8 +80,19 @@ class _ExamViewState extends State<ExamView> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-          appBar:
-              AppUtils.getAppbar(title, actions: [_getPopMenuButton(context)]),
+          appBar: AppUtils.getAppbar(title, actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.apps_rounded,
+                size: 25,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _onPressedFilter();
+              },
+            ),
+            _getPopMenuButton(context)
+          ]),
           body: AppUtils.getAppBody(baseListViewModel!, _getBody)),
     );
   }
@@ -92,17 +103,18 @@ class _ExamViewState extends State<ExamView> {
         // icon: Icon(Icons.book)
         itemBuilder: (context) {
       return [
-        _getPopupMenuItem(
-            label: "Filter", value: 0, iconData: Icons.apps_rounded),
+        // _getPopupMenuItem(
+        //     label: "Filter", value: 0, iconData: Icons.apps_rounded),
         _getPopupMenuItem(
             label: "Language", value: 1, iconData: Icons.language),
         _getPopupMenuItem(
             label: "Font Size", value: 2, iconData: Icons.font_download),
       ];
     }, onSelected: (value) {
-      if (value == 0) {
-        _onPressedFilter();
-      } else if (value == 1) {
+      // if (value == 0) {
+      //   _onPressedFilter();
+      // }
+      if (value == 1) {
         _onPressedLanguages(context);
       } else if (value == 2) {
         _onPressedFontSize(context);
@@ -327,8 +339,16 @@ class _ExamViewState extends State<ExamView> {
         _keys = List.generate(totalQuestions!, (index) => GlobalKey());
       }
     }
-    return SingleChildScrollView(
-        child: Column(children: _getQuestionOptionWidgets()));
+    return Column(
+      children: [
+        _getTopBar(),
+        Flexible(
+          child: SingleChildScrollView(
+              //  physics: NeverScrollableScrollPhysics,
+              child: Column(children: _getQuestionOptionWidgets())),
+        ),
+      ],
+    );
   }
 
   void _initDuration(ExamModel model) {
@@ -367,17 +387,17 @@ class _ExamViewState extends State<ExamView> {
 
   List<Widget> _getQuestionOptionWidgets() {
     List<Widget> widgets = [];
-    widgets.add(Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          _getTopBar(),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      ),
-    ));
+    // widgets.add(Padding(
+    //   padding: const EdgeInsets.all(20.0),
+    //   child: Column(
+    //     children: [
+    //       _getTopBar(),
+    //       const SizedBox(
+    //         height: 20,
+    //       ),
+    //     ],
+    //   ),
+    // ));
 
     bool isBlankSelValues = selectedValues.isEmpty;
     var i = 0;
@@ -395,18 +415,21 @@ class _ExamViewState extends State<ExamView> {
     return widgets;
   }
 
-  Container _getTopBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.containerBoxColor,
-        borderRadius: BorderRadius.circular(20),
-        //more than 50% of width makes circle
-      ),
-      height: 40,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // ignore: prefer_const_literals_to_create_immutables
-        children: _topBarChildren,
+  Padding _getTopBar() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColor.containerBoxColor,
+          borderRadius: BorderRadius.circular(20),
+          //more than 50% of width makes circle
+        ),
+        height: 40,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // ignore: prefer_const_literals_to_create_immutables
+          children: _topBarChildren,
+        ),
       ),
     );
   }
@@ -548,6 +571,20 @@ class _ExamViewState extends State<ExamView> {
       //stopTimer();
       AppUtils.getAlert(context, [successMessage],
           onPressed: () => _onPressedAlert(resultId, status));
+      //  Navigator.pop(context);
+      // //stopTimer();
+      // AppUtils.getAlert(context, [successMessage],
+      //     onPressed: () => _onPressedAlert(resultId, status));
+      //      AppUtils.viewPush(
+      //     context,
+      //     MultiProvider(
+      //         providers: [
+      //           ChangeNotifierProvider(
+      //             create: (_) => ResultListViewModel(),
+      //           )
+      //         ],
+      //         child: ResultView(
+      //             resultId: resultId.toString(), userId: widget.userId)));
     }).catchError((error, stacktrace) {
       debug(stacktrace);
       AppUtils.onError(context, error);

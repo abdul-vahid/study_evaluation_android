@@ -18,6 +18,7 @@ import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../utils/app_constants.dart';
+import '../view/views/package_detail_view.dart';
 
 class HomeController {
   BuildContext context;
@@ -61,7 +62,7 @@ class HomeController {
         builder: (context) => ChangeNotifierProvider(
             create: (_) => PackageListViewModel(),
             child: PackageListView(
-              packageType: "free",
+              publishType: "free",
             )),
       ),
     );
@@ -149,19 +150,36 @@ class HomeController {
   }
 
   Widget _getImageWidget(SliderImageModel model) {
-    return Container(
-      margin: const EdgeInsets.all(6.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: FadeInImage.memoryNetwork(
-        image: AppUtils.getImageUrl(model.sliderUrl),
-        placeholder: kTransparentImage,
-        imageErrorBuilder: (context, error, stackTrace) {
-          return Image.asset('assets/images/motivational.png',
-              fit: BoxFit.cover);
-        },
-        fit: BoxFit.cover,
+    return InkWell(
+      onTap: () {
+        if (model.packageId != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                      create: (_) => PackageListViewModel(),
+                      child: PackageDetailView(
+                        packageLineItemId: (model.packageId)!,
+                      ),
+                    ),
+                settings: RouteSettings(arguments: 9)),
+          );
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.all(6.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: FadeInImage.memoryNetwork(
+          image: AppUtils.getImageUrl(model.sliderUrl),
+          placeholder: kTransparentImage,
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset('assets/images/motivational.png',
+                fit: BoxFit.cover);
+          },
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

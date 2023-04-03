@@ -23,15 +23,15 @@ class PackageListViewModel extends BaseListViewModel {
     get(baseModel: Package(), url: url);
   }
 
-  Future<void> fetchFree(
-      {String categoryId = "",
-      String packageType = "",
-      String publishType = "",
-      String jsonRecordKey = "records",
-      BuildContext? context}) async {
-    String url = AppUtils.getUrl(AppConstants.freepackageAPIPath);
-    get(baseModel: FreeContentPackageModel(), url: url);
-  }
+  // Future<void> fetchFree(
+  //     {String categoryId = "",
+  //     String packageType = "",
+  //     String publishType = "",
+  //     String jsonRecordKey = "records",
+  //     BuildContext? context}) async {
+  //   String url = AppUtils.getUrl(AppConstants.freepackageAPIPath);
+  //   get(baseModel: FreeContentPackageModel(), url: url);
+  // }
 
   Future<void> fetchPackageLineItems(packageId, {BuildContext? context}) async {
     var prefs = await SharedPreferences.getInstance();

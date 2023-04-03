@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -40,11 +39,6 @@ class _HomeViewState extends State<HomeView> {
   var ctime;
   @override
   void initState() {
-    SharedPreferences.getInstance().then((prefs) {
-      var userModel = AppUtils.getSessionUser(prefs);
-      userModel ?? AppUtils.logout(context);
-    });
-
     NotificationUtil().initialize(context);
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
     Provider.of<SliderImageListViewModel>(context, listen: false).fetch();

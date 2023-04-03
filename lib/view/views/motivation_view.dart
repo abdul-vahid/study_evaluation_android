@@ -214,6 +214,7 @@ class _MotivationViewState extends State<MotivationView> {
                                             BorderRadius.circular(25.0)),
                                   ),
                                   child: Row(
+                                    // ignore: prefer_const_literals_to_create_immutables
                                     children: [
                                       SizedBox(
                                         width: 10,
@@ -388,29 +389,25 @@ class _MotivationViewState extends State<MotivationView> {
     );
   }
 
-  Padding _getQuoteVideo(videoUrl) {
+  Container _getQuoteVideo(videoUrl) {
     //initVideo(videoUrl);
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            //  borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12,
-                  //offset: Offset(0, 0),
-                  blurRadius: 5,
-                  spreadRadius: 1)
-            ]),
-        child: Column(
-          children: [
-            // Text(''),
-            _getVideoContainer(videoUrl),
+    return Container(
+      decoration: const BoxDecoration(color: Colors.white,
+          //  borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                //offset: Offset(0, 0),
+                blurRadius: 5,
+                spreadRadius: 1)
+          ]),
+      child: Column(
+        children: [
+          // Text(''),
+          _getVideoContainer(videoUrl),
 
-            //
-          ],
-        ),
+          //
+        ],
       ),
     );
   }

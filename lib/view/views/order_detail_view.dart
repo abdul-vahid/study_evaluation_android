@@ -41,6 +41,21 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
                   children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.buttonColor,
+                        ),
+                        onPressed: (() {
+                          onButtonPressed(widget.myOrder.packageId);
+                        }),
+                        child: const Text(
+                          'Show Package',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    ),
                     getColumn('Package Title', widget.myOrder.packagesTitle),
                     getColumn('Package Name', widget.myOrder.name),
                     getColumn('Order Amount', widget.myOrder.amount),

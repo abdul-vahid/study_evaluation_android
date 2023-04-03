@@ -42,6 +42,8 @@ dependencies:
   url_launcher: ^6.1.10
   image_picker: ^0.8.7
   internet_connection_checker: ^1.0.0+1
+  whatsapp_unilink: ^2.1.0
+
   
 
 

@@ -15,6 +15,7 @@ class SliderImageModel extends BaseModel {
   String? updatedDate;
   String? createdBy;
   String? updatedBy;
+  String? packageId;
 
   SliderImageModel(
       {this.id,
@@ -29,6 +30,7 @@ class SliderImageModel extends BaseModel {
       this.updatedDate,
       this.createdBy,
       this.updatedBy,
+      this.packageId,
       super.appException,
       super.error});
 
@@ -46,6 +48,7 @@ class SliderImageModel extends BaseModel {
         updatedDate: data['updated_date'] as String?,
         createdBy: data['created_by'] as String?,
         updatedBy: data['updated_by'] as String?,
+        packageId: data['package_id'] as String?,
       );
   @override
   Map<String, dynamic> toMap() => {
@@ -61,6 +64,7 @@ class SliderImageModel extends BaseModel {
         'updated_date': updatedDate,
         'created_by': createdBy,
         'updated_by': updatedBy,
+        'package_id': packageId,
       };
 
   @override

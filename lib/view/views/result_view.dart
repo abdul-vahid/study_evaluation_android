@@ -435,13 +435,13 @@ class _ResultViewState extends State<ResultView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          getIconButton(
-            'Favourite',
-            Icons.star,
-            textColor: model.isFavourite ? Colors.yellow : Colors.white,
-            iconColor: model.isFavourite ? Colors.yellow : Colors.white,
-            onPressed: () {},
-          ),
+          // getIconButton(
+          //   'Favourite',
+          //   Icons.star,
+          //   textColor: model.isFavourite ? Colors.yellow : Colors.white,
+          //   iconColor: model.isFavourite ? Colors.yellow : Colors.white,
+          //   onPressed: () {},
+          // ),
         ],
       ),
     );
