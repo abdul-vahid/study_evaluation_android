@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:video_player/video_player.dart';
 
+import '../view/views/fullscreen_videoplayer_view.dart';
+
 class AppVideoPlayer extends StatefulWidget {
   String videoUrl;
   String? type;
@@ -54,6 +56,7 @@ class AppVideoPlayerState extends State<AppVideoPlayer> {
                 _ControlsOverlay(
                   controller: _controller,
                   type: widget.type,
+                  videoUrl: videoUrl,
                 ),
                 VideoProgressIndicator(
                   _controller,
@@ -70,7 +73,9 @@ class AppVideoPlayerState extends State<AppVideoPlayer> {
 
 class _ControlsOverlay extends StatelessWidget {
   String? type = "";
-  _ControlsOverlay({Key? key, required this.controller, this.type})
+  String? videoUrl;
+  _ControlsOverlay(
+      {Key? key, required this.controller, this.type, this.videoUrl})
       : super(key: key);
 
   // static const List<Duration> _exampleCaptionOffsets = <Duration>[
@@ -130,6 +135,22 @@ class _ControlsOverlay extends StatelessWidget {
             }
           },
         ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: IconButton(
+            iconSize: 40,
+            color: Colors.white,
+            icon: const Icon(Icons.fullscreen),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        FullVideoPlayerView(videoUrl: videoUrl.toString())),
+              );
+            },
+          ),
+        )
         // Align(
         //   alignment: Alignment.topLeft,
         //   child: PopupMenuButton<Duration>(

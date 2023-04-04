@@ -157,7 +157,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       ),
       child: const Center(
           child: Text(
-        'Schedule PDF',
+        'Documents',
         style: TextStyle(fontSize: 15, color: Colors.white),
       )),
     );
@@ -378,6 +378,26 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   List<Widget> _getButtons(TestSeries testSeries) {
     List<Widget> widgets = [];
     ResultModel? resultModel = testSeries.result;
+    /* if (userModel?.role?.toLowerCase() != "student") {
+      widgets.add(AppUtils.getElevatedButton('Scheduled',
+          onPressed: () => _scheduledButton(testSeries),
+          buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.buttonColor // foreground
+              )));
+    } else  */
+    if ((testSeries.type != "Free" &&
+        (package?.validityStatus == "PURCHASED" ||
+            userModel?.role?.toLowerCase() != "student"))) {
+      widgets.add(AppUtils.getElevatedButton('Scheduled',
+          onPressed: () => _scheduledButton(testSeries),
+          buttonStyle: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.buttonColor // foreground
+              )));
+    }
+    widgets.add(const SizedBox(
+      width: 10,
+    ));
+
     if (resultModel?.resultStatus == ResultStatus.inProgress) {
       widgets.add(AppUtils.getElevatedButton('Resume',
           onPressed: () => _submitPage(testSeries),
@@ -440,8 +460,27 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           DateFormat('dd-MM-yyyy HH:mm aaa').parse((testSeries.scheduledDate)!);
 
       var currentDT = DateTime.now();
-      debug(
+      /* debug(
           "${model?.testSeries?[0].scheduledDate} ===> $scheduleDT === $currentDT === ${currentDT.compareTo(scheduleDT)}");
+      if (userModel?.role?.toLowerCase() != "student") {
+        widgets.add(AppUtils.getElevatedButton('Scheduled',
+            onPressed: () => _scheduledButton(testSeries),
+            buttonStyle: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                )));
+      } else if (testSeries.type != "Free" &&
+          userModel?.role?.toLowerCase() == "student" &&
+          package?.validityStatus == "PURCHASED") {
+        widgets.add(AppUtils.getElevatedButton('Scheduled',
+            onPressed: () => _scheduledButton(testSeries),
+            buttonStyle: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.buttonColor // foreground
+                )));
+      } */
+      widgets.add(const SizedBox(
+        width: 10,
+      ));
+
       if (userModel?.role?.toLowerCase() != "student") {
         widgets.add(AppUtils.getElevatedButton('Start Now',
             onPressed: () => _submitPage(testSeries),
@@ -464,6 +503,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       width: 10,
     ));
     return widgets;
+  }
+
+  void _scheduledButton(testSeries) {
+    if (testSeries.pdfUrl != null) {
+      AppUtils.openDocument(context, testSeries.pdfUrl);
+    }
   }
 
   void _submitPage(testSeries, {bool reAttempt = false}) {

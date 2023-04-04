@@ -5,7 +5,8 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 class SliderImageListViewModel extends BaseListViewModel {
   Future<void> fetch() async {
-    String url = AppUtils.getUrl(AppConstants.appearanceAPIPath);
+    String url =
+        AppUtils.getUrl("${AppConstants.appearanceAPIPath}?status=Active");
     get(baseModel: SliderImageModel(), url: url);
   }
 }

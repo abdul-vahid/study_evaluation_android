@@ -14,6 +14,7 @@ class TestSeries {
   String? totalQuestions;
   String? totalMarks;
   String? reattemptCount;
+  String? pdfUrl;
   ResultModel? result;
 
   TestSeries(
@@ -28,6 +29,7 @@ class TestSeries {
       this.status,
       this.totalMarks,
       this.totalQuestions,
+      this.pdfUrl,
       this.result,
       this.reattemptCount});
 
@@ -49,6 +51,7 @@ class TestSeries {
         totalQuestions: data['total_questions'] as String?,
         totalMarks: data['total_marks'] as String,
         reattemptCount: data['reattempt_count'] as String,
+        pdfUrl: data['pdf_url'] as String,
         result: data['result'] != null
             ? ResultModel.fromMap(data['result'] as Map<String, dynamic>)
             : null,
@@ -67,6 +70,7 @@ class TestSeries {
         'total_questions': totalQuestions,
         'total_marks': totalMarks,
         'reattempt_count': reattemptCount,
+        'pdf_url': pdfUrl,
         'result': result?.toMap(),
       };
 

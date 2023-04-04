@@ -554,7 +554,7 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onSubmit({String status = "Completed", String timerUP = ""}) {
-    //print("submit");
+    debug("Status === $status");
     ExamModel examModel = baseListViewModel?.viewModels[0].model as ExamModel;
     examModel.exam?.remainingExamTime = timerText;
     var message = status == ResultStatus.completed
@@ -571,20 +571,6 @@ class _ExamViewState extends State<ExamView> {
       //stopTimer();
       AppUtils.getAlert(context, [successMessage],
           onPressed: () => _onPressedAlert(resultId, status));
-      //  Navigator.pop(context);
-      // //stopTimer();
-      // AppUtils.getAlert(context, [successMessage],
-      //     onPressed: () => _onPressedAlert(resultId, status));
-      //      AppUtils.viewPush(
-      //     context,
-      //     MultiProvider(
-      //         providers: [
-      //           ChangeNotifierProvider(
-      //             create: (_) => ResultListViewModel(),
-      //           )
-      //         ],
-      //         child: ResultView(
-      //             resultId: resultId.toString(), userId: widget.userId)));
     }).catchError((error, stacktrace) {
       debug(stacktrace);
       AppUtils.onError(context, error);
@@ -595,8 +581,8 @@ class _ExamViewState extends State<ExamView> {
     AppUtils.printDebug("resultId = $resultId, status = $status");
     Navigator.of(context).pop();
     //Navigator.of(context).pop("reload");
-    if (status == ResultStatus.inProgress ||
-        (widget.reAttempt != null && (widget.reAttempt)!)) {
+  if (status == ResultStatus.inProgress) {
+      debug("re-attempt inprogress");
       Navigator.of(context).pop("reload");
 
       return;

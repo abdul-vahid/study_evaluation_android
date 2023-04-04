@@ -419,7 +419,7 @@ class _ResultViewState extends State<ResultView> {
       const SizedBox(
         height: 10,
       ),
-      _getQuestionBottom(model)
+      //_getQuestionBottom(model)
     ];
   }
 

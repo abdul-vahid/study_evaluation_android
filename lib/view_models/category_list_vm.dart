@@ -5,7 +5,8 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 class CategoryListViewModel extends BaseListViewModel {
   Future<void> fetch({String categoryId = ""}) async {
-    String url = AppUtils.getUrl(AppConstants.categoryAPIPath);
+    String url =
+        AppUtils.getUrl("${AppConstants.categoryAPIPath}?status=Active");
     if (categoryId.isNotEmpty) {
       url += "/$categoryId";
     }
