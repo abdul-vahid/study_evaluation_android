@@ -5,24 +5,25 @@ import 'package:video_player/video_player.dart';
 import '../view/views/fullscreen_videoplayer_view.dart';
 
 class AppVideoPlayer extends StatefulWidget {
-  String videoUrl;
+  final String videoUrl;
   String? type;
   AppVideoPlayer(this.videoUrl, {super.key, this.type});
 
   @override
-  AppVideoPlayerState createState() => AppVideoPlayerState(videoUrl);
+  AppVideoPlayerState createState() => AppVideoPlayerState();
 }
 
 class AppVideoPlayerState extends State<AppVideoPlayer> {
-  String videoUrl;
+  String videoUrl = "";
   String? type;
-  AppVideoPlayerState(this.videoUrl);
+  //AppVideoPlayerState(this.videoUrl); */
   late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
     type = widget.type;
+    videoUrl = widget.videoUrl;
     _controller = VideoPlayerController.network(videoUrl);
 
     _controller.addListener(() {
