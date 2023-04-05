@@ -756,24 +756,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
             },
           ),
         ));
-    //   child: Container(
-    //     height: 100,
-    //     width: MediaQuery.of(context).size.width,
-
-    //     decoration: BoxDecoration(
-    //         image: DecorationImage(
-    //       image: NetworkImage(AppUtils.getImageUrl(logoUrl)),
-    //       fit: BoxFit.fill,
-    //     )),
-    //     //  color: Color.fromARGB(255, 209, 208, 210),
-    //   ),
-    // );
   }
 
   BoxDecoration _getBoxDecoration() {
-    return BoxDecoration(
+    return const BoxDecoration(
       color: AppColor.containerBoxColor,
-      borderRadius: const BorderRadius.only(
+      borderRadius: BorderRadius.only(
           topRight: Radius.circular(8.0), topLeft: Radius.circular(8.0)),
     );
   }
