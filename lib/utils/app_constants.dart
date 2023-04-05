@@ -72,8 +72,7 @@ abstract class AppConstants {
     'API_VERSION',
     defaultValue: '',
   );
-  static const String imagePath = '/study_evaluation/public';
-  static const String videoPath = '/study_evaluation/public';
+
   static const String publicPath = '/study_evaluation/public';
   static const bool kDebugMode = true;
   static const String appUrlPath = 'https://www.google.com/';

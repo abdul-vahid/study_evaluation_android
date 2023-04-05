@@ -236,7 +236,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Container _getCurrentAffairsModelVideo(Document document) {
     //initVideo(videoUrl);
     return Container(
-      decoration: const BoxDecoration(color: Colors.white,
+      decoration: const BoxDecoration(
+          color: Colors.white,
           //  borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(
@@ -270,7 +271,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: AppVideoPlayer(
-          "${AppConstants.baseUrl + AppConstants.videoPath}/${document.documentUrl!}",
+          "${AppConstants.baseUrl + AppConstants.publicPath}/${document.documentUrl!}",
           type: type,
         ));
   }
@@ -745,8 +746,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
           width: MediaQuery.of(context).size.width,
           child: FadeInImage.assetNetwork(
             placeholder: "assets/images/loading.gif",
-            image:
-                '${AppConstants.baseUrl}${AppConstants.imagePath}/${logoUrl}',
+            image: '${AppConstants.baseUrl}${AppConstants.publicPath}/$logoUrl',
             fit: BoxFit.fill,
             imageErrorBuilder: (context, error, stackTrace) {
               return Image.asset(

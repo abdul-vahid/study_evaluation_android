@@ -243,7 +243,7 @@ class AppUtils {
       Center(child: Text(message));
 
   static String getImageUrl(logoUrl) {
-    return '${AppConstants.baseUrl}${AppConstants.imagePath}/$logoUrl';
+    return '${AppConstants.baseUrl}${AppConstants.publicPath}/$logoUrl';
   }
 
   static void viewPush(BuildContext context, Widget view) {

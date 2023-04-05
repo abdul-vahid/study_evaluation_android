@@ -11,14 +11,14 @@ import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
 import '../../view_models/latest_news_list_vm.dart';
 
-class LatestNewView extends StatefulWidget {
-  const LatestNewView({super.key});
+class LatestNewsView extends StatefulWidget {
+  const LatestNewsView({super.key});
 
   @override
-  State<LatestNewView> createState() => _LatestNewViewState();
+  State<LatestNewsView> createState() => _LatestNewsViewState();
 }
 
-class _LatestNewViewState extends State<LatestNewView> {
+class _LatestNewsViewState extends State<LatestNewsView> {
   late VideoPlayerController controller;
 
   LatestNewsListViewModel? baseListViewModel;
@@ -92,29 +92,7 @@ class _LatestNewViewState extends State<LatestNewView> {
     List<Widget> widgets = [];
     baseListViewModel?.latestNewsData.forEach((key, viewModels) {
       List<Widget> videoBottomSheetWidgets = [];
-      // videoBottomSheetWidgets.add(Container(
-      //     child: Padding(
-      //   padding:
-      //       const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-      //   child: Column(
-      //     children: [
-      //       Align(
-      //         alignment: Alignment.topLeft,
-      //         child: Text(
-      //           key,
-      //           style: const TextStyle(
-      //             // fontWeight: FontWeight.bold,
-      //             fontSize: 18, fontWeight: FontWeight.bold,
-      //             color: AppColor.textColor,
-      //           ),
-      //         ),
-      //       ),
-      //       Divider(
-      //         color: Colors.grey,
-      //       ),
-      //     ],
-      //   ),
-      // )));
+
       for (var viewModel in viewModels) {
         List<Widget> tempWidgets = [];
         LatestNewsModel model = viewModel.model as LatestNewsModel;
@@ -122,14 +100,9 @@ class _LatestNewViewState extends State<LatestNewView> {
           tempWidgets.add(getTitle(model.title));
         }
         if (model.imageUrl != null) {
-          print('model.imageUrl ${model.imageUrl}');
-          print(
-              'model.imageUrl ${AppConstants.baseUrl}${AppConstants.baseUrl}/${model.imageUrl}');
-
           tempWidgets.add(getImage(model.imageUrl));
         }
         if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
-          print('Video URL : ${model.videoUrl}');
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }
         if (model.pdfUrl != null) {
@@ -147,15 +120,6 @@ class _LatestNewViewState extends State<LatestNewView> {
         ));
       }
       widgets.addAll(videoBottomSheetWidgets);
-      /* widgets.add(Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Card(
-          elevation: 5,
-          child: Column(
-            children: videoBottomSheetWidgets,
-          ),
-        ),
-      )); */
     });
 
     return widgets;
@@ -322,7 +286,7 @@ class _VideoPlayerState extends State<_VideoPlayer> {
     super.initState();
 
     _controller = VideoPlayerController.network(
-        AppConstants.baseUrl + AppConstants.videoPath + '/' + videoUrl);
+        AppConstants.baseUrl + AppConstants.publicPath + '/' + videoUrl);
 
     _controller.addListener(() {
       setState(() {});

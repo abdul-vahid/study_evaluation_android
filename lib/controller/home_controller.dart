@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:study_evaluation/models/feedback_model.dart';
 import 'package:study_evaluation/models/home_tiles_model.dart';
 import 'package:study_evaluation/models/slider_image_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
-import 'package:study_evaluation/view/views/free_package_view.dart';
-import 'package:study_evaluation/view/views/latest_new_view.dart';
+import 'package:study_evaluation/view/views/latest_news_view.dart';
 import 'package:study_evaluation/view/views/package_list_view.dart';
 import 'package:study_evaluation/view/widgets/widget_utils.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
@@ -74,7 +72,7 @@ class HomeController {
       MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider(
             create: (_) => LatestNewsListViewModel(),
-            child: const LatestNewView()),
+            child: const LatestNewsView()),
       ),
     );
   }
@@ -310,7 +308,7 @@ class HomeController {
   Container _feedbackCardContainer(model) {
     if (model?.profileUrl != null) {
       profileUrl =
-          '${AppConstants.baseUrl}${AppConstants.imagePath}/${model.profileUrl}';
+          '${AppConstants.baseUrl}${AppConstants.publicPath}/${model.profileUrl}';
     }
 
     return Container(
