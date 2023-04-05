@@ -5,6 +5,7 @@ class Document {
   String? type;
   String? documentName;
   String? documentUrl;
+  String? downloadedDocumentUrl;
   String? contentType;
 
   Document(

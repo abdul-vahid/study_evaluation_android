@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/app_color.dart';
+import '../../utils/function_lib.dart';
 
 class ContactUsView extends StatefulWidget {
   const ContactUsView({super.key});
@@ -57,40 +59,54 @@ class _ContactUsViewState extends State<ContactUsView> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 50, right: 20, bottom: 10),
-            child: Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.phone,
-                  color: Colors.black,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-              ],
-            )),
+            child: InkWell(
+              onTap: () {
+                AppUtils.makePhoneCall(text);
+              },
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.phone,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    text,
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ],
+              )),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 50, right: 20, bottom: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.email, color: Colors.black),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  textEmail,
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-              ],
+            child: InkWell(
+              onTap: () async {
+                final url = 'mailto:$textEmail?subject=&body=';
+                final uri = Uri.parse(url);
+                debug("url = $url");
+
+                if (!await launchUrl(uri)) {}
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.email, color: Colors.black),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    textEmail,
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ],
+              ),
             ),
           )
         ],

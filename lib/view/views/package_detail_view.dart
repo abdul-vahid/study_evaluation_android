@@ -14,6 +14,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/pdf_view.dart';
 import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
@@ -42,6 +43,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   PackageModel? model;
   Package? package;
   String? _selectedFont = "15";
+  var remotePDFpath = "";
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -212,7 +214,33 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 if (userModel?.role?.toLowerCase() != "student" ||
                     document.type == "Free" ||
                     package?.validityStatus == "PURCHASED") {
-                  AppUtils.openDocument(context, document.documentUrl);
+                  if (document.downloadedDocumentUrl == null) {
+                    AppUtils.onLoading(context, "Downloading File...");
+                    AppUtils.createFileOfPdfUrl(
+                            '${AppConstants.baseUrl}${AppConstants.publicPath}/${document.documentUrl}')
+                        .then((f) {
+                      document.downloadedDocumentUrl = f.path;
+                      debug("remotePDF === ${document.downloadedDocumentUrl}");
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PDFViewer(path: document.downloadedDocumentUrl),
+                        ),
+                      );
+                    });
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PDFViewer(path: document.downloadedDocumentUrl),
+                      ),
+                    );
+                  }
+
+                  //AppUtils.openDocument(context, document.documentUrl);
                 } else {
                   AppUtils.getAlert(
                       context, ["Please buy package to view the PDF!"]);
@@ -236,8 +264,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Container _getCurrentAffairsModelVideo(Document document) {
     //initVideo(videoUrl);
     return Container(
-      decoration: const BoxDecoration(
-          color: Colors.white,
+      decoration: const BoxDecoration(color: Colors.white,
           //  borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(

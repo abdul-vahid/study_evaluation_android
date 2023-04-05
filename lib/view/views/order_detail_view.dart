@@ -66,7 +66,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                     getColumn('Payment Status', widget.myOrder.paymentStatus),
                     getColumn('Validity', widget.myOrder.validity),
                     getColumn('Status', widget.myOrder.status),
-                    getButton(),
+                    //getButton(),
                   ],
                 ),
               )
@@ -75,40 +75,40 @@ class _OrderDetailViewState extends State<OrderDetailView> {
     );
   }
 
-  Padding getButton() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFfef5e6),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Back',
-              style: TextStyle(fontSize: 15, color: Colors.black),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.buttonColor,
-            ),
-            onPressed: (() {
-              onButtonPressed(widget.myOrder.packageId);
-            }),
-            child: const Text(
-              'Show Package',
-              style: TextStyle(fontSize: 15),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Padding getButton() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         ElevatedButton(
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: const Color(0xFFfef5e6),
+  //           ),
+  //           onPressed: () {
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text(
+  //             'Back',
+  //             style: TextStyle(fontSize: 15, color: Colors.black),
+  //           ),
+  //         ),
+  //         ElevatedButton(
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: AppColor.buttonColor,
+  //           ),
+  //           onPressed: (() {
+  //             onButtonPressed(widget.myOrder.packageId);
+  //           }),
+  //           child: const Text(
+  //             'Show Package',
+  //             style: TextStyle(fontSize: 15),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Column getColumn(String label, String profileInput) {
     return Column(

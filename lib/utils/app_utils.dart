@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +25,8 @@ import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 class AppUtils {
   static bool isLoggedout = false;
@@ -373,11 +378,37 @@ class AppUtils {
     debug("url = $url");
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (!await launchUrl(uri, mode: LaunchMode.platformDefault)) {
         await AppUtils.getAlert(context, ["Can't open pdf"]);
       }
     } else {
       await AppUtils.getAlert(context, ["Can't open pdf"]);
     }
+  }
+
+  static Future<File> createFileOfPdfUrl(url) async {
+    Completer<File> completer = Completer();
+    print("Start download file from internet! $url");
+    try {
+      // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
+      // final url = "https://pdfkit.org/docs/guide.pdf";
+      //final url = "http://www.pdf995.com/samples/pdf.pdf";
+      final filename = url.substring(url.lastIndexOf("/") + 1);
+      var request = await HttpClient().getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      var dir = await getApplicationDocumentsDirectory();
+      print("Download files");
+      print("${dir.path}/$filename");
+      File file = File("${dir.path}/$filename");
+
+      await file.writeAsBytes(bytes, flush: true);
+      completer.complete(file);
+    } catch (e) {
+      debug("Exception PDF == $e");
+      //throw Exception('Error parsing asset file!');
+    }
+
+    return completer.future;
   }
 }
