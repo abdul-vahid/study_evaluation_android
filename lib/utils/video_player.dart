@@ -75,7 +75,7 @@ class AppVideoPlayerState extends State<AppVideoPlayer> {
   }
 }
 
-class _ControlsOverlay extends StatelessWidget {
+class _ControlsOverlay extends StatefulWidget {
   String? type = "";
   String? videoUrl;
   _ControlsOverlay(
@@ -107,13 +107,18 @@ class _ControlsOverlay extends StatelessWidget {
   final VideoPlayerController controller;
 
   @override
+  State<_ControlsOverlay> createState() => _ControlsOverlayState();
+}
+
+class _ControlsOverlayState extends State<_ControlsOverlay> {
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 50),
           reverseDuration: const Duration(milliseconds: 200),
-          child: controller.value.isPlaying
+          child: widget.controller.value.isPlaying
               ? const SizedBox.shrink()
               : Container(
                   color: Colors.black26,
@@ -129,13 +134,13 @@ class _ControlsOverlay extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if (type.toString() == "buy") {
+            if (widget.type.toString() == "buy") {
               AppUtils.getAlert(
                   context, ["Please buy the package to play the Video"]);
             } else {
-              controller.value.isPlaying
-                  ? controller.pause()
-                  : controller.play();
+              widget.controller.value.isPlaying
+                  ? widget.controller.pause()
+                  : widget.controller.play();
             }
           },
         ),
@@ -146,13 +151,12 @@ class _ControlsOverlay extends StatelessWidget {
             color: Colors.white,
             icon: const Icon(Icons.fullscreen),
             onPressed: () {
-              controller.pause();
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        FullVideoPlayerView(videoUrl: videoUrl.toString())),
-              );
+                    builder: (context) => FullVideoPlayerView(
+                        videoUrl: widget.videoUrl.toString())),
+              ).then((value) {});
             },
           ),
         )

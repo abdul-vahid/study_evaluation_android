@@ -274,7 +274,18 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: AppVideoPlayer(
-            "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl"));
+        child: /*  ElevatedButton(
+          child: Text("Open"),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FullVideoPlayerView(
+                        videoUrl:
+                            "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl")));
+          },
+        )); */
+            AppVideoPlayer(
+                "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl"));
   }
 }
