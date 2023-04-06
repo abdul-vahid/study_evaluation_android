@@ -4,20 +4,20 @@ import 'package:video_player/video_player.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 
 // ignore: must_be_immutable
-class FullVideoPlayerView extends StatefulWidget {
+class FullScreenVideoPlayerView extends StatefulWidget {
   String videoUrl;
-  FullVideoPlayerView({super.key, required this.videoUrl});
+  FullScreenVideoPlayerView({super.key, required this.videoUrl});
 
   @override
   // ignore: library_private_types_in_public_api
-  _FullVideoPlayerViewState createState() =>
+  _FullScreenVideoPlayerViewState createState() =>
       // ignore: no_logic_in_create_state
-      _FullVideoPlayerViewState(videoUrl);
+      _FullScreenVideoPlayerViewState(videoUrl);
 }
 
-class _FullVideoPlayerViewState extends State<FullVideoPlayerView> {
+class _FullScreenVideoPlayerViewState extends State<FullScreenVideoPlayerView> {
   String videoUrl;
-  _FullVideoPlayerViewState(this.videoUrl);
+  _FullScreenVideoPlayerViewState(this.videoUrl);
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
 

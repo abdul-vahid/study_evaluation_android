@@ -31,7 +31,7 @@ class _ContactUsViewState extends State<ContactUsView> {
                 padding: EdgeInsets.all(20),
                 child: Column(children: [
                   getCard('Contact Us', '+9186199-90680',
-                      'studyevaluation@gmail.com'),
+                      'Studysevaluation@gmail.com'),
                 ]))));
   }
 

@@ -146,8 +146,8 @@ class _ControlsOverlay extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        FullVideoPlayerView(videoUrl: videoUrl.toString())),
+                    builder: (context) => FullScreenVideoPlayerView(
+                        videoUrl: videoUrl.toString())),
               );
             },
           ),
