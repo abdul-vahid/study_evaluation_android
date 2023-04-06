@@ -25,12 +25,7 @@ class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: Text("Document"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
-          ),
-        ],
+        centerTitle: true,
       ),
       body: Stack(
         children: <Widget>[
