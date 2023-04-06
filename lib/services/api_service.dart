@@ -26,7 +26,7 @@ class APIService {
   }
 
   Future postResponse(String url, var body, String token) async {
-    AppUtils.printDebug("API Serivce URL = ${url.substring(6)}");
+    //debug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
       final response = await http.post(Uri.parse(url), body: body, headers: {
@@ -93,7 +93,7 @@ class APIService {
         throw BadRequestException(response.body.toString());
       case 401:
       case 403:
-        AppUtils.printDebug("Un Authorise");
+        debug("Un Authorise");
         throw UnauthorisedException(response.body.toString());
       case 500:
       default:

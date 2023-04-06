@@ -92,7 +92,7 @@ class UserListViewModel extends BaseListViewModel {
       await prefs.setString(
           SharedPrefsConstants.userKey, loginModelMap[0].toJson());
       var sessionTime = DateTime.now().toString();
-      AppUtils.printDebug("Session Time ==== $sessionTime");
+
       await prefs.setString(SharedPrefsConstants.sessionTimeKey, sessionTime);
     }
     return loginModelMap.map((item) => UserViewModel(model: item)).toList();

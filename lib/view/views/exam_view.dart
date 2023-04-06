@@ -207,8 +207,6 @@ class _ExamViewState extends State<ExamView> {
                 baseListViewModel?.viewModels[0].model.questionModels);
       },
     ).then((value) {
-      //print("Dialog Value = $value");
-
       if (value != null) {
         Scrollable.ensureVisible(
           (_keys?[value].currentContext)!,
@@ -356,7 +354,7 @@ class _ExamViewState extends State<ExamView> {
         (model.exam?.remainingExamTime?.isNotEmpty)! &&
         !widget.reAttempt!) {
       String remainingTime = (model.exam?.remainingExamTime)!;
-      //print("remaingTime $remainingTime");
+
       List<String> remainingTimes = remainingTime.split(":");
       int hours = int.tryParse(remainingTimes[0])!;
       int minutes = int.tryParse(remainingTimes[1])!;
@@ -578,13 +576,10 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onPressedAlert(resultId, status) {
-    AppUtils.printDebug("resultId = $resultId, status = $status");
     Navigator.of(context).pop();
     //Navigator.of(context).pop("reload");
-  if (status == ResultStatus.inProgress) {
-      debug("re-attempt inprogress");
+    if (status == ResultStatus.inProgress) {
       Navigator.of(context).pop("reload");
-
       return;
     }
 

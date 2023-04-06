@@ -24,13 +24,16 @@ class AppVideoPlayerState extends State<AppVideoPlayer> {
     super.initState();
     type = widget.type;
     videoUrl = widget.videoUrl;
-    _controller = VideoPlayerController.network(videoUrl);
-
+    //_controller = VideoPlayerController.network(videoUrl);
+    _controller = VideoPlayerController.network(videoUrl)
+      ..initialize().then((_) {
+        setState(() {}); //when your thumbnail will show.
+      });
     _controller.addListener(() {
       setState(() {});
     });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
+    _controller.setLooping(false);
+    //_controller.initialize().then((_) => setState(() {}));
     _controller.pause();
   }
 
@@ -143,6 +146,7 @@ class _ControlsOverlay extends StatelessWidget {
             color: Colors.white,
             icon: const Icon(Icons.fullscreen),
             onPressed: () {
+              controller.pause();
               Navigator.push(
                 context,
                 MaterialPageRoute(

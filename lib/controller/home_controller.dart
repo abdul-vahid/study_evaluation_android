@@ -151,7 +151,6 @@ class HomeController {
     return InkWell(
       onTap: () {
         if (model.packageId != null) {
-          print('packageId ${model.packageId}');
           Navigator.push(
             context,
             MaterialPageRoute(

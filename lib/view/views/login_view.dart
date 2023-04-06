@@ -55,7 +55,6 @@ class _LoginViewState extends State<LoginView> {
   }
 
   SingleChildScrollView _getBody(BuildContext context) {
-    AppUtils.printDebug("loginviewbody");
     return SingleChildScrollView(
       child: Form(
         key: _loginFormKey,
@@ -86,7 +85,6 @@ class _LoginViewState extends State<LoginView> {
               // initialValue: "Admin@123",
               onSaved: ((value) {
                 _password = value;
-                print('_Password @@@@ $_password');
               }),
               obscureText: passwordVisible,
               suffix: Padding(
@@ -148,7 +146,6 @@ class _LoginViewState extends State<LoginView> {
           AppUtils.launchTab(context);
         }
       }).catchError((error, stackTrace) {
-        AppUtils.printDebug("error = $stackTrace");
         Navigator.pop(context);
         List<String> errorMessages = AppUtils.getErrorMessages(error);
         AppUtils.getAlert(context, errorMessages, title: "Error Alert");

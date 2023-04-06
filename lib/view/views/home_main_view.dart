@@ -70,7 +70,6 @@ class _HomeMainViewState extends State<HomeMainView> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      AppUtils.printDebug("_selected = $_selectedIndex");
     });
   }
 

@@ -14,7 +14,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
-import 'package:study_evaluation/view/views/pdf_view.dart';
+import 'package:study_evaluation/view/views/pdf_viewer.dart';
 import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
