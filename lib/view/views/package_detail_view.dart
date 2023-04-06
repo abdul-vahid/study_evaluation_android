@@ -264,7 +264,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Container _getCurrentAffairsModelVideo(Document document) {
     //initVideo(videoUrl);
     return Container(
-      decoration: const BoxDecoration(color: Colors.white,
+      decoration: const BoxDecoration(
+          color: Colors.white,
           //  borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(
@@ -416,7 +417,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     if ((testSeries.type != "Free" &&
         (package?.validityStatus == "PURCHASED" ||
             userModel?.role?.toLowerCase() != "student"))) {
-      widgets.add(AppUtils.getElevatedButton('Scheduled',
+      widgets.add(AppUtils.getElevatedButton('Schedule',
           onPressed: () => _scheduledButton(testSeries),
           buttonStyle: ElevatedButton.styleFrom(
               backgroundColor: AppColor.buttonColor // foreground

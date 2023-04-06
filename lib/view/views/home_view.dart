@@ -74,6 +74,7 @@ class _HomeViewState extends State<HomeView> {
       drawer: const AppDrawerWidget(),
       appBar: AppBar(
         title: Text("Home"),
+        backgroundColor: AppColor.appBarColor,
         centerTitle: true,
       ),
       body: RefreshIndicator(

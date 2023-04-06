@@ -63,7 +63,9 @@ class _NotificationViewState extends State<NotificationView> {
     });
 
     for (var viewModel in baseListViewModel!.viewModels) {
-      widgets.add(getSlidable(viewModel.model, index++));
+      if (viewModel.model.title != null && viewModel.model.message != null) {
+        widgets.add(getSlidable(viewModel.model, index++));
+      }
     }
 
     return widgets;

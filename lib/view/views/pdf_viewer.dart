@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 
+import '../../utils/app_color.dart';
+
 class PDFViewer extends StatefulWidget {
   final String? path;
 
@@ -26,6 +28,7 @@ class PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Document"),
+        backgroundColor: AppColor.appBarColor,
         centerTitle: true,
       ),
       body: Stack(
