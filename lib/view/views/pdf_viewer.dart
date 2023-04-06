@@ -25,7 +25,8 @@ class PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Document"),
+        title: const Text("Document"),
+        centerTitle: true,
       ),
       body: Stack(
         children: <Widget>[

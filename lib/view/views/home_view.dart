@@ -230,9 +230,10 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(12.0),
-                      child: Icon(
-                        Icons.whatshot,
-                        color: Colors.green,
+                      child: Image.asset(
+                        'assets/images/whatsapp.png',
+                        height: 25,
+                        width: 30,
                       ),
                     ),
                   ),
