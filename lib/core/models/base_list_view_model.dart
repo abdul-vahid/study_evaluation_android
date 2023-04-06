@@ -88,7 +88,6 @@ class BaseListViewModel extends ChangeNotifier {
         accessToken = jsonObject["access_token"];
         refreshToken = jsonObject["refresh_token"];
         debug("Refresh Token == $refreshToken");
-        AppUtils.printDebug("refreshtoken $accessToken -- $refreshToken");
 
         await prefs.setString(SharedPrefsConstants.accessTokenKey, accessToken);
         await prefs.setString(
@@ -97,7 +96,6 @@ class BaseListViewModel extends ChangeNotifier {
             SharedPrefsConstants.sessionTimeKey, DateTime.now().toString());
       }
     } on UnauthorisedException {
-      AppUtils.printDebug("URL = ${url.substring(4)}");
       //showAlert and Logout
       AppUtils.getAlert(AppUtils.currentContext!, [
         "You have been logged out!",
@@ -105,19 +103,16 @@ class BaseListViewModel extends ChangeNotifier {
         AppUtils.logout(AppUtils.currentContext);
       });
     } on AppException catch (error) {
-      AppUtils.printDebug("error = $error");
       status = "Error";
       viewModels.add(
           BaseViewModel(model: BaseModel(appException: error, error: null)));
     } on Exception catch (error) {
       status = "Error";
-      AppUtils.printDebug("error = $error");
+
       viewModels.add(
           BaseViewModel(model: BaseModel(appException: null, error: error)));
     } catch (e, stackTrace) {
       status = "Error";
-      AppUtils.printDebug(stackTrace);
-
       viewModels.add(BaseViewModel(
           model:
               BaseModel(appException: null, error: Exception(e.toString()))));
@@ -144,7 +139,7 @@ class BaseListViewModel extends ChangeNotifier {
     try {
       final jsonObject = await BaseService().post(url: url, body: body);
       final records = jsonObject[jsonKey];
-      AppUtils.printDebug('records$records');
+
       var modelMap = records.map((item) => baseModel.fromMap(item)).toList();
       viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
       status = "Completed";
@@ -152,7 +147,7 @@ class BaseListViewModel extends ChangeNotifier {
       await _refreshToken(url, jsonKey);
       final jsonObject = await BaseService().post(url: url, body: body);
       final records = jsonObject[jsonKey];
-      AppUtils.printDebug('records$records');
+
       var modelMap = records.map((item) => baseModel.fromMap(item)).toList();
       viewModels = modelMap.map((item) => BaseViewModel(model: item)).toList();
       status = "Completed";
@@ -166,9 +161,6 @@ class BaseListViewModel extends ChangeNotifier {
           .add(BaseViewModel(model: BaseModel(appException: null, error: e)));
     } catch (e) {
       status = "Error";
-      AppUtils.printDebug(e);
-      //print(stacktrace);
-      //viewModels.add(BaseViewModel(model: ExamModel(error: e as Exception)));
     }
 
     notifyListeners();

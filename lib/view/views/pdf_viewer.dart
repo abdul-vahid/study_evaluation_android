@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 
 class PDFViewer extends StatefulWidget {
   final String? path;
 
-  PDFViewer({Key? key, this.path}) : super(key: key);
+  const PDFViewer({Key? key, this.path}) : super(key: key);
 
-  _PDFViewerState createState() => _PDFViewerState();
+  @override
+  PDFViewerState createState() => PDFViewerState();
 }
 
-class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
+class PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
   final Completer<PDFViewController> _controller =
       Completer<PDFViewController>();
   int? pages = 0;
@@ -25,12 +26,6 @@ class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: Text("Document"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Stack(
         children: <Widget>[
@@ -38,7 +33,7 @@ class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
             filePath: widget.path,
             enableSwipe: true,
             swipeHorizontal: true,
-            autoSpacing: false,
+            autoSpacing: true,
             pageFling: true,
             pageSnap: true,
             defaultPage: currentPage!,
@@ -55,24 +50,24 @@ class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
               setState(() {
                 errorMessage = error.toString();
               });
-              print(error.toString());
+              //debug(error.toString());
             },
             onPageError: (page, error) {
               setState(() {
                 errorMessage = '$page: ${error.toString()}';
               });
-              print('$page: ${error.toString()}');
+              debug('$page: ${error.toString()}');
             },
             onViewCreated: (PDFViewController pdfViewController) {
               _controller.complete(pdfViewController);
             },
             onLinkHandler: (String? uri) {
-              print('goto uri: $uri');
+              //debug('goto uri: $uri');
             },
             onPageChanged: (int? page, int? total) {
-              print('page change: $page/$total');
+              //debug('page change: $page/$total');
               setState(() {
-                currentPage = page;
+                currentPage = page! + 1;
               });
             },
           ),
@@ -92,9 +87,12 @@ class _PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
         builder: (context, AsyncSnapshot<PDFViewController> snapshot) {
           if (snapshot.hasData) {
             return FloatingActionButton.extended(
-              label: Text("Go to ${pages! ~/ 2}"),
+              label: Text("$currentPage/$pages"),
               onPressed: () async {
-                await snapshot.data!.setPage(pages! ~/ 2);
+                currentPage =
+                    currentPage == pages ? currentPage : currentPage! + 1;
+                //debug("curretnPage == $currentPage");
+                await snapshot.data!.setPage(currentPage! - 1);
               },
             );
           }

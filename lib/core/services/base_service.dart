@@ -1,5 +1,6 @@
 import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 
 class BaseService {
   static final APIService _apiService = APIService();
@@ -15,7 +16,7 @@ class BaseService {
     token ??= "";
     printLongString("body = $body");
     final responseJsonData = await _apiService.postResponse(url, body, token);
-    AppUtils.printDebug("responseJsonData: $responseJsonData");
+    //debug("responseJsonData: $responseJsonData");
     return responseJsonData;
   }
 
@@ -24,6 +25,6 @@ class BaseService {
     final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
     pattern
         .allMatches(text)
-        .forEach((RegExpMatch match) => AppUtils.printDebug(match.group(0)));
+        .forEach((RegExpMatch match) => debug(match.group(0)));
   }
 }

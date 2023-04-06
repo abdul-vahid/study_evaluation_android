@@ -72,7 +72,6 @@ class AppUtils {
 
   static getAlert(BuildContext context, List<String> values,
       {title = "", buttonLabel = 'OK', void Function()? onPressed}) {
-    AppUtils.printDebug("getAlert");
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -153,12 +152,6 @@ class AppUtils {
         return alert;
       },
     );
-  }
-
-  static void printDebug(message) {
-    if (AppConstants.kDebugMode) {
-      print(message);
-    }
   }
 
   static List<String> getErrorMessages(exception) {

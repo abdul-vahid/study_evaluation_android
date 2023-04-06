@@ -173,7 +173,6 @@ class _ResultViewState extends State<ResultView> {
         );
       }
       if (isRefresh) {
-        AppUtils.printDebug("base list view model");
         Navigator.pop(context);
         isRefresh = false;
       }
@@ -199,7 +198,6 @@ class _ResultViewState extends State<ResultView> {
           getButtons('${AppUtils.capitalize(key)}(${value})', onPressed: () {
         setState(() {
           _selectedFilter = key;
-          print('_selectedFilter === =$_selectedFilter --- $key');
         });
       }));
     });
@@ -332,7 +330,6 @@ class _ResultViewState extends State<ResultView> {
 
     filtersMap = Map.fromEntries(filtersMap.entries.toList()
       ..sort((e1, e2) => e1.key.compareTo(e2.key)));
-    AppUtils.printDebug(filtersMap);
   }
 
   void _loadFilterMap(key) {
@@ -644,7 +641,6 @@ class _ResultViewState extends State<ResultView> {
       onChanged: (value) {
         setState(() {
           _selectedLanguage = value!;
-          AppUtils.printDebug("_selectedLanguage = $_selectedLanguage");
           Navigator.pop(context);
         });
       },

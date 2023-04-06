@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
         (configListViewModel?.viewModels.isNotEmpty)!)) {
       ConfigurationModel configModel =
           configListViewModel?.viewModels[0].model as ConfigurationModel;
-      AppUtils.printDebug(jsonEncode(configModel));
+
       if (!configModel.isError) {
         if (isRefresh) {
           Navigator.pop(context);
@@ -231,7 +231,7 @@ class _HomeViewState extends State<HomeView> {
                     child: Padding(
                       padding: EdgeInsets.all(12.0),
                       child: Icon(
-                        Icons.whatsapp_rounded,
+                        Icons.whatshot,
                         color: Colors.green,
                       ),
                     ),

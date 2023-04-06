@@ -1,13 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/view/views/notifications_view.dart';
-import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
 
 class NotificationUtil {
@@ -71,21 +68,9 @@ class NotificationUtil {
     _firebaseMessaging!.getToken().then((token) {
       //TokenService tokenService = TokenService();
 
-      AppUtils.printDebug("FCM Token = $token");
-      UserListViewModel().registerFCMToken(token!).then((value) {
-        AppUtils.printDebug("value = $value");
-      }, onError: (error, stackTrace) {
-        AppUtils.printDebug("FCM Error: $error");
-        AppUtils.printDebug("FCM Error: $stackTrace");
-      });
+      UserListViewModel()
+          .registerFCMToken(token!)
+          .then((value) {}, onError: (error, stackTrace) {});
     });
-  }
-
-  void onTextReceived(String? page) {
-    /* if (page != null) {
-      try {
-        Navigator.pushNamed(context!, '/$page');
-      } catch (_) {}
-    } */
   }
 }
