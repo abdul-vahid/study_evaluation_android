@@ -139,23 +139,23 @@ class _ControlsOverlay extends StatelessWidget {
             }
           },
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: IconButton(
-            iconSize: 40,
-            color: Colors.white,
-            icon: const Icon(Icons.fullscreen),
-            onPressed: () {
-              controller.pause();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FullScreenVideoPlayerView(
-                        videoUrl: videoUrl.toString())),
-              );
-            },
-          ),
-        )
+        // Align(
+        //   alignment: Alignment.bottomRight,
+        //   child: IconButton(
+        //     iconSize: 40,
+        //     color: Colors.white,
+        //     icon: const Icon(Icons.fullscreen),
+        //     onPressed: () {
+        //       controller.pause();
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => FullScreenVideoPlayerView(
+        //                 videoUrl: videoUrl.toString())),
+        //       );
+        //     },
+        //   ),
+        // )
         // Align(
         //   alignment: Alignment.topLeft,
         //   child: PopupMenuButton<Duration>(
