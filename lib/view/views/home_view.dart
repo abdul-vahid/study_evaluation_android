@@ -133,116 +133,121 @@ class _HomeViewState extends State<HomeView> {
     ));
   }
 
-  Padding _footer() {
+  SingleChildScrollView _footer() {
     return _getHelpLineNumberWidget();
   }
 
-  Padding _getHelpLineNumberWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () {
-              if (helpLineNumber.isNotEmpty) {
-                AppUtils.makePhoneCall(helpLineNumber);
-              }
-            },
-            child: Container(
-              // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 6.0),
-                    height: 36.0,
-                    decoration: BoxDecoration(
-                      color: AppColor.buttonColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                      //boxShadow: [BoxShadow(blurRadius: 12.0)],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
-                      child: Text(
-                        'Helpline No. $helpLineNumber',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 2.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      //boxShadow: [BoxShadow(blurRadius: 12.0)],
-                      border: Border.all(color: AppColor.buttonColor, width: 2),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Icon(
-                        Icons.wifi_calling_3,
+  SingleChildScrollView _getHelpLineNumberWidget() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      //physics: NeverScrollableScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                if (helpLineNumber.isNotEmpty) {
+                  AppUtils.makePhoneCall(helpLineNumber);
+                }
+              },
+              child: Container(
+                // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, left: 6.0),
+                      height: 36.0,
+                      decoration: BoxDecoration(
                         color: AppColor.buttonColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        //boxShadow: [BoxShadow(blurRadius: 12.0)],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
+                        child: Text(
+                          'Helpline No. $helpLineNumber',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(top: 2.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        //boxShadow: [BoxShadow(blurRadius: 12.0)],
+                        border:
+                            Border.all(color: AppColor.buttonColor, width: 2),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Icon(
+                          Icons.wifi_calling_3,
+                          color: AppColor.buttonColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () async {
-              final url =
-                  'https://wa.me/$helpLineNumber?text=Hello SE Team, We need your help!';
+            InkWell(
+              onTap: () async {
+                final url =
+                    'https://wa.me/$helpLineNumber?text=Hello SE Team, We need your help!';
 
-              await launchUrlString(
-                url,
-                mode: LaunchMode.externalApplication,
-              );
-            },
-            child: Container(
-              // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 6.0),
-                    height: 36.0,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10.0),
-                      //boxShadow: [BoxShadow(blurRadius: 12.0)],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
-                      child: Text(
-                        'Whatsapp',
-                        style: TextStyle(color: Colors.white),
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              },
+              child: Container(
+                // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, left: 6.0),
+                      height: 36.0,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10.0),
+                        //boxShadow: [BoxShadow(blurRadius: 12.0)],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(55.0, 10.0, 10.0, 0.0),
+                        child: Text(
+                          'Whatsapp',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 2.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      //boxShadow: [BoxShadow(blurRadius: 12.0)],
-                      border: Border.all(color: Colors.green, width: 2),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Image.asset(
-                        'assets/images/whatsapp.png',
-                        height: 25,
-                        width: 30,
+                    Container(
+                      margin: const EdgeInsets.only(top: 2.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        //boxShadow: [BoxShadow(blurRadius: 12.0)],
+                        border: Border.all(color: Colors.green, width: 2),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Image.asset(
+                          'assets/images/whatsapp.png',
+                          height: 25,
+                          width: 30,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

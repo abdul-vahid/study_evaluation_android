@@ -371,7 +371,7 @@ class AppUtils {
     debug("url = $url");
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      if (!await launchUrl(uri, mode: LaunchMode.platformDefault)) {
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
         await AppUtils.getAlert(context, ["Can't open pdf"]);
       }
     } else {
