@@ -9,6 +9,7 @@ import '../../models/latest_news_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/video_player.dart';
 import '../../view_models/latest_news_list_vm.dart';
 
 class LatestNewsView extends StatefulWidget {
@@ -22,7 +23,7 @@ class _LatestNewsViewState extends State<LatestNewsView> {
   late VideoPlayerController controller;
 
   LatestNewsListViewModel? baseListViewModel;
-  LatestNewsModel? currentAffairsModel;
+  LatestNewsModel? latestNewsModel;
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -103,7 +104,7 @@ class _LatestNewsViewState extends State<LatestNewsView> {
           tempWidgets.add(getImage(model.imageUrl));
         }
         if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
-          tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
+          tempWidgets.add(_getLatestNewsModelVideo(model.videoUrl));
         }
         if (model.pdfUrl != null) {
           tempWidgets.add(_bottomSheet(model));
@@ -125,7 +126,7 @@ class _LatestNewsViewState extends State<LatestNewsView> {
     return widgets;
   }
 
-  Padding _bottomSheet(currentAffairsModel) {
+  Padding _bottomSheet(latestNewsModel) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
@@ -133,14 +134,15 @@ class _LatestNewsViewState extends State<LatestNewsView> {
         children: [
           TextButton.icon(
               onPressed: () async {
-                final url =
-                    '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.pdfUrl}';
-                final uri = Uri.parse(url);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
-                } else {
-                  throw 'Could not launch $url';
-                }
+                AppUtils.openDocument(context, latestNewsModel?.pdfUrl);
+                // final url =
+                //     '${AppConstants.baseUrl}${AppConstants.baseUrl}/${latestNewsModel?.pdfUrl}';
+                // final uri = Uri.parse(url);
+                // if (await canLaunchUrl(uri)) {
+                //   await launchUrl(uri);
+                // } else {
+                //   throw 'Could not launch $url';
+                // }
               },
               icon: const Icon(
                 Icons.picture_as_pdf,
@@ -154,9 +156,14 @@ class _LatestNewsViewState extends State<LatestNewsView> {
           TextButton.icon(
               onPressed: () => {
                     Share.share(
-                        '${AppConstants.baseUrl}${AppConstants.baseUrl}/${currentAffairsModel?.documentUrl}',
+                        '${AppConstants.baseUrl}${AppConstants.publicPath}/${latestNewsModel?.documentUrl}',
                         subject: 'Welcome Message')
                   },
+              // onPressed: () => {
+              //       Share.share(
+              //           '${AppConstants.baseUrl}${AppConstants.baseUrl}/${latestNewsModel?.documentUrl}',
+              //           subject: 'Welcome Message')
+              //     },
               icon: const Icon(
                 Icons.share,
                 color: Colors.black,
@@ -228,29 +235,26 @@ class _LatestNewsViewState extends State<LatestNewsView> {
     );
   }
 
-  Padding _getCurrentAffairsModelVideo(videoUrl) {
+  Container _getLatestNewsModelVideo(videoUrl) {
     //initVideo(videoUrl);
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            //  borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12,
-                  //offset: Offset(0, 0),
-                  blurRadius: 5,
-                  spreadRadius: 1)
-            ]),
-        child: Column(
-          children: [
-            // Text(''),
-            _getVideoContainer(videoUrl),
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          //  borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                //offset: Offset(0, 0),
+                blurRadius: 5,
+                spreadRadius: 1)
+          ]),
+      child: Column(
+        children: [
+          // Text(''),
+          _getVideoContainer(videoUrl),
 
-            //
-          ],
-        ),
+          //
+        ],
       ),
     );
   }
@@ -262,182 +266,183 @@ class _LatestNewsViewState extends State<LatestNewsView> {
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: _VideoPlayer(videoUrl));
+        child: AppVideoPlayer(
+            "${AppConstants.baseUrl}${AppConstants.publicPath}/$videoUrl"));
   }
 }
 
-class _VideoPlayer extends StatefulWidget {
-  String videoUrl;
-  _VideoPlayer(this.videoUrl);
+// class _VideoPlayer extends StatefulWidget {
+//   String videoUrl;
+//   _VideoPlayer(this.videoUrl);
 
-  @override
-  _VideoPlayerState createState() => _VideoPlayerState(videoUrl);
-}
+//   @override
+//   _VideoPlayerState createState() => _VideoPlayerState(videoUrl);
+// }
 
-class _VideoPlayerState extends State<_VideoPlayer> {
-  String videoUrl;
-  _VideoPlayerState(this.videoUrl);
-  late VideoPlayerController _controller;
+// class _VideoPlayerState extends State<_VideoPlayer> {
+//   String videoUrl;
+//   _VideoPlayerState(this.videoUrl);
+//   late VideoPlayerController _controller;
 
-  @override
-  void initState() {
-    super.initState();
+//   @override
+//   void initState() {
+//     super.initState();
 
-    _controller = VideoPlayerController.network(
-        AppConstants.baseUrl + AppConstants.publicPath + '/' + videoUrl);
+//     _controller = VideoPlayerController.network(
+//         AppConstants.baseUrl + AppConstants.publicPath + '/' + videoUrl);
 
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.pause();
-  }
+//     _controller.addListener(() {
+//       setState(() {});
+//     });
+//     _controller.setLooping(true);
+//     _controller.initialize().then((_) => setState(() {}));
+//     _controller.pause();
+//   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          // Container(
-          //   padding: const EdgeInsets.only(top: 20.0),
-          // ),
-          AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                VideoPlayer(_controller),
-                _ControlsOverlay(controller: _controller),
-                VideoProgressIndicator(
-                  _controller,
-                  allowScrubbing: true,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       child: Column(
+//         children: <Widget>[
+//           // Container(
+//           //   padding: const EdgeInsets.only(top: 20.0),
+//           // ),
+//           AspectRatio(
+//             aspectRatio: _controller.value.aspectRatio,
+//             child: Stack(
+//               alignment: Alignment.bottomCenter,
+//               children: <Widget>[
+//                 VideoPlayer(_controller),
+//                 _ControlsOverlay(controller: _controller),
+//                 VideoProgressIndicator(
+//                   _controller,
+//                   allowScrubbing: true,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
-class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({Key? key, required this.controller})
-      : super(key: key);
+// class _ControlsOverlay extends StatelessWidget {
+//   const _ControlsOverlay({Key? key, required this.controller})
+//       : super(key: key);
 
-  static const List<Duration> _exampleCaptionOffsets = <Duration>[
-    Duration(seconds: -10),
-    Duration(seconds: -3),
-    Duration(seconds: -1, milliseconds: -500),
-    Duration(milliseconds: -250),
-    Duration.zero,
-    Duration(milliseconds: 250),
-    Duration(seconds: 1, milliseconds: 500),
-    Duration(seconds: 3),
-    Duration(seconds: 10),
-  ];
-  static const List<double> _examplePlaybackRates = <double>[
-    0.25,
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-    3.0,
-    5.0,
-    10.0,
-  ];
+//   static const List<Duration> _exampleCaptionOffsets = <Duration>[
+//     Duration(seconds: -10),
+//     Duration(seconds: -3),
+//     Duration(seconds: -1, milliseconds: -500),
+//     Duration(milliseconds: -250),
+//     Duration.zero,
+//     Duration(milliseconds: 250),
+//     Duration(seconds: 1, milliseconds: 500),
+//     Duration(seconds: 3),
+//     Duration(seconds: 10),
+//   ];
+//   static const List<double> _examplePlaybackRates = <double>[
+//     0.25,
+//     0.5,
+//     1.0,
+//     1.5,
+//     2.0,
+//     3.0,
+//     5.0,
+//     10.0,
+//   ];
 
-  final VideoPlayerController controller;
+//   final VideoPlayerController controller;
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 50),
-          reverseDuration: const Duration(milliseconds: 200),
-          child: controller.value.isPlaying
-              ? const SizedBox.shrink()
-              : Container(
-                  color: Colors.black26,
-                  child: const Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 100.0,
-                      semanticLabel: 'Play',
-                    ),
-                  ),
-                ),
-        ),
-        GestureDetector(
-          onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
-          },
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: PopupMenuButton<Duration>(
-            initialValue: controller.value.captionOffset,
-            tooltip: 'Caption Offset',
-            onSelected: (Duration delay) {
-              controller.setCaptionOffset(delay);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<Duration>>[
-                for (final Duration offsetDuration in _exampleCaptionOffsets)
-                  PopupMenuItem<Duration>(
-                    value: offsetDuration,
-                    child: Text('${offsetDuration.inMilliseconds}ms'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                // Using less vertical padding as the text is also longer
-                // horizontally, so it feels like it would need more spacing
-                // horizontally (matching the aspect ratio of the video).
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.captionOffset.inMilliseconds}ms'),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: PopupMenuButton<double>(
-            initialValue: controller.value.playbackSpeed,
-            tooltip: 'Playback speed',
-            onSelected: (double speed) {
-              controller.setPlaybackSpeed(speed);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<double>>[
-                for (final double speed in _examplePlaybackRates)
-                  PopupMenuItem<double>(
-                    value: speed,
-                    child: Text('${speed}x'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.playbackSpeed}'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: <Widget>[
+//         AnimatedSwitcher(
+//           duration: const Duration(milliseconds: 50),
+//           reverseDuration: const Duration(milliseconds: 200),
+//           child: controller.value.isPlaying
+//               ? const SizedBox.shrink()
+//               : Container(
+//                   color: Colors.black26,
+//                   child: const Center(
+//                     child: Icon(
+//                       Icons.play_arrow,
+//                       color: Colors.white,
+//                       size: 100.0,
+//                       semanticLabel: 'Play',
+//                     ),
+//                   ),
+//                 ),
+//         ),
+//         GestureDetector(
+//           onTap: () {
+//             controller.value.isPlaying ? controller.pause() : controller.play();
+//           },
+//         ),
+//         Align(
+//           alignment: Alignment.topLeft,
+//           child: PopupMenuButton<Duration>(
+//             initialValue: controller.value.captionOffset,
+//             tooltip: 'Caption Offset',
+//             onSelected: (Duration delay) {
+//               controller.setCaptionOffset(delay);
+//             },
+//             itemBuilder: (BuildContext context) {
+//               return <PopupMenuItem<Duration>>[
+//                 for (final Duration offsetDuration in _exampleCaptionOffsets)
+//                   PopupMenuItem<Duration>(
+//                     value: offsetDuration,
+//                     child: Text('${offsetDuration.inMilliseconds}ms'),
+//                   )
+//               ];
+//             },
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(
+//                 // Using less vertical padding as the text is also longer
+//                 // horizontally, so it feels like it would need more spacing
+//                 // horizontally (matching the aspect ratio of the video).
+//                 vertical: 12,
+//                 horizontal: 16,
+//               ),
+//               child: Text('${controller.value.captionOffset.inMilliseconds}ms'),
+//             ),
+//           ),
+//         ),
+//         Align(
+//           alignment: Alignment.topRight,
+//           child: PopupMenuButton<double>(
+//             initialValue: controller.value.playbackSpeed,
+//             tooltip: 'Playback speed',
+//             onSelected: (double speed) {
+//               controller.setPlaybackSpeed(speed);
+//             },
+//             itemBuilder: (BuildContext context) {
+//               return <PopupMenuItem<double>>[
+//                 for (final double speed in _examplePlaybackRates)
+//                   PopupMenuItem<double>(
+//                     value: speed,
+//                     child: Text('${speed}x'),
+//                   )
+//               ];
+//             },
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(
+//                 vertical: 12,
+//                 horizontal: 16,
+//               ),
+//               child: Text('${controller.value.playbackSpeed}'),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
