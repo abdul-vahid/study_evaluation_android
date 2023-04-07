@@ -232,28 +232,26 @@ class _LatestNewsViewState extends State<LatestNewsView> {
     //initVideo(videoUrl);
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Expanded(
-          flex: 2,
-          child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                //  borderRadius: BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      //offset: Offset(0, 0),
-                      blurRadius: 5,
-                      spreadRadius: 1)
-                ]),
-            child: Column(
-              children: [
-                // Text(''),
-                _getVideoContainer(videoUrl),
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            //  borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black12,
+                  //offset: Offset(0, 0),
+                  blurRadius: 5,
+                  spreadRadius: 1)
+            ]),
+        child: Column(
+          children: [
+            // Text(''),
+            _getVideoContainer(videoUrl),
 
-                //
-              ],
-            ),
-          )),
+            //
+          ],
+        ),
+      ),
     );
   }
 
