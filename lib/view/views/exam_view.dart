@@ -771,6 +771,102 @@ class _ExamViewState extends State<ExamView> {
     //return widgets;
   }
 
+  showDeleteDialodBox() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            //insetPadding: EdgeInsets.zero,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            title: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Expanded(
+                    child: Center(
+                        child: Text(
+                  "Submit Your Test",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))),
+                const SizedBox(
+                  width: 4,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.close),
+                )
+              ],
+            ),
+            content: Container(
+              padding: EdgeInsets.zero,
+              width: MediaQuery.of(context).size.width * 0.45,
+              child: Table(
+                border: TableBorder.all(
+                    color: Colors.black, style: BorderStyle.solid, width: 1),
+                children: [
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('No. of questions :',
+                              style: TextStyle(fontSize: 20.0)),
+                          Text('40', style: TextStyle(fontSize: 20.0)),
+                        ],
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Answered :', style: TextStyle(fontSize: 20.0)),
+                          Text('40', style: TextStyle(fontSize: 20.0)),
+                        ],
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Not Attend:', style: TextStyle(fontSize: 20.0)),
+                          Text('38', style: TextStyle(fontSize: 20.0)),
+                        ],
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+
+            actions: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 20),
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Review ReAttempt Exam"),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   void updateTimer(String value) {
     debug("value = $value");
     timerText = value;

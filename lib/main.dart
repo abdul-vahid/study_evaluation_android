@@ -35,6 +35,7 @@ import 'package:study_evaluation/view/views/profile_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
 import 'package:study_evaluation/view/views/signup_view.dart';
+import 'package:study_evaluation/view/views/splash_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
 import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
@@ -79,8 +80,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/login",
+      initialRoute: "/splash",
       routes: {
+        "/splash": (context) => SplashView(),
         "/login": (context) => const LoginHome(),
         "/testseries": (context) => const CategoryListView(),
         "/about_us": (context) => const AboutUsScreen(),
