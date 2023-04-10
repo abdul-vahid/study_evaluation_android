@@ -339,6 +339,7 @@ class _ExamViewState extends State<ExamView> {
     }
     return Column(
       children: [
+        Align(alignment: Alignment.centerRight, child: _getBottomButtons()),
         _getTopBar(),
         Flexible(
           child: SingleChildScrollView(
@@ -415,7 +416,7 @@ class _ExamViewState extends State<ExamView> {
 
   Padding _getTopBar() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Container(
         decoration: BoxDecoration(
           color: AppColor.containerBoxColor,
@@ -464,7 +465,7 @@ class _ExamViewState extends State<ExamView> {
             ) */
           ],
         ),
-      )
+      ),
     ];
   }
 
@@ -506,8 +507,8 @@ class _ExamViewState extends State<ExamView> {
   Padding _getBottomButtons() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, children: _getActions),
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: _getActions),
     );
   }
 

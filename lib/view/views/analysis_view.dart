@@ -276,7 +276,11 @@ class _AnalysisViewState extends State<AnalysisView> {
                         height: 4,
                       ),
                       Text(
-                        'Attempt',
+                        'Total ',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        'Attempt Qus.',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -420,7 +424,7 @@ class _AnalysisViewState extends State<AnalysisView> {
                         height: 4,
                       ),
                       Text(
-                        'Avg Time',
+                        'Avg Time/Qus.',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
