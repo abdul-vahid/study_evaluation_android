@@ -90,6 +90,16 @@ class _ResultViewState extends State<ResultView> {
           drawer: const AppDrawerWidget(),
           appBar: AppUtils.getAppbar(title, actions: [
             IconButton(
+              icon: const Icon(
+                Icons.apps_rounded,
+                size: 25,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _onPressedFilter();
+              },
+            ),
+            IconButton(
                 icon: Icon(
                   Icons.leaderboard,
                   color: Colors.white,
@@ -123,24 +133,25 @@ class _ResultViewState extends State<ResultView> {
         itemBuilder: (context) {
       return [
         _getPopupMenuItem(
-            label: "Analysis", value: 3, iconData: Icons.analytics),
+            label: "Analysis", value: 2, iconData: Icons.analytics),
+        // _getPopupMenuItem(
+        //     label: "Filter", value: 0, iconData: Icons.apps_rounded),
         _getPopupMenuItem(
-            label: "Filter", value: 0, iconData: Icons.apps_rounded),
+            label: "Language", value: 0, iconData: Icons.language),
         _getPopupMenuItem(
-            label: "Language", value: 1, iconData: Icons.language),
-        _getPopupMenuItem(
-            label: "Font Size", value: 2, iconData: Icons.font_download),
+            label: "Font Size", value: 1, iconData: Icons.font_download),
       ];
     }, onSelected: (value) {
       if (value == 0) {
-        _onPressedFilter();
-      } else if (value == 1) {
         _onPressedLanguages(context);
-      } else if (value == 2) {
+      } else if (value == 1) {
         _onPressedFontSize(context);
-      } else if (value == 3) {
+      } else if (value == 2) {
         _onPressedAnalysis();
       }
+      // } else if (value == 3) {
+
+      // }
     });
   }
 

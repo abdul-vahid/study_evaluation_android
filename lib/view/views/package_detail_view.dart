@@ -414,7 +414,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               backgroundColor: AppColor.buttonColor // foreground
               )));
     } else  */
-    if ((testSeries.type != "Free" &&
+
+    if ((testSeries.pdfUrl != null &&
+        (testSeries.pdfUrl?.isNotEmpty)! &&
+        testSeries.type != "Free" &&
         (package?.validityStatus == "PURCHASED" ||
             userModel?.role?.toLowerCase() != "student"))) {
       widgets.add(AppUtils.getElevatedButton('Schedule',
