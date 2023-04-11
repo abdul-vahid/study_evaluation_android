@@ -562,17 +562,37 @@ class _ExamViewState extends State<ExamView> {
     var successMessage = status == ResultStatus.completed
         ? "$timeUP Exam Submitted!"
         : "$timeUP Exam Saved!";
-    AppUtils.onLoading(context, message);
 
-    ExamListViewModel().submitExam(examModel, status: status).then((resultId) {
-      //print("examid = $value");
-      Navigator.pop(context);
-      //stopTimer();
-      AppUtils.getAlert(context, [successMessage],
-          onPressed: () => _onPressedAlert(resultId, status));
-    }).catchError((error, stacktrace) {
-      debug(stacktrace);
-      AppUtils.onError(context, error);
+    var totalSkippedCount = 0;
+    var totalAnsweredCount = 0;
+    for (QuestionModel qm in examModel.questionModels!) {
+      if (qm.submittedAnswer == null || (qm.submittedAnswer?.isEmpty)!) {
+        totalSkippedCount++;
+      } else {
+        totalAnsweredCount++;
+      }
+    }
+    showDeleteDialodBox(
+            totalQuestions: examModel.questionModels?.length,
+            totalAnswered: totalAnsweredCount,
+            totalSkipped: totalSkippedCount)
+        .then((value) {
+      debug("value === $value");
+      if (value == "submit") {
+        AppUtils.onLoading(context, message);
+        ExamListViewModel()
+            .submitExam(examModel, status: status)
+            .then((resultId) {
+          //print("examid = $value");
+          Navigator.pop(context);
+          //stopTimer();
+          AppUtils.getAlert(context, [successMessage],
+              onPressed: () => _onPressedAlert(resultId, status));
+        }).catchError((error, stacktrace) {
+          debug(stacktrace);
+          AppUtils.onError(context, error);
+        });
+      }
     });
   }
 
@@ -771,7 +791,11 @@ class _ExamViewState extends State<ExamView> {
     //return widgets;
   }
 
-  showDeleteDialodBox() {
+  Future showDeleteDialodBox({
+    totalQuestions,
+    totalAnswered,
+    totalSkipped,
+  }) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -810,10 +834,11 @@ class _ExamViewState extends State<ExamView> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('No. of questions :',
-                              style: TextStyle(fontSize: 20.0)),
-                          Text('40', style: TextStyle(fontSize: 20.0)),
+                        children: [
+                          const Text('No. of questions: ',
+                              style: TextStyle(fontSize: 15.0)),
+                          Text(totalQuestions.toString(),
+                              style: const TextStyle(fontSize: 15.0)),
                         ],
                       ),
                     ),
@@ -823,9 +848,11 @@ class _ExamViewState extends State<ExamView> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Answered :', style: TextStyle(fontSize: 20.0)),
-                          Text('40', style: TextStyle(fontSize: 20.0)),
+                        children: [
+                          const Text('Answered: ',
+                              style: TextStyle(fontSize: 15.0)),
+                          Text(totalAnswered.toString(),
+                              style: const TextStyle(fontSize: 15.0)),
                         ],
                       ),
                     ),
@@ -835,9 +862,11 @@ class _ExamViewState extends State<ExamView> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text('Not Attend:', style: TextStyle(fontSize: 20.0)),
-                          Text('38', style: TextStyle(fontSize: 20.0)),
+                        children: [
+                          const Text('Not Attend: ',
+                              style: TextStyle(fontSize: 15.0)),
+                          Text(totalSkipped.toString(),
+                              style: const TextStyle(fontSize: 15.0)),
                         ],
                       ),
                     ),
@@ -857,9 +886,9 @@ class _ExamViewState extends State<ExamView> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop("submit");
                   },
-                  child: const Text("Review ReAttempt Exam"),
+                  child: const Text("Submit"),
                 ),
               ),
             ],
