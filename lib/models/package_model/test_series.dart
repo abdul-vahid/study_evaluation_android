@@ -15,6 +15,7 @@ class TestSeries {
   String? totalMarks;
   String? reattemptCount;
   String? pdfUrl;
+  String? downloadedDocumentUrl;
   ResultModel? result;
 
   TestSeries(

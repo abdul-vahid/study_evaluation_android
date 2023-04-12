@@ -205,8 +205,19 @@ class _ResultViewState extends State<ResultView> {
 
       _keys = List.generate(totalQuestions!, (index) => GlobalKey());
     }
-    return SingleChildScrollView(
-        child: Column(children: _getQuestionOptionWidgets()));
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: ListView(
+              scrollDirection: Axis.horizontal, children: getButtonWidgets()),
+        ),
+        Flexible(
+          child: SingleChildScrollView(
+              child: Column(children: _getQuestionOptionWidgets())),
+        ),
+      ],
+    );
   }
 
   List<Widget> getButtonWidgets() {
@@ -228,21 +239,21 @@ class _ResultViewState extends State<ResultView> {
 
     _loadFilters();
 
-    widgets.add(Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 50,
-            child: ListView(
-                scrollDirection: Axis.horizontal, children: getButtonWidgets()),
-          ),
-        ],
-      ),
-    ));
+    // widgets.add(Padding(
+    //   padding: const EdgeInsets.only(left: 10, right: 10),
+    //   child: Column(
+    //     children: [
+    //       SizedBox(
+    //         height: 10,
+    //       ),
+    //       SizedBox(
+    //         height: 50,
+    //         child: ListView(
+    //             scrollDirection: Axis.horizontal, children: getButtonWidgets()),
+    //       ),
+    //     ],
+    //   ),
+    // ));
 
     for (QuestionModel model
         in (baseListViewModel?.viewModels[0].model.questionModels)!) {

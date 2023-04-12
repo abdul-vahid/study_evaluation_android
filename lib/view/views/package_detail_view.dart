@@ -69,7 +69,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Widget _getBody() {
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
-    if (model == null || model?.testSeries == null || package == null) {
+    debug('package ${package}');
+
+    debug('model?.documents ${model?.documents == null}');
+    if (model == null ||
+        package == null ||
+        (model?.testSeries == null && model?.documents == null)) {
       return const Center(
         child: Text("Invalid Pacakge"),
       );
@@ -113,8 +118,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               )
             : Container(),
         _getPackageContainer(),
-        for (var testSeries in model!.testSeries!)
-          _getTestContainer(testSeries),
+        if (model!.testSeries != null)
+          for (var testSeries in model!.testSeries!)
+            _getTestContainer(testSeries),
         const SizedBox(
           height: 10,
         ),
@@ -541,7 +547,33 @@ class _PackageDetailViewState extends State<PackageDetailView> {
 
   void _scheduledButton(testSeries) {
     if (testSeries.pdfUrl != null) {
-      AppUtils.openDocument(context, testSeries.pdfUrl);
+      //  AppUtils.openDocument(context, testSeries.pdfUrl);
+
+      if (testSeries.downloadedDocumentUrl == null) {
+        AppUtils.onLoading(context, "Downloading File...");
+        AppUtils.createFileOfPdfUrl(
+                '${AppConstants.baseUrl}${AppConstants.publicPath}/${testSeries.pdfUrl}')
+            .then((f) {
+          testSeries.downloadedDocumentUrl = f.path;
+          debug("remotePDF === ${testSeries.downloadedDocumentUrl}");
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  PDFViewer(path: testSeries.downloadedDocumentUrl),
+            ),
+          );
+        });
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PDFViewer(path: testSeries.downloadedDocumentUrl),
+          ),
+        );
+      }
     }
   }
 
