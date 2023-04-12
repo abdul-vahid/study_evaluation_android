@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:study_evaluation/utils/app_constants.dart';
+import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
 
 class SplashView extends StatefulWidget {
@@ -23,13 +27,21 @@ class StartState extends State<SplashView> {
   }
 
   startTimer() async {
-    var duration = const Duration(seconds: 2);
-    return Timer(duration, route);
+    var duration = const Duration(seconds: 3);
+    return Timer(duration, _isLoggedIn);
   }
 
-  route() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginHome()));
+  void _isLoggedIn() {
+    SharedPreferences.getInstance().then((prefs) {
+      if (prefs.containsKey(SharedPrefsConstants.accessTokenKey)) {
+        //_pushHomePage();
+        AppUtils.launchTab(context, selectedIndex: HomeTabsOptions.home.index)
+            .then((value) => _isLoggedIn());
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginHome()));
+      }
+    });
   }
 
   initScreen(BuildContext context) {

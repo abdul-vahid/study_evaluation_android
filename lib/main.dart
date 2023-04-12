@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       routes: {
-        "/splash": (context) => SplashView(),
+        "/splash": (context) => const SplashView(),
         "/login": (context) => const LoginHome(),
         "/testseries": (context) => const CategoryListView(),
         "/about_us": (context) => const AboutUsScreen(),
@@ -119,10 +119,7 @@ class MyApp extends StatelessWidget {
               packageId: '',
             ),
         "/profile": (context) => const ProfileView(),
-        "/result": (context) => const ResultView(
-              resultId: '',
-              userId: '',
-            ),
+
         "/signup_success": (context) => const SignupSuccess(),
         "/signup": (context) => const SignupView(),
         "/terms_conditions": (context) => const TermsConditionsView(),

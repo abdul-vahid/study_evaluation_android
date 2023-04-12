@@ -33,6 +33,7 @@ class _LoginViewState extends State<LoginView> {
     passwordVisible = true;
   }
 
+  //we can remove this, we don't needed.
   void _isLoggedIn() {
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey(SharedPrefsConstants.accessTokenKey)) {

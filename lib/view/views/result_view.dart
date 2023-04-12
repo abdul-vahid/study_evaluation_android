@@ -21,8 +21,13 @@ import 'package:study_evaluation/view_models/result_list_vm.dart';
 class ResultView extends StatefulWidget {
   final String resultId;
   final String userId;
+  String? parentPage;
 
-  const ResultView({super.key, required this.resultId, required this.userId});
+  ResultView(
+      {super.key,
+      required this.resultId,
+      required this.userId,
+      this.parentPage});
 
   @override
   State<ResultView> createState() => _ResultViewState();
@@ -81,7 +86,9 @@ class _ResultViewState extends State<ResultView> {
 
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context); //Removing Self
+        if (widget.parentPage == null) {
+          Navigator.pop(context); //Removing Self
+        }
         Navigator.of(context).pop(
             "reload"); //Going back to Package Detail Page, Skipping ExamView
         return Future.value(true);
