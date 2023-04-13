@@ -485,12 +485,10 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                     )
                   ],
                   child: ResultView(
-                    resultId: testSeries.result != null
-                        ? (testSeries.result?.id)!
-                        : "",
-                    userId: (userModel?.id)!,
-                    parentPage: "package_detail",
-                  )));
+                      resultId: testSeries.result != null
+                          ? (testSeries.result?.id)!
+                          : "",
+                      userId: (userModel?.id)!)));
         },
       ));
     }

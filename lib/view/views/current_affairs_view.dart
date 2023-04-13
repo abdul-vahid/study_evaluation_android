@@ -182,9 +182,18 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
               )),
           TextButton.icon(
               onPressed: () => {
-                    Share.share(
-                        '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl}',
-                        subject: 'Welcome Message')
+                    if (currentAffairsModel?.videoUrl == null)
+                      {
+                        Share.share(
+                            '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl}',
+                            subject: 'Welcome Message')
+                      }
+                    else
+                      {
+                        Share.share(
+                            '${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.documentUrl} \n  ${AppConstants.baseUrl}${AppConstants.publicPath}/${currentAffairsModel?.videoUrl}',
+                            subject: 'Welcome Message')
+                      }
                   },
               icon: Icon(
                 Icons.share,

@@ -40,7 +40,7 @@ abstract class AppConstants {
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
 
-    // defaultValue: 'https://studyevaluation.com/sandbox',
+    //defaultValue: 'https://studyevaluation.com/sandbox',
 
     defaultValue: 'https://studyevaluation.com/uat',
   );

@@ -26,7 +26,7 @@ class NotificationUtil {
         debug("display notifcation app getInitialMessage");
         //onMessageReceived(remoteMessage);
         if (remoteMessage != null && remoteMessage.notification != null) {
-          AppUtils.launchTab(context,
+          AppUtils.launchTab(AppUtils.currentContext!,
               selectedIndex: HomeTabsOptions.notifications.index);
         }
       },
@@ -44,7 +44,7 @@ class NotificationUtil {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage? remoteMessage) {
         debug("display notifcation app background");
-        AppUtils.launchTab(context,
+        AppUtils.launchTab(AppUtils.currentContext!,
             selectedIndex: HomeTabsOptions.notifications.index);
         //onMessageReceived(remoteMessage!);
       },

@@ -11,6 +11,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
+import 'package:study_evaluation/view/widgets/radio_list_tile_widget.dart';
 import 'package:study_evaluation/view/widgets/timer_widget.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
@@ -29,6 +30,7 @@ class ExamView extends StatefulWidget {
 }
 
 class _ExamViewState extends State<ExamView> {
+  bool hasCanceledTimer = false;
   List<GlobalKey>? _keys;
   String? question;
   List<String> selectedValues = [];
@@ -56,6 +58,7 @@ class _ExamViewState extends State<ExamView> {
   bool hasQuestions = true;
   bool hasDataLoaded = false;
   late TimerWidget timerWidget;
+  List<GlobalKey>? _radioListKey;
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -335,6 +338,7 @@ class _ExamViewState extends State<ExamView> {
         });
 
         _keys = List.generate(totalQuestions!, (index) => GlobalKey());
+        _radioListKey = List.generate(totalQuestions!, (index) => GlobalKey());
       }
     }
     return Column(
@@ -554,6 +558,9 @@ class _ExamViewState extends State<ExamView> {
 
   void _onSubmit({String status = "Completed", String timerUP = ""}) {
     debug("Status === $status");
+    if (hasCanceledTimer) {
+      return;
+    }
     ExamModel examModel = baseListViewModel?.viewModels[0].model as ExamModel;
     examModel.exam?.remainingExamTime = timerText;
     var message = status == ResultStatus.completed
@@ -572,7 +579,7 @@ class _ExamViewState extends State<ExamView> {
         totalAnsweredCount++;
       }
     }
-    showDeleteDialodBox(
+    showSubmitExamDialog(
             totalQuestions: examModel.questionModels?.length,
             totalAnswered: totalAnsweredCount,
             totalSkipped: totalSkippedCount)
@@ -586,10 +593,12 @@ class _ExamViewState extends State<ExamView> {
           //print("examid = $value");
           Navigator.pop(context);
           //stopTimer();
+          hasCanceledTimer = true;
           AppUtils.getAlert(context, [successMessage],
               onPressed: () => _onPressedAlert(resultId, status));
         }).catchError((error, stacktrace) {
           debug(stacktrace);
+          Navigator.pop(context);
           AppUtils.onError(context, error);
         });
       }
@@ -598,12 +607,13 @@ class _ExamViewState extends State<ExamView> {
 
   void _onPressedAlert(resultId, status) {
     Navigator.of(context).pop();
+    //Navigator.of(context).pop();
     //Navigator.of(context).pop("reload");
     if (status == ResultStatus.inProgress) {
       Navigator.of(context).pop("reload");
       return;
     }
-
+    Navigator.of(context).pop();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -646,7 +656,9 @@ class _ExamViewState extends State<ExamView> {
           ),
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
-        child: Column(children: _getQuestionOptions(model)),
+        child: Column(
+            key: _radioListKey?[model.index],
+            children: _getQuestionOptions(model)),
       ),
     );
   }
@@ -657,10 +669,20 @@ class _ExamViewState extends State<ExamView> {
       const SizedBox(
         height: 10,
       ),
-      _getOption(model.optionAHindi, model.optionAEnglish, "a", model),
+      RadioListTileWidget(
+        contentWidget: _getContent(model.optionAHindi, model.optionAEnglish),
+        value: "a",
+        model: model,
+        selectedValues: selectedValues,
+        callBack: setRadioValues,
+        selectedFont: _selectedFont!,
+        selectedLanguage: _selectedLanguage,
+      ),
+
+      /* _getOption(model.optionAHindi, model.optionAEnglish, "a", model),
       _getOption(model.optionBHindi, model.optionBEnglish, "b", model),
       _getOption(model.optionCHindi, model.optionCEnglish, "c", model),
-      _getOption(model.optionDHindi, model.optionDEnglish, "d", model),
+      _getOption(model.optionDHindi, model.optionDEnglish, "d", model), */
       const SizedBox(
         height: 10,
       ),
@@ -749,12 +771,38 @@ class _ExamViewState extends State<ExamView> {
     );
   }
 
+  void setRadioValues(value, model) {
+    debug("Value = $value");
+    selectedValues[model.index] = value!;
+    model.submittedAnswer = value;
+    /* setState(() {
+      debug("Value = $value");
+      //selectedValues[model.index] = value!;
+      //model.submittedAnswer = value;
+    }); */
+  }
+
   Widget _getQuestion(QuestionModel model) {
     return Align(
       alignment: Alignment.centerLeft,
       key: _keys?[model.index],
-      child: _getContent("${model.questionHindi}", "${model.questionEnglish}",
-          questionNumber: model.index + 1),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5, top: 15),
+            child: Text(
+              "Q ${model.index + 1}. ",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: _getContent(
+                "${model.questionHindi}", "${model.questionEnglish}",
+                questionNumber: model.index + 1),
+          ),
+        ],
+      ),
     );
   }
 
@@ -763,9 +811,9 @@ class _ExamViewState extends State<ExamView> {
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "hindi")) {
-      labelHindi = questionNumber != null
+      /*  labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
-          : labelHindi;
+          : labelHindi;  */
       widgets.add(AppUtils.getHtmlData(labelHindi,
           fontFamily: 'Kruti', fontSize: double.tryParse(_selectedFont!)!));
     }
@@ -773,9 +821,9 @@ class _ExamViewState extends State<ExamView> {
         labelEnglish.toString().trim().isNotEmpty &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "english")) {
-      labelEnglish = questionNumber != null
+      /*  labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
-          : labelEnglish;
+          : labelEnglish; */
       widgets.add(AppUtils.getHtmlData("$labelEnglish"));
     }
 
@@ -791,7 +839,7 @@ class _ExamViewState extends State<ExamView> {
     //return widgets;
   }
 
-  Future showDeleteDialodBox({
+  Future showSubmitExamDialog({
     totalQuestions,
     totalAnswered,
     totalSkipped,
@@ -849,7 +897,7 @@ class _ExamViewState extends State<ExamView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Answered: ',
+                          const Text('Answereded: ',
                               style: TextStyle(fontSize: 15.0)),
                           Text(totalAnswered.toString(),
                               style: const TextStyle(fontSize: 15.0)),
@@ -863,7 +911,7 @@ class _ExamViewState extends State<ExamView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Not Attend: ',
+                          const Text('Not Attended: ',
                               style: TextStyle(fontSize: 15.0)),
                           Text(totalSkipped.toString(),
                               style: const TextStyle(fontSize: 15.0)),

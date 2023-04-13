@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 
 class TimerWidget extends StatefulWidget {
   Duration duration;
   void Function(String value) callBack;
   void Function({String status, String timerUP}) onSubmit;
-  TimerWidget(
-      {super.key,
-      required this.duration,
-      required this.callBack,
-      required this.onSubmit});
+
+  TimerWidget({
+    super.key,
+    required this.duration,
+    required this.callBack,
+    required this.onSubmit,
+  });
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -26,6 +29,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   @override
   void initState() {
     startTimer();
+
     super.initState();
   }
 

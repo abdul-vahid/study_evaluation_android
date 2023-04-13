@@ -21,13 +21,12 @@ import 'package:study_evaluation/view_models/result_list_vm.dart';
 class ResultView extends StatefulWidget {
   final String resultId;
   final String userId;
-  String? parentPage;
 
-  ResultView(
-      {super.key,
-      required this.resultId,
-      required this.userId,
-      this.parentPage});
+  const ResultView({
+    super.key,
+    required this.resultId,
+    required this.userId,
+  });
 
   @override
   State<ResultView> createState() => _ResultViewState();
@@ -68,14 +67,16 @@ class _ResultViewState extends State<ResultView> {
     });
     Provider.of<ResultListViewModel>(context, listen: false)
         .fetch(widget.resultId);
-    Timer(
+    /* Timer(
       const Duration(seconds: 3),
       () {
         setState(
-          () {},
+          () {
+            debug("hello");
+          },
         );
       },
-    );
+    ); */
     super.initState();
   }
 
@@ -86,43 +87,51 @@ class _ResultViewState extends State<ResultView> {
 
     return WillPopScope(
       onWillPop: () {
-        if (widget.parentPage == null) {
-          Navigator.pop(context); //Removing Self
-        }
         Navigator.of(context).pop(
             "reload"); //Going back to Package Detail Page, Skipping ExamView
         return Future.value(true);
       },
       child: Scaffold(
-          drawer: const AppDrawerWidget(),
+          // drawer: const AppDrawerWidget(),
           appBar: AppUtils.getAppbar(title, actions: [
             IconButton(
               icon: const Icon(
                 Icons.apps_rounded,
-                size: 25,
+                size: 30,
                 color: Colors.white,
               ),
               onPressed: () {
                 _onPressedFilter();
               },
             ),
+
+            // IconButton(
+            //     icon: Icon(
+            //       Icons.leaderboard,
+            //       color: Colors.white,
+            //     ),
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => MultiProvider(
+            //                   providers: [
+            //                     ChangeNotifierProvider(
+            //                         create: (_) => LeaderBoardListViewModel())
+            //                   ],
+            //                   child: LearderbordView(examId: examId),
+            //                 )),
+            //       );
+            //     }),
+
             IconButton(
                 icon: Icon(
-                  Icons.leaderboard,
+                  Icons.analytics,
+                  size: 30,
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MultiProvider(
-                              providers: [
-                                ChangeNotifierProvider(
-                                    create: (_) => LeaderBoardListViewModel())
-                              ],
-                              child: LearderbordView(examId: examId),
-                            )),
-                  );
+                  _onPressedAnalysis();
                 }),
             //  _getFilterButton(),
             _getPopMenuButton(context),
@@ -140,7 +149,7 @@ class _ResultViewState extends State<ResultView> {
         itemBuilder: (context) {
       return [
         _getPopupMenuItem(
-            label: "Analysis", value: 2, iconData: Icons.analytics),
+            label: "Leaderboard", value: 2, iconData: Icons.leaderboard),
         // _getPopupMenuItem(
         //     label: "Filter", value: 0, iconData: Icons.apps_rounded),
         _getPopupMenuItem(
@@ -154,7 +163,7 @@ class _ResultViewState extends State<ResultView> {
       } else if (value == 1) {
         _onPressedFontSize(context);
       } else if (value == 2) {
-        _onPressedAnalysis();
+        _onPressedLeaderboard();
       }
       // } else if (value == 3) {
 
@@ -194,16 +203,23 @@ class _ResultViewState extends State<ResultView> {
         Navigator.pop(context);
         isRefresh = false;
       }
-      setState(() {
-        //isRefresh = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+            title = (model?.exam!.title)!;
+            examId = model?.exam!.id!;
+            debug("title = $title");
+            totalQuestions = model?.questionModels != null
+                ? model?.questionModels!.length
+                : 0;
+          }));
+      /* setState(() {
         title = (model?.exam!.title)!;
         examId = model?.exam!.id!;
-
+        debug("title = $title");
         totalQuestions =
             model?.questionModels != null ? model?.questionModels!.length : 0;
-      });
+      }); */
 
-      _keys = List.generate(totalQuestions!, (index) => GlobalKey());
+      _keys ??= List.generate(totalQuestions!, (index) => GlobalKey());
     }
     return Column(
       children: [
@@ -222,14 +238,17 @@ class _ResultViewState extends State<ResultView> {
 
   List<Widget> getButtonWidgets() {
     List<Widget> list = [];
-    filtersMap.forEach((key, value) {
-      list.add(
-          getButtons('${AppUtils.capitalize(key)}(${value})', onPressed: () {
-        setState(() {
-          _selectedFilter = key;
-        });
-      }));
-    });
+    if (filtersMap.isNotEmpty) {
+      filtersMap.forEach((key, value) {
+        list.add(
+            getButtons('${AppUtils.capitalize(key)}($value)', onPressed: () {
+          setState(() {
+            _selectedFilter = key;
+          });
+        }));
+      });
+    }
+
     return list;
   }
 
@@ -517,10 +536,26 @@ class _ResultViewState extends State<ResultView> {
     return Align(
       alignment: Alignment.centerLeft,
       key: _keys?[model.index],
-      child: _getContent("${model.questionHindi}", "${model.questionEnglish}",
-          questionNumber: model.index + 1,
-          fontSize: double.tryParse(_selectedFont!)!,
-          fontWeight: FontWeight.bold),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5, top: 15),
+            child: Text(
+              "Q ${model.index + 1}. ",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: _getContent(
+                "${model.questionHindi}", "${model.questionEnglish}",
+                questionNumber: model.index + 1,
+                fontSize: double.tryParse(_selectedFont!)!,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 
@@ -572,22 +607,25 @@ class _ResultViewState extends State<ResultView> {
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "hindi")) {
-      labelHindi = questionNumber != null
+      /* labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
-          : labelHindi;
+          : labelHindi; */
       widgets.add(AppUtils.getHtmlData(labelHindi,
           fontFamily: 'Kruti',
           fontSize: (fontSize + 4),
           color: color,
           fontWeight: fontWeight));
     }
+
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "english")) {
-      /* labelEnglish = questionNumber != null
-          ? "Q. $questionNumber) $labelEnglish"
-          : labelEnglish; */
+      /* var questionNo = _selectedLanguage.toLowerCase() == "english"
+          ? "Q. $questionNumber)"
+          : "";
+      labelEnglish =
+          questionNumber != null ? "$questionNo $labelEnglish" : labelEnglish; */
       widgets.add(Divider(
         height: 10,
       ));
@@ -697,6 +735,20 @@ class _ResultViewState extends State<ResultView> {
   ) {
     AppUtils.getSimpleDialog(context,
         title: 'Select Font Size', children: _getFontOptionsWidgets);
+  }
+
+  _onPressedLeaderboard() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                      create: (_) => LeaderBoardListViewModel())
+                ],
+                child: LearderbordView(examId: examId),
+              )),
+    );
   }
 
   _onPressedAnalysis() {

@@ -26,8 +26,13 @@ class LocalNotificationService {
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
         debug("onDidReceiveNotificationResponse");
-        AppUtils.launchTab(NotificationUtil.context!,
-            selectedIndex: HomeTabsOptions.notifications.index);
+        BuildContext? context = AppUtils.currentContext;
+        if (context != null) {
+          AppUtils.launchTab(context,
+              selectedIndex: HomeTabsOptions.notifications.index);
+        } else {
+          debug("Current Context is null");
+        }
       },
     );
   }
