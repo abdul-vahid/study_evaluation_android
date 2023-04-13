@@ -56,7 +56,7 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
         widget.callBack(value!, model);
         setState(() {
           //print("Value = $value");
-          widget.selectedValues[model.index] = value!;
+          widget.selectedValues[model.index] = value;
           model.submittedAnswer = value;
         });
       },
@@ -73,7 +73,7 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
           : labelHindi;
       widgets.add(AppUtils.getHtmlData(labelHindi,
           fontFamily: 'Kruti',
-          fontSize: double.tryParse(widget.selectedFont!)!));
+          fontSize: double.tryParse(widget.selectedFont)!));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
