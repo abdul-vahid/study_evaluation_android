@@ -53,7 +53,7 @@ class _ResultViewState extends State<ResultView> {
   String title = "Result";
   String? examId;
   int timerMaxSeconds = 60;
-  int? totalQuestions = 30;
+  int? totalQuestions = 0;
   Map<String, int> filtersMap = {};
   bool isRefresh = false;
 
@@ -203,21 +203,31 @@ class _ResultViewState extends State<ResultView> {
         Navigator.pop(context);
         isRefresh = false;
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+      /* WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
             title = (model?.exam!.title)!;
             examId = model?.exam!.id!;
             debug("title = $title");
             totalQuestions = model?.questionModels != null
                 ? model?.questionModels!.length
                 : 0;
-          }));
-      /* setState(() {
+          })); */
+      setState(() {
         title = (model?.exam!.title)!;
         examId = model?.exam!.id!;
-        debug("title = $title");
+        //debug("title = $title");
+
+        //Following is being used because setState is not working...
+        if (totalQuestions == 0) {
+          Timer(Duration.zero, () {
+            setState(() {
+              //debug("Timer Called");
+            });
+          });
+        }
+
         totalQuestions =
             model?.questionModels != null ? model?.questionModels!.length : 0;
-      }); */
+      });
 
       _keys ??= List.generate(totalQuestions!, (index) => GlobalKey());
     }
