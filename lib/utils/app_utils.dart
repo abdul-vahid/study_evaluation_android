@@ -272,20 +272,26 @@ class AppUtils {
       Color? color,
       fontWeight = FontWeight.normal}) {
     return Html(
-        data: data,
-        style: {
-          "span": Style(fontFamily: fontFamily),
-          "body, span, p, font, div": Style(
-              fontSize: FontSize(fontSize),
-              color: color,
-              fontWeight: fontWeight)
+      data: data,
+      style: {
+        "span": Style(fontFamily: fontFamily),
+        "body, span, p, font, div": Style(
+            fontSize: FontSize(fontSize), color: color, fontWeight: fontWeight)
+      },
+      customRender: {
+        "o:p": (RenderContext context, Widget child) {
+          return const TextSpan(text: "\\");
         },
-        customRender: {
-          "o:p": (RenderContext context, Widget child) {
-            return const TextSpan(text: "\\");
-          },
-        },
-        tagsList: Html.tags..addAll(["o:p"]));
+      },
+      tagsList: Html.tags..addAll(["o:p"]),
+      // onLinkTap: (url, _, __, ___) async {
+      //   if (await canLaunch(url!)) {
+      //     await launch(
+      //       url,
+      //     );
+      //   }
+      // },
+    );
   }
 
   static String capitalize(String string) {
