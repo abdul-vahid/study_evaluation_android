@@ -129,8 +129,8 @@ class _NotificationViewState extends State<NotificationView> {
     Widget yesButton = TextButton(
       child: Text("Yes"),
       onPressed: () {
-        onSlideAction((model.id)!, "delete");
         Navigator.pop(context);
+        onSlideAction((model.id), "delete");
       },
     );
 
