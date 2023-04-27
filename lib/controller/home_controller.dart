@@ -289,7 +289,7 @@ class HomeController {
   //           child: TextButton.icon(
   //             // <-- TextButton
   //             onPressed: () {
-  //               Share.share('com.example.share_app',
+  //               Share.share('com.study.evaluation',
   //                   subject: 'Welcome Message');
   //             },
   //             icon: const Icon(
