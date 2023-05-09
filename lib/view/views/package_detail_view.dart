@@ -106,6 +106,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   var postData =
                       '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"app","at":"${token}"}';
 
+                  debug('postData $postData');
+
                   String bs64 = base64.encode(postData.codeUnits);
 
                   // final url =

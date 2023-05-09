@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
+import '../../utils/app_color.dart';
+
 class TermsConditionsView extends StatefulWidget {
   const TermsConditionsView({super.key});
 
@@ -25,6 +27,7 @@ class _TermsConditionsViewState extends State<TermsConditionsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.appBarColor,
         title: Text(
           'Terms & Condition',
           style: TextStyle(fontSize: 25),
