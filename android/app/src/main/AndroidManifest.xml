@@ -3,6 +3,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Add this line -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
    <application
         android:label="study_evaluation"
@@ -41,6 +43,27 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Deep Links -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- Accepts URIs that begin with YOUR_SCHEME://YOUR_HOST -->
+        <data
+          android:scheme="intent"
+          android:host="studyevaluation.page.link/payment" />
+      </intent-filter>
+            <intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW"/>
+    <category android:name="android.intent.category.DEFAULT"/>
+    <category android:name="android.intent.category.BROWSABLE"/>
+    <data android:host="studyevaluation.page.link/payment" android:scheme="http"/>
+    <data android:host="studyevaluation.page.link/payment" android:scheme="https"/>
+    <data
+            android:host="studyevaluation.page.link"
+            android:scheme="https"
+            android:pathPrefix="/payment"/>
+</intent-filter>
             
         </activity>
         <!-- <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" ></receiver> -->

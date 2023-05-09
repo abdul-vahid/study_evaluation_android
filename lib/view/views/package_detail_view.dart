@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +16,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
+import 'package:study_evaluation/view/views/payment_view.dart';
 import 'package:study_evaluation/view/views/pdf_viewer.dart';
 import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
@@ -93,26 +97,59 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 package?.validityStatus != "PURCHASED"
             ? _getBuyNowButton(
                 package?.validityStatus == "EXPIRED" ? "Buy Again" : "Buy Now",
-                onPressed: () {
+                onPressed: () async {
                   //  Navigator.pop(context);
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  var token =
+                      prefs.getString(SharedPrefsConstants.accessTokenKey);
+                  var postData =
+                      '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"app","at":"${token}"}';
+
+                  String bs64 = base64.encode(postData.codeUnits);
+
+                  // final url =
+                  //     'https://studyevaluation.com/sandbox/study_evaluation_website/checkout?m=${bs64}';
+                  // final uri = Uri.parse(url);
+
+                  // /*  if (await launchUrl(uri, mode: LaunchMode.inAppWebView)) {
+                  //   print("Payment Done");
+                  // } */
+
+                  // launchUrl(uri,
+                  //         mode: LaunchMode.inAppWebView,
+                  //         )
+                  //     .then((value) => print("hello"));
+                  // ignore: use_build_context_synchronously
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MultiProvider(
-                                providers: [
-                                  ChangeNotifierProvider(
-                                      create: (context) => OrderListViewModel())
-                                ],
-                                child: PlaceOrderView(
-                                  packageId: (package?.id)!,
-                                  amount: (package?.listPrice)!,
-                                ),
-                              ))).then((value) {
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PaymentView(bs64: bs64)))
+                      .then((value) {
                     Provider.of<PackageListViewModel>(context, listen: false)
                         .fetchPackageLineItems(widget.packageLineItemId);
                     packageListVM = Provider.of<PackageListViewModel>(context,
                         listen: false);
                   });
+
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => MultiProvider(
+                  //               providers: [
+                  //                 ChangeNotifierProvider(
+                  //                     create: (context) => OrderListViewModel())
+                  //               ],
+                  //               child: PlaceOrderView(
+                  //                 packageId: (package?.id)!,
+                  //                 amount: (package?.listPrice)!,
+                  //               ),
+                  //             ))).then((value) {
+                  //   Provider.of<PackageListViewModel>(context, listen: false)
+                  //       .fetchPackageLineItems(widget.packageLineItemId);
+                  //   packageListVM = Provider.of<PackageListViewModel>(context,
+                  //       listen: false);
+                  // });
                 },
               )
             : Container(),
