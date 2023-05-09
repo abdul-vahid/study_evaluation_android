@@ -18,12 +18,10 @@ WebViewController? controllerGlobal;
 Future<bool> _exitApp(BuildContext context) async {
   print("Current Url: ${controllerGlobal?.currentUrl()}");
   controllerGlobal?.currentUrl().then((value) {
-    print("value == $value");
-    var endPoint = "${AppConstants.baseUrl}/study_evaluation_website/callback";
+    //print("value == $value");
+    //var endPoint = "${AppConstants.baseUrl}/study_evaluation_website/callback";
 
-    if (endPoint == value ||
-        value!.contains(
-            "${AppConstants.baseUrl}/study_evaluation_website/checkout?m=")) {
+    if (value != null && value.contains(AppConstants.baseUrl)) {
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
