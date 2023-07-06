@@ -90,6 +90,8 @@ dependencies:
 
   #App Icon
   flutter_launcher_icons: ^0.12.0
+  webview_flutter: ^2.0.4
+
 
   
     

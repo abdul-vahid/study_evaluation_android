@@ -1,14 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
-import 'package:study_evaluation/services/api_service.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/utils/notification_utils.dart';
-import 'package:study_evaluation/view/views/notifications_view.dart';
-import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
 import '../../utils/app_utils.dart';
 

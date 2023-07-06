@@ -64,7 +64,8 @@ class _PaymentViewState extends State<PaymentView> {
         body: Builder(builder: (BuildContext context) {
           return WebView(
             initialUrl:
-                '${AppConstants.baseUrl}/study_evaluation_website/checkout?m=${widget.bs64}',
+                //'${AppConstants.baseUrl}/study_evaluation_website/checkout?m=${widget.bs64}',
+                '${AppConstants.baseUrl}/checkout?m=${widget.bs64}',
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);

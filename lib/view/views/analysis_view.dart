@@ -6,6 +6,7 @@ import 'package:study_evaluation/utils/app_utils.dart';
 
 import '../../utils/app_color.dart';
 
+// ignore: must_be_immutable
 class AnalysisView extends StatefulWidget {
   ExamModel examModel;
   AnalysisView({super.key, required this.examModel});

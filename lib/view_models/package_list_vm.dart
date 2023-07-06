@@ -7,8 +7,6 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
-import '../models/free_content/free_content_model.dart';
-
 class PackageListViewModel extends BaseListViewModel {
   Future<void> fetch(
       {String categoryId = "",

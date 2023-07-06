@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
@@ -31,7 +30,7 @@ class _SignupViewState extends State<SignupView> {
   String otpVerification = "";
   int? oneTimePassword;
   OtpFieldController otpController = OtpFieldController();
-  final TextEditingController _mobileController = TextEditingController();
+  //final TextEditingController _mobileController = TextEditingController();
 
   String? _mobileNumber;
   String? _password;
@@ -137,6 +136,7 @@ class _SignupViewState extends State<SignupView> {
                 if (passwordController.text != confirmpasswordController.text) {
                   return "Password does not match";
                 }
+                return null;
               },
               suffix: Padding(
                 padding: const EdgeInsetsDirectional.only(end: 10.0),

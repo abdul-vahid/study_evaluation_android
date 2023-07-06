@@ -12,9 +12,7 @@ import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
-import '../../utils/enum.dart';
 import '../../view_models/user_view_model/user_list_vm.dart';
-import '../widgets/widget_utils.dart';
 import 'edit_profile_view.dart';
 
 class ProfileView extends StatefulWidget {

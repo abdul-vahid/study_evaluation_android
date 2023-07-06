@@ -12,6 +12,7 @@ import 'package:study_evaluation/view_models/package_list_vm.dart';
 
 import '../../utils/app_color.dart';
 
+// ignore: must_be_immutable
 class PackageListView extends StatefulWidget {
   String? categoryId;
   String? packageType;

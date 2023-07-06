@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/view/views/otpverification_screen.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
@@ -17,7 +16,7 @@ class ForgetPasswordView extends StatefulWidget {
 
 class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   String? _userName;
-  String? _reason = 'FORGOT_PASSWORD';
+  // String? _reason = 'FORGOT_PASSWORD';
   final GlobalKey<FormState> _ForgetFormKey = new GlobalKey<FormState>();
   final TextEditingController _mobileController = TextEditingController();
 

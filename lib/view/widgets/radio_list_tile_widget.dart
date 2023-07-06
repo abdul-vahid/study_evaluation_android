@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:study_evaluation/models/question_answer_model/question_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
+// ignore: must_be_immutable
 class RadioListTileWidget extends StatefulWidget {
   final Widget contentWidget;
   List<String> selectedValues;

@@ -9,8 +9,6 @@ import 'package:study_evaluation/models/quote_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view_models/quote_list_vm.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../utils/app_color.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../utils/app_constants.dart';

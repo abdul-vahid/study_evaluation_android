@@ -8,12 +8,10 @@ import 'package:study_evaluation/models/current_affairs_model.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view_models/current_affairs_list_vm.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/app_utils.dart';
-import 'fullscreen_videoplayer_view.dart';
 
 class CurrentAffairsView extends StatefulWidget {
   const CurrentAffairsView({super.key});
@@ -166,8 +164,6 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         children: [
           TextButton.icon(
               onPressed: () async {
-                // ignore: prefer_interpolation_to_compose_strings
-
                 AppUtils.openDocument(
                     context, currentAffairsModel?.documentUrl);
               },

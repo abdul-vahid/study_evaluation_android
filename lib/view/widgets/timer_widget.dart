@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
 
+// ignore: must_be_immutable
 class TimerWidget extends StatefulWidget {
   Duration duration;
   void Function(String value) callBack;

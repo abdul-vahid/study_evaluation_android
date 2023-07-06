@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/validator_util.dart';

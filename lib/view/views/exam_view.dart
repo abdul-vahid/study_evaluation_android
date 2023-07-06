@@ -17,6 +17,7 @@ import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
 
+// ignore: must_be_immutable
 class ExamView extends StatefulWidget {
   final String examId;
   final String userId;
@@ -312,16 +313,14 @@ class _ExamViewState extends State<ExamView> {
       if (model.questionModels == null || model.questionModels!.isEmpty) {
         Timer(
             Duration.zero,
-            () => {
-                  AppUtils.getAlert(
-                    context,
-                    ["No Questions to Start Exam!"],
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                  )
-                });
+            () => AppUtils.getAlert(
+                  context,
+                  ["No Questions to Start Exam!"],
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                ));
 
         return const Center(
           child: Text("No Questions to Start Exam!"),
@@ -402,7 +401,7 @@ class _ExamViewState extends State<ExamView> {
     //   ),
     // ));
 
-    bool isBlankSelValues = selectedValues.isEmpty;
+    // bool isBlankSelValues = selectedValues.isEmpty;
     var i = 0;
 
     for (QuestionModel model

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
-import 'package:study_evaluation/view/views/feedbackalertdialog.dart';
 import 'package:study_evaluation/view/views/follow_us_view.dart';
 import 'package:study_evaluation/view/views/home_view.dart';
 
@@ -14,8 +13,8 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     AboutUsScreen(),

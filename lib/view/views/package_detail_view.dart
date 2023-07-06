@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,18 +16,12 @@ import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/payment_view.dart';
 import 'package:study_evaluation/view/views/pdf_viewer.dart';
-import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
-import 'package:study_evaluation/view_models/order_list_vm.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 import '../../models/package_model/document.dart';
 import '../../utils/app_color.dart';
-import '../../view_models/order_payment_list_vm.dart';
 
 class PackageDetailView extends StatefulWidget {
   final String packageLineItemId;
