@@ -75,7 +75,7 @@ abstract class AppConstants {
     defaultValue: '',
   );
 
-  static const String publicPath = '/study_evaluation/public';
+  static const String publicPath = '/admin/public';
   static const bool kDebugMode = true;
   static const String appUrlPath = 'https://www.google.com/';
 

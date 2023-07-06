@@ -23,7 +23,7 @@ class NotificationUtil {
     // when you click on notification app open from terminated state and you can get notification data in this method
     _firebaseMessaging?.getInitialMessage().then(
       (RemoteMessage? remoteMessage) {
-        debug("display notifcation app getInitialMessage");
+        // debug("display notifcation app getInitialMessage");
         //onMessageReceived(remoteMessage);
         if (remoteMessage != null && remoteMessage.notification != null) {
           AppUtils.launchTab(AppUtils.currentContext!,
@@ -35,7 +35,7 @@ class NotificationUtil {
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage? remoteMessage) {
-        debug("display notifcation app opened foregroud");
+        // debug("display notifcation app opened foregroud");
         onMessageReceived(remoteMessage);
       },
     );
@@ -43,7 +43,7 @@ class NotificationUtil {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage? remoteMessage) {
-        debug("display notifcation app background");
+        //  debug("display notifcation app background");
         AppUtils.launchTab(AppUtils.currentContext!,
             selectedIndex: HomeTabsOptions.notifications.index);
         //onMessageReceived(remoteMessage!);

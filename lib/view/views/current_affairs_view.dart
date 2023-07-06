@@ -122,7 +122,7 @@ class _CurrentAffairsViewState extends State<CurrentAffairsView> {
         CurrentAffairsModel model = viewModel.model as CurrentAffairsModel;
 
         if (model.videoUrl != null && (model.videoUrl?.endsWith(".mp4"))!) {
-          debug('Video URL : ${model.videoUrl}');
+          //debug('Video URL : ${model.videoUrl}');
 
           tempWidgets.add(_getCurrentAffairsModelVideo(model.videoUrl));
         }

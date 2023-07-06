@@ -46,13 +46,13 @@ class BaseListViewModel extends ChangeNotifier {
     } on Exception catch (e, stackTrace) {
       status = "Error";
       exception = exception;
-      debug(stackTrace);
+      // debug(stackTrace);
 
       viewModels
           .add(BaseViewModel(model: BaseModel(appException: null, error: e)));
     } catch (e, stackTrace) {
       status = "Error";
-      debug(stackTrace);
+      // debug(stackTrace);
 
       viewModels.add(BaseViewModel(
           model:
@@ -87,7 +87,7 @@ class BaseListViewModel extends ChangeNotifier {
 
         accessToken = jsonObject["access_token"];
         refreshToken = jsonObject["refresh_token"];
-        debug("Refresh Token == $refreshToken");
+        // debug("Refresh Token == $refreshToken");
 
         await prefs.setString(SharedPrefsConstants.accessTokenKey, accessToken);
         await prefs.setString(

@@ -64,9 +64,9 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Widget _getBody() {
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
-    debug('package ${package}');
+    // debug('package ${package}');
 
-    debug('model?.documents ${model?.documents == null}');
+    //debug('model?.documents ${model?.documents == null}');
     if (model == null ||
         package == null ||
         (model?.testSeries == null && model?.documents == null)) {
@@ -74,8 +74,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         child: Text("Invalid Pacakge"),
       );
     }
-    debug('package?.validityStatus@ ${package?.validityStatus}');
-    debug('Roles ${userModel?.role}');
+    // debug('package?.validityStatus@ ${package?.validityStatus}');
+    // debug('Roles ${userModel?.role}');
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.only(
@@ -98,7 +98,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   var postData =
                       '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"app","at":"${token}"}';
 
-                  debug('postData $postData');
+                  // debug('postData $postData');
 
                   String bs64 = base64.encode(postData.codeUnits);
 
@@ -256,7 +256,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                             '${AppConstants.baseUrl}${AppConstants.publicPath}/${document.documentUrl}')
                         .then((f) {
                       document.downloadedDocumentUrl = f.path;
-                      debug("remotePDF === ${document.downloadedDocumentUrl}");
+                      // debug("remotePDF === ${document.downloadedDocumentUrl}");
                       Navigator.pop(context);
                       Navigator.push(
                         context,
@@ -583,7 +583,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 '${AppConstants.baseUrl}${AppConstants.publicPath}/${testSeries.pdfUrl}')
             .then((f) {
           testSeries.downloadedDocumentUrl = f.path;
-          debug("remotePDF === ${testSeries.downloadedDocumentUrl}");
+          //  debug("remotePDF === ${testSeries.downloadedDocumentUrl}");
           Navigator.pop(context);
           Navigator.push(
             context,

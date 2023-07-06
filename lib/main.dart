@@ -50,7 +50,7 @@ void main() async {
 }
 
 Future<void> _backgroundHandler(RemoteMessage message) async {
-  debug("_backgroundHandler");
+  //debug("_backgroundHandler");
 
   /* Navigator.push(
       NotificationUtil.context!,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/utils/enum.dart';
 import '../../utils/app_color.dart';
+import '../../utils/function_lib.dart';
 
 class WidgetUtils {
   static List<Widget> getTabs(List<String> tabTitles) {
@@ -185,6 +186,7 @@ class WidgetUtils {
   }
 
   static Widget _getImage(url, imageType, {imageHeight}) {
+    // debug('url @@@@@ $url');
     if (imageType == ImageType.assets) {
       return Image.asset(
         url,

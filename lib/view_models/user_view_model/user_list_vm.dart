@@ -13,7 +13,7 @@ class UserListViewModel extends BaseListViewModel {
 
   Future<dynamic> signup(UserModel userModel) async {
     String url = AppUtils.getUrl(AppConstants.signupAPIPath);
-    debug(userModel.toJson());
+    // debug(userModel.toJson());
     return await post(url: url, body: userModel.toJson());
   }
 

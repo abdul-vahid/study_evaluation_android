@@ -60,7 +60,7 @@ class PDFViewerState extends State<PDFViewer> with WidgetsBindingObserver {
               setState(() {
                 errorMessage = '$page: ${error.toString()}';
               });
-              debug('$page: ${error.toString()}');
+              //  debug('$page: ${error.toString()}');
             },
             onViewCreated: (PDFViewController pdfViewController) {
               _controller.complete(pdfViewController);

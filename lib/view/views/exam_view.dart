@@ -190,7 +190,7 @@ class _ExamViewState extends State<ExamView> {
       onChanged: (value) {
         setState(() {
           _selectedLanguage = value!;
-          debug("_selectedLanguage = $_selectedLanguage");
+          //  debug("_selectedLanguage = $_selectedLanguage");
           Navigator.pop(context);
         });
       },
@@ -326,7 +326,7 @@ class _ExamViewState extends State<ExamView> {
           child: Text("No Questions to Start Exam!"),
         );
       }
-      debug("data loaded == $hasDataLoaded");
+      // debug("data loaded == $hasDataLoaded");
       if (!hasDataLoaded) {
         hasDataLoaded = true;
         _initDuration(model);
@@ -556,7 +556,7 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void _onSubmit({String status = "Completed", String timerUP = ""}) {
-    debug("Status === $status");
+    //debug("Status === $status");
     if (hasCanceledTimer) {
       return;
     }
@@ -583,7 +583,7 @@ class _ExamViewState extends State<ExamView> {
             totalAnswered: totalAnsweredCount,
             totalSkipped: totalSkippedCount)
         .then((value) {
-      debug("value === $value");
+      // debug("value === $value");
       if (value == "submit") {
         AppUtils.onLoading(context, message);
         ExamListViewModel()
@@ -596,7 +596,7 @@ class _ExamViewState extends State<ExamView> {
           AppUtils.getAlert(context, [successMessage],
               onPressed: () => _onPressedAlert(resultId, status));
         }).catchError((error, stacktrace) {
-          debug(stacktrace);
+          // debug(stacktrace);
           Navigator.pop(context);
           AppUtils.onError(context, error);
         });
@@ -771,7 +771,7 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void setRadioValues(value, model) {
-    debug("Value = $value");
+    //debug("Value = $value");
     selectedValues[model.index] = value!;
     model.submittedAnswer = value;
     /* setState(() {
@@ -944,7 +944,7 @@ class _ExamViewState extends State<ExamView> {
   }
 
   void updateTimer(String value) {
-    debug("value = $value");
+    //debug("value = $value");
     timerText = value;
   }
 }

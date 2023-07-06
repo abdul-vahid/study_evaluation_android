@@ -218,7 +218,8 @@ class _ProfileViewState extends State<ProfileView> {
           userModel?.profileUrl = records;
           prefs.setString(SharedPrefsConstants.userKey, (userModel?.toJson())!);
           profileUrl = AppUtils.getImageUrl(records);
-          debug('profileUrl $profileUrl');
+          // debug("profileUrl&&&& $profileUrl");
+          // debug('profileUrl $profileUrl');
         });
         Timer(const Duration(seconds: 1), (() {
           Navigator.pop(context);

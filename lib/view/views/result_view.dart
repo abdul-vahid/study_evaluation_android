@@ -389,7 +389,7 @@ class _ResultViewState extends State<ResultView> {
   }
 
   void _loadFilterMap(key) {
-    print("debug _loadfilter");
+    // print("debug _loadfilter");
     int favCount = 0;
     if (filtersMap.containsKey(key)) {
       favCount = filtersMap[key]!;

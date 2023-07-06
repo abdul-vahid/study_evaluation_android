@@ -59,7 +59,7 @@ class _SignupViewState extends State<SignupView> {
             WidgetUtils.getTextFormField(
                 'First Name', 'Enter First Name', Icons.person,
                 onSaved: ((value) {
-              debug("onsave firstname = $value");
+              //  debug("onsave firstname = $value");
               _firstName = value;
             }), onValidator: validateName),
             const SizedBox(
@@ -312,7 +312,7 @@ class _SignupViewState extends State<SignupView> {
 
   void _submit() {
     //AppUtils.onLoading(context, "Logging You, please wait...");
-    debug("_firstName = $_firstName");
+    // debug("_firstName = $_firstName");
 
     if (otpVerification == oneTimePassword.toString()) {
       UserModel userModel = UserModel(

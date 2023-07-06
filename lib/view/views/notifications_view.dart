@@ -121,7 +121,7 @@ class _NotificationViewState extends State<NotificationView> {
     Widget noButton = TextButton(
       child: Text("No"),
       onPressed: () {
-        debug("No");
+        // debug("No");
         Navigator.pop(context);
       },
     );
