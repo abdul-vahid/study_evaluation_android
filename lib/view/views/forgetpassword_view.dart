@@ -45,7 +45,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  WidgetUtils.getLoginImageContainer("assets/images/logo.jpg"),
+                  WidgetUtils.getLoginImageContainer("assets/images/logo.png"),
                   const SizedBox(
                     height: 50,
                   ),
