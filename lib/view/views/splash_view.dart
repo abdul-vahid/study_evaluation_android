@@ -27,7 +27,7 @@ class StartState extends State<SplashView> {
   }
 
   startTimer() async {
-    var duration = const Duration(seconds: 10);
+    var duration = const Duration(seconds: 3);
     return Timer(duration, _isLoggedIn);
   }
 

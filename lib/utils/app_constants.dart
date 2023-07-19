@@ -77,7 +77,8 @@ abstract class AppConstants {
 
   static const String publicPath = '/admin/public';
   static const bool kDebugMode = true;
-  static const String appUrlPath = 'https://www.google.com/';
+  static const String appUrlPath =
+      'https://play.google.com/store/apps/details?id=com.study.evaluation';
 
   static const String categoryAPIPath = '/apis/category';
   static const String appearanceAPIPath = '/apis/appearance';
