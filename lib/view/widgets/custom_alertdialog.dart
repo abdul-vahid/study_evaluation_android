@@ -190,7 +190,10 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     return TextButton(
       style: TextButton.styleFrom(
           foregroundColor: Colors.white, backgroundColor: Colors.grey),
-      child: Text(questionNo.toString()),
+      child: Text(
+        questionNo.toString(),
+        style: const TextStyle(fontSize: 10),
+      ),
       onPressed: () {
         Navigator.pop(context, questionNo - 1);
       },

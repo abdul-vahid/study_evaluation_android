@@ -10,6 +10,7 @@ import 'package:study_evaluation/models/question_answer_model/question_model.dar
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/analysis_view.dart';
 import 'package:study_evaluation/view/views/learderboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
@@ -615,6 +616,7 @@ class _ResultViewState extends State<ResultView> {
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "hindi")) {
+      debug("labelHindi  $labelHindi");
       /* labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi; */

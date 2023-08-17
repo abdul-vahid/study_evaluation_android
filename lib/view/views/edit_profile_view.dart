@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/enum.dart';
 import 'package:study_evaluation/view_models/user_view_model/user_list_vm.dart';
@@ -12,6 +13,7 @@ import 'package:otp_text_field/otp_text_field.dart';
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
+import '../../utils/function_lib.dart';
 import '../../utils/validator_util.dart';
 
 class EditProfileView extends StatefulWidget {
@@ -29,6 +31,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   String otp = "";
   int? oneTimePassword;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  var appSignatureID;
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -100,12 +103,35 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   @override
+  void codeUpdated() {
+    //print("Update code $code");
+    setState(() {
+      print("codeUpdated");
+    });
+  }
+
+  void listenOtp() async {
+    await SmsAutoFill().listenForCode;
+    debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
+    print("OTP listen Called");
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    print("unregisterListener");
+    super.dispose();
+  }
+
+  @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
       var userModel = AppUtils.getSessionUser(prefs);
       userModel ?? AppUtils.logout(context);
     });
+
     _loadProfileData();
+    listenOtp();
     super.initState();
   }
 
@@ -417,8 +443,14 @@ class _EditProfileViewState extends State<EditProfileView> {
     AppUtils.onLoading(context, "Please Wait...");
     mobileNo = _mobileController.text;
     reason = 'UPDATE_USER';
+    appSignatureID = await SmsAutoFill().getAppSignature;
+
     // ignore: avoid_single_cascade_in_expression_statements
-    UserListViewModel().getOTP(mobileNo!, "UPDATE_USER").then((otp) {
+    UserListViewModel()
+        .getOTP(mobileNo!, "UPDATE_USER", appSignatureID)
+        .then((otp) {
+      Navigator.pop(context);
+
       oneTimePassword = otp;
       showDialogOTP();
     }).catchError((onError) {
@@ -442,19 +474,34 @@ class _EditProfileViewState extends State<EditProfileView> {
               //position
               mainAxisSize: MainAxisSize.min,
               children: [
-                OTPTextField(
-                    controller: otpController,
-                    length: 4,
-                    width: MediaQuery.of(context).size.width,
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldWidth: 45,
-                    //fieldStyle: FieldStyle.box,
-                    outlineBorderRadius: 15,
-                    style: const TextStyle(fontSize: 17),
-                    onChanged: (pin) {
-                      otpVerification = pin;
-                    },
-                    onCompleted: (pin) {}),
+                PinFieldAutoFill(
+                  currentCode: otpVerification,
+                  codeLength: 4,
+                  onCodeChanged: (code) {
+                    otpVerification = code.toString();
+
+                    // print("onCodeChanged $code");
+                    // setState(() {
+                    //   otpVerification = code.toString();
+                    // });
+                  },
+                  onCodeSubmitted: (val) {
+                    print("onCodeSubmitted $val");
+                  },
+                ),
+                // OTPTextField(
+                //     controller: otpController,
+                //     length: 4,
+                //     width: MediaQuery.of(context).size.width,
+                //     textFieldAlignment: MainAxisAlignment.spaceAround,
+                //     fieldWidth: 45,
+                //     //fieldStyle: FieldStyle.box,
+                //     outlineBorderRadius: 15,
+                //     style: const TextStyle(fontSize: 17),
+                //     onChanged: (pin) {
+                //       otpVerification = pin;
+                //     },
+                //     onCompleted: (pin) {}),
                 const SizedBox(
                   height: 10,
                 ),
@@ -474,7 +521,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     InkWell(
                       onTap: () {
                         UserListViewModel()
-                            .getOTP(mobileNo!, "UPDATE_USER")
+                            .getOTP(mobileNo!, "UPDATE_USER", appSignatureID)
                             .then((records) {
                           oneTimePassword = records;
                           //showDialogOTP(records);

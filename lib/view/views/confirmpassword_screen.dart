@@ -180,6 +180,9 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
           .changePasword(widget.userName, passwordController.text)
           .then((records) {
         Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Password has been changed Successfully."),
+        ));
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const LoginHome()));
       }).catchError((onError) {

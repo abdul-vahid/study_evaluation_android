@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:study_evaluation/view/views/otpverification_screen.dart';
 
 import '../../utils/app_color.dart';
@@ -19,7 +20,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   // String? _reason = 'FORGOT_PASSWORD';
   final GlobalKey<FormState> _ForgetFormKey = new GlobalKey<FormState>();
   final TextEditingController _mobileController = TextEditingController();
-
+  var appSignatureID;
   @override
   Widget build(BuildContext context) {
     AppUtils.currentContext = context;
@@ -100,13 +101,13 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         child: WidgetUtils.getButton("Submit", callback: onButtonPressed));
   }
 
-  void onButtonPressed() {
+  void onButtonPressed() async{
     if (_ForgetFormKey.currentState!.validate()) {
       AppUtils.onLoading(context, "Please Wait...");
 
       _userName = _mobileController.text;
-
-      UserListViewModel().getOTP(_userName!, "FORGOT_PASSWORD").then((records) {
+       appSignatureID = await SmsAutoFill().getAppSignature;
+      UserListViewModel().getOTP(_userName!, "FORGOT_PASSWORD", appSignatureID).then((records) {
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -114,6 +115,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 builder: (context) => OTPVerificationScreen(
                       otp: records,
                       userName: _userName!,
+                      appSignatureID:appSignatureID,
                     )));
       }).catchError((onError) {
         Navigator.pop(context);

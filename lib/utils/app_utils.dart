@@ -272,7 +272,7 @@ class AppUtils {
     return Html(
       data: data,
       style: {
-        "span": Style(fontFamily: fontFamily),
+        // "span": Style(fontFamily: fontFamily),
         "body, span, p, font, div": Style(
             fontSize: FontSize(fontSize), color: color, fontWeight: fontWeight)
       },
