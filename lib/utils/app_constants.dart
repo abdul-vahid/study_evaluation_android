@@ -43,7 +43,7 @@ abstract class AppConstants {
     // defaultValue: 'https://studyevaluation.com/sandbox',
 
     defaultValue: 'https://studyevaluation.com/uat',
-    //defaultValue: 'https://studyevaluation.com',
+    // defaultValue: 'https://studyevaluation.com',
   );
 
   static const String clientId = String.fromEnvironment(
