@@ -71,9 +71,14 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
       labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi;
-      widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti',
-          fontSize: double.tryParse(widget.selectedFont)!));
+      widgets.add(Align(
+        alignment: Alignment.centerLeft,
+        child: AppUtils.getHtmlData1(
+          labelHindi,
+          // fontFamily: 'Kruti Dev 010',
+          // fontSize: double.tryParse(widget.selectedFont)!
+        ),
+      ));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
@@ -82,7 +87,9 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
       /*  labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
           : labelEnglish; */
-      widgets.add(AppUtils.getHtmlData("$labelEnglish"));
+      widgets.add(Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1("$labelEnglish")));
     }
 
     if (widgets.isNotEmpty) {

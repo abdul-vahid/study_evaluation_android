@@ -39,6 +39,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Package? package;
   String? _selectedFont = "15";
   var remotePDFpath = "";
+  bool isRefresh = false;
+
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -58,7 +60,23 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
         appBar: AppUtils.getAppbar("Package Detail"),
-        body: AppUtils.getAppBody(packageListVM!, _getBody, context: context));
+        body: RefreshIndicator(
+            onRefresh: _pullRefresh,
+            child: AppUtils.getAppBody(packageListVM!, _getBody,
+                context: context)));
+  }
+
+  Future<void> _pullRefresh() async {
+    packageListVM?.viewModels.clear();
+    packageListVM = null;
+    //print("pull refresh");
+    isRefresh = true;
+    AppUtils.onLoading(context, "Refreshing");
+    // String url = AppUtils.getUrl(
+    //     "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.userId}");
+    Provider.of<PackageListViewModel>(context, listen: false)
+        .fetchPackageLineItems(widget.packageLineItemId);
+    packageListVM = Provider.of<PackageListViewModel>(context, listen: false);
   }
 
   Widget _getBody() {
@@ -73,6 +91,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       return const Center(
         child: Text("Invalid Pacakge"),
       );
+    }
+
+    if (isRefresh) {
+      Navigator.pop(context);
+      isRefresh = false;
     }
     // debug('package?.validityStatus@ ${package?.validityStatus}');
     // debug('Roles ${userModel?.role}');
@@ -745,10 +768,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       padding: const EdgeInsets.all(10.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: AppUtils.getHtmlData(package?.description,
-            fontFamily: 'Kruti',
-            fontSize: double.tryParse(
-                _selectedFont!)!) /* Text(
+        child: AppUtils.getHtmlData1(
+          package?.description,
+          // fontFamily: 'Kruti Dev 010',
+          // fontSize: double.tryParse(
+          //     _selectedFont!)!
+        ) /* Text(
           (package?.description)!,
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),

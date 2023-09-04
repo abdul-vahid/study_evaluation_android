@@ -620,11 +620,16 @@ class _ResultViewState extends State<ResultView> {
       /* labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi; */
-      widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti',
-          fontSize: (fontSize + 4),
-          color: color,
-          fontWeight: fontWeight));
+      widgets.add(Align(
+        alignment: Alignment.centerLeft,
+        child: AppUtils.getHtmlData1(
+          labelHindi,
+          // fontFamily: 'Kruti Dev 010',
+          // fontSize: (fontSize + 4),
+          // color: color,
+          // fontWeight: fontWeight)
+        ),
+      ));
     }
 
     if (labelEnglish != null &&
@@ -639,8 +644,13 @@ class _ResultViewState extends State<ResultView> {
       widgets.add(Divider(
         height: 10,
       ));
-      widgets.add(AppUtils.getHtmlData(labelEnglish,
-          fontSize: fontSize, color: color, fontWeight: fontWeight));
+      widgets.add(Align(
+        alignment: Alignment.centerLeft,
+        child: AppUtils.getHtmlData1(
+          labelEnglish,
+          // fontSize: fontSize, color: color, fontWeight: fontWeight
+        ),
+      ));
     }
 
     if (widgets.isNotEmpty) {

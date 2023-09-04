@@ -25,6 +25,7 @@ import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class AppUtils {
   static bool isLoggedout = false;
@@ -264,15 +265,27 @@ class AppUtils {
     Navigator.of(context).pop();
   }
 
+  static HtmlWidget getHtmlData1(
+    data,
+    // {fontFamily = '',
+    // double fontSize = 14.0,
+    // Color? color,
+    // fontWeight = FontWeight.normal}
+  ) {
+    return HtmlWidget(
+      data,
+    );
+  }
+
   static Html getHtmlData(data,
       {fontFamily = '',
-      double fontSize = 15.0,
+      double fontSize = 14.0,
       Color? color,
       fontWeight = FontWeight.normal}) {
     return Html(
       data: data,
       style: {
-        // "span": Style(fontFamily: fontFamily),
+        "span": Style(fontFamily: fontFamily),
         "body, span, p, font, div": Style(
             fontSize: FontSize(fontSize), color: color, fontWeight: fontWeight)
       },

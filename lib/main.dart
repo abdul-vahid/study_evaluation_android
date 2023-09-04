@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
 
 import 'package:study_evaluation/view/views/category_list_view.dart';

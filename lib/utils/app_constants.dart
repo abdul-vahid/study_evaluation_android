@@ -42,8 +42,8 @@ abstract class AppConstants {
 
     // defaultValue: 'https://studyevaluation.com/sandbox',
 
-    defaultValue: 'https://studyevaluation.com/uat',
-    // defaultValue: 'https://studyevaluation.com',
+    // defaultValue: 'https://studyevaluation.com/uat',
+    defaultValue: 'https://studyevaluation.com',
   );
 
   static const String clientId = String.fromEnvironment(
@@ -112,5 +112,8 @@ abstract class AppConstants {
       '/apis/packages?category_id=&user_id=&package_type=&publish_type=Free';
 
   static const String followUSData =
-      '{"records":[{"title":"Follow us on Facebook","image":"assets/images/facebook.png","url":"https://www.facebook.com/profile.php?id=100090658115759"},{"title":"Follow us on Instagram","image":"assets/images/instagram.png","url":"https://instagram.com/studyevaluation?igshid=ZDdkNTZiNTM="},{"title":"Follow us on Youtube","image":"assets/images/youtube.png","url":"https://www.youtube.com/@studysevaluation"},{"title":"Contact us","image":"assets/images/taligram.png","url":"https://t.me/studyevaluation"}, {"title":"Join us on Whatsapp","image":"assets/images/whatsapp.png","url":"https://chat.whatsapp.com/LHE2SYxzrfK1Smg0RgFRjn"}]}';
+      '{"records":[{"title":"Follow us on Facebook","image":"assets/images/facebook.png","url":"https://www.facebook.com/profile.php?id=100090658115759"},{"title":"Follow us on Instagram","image":"assets/images/instagram.png","url":"https://instagram.com/studyevaluation?igshid=ZDdkNTZiNTM="},{"title":"Follow us on Youtube","image":"assets/images/youtube.png","url":"https://www.youtube.com/@evolve-with-studyevaluation"},{"title":"Contact us","image":"assets/images/taligram.png","url":"https://t.me/studyevaluation"}, {"title":"Join us on Whatsapp","image":"assets/images/whatsapp.png","url":"https://chat.whatsapp.com/LHE2SYxzrfK1Smg0RgFRjn"}]}';
 }
+
+
+//https://www.youtube.com/@studysevaluation

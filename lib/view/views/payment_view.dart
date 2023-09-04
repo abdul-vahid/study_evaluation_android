@@ -145,7 +145,7 @@ class NavigationControls extends StatelessWidget {
         final WebViewController? controller = snapshot.data;
         controllerGlobal = controller;
 
-        return Row(
+        return const Row(
           children: <Widget>[
             // IconButton(
             //   icon: const Icon(Icons.arrow_back_ios),

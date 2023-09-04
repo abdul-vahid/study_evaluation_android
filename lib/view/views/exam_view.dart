@@ -789,16 +789,19 @@ class _ExamViewState extends State<ExamView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 15),
+            padding: const EdgeInsets.only(left: 5, top: 10),
             child: Text(
               "Q ${model.index + 1}. ",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
-            child: _getContent(
-                "${model.questionHindi}", "${model.questionEnglish}",
-                questionNumber: model.index + 1),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: _getContent(
+                  "${model.questionHindi}", "${model.questionEnglish}",
+                  questionNumber: model.index + 1),
+            ),
           ),
         ],
       ),
@@ -813,8 +816,19 @@ class _ExamViewState extends State<ExamView> {
       /*  labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi;  */
-      widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti', fontSize: double.tryParse(_selectedFont!)!));
+
+      debug("labelHindi ${labelHindi}");
+
+      widgets.add(Align(
+        alignment: Alignment.centerLeft,
+        child: AppUtils.getHtmlData1(
+          labelHindi,
+        ),
+      ));
+
+      // widgets.add(AppUtils.getHtmlData(labelHindi,
+      //     fontFamily: 'Kruti Dev 010',
+      //     fontSize: double.tryParse(_selectedFont!)!));
     }
     if (labelEnglish != null &&
         labelEnglish.toString().trim().isNotEmpty &&
@@ -823,7 +837,9 @@ class _ExamViewState extends State<ExamView> {
       /*  labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
           : labelEnglish; */
-      widgets.add(AppUtils.getHtmlData("$labelEnglish"));
+      widgets.add(Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1("$labelEnglish")));
     }
 
     if (widgets.isNotEmpty) {

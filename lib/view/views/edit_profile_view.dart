@@ -112,14 +112,14 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   void listenOtp() async {
     await SmsAutoFill().listenForCode;
-    debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
-    print("OTP listen Called");
+   // debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
+    //print("OTP listen Called");
   }
 
   @override
   void dispose() {
     SmsAutoFill().unregisterListener();
-    print("unregisterListener");
+    //print("unregisterListener");
     super.dispose();
   }
 

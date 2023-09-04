@@ -54,9 +54,9 @@ class _MyOrderViewState extends State<MyOrderView> {
     for (var viewModel in baseListViewModel!.viewModels) {
       widgets.add(getCard(viewModel.model));
 
-      print('viewModel$viewModel');
+      // print('viewModel$viewModel');
       // viewModel.model
-      print('viewModel.model@@ ${viewModel.model}');
+      // print('viewModel.model@@ ${viewModel.model}');
     }
 
     return widgets;

@@ -62,14 +62,14 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
 
   Container _getSubjectQuestionNo(
       String subject, List<QuestionModel> questionModels) {
-    print("len = ${questionModels.length}");
+    //print("len = ${questionModels.length}");
     //var min = 10;
     //var max = 50;
     //Random random = Random();
     //var _randomNumber1 = min + random.nextInt(max - min);
     double height = ((questionModels.length / 7) + 1) * 50;
     if (AppConstants.kDebugMode) {
-      print("height = $height");
+      // print("height = $height");
     }
     return Container(
       child: Column(
@@ -186,13 +186,13 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
   }
 
   Widget button(int questionNo) {
-    print("question = $questionNo");
+    // print("question = $questionNo");
     return TextButton(
       style: TextButton.styleFrom(
           foregroundColor: Colors.white, backgroundColor: Colors.grey),
       child: Text(
         questionNo.toString(),
-        style: const TextStyle(fontSize: 10),
+        style: const TextStyle(fontSize: 8),
       ),
       onPressed: () {
         Navigator.pop(context, questionNo - 1);

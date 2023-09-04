@@ -42,20 +42,20 @@ class _SignupViewState extends State<SignupView> {
   void codeUpdated() {
     //print("Update code $code");
     setState(() {
-      print("codeUpdated");
+      //  print("codeUpdated");
     });
   }
 
   void listenOtp() async {
     await SmsAutoFill().listenForCode;
     //   debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
-    print("OTP listen Called");
+    //print("OTP listen Called");
   }
 
   @override
   void dispose() {
     SmsAutoFill().unregisterListener();
-    print("unregisterListener");
+    // print("unregisterListener");
     super.dispose();
   }
 
@@ -116,7 +116,7 @@ class _SignupViewState extends State<SignupView> {
               onSaved: ((value) {
                 _password = value;
 
-                print('_password @@@@ $_password');
+                // print('_password @@@@ $_password');
               }),
               onValidator: validatePassword,
               obscureText: passwordVisible,
@@ -146,7 +146,7 @@ class _SignupViewState extends State<SignupView> {
               'Enter Confirm Password',
               Icons.lock,
               onSaved: ((value) {
-                print('_confirmPassword @@@@ $_password');
+                ///  print('_confirmPassword @@@@ $_password');
               }),
               obscureText: confirmPasswordVisible,
               controller: confirmpasswordController,
@@ -154,8 +154,8 @@ class _SignupViewState extends State<SignupView> {
                 if (value!.isEmpty) {
                   return 'Please re-enter password';
                 }
-                print(passwordController.text);
-                print(confirmpasswordController.text);
+                //   print(passwordController.text);
+                //  print(confirmpasswordController.text);
                 if (passwordController.text != confirmpasswordController.text) {
                   return "Password does not match";
                 }
@@ -256,7 +256,7 @@ class _SignupViewState extends State<SignupView> {
                     // });
                   },
                   onCodeSubmitted: (val) {
-                    print("onCodeSubmitted $val");
+                    //  print("onCodeSubmitted $val");
                   },
                 ),
                 // OTPTextField(
@@ -369,7 +369,7 @@ class _SignupViewState extends State<SignupView> {
       );
 
       userController?.signUp(userModel).then((value) {
-        print("success");
+        //  print("success");
         Navigator.pop(context);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const SignupSuccess()));
