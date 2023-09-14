@@ -71,6 +71,14 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
       labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi;
+
+      // RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+      // // String? str = e.attributes['style'];
+      // labelHindi = labelHindi!.replaceAll(
+      //     exp, 'font-size:${double.tryParse(widget.selectedFont)}px');
+
+      labelHindi = AppUtils.changeFontSize(labelHindi, widget.selectedFont);
+
       widgets.add(Align(
         alignment: Alignment.centerLeft,
         child: AppUtils.getHtmlData1(
@@ -87,6 +95,17 @@ class _RadioListTileWidgetState extends State<RadioListTileWidget> {
       /*  labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
           : labelEnglish; */
+
+      // RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+      // // String? str = e.attributes['style'];
+      // labelEnglish = labelEnglish!.replaceAll(
+      //     exp, 'font-size:${double.tryParse(widget.selectedFont)}px');
+
+      // labelEnglish =
+      //     '<div style="font-size:${double.tryParse(widget.selectedFont)}px">$labelEnglish</div>';
+
+      labelEnglish = AppUtils.changeFontSize(labelEnglish, widget.selectedFont);
+
       widgets.add(Align(
           alignment: Alignment.centerLeft,
           child: AppUtils.getHtmlData1("$labelEnglish")));

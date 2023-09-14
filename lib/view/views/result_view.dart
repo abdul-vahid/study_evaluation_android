@@ -547,21 +547,22 @@ class _ResultViewState extends State<ResultView> {
       key: _keys?[model.index],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 15),
+            padding: const EdgeInsets.only(left: 5, top: 11),
             child: Text(
               "Q ${model.index + 1}. ",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: double.tryParse(_selectedFont!),
+                //  fontWeight: FontWeight.bold
+              ),
             ),
           ),
           Expanded(
             child: _getContent(
                 "${model.questionHindi}", "${model.questionEnglish}",
-                questionNumber: model.index + 1,
-                fontSize: double.tryParse(_selectedFont!)!,
-                fontWeight: FontWeight.bold),
+                questionNumber: model.index + 1),
           ),
         ],
       ),
@@ -620,14 +621,19 @@ class _ResultViewState extends State<ResultView> {
       /* labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi; */
-      widgets.add(Align(
-        alignment: Alignment.centerLeft,
-        child: AppUtils.getHtmlData1(
-          labelHindi,
-          // fontFamily: 'Kruti Dev 010',
-          // fontSize: (fontSize + 4),
-          // color: color,
-          // fontWeight: fontWeight)
+      labelHindi = AppUtils.changeFontSize(labelHindi, _selectedFont!);
+
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(top: 10, right: 10),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1(
+            labelHindi,
+            // fontFamily: 'Kruti Dev 010',
+            // fontSize: (fontSize + 4),
+            // color: color,
+            // fontWeight: fontWeight)
+          ),
         ),
       ));
     }
@@ -644,11 +650,16 @@ class _ResultViewState extends State<ResultView> {
       widgets.add(Divider(
         height: 10,
       ));
-      widgets.add(Align(
-        alignment: Alignment.centerLeft,
-        child: AppUtils.getHtmlData1(
-          labelEnglish,
-          // fontSize: fontSize, color: color, fontWeight: fontWeight
+      labelEnglish = AppUtils.changeFontSize(labelEnglish, _selectedFont!);
+
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1(
+            labelEnglish,
+            // fontSize: fontSize, color: color, fontWeight: fontWeight
+          ),
         ),
       ));
     }

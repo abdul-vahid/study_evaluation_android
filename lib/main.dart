@@ -44,7 +44,7 @@ void main() async {
   await Firebase.initializeApp();
   LocalNotificationService.initialize();
 
-  FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  // FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   runApp(const MyApp());
 }
 

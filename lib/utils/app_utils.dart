@@ -305,6 +305,18 @@ class AppUtils {
     );
   }
 
+  static String changeFontSize(String htmlData, String fontSize) {
+    RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+    // String? str = e.attributes['style'];
+    htmlData =
+        htmlData.replaceAll(exp, 'font-size:${double.tryParse(fontSize)}px');
+
+    htmlData =
+        '<div style="font-size:${double.tryParse(fontSize)}px">$htmlData</div>';
+
+    return htmlData;
+  }
+
   static String capitalize(String string) {
     if (string.isEmpty) {
       return string;

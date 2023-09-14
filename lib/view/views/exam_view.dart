@@ -787,17 +787,21 @@ class _ExamViewState extends State<ExamView> {
       key: _keys?[model.index],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 10),
+            padding: const EdgeInsets.only(left: 5, top: 11),
             child: Text(
               "Q ${model.index + 1}. ",
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: double.tryParse(_selectedFont!),
+                //  fontWeight: FontWeight.bold
+              ),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10, right: 10),
               child: _getContent(
                   "${model.questionHindi}", "${model.questionEnglish}",
                   questionNumber: model.index + 1),
@@ -817,7 +821,19 @@ class _ExamViewState extends State<ExamView> {
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi;  */
 
-      debug("labelHindi ${labelHindi}");
+      // debug("labelHindi ${labelHindi}");
+
+      //labelHindi = '<div style="font-size: ${double.tryParse(_selectedFont!)!}px !important;">$labelHindi</div>';
+      // RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+      // // String? str = e.attributes['style'];
+      // labelHindi = labelHindi!
+      //     .replaceAll(exp, 'font-size:${double.tryParse(_selectedFont!)}px');
+
+      // labelHindi =
+      //     '<div style="font-size:${double.tryParse(_selectedFont!)}px">$labelHindi</div>';
+
+      // debug("labelHindi@@ ${labelHindi}");
+      labelHindi = AppUtils.changeFontSize(labelHindi, _selectedFont!);
 
       widgets.add(Align(
         alignment: Alignment.centerLeft,
@@ -837,6 +853,17 @@ class _ExamViewState extends State<ExamView> {
       /*  labelEnglish = questionNumber != null
           ? "Q. $questionNumber) $labelEnglish"
           : labelEnglish; */
+
+      // RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+      // // String? str = e.attributes['style'];
+      // labelEnglish = labelEnglish!
+      //     .replaceAll(exp, 'font-size:${double.tryParse(_selectedFont!)}px');
+
+      // labelEnglish =
+      //     '<div style="font-size:${double.tryParse(_selectedFont!)}px">$labelEnglish</div>';
+
+      labelEnglish = AppUtils.changeFontSize(labelEnglish, _selectedFont!);
+
       widgets.add(Align(
           alignment: Alignment.centerLeft,
           child: AppUtils.getHtmlData1("$labelEnglish")));
