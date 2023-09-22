@@ -36,6 +36,7 @@ class PackageListViewModel extends BaseListViewModel {
     UserModel? userModel = AppUtils.getSessionUser(prefs);
     String url = AppUtils.getUrl(
         "${AppConstants.packageLineItemsAPIPath}?package_id=$packageId&user_id=${userModel?.id}");
+    //print("url $url");
 
     get(baseModel: PackageModel(), url: url);
   }
