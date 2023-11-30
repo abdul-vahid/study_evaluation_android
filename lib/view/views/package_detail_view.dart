@@ -17,6 +17,7 @@ import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/payment_view.dart';
 import 'package:study_evaluation/view/views/pdf_viewer.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
+import 'package:study_evaluation/view/views/sdk_launcher.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
@@ -119,11 +120,19 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   var token =
                       prefs.getString(SharedPrefsConstants.accessTokenKey);
                   var postData =
-                      '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"app","at":"${token}"}';
+                      '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"android_app","at":"${token}"}';
 
                   // debug('postData $postData');
 
                   String bs64 = base64.encode(postData.codeUnits);
+                  SDKLauncher billdesk = SDKLauncher();
+                  AppUtils.onLoading(context, "Please wait");
+
+                  // ignore: use_build_context_synchronously
+                  billdesk.launchWebView(
+                      '${AppConstants.baseUrl}/checkout?m=$bs64',
+                      context,
+                      widget.packageLineItemId);
 
                   // final url =
                   //     'https://studyevaluation.com/sandbox/study_evaluation_website/checkout?m=${bs64}';
@@ -138,16 +147,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   //         )
                   //     .then((value) => print("hello"));
                   // ignore: use_build_context_synchronously
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentView(bs64: bs64)))
-                      .then((value) {
-                    Provider.of<PackageListViewModel>(context, listen: false)
-                        .fetchPackageLineItems(widget.packageLineItemId);
-                    packageListVM = Provider.of<PackageListViewModel>(context,
-                        listen: false);
-                  });
+                  // Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => PaymentView(bs64: bs64)))
+                  //     .then((value) {
+                  //   Provider.of<PackageListViewModel>(context, listen: false)
+                  //       .fetchPackageLineItems(widget.packageLineItemId);
+                  //   packageListVM = Provider.of<PackageListViewModel>(context,
+                  //       listen: false);
+                  // });
 
                   // Navigator.push(
                   //     context,
@@ -474,11 +483,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               )));
     } else  */
 
-    if ((testSeries.pdfUrl != null &&
-        (testSeries.pdfUrl?.isNotEmpty)! &&
-        testSeries.type != "Free" &&
-        (package?.validityStatus == "PURCHASED" ||
-            userModel?.role?.toLowerCase() != "student"))) {
+    // if ((testSeries.pdfUrl != null &&
+    //     (testSeries.pdfUrl?.isNotEmpty)! && testSeries.type != "Free" && (package?.validityStatus == "PURCHASED" ||
+    //         userModel?.role?.toLowerCase() != "student"))) {
+
+    if (testSeries.pdfUrl != null && (testSeries.pdfUrl?.isNotEmpty)!) {
       widgets.add(AppUtils.getElevatedButton('Schedule',
           onPressed: () => _scheduledButton(testSeries),
           buttonStyle: ElevatedButton.styleFrom(
