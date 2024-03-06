@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,18 +16,13 @@ import 'package:study_evaluation/utils/video_player.dart';
 import 'package:study_evaluation/view/views/exam_view.dart';
 import 'package:study_evaluation/view/views/payment_view.dart';
 import 'package:study_evaluation/view/views/pdf_viewer.dart';
-import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/result_view.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
-import 'package:study_evaluation/view_models/order_list_vm.dart';
+import 'package:study_evaluation/view/views/sdk_launcher.dart';
 import 'package:study_evaluation/view_models/package_list_vm.dart';
 import 'package:study_evaluation/view_models/exam_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 import '../../models/package_model/document.dart';
 import '../../utils/app_color.dart';
-import '../../view_models/order_payment_list_vm.dart';
 
 class PackageDetailView extends StatefulWidget {
   final String packageLineItemId;
@@ -47,6 +40,8 @@ class _PackageDetailViewState extends State<PackageDetailView> {
   Package? package;
   String? _selectedFont = "15";
   var remotePDFpath = "";
+  bool isRefresh = false;
+
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -66,15 +61,31 @@ class _PackageDetailViewState extends State<PackageDetailView> {
     packageListVM = Provider.of<PackageListViewModel>(context);
     return Scaffold(
         appBar: AppUtils.getAppbar("Package Detail"),
-        body: AppUtils.getAppBody(packageListVM!, _getBody, context: context));
+        body: RefreshIndicator(
+            onRefresh: _pullRefresh,
+            child: AppUtils.getAppBody(packageListVM!, _getBody,
+                context: context)));
+  }
+
+  Future<void> _pullRefresh() async {
+    packageListVM?.viewModels.clear();
+    packageListVM = null;
+    //print("pull refresh");
+    isRefresh = true;
+    AppUtils.onLoading(context, "Refreshing");
+    // String url = AppUtils.getUrl(
+    //     "${AppConstants.resultAPIPath}?result_id=${widget.resultId}&user_id=${widget.userId}");
+    Provider.of<PackageListViewModel>(context, listen: false)
+        .fetchPackageLineItems(widget.packageLineItemId);
+    packageListVM = Provider.of<PackageListViewModel>(context, listen: false);
   }
 
   Widget _getBody() {
     model = packageListVM!.viewModels[0].model;
     package = model?.package;
-    debug('package ${package}');
+    // debug('package ${package}');
 
-    debug('model?.documents ${model?.documents == null}');
+    //debug('model?.documents ${model?.documents == null}');
     if (model == null ||
         package == null ||
         (model?.testSeries == null && model?.documents == null)) {
@@ -82,8 +93,13 @@ class _PackageDetailViewState extends State<PackageDetailView> {
         child: Text("Invalid Pacakge"),
       );
     }
-    debug('package?.validityStatus@ ${package?.validityStatus}');
-    debug('Roles ${userModel?.role}');
+
+    if (isRefresh) {
+      Navigator.pop(context);
+      isRefresh = false;
+    }
+    // debug('package?.validityStatus@ ${package?.validityStatus}');
+    // debug('Roles ${userModel?.role}');
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.only(
@@ -104,9 +120,19 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   var token =
                       prefs.getString(SharedPrefsConstants.accessTokenKey);
                   var postData =
-                      '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"app","at":"${token}"}';
+                      '{"uid":"${(userModel?.id)}","pid":"${(package?.id)}","typ":"android_app","at":"${token}"}';
+
+                  // debug('postData $postData');
 
                   String bs64 = base64.encode(postData.codeUnits);
+                  SDKLauncher billdesk = SDKLauncher();
+                  AppUtils.onLoading(context, "Please wait");
+
+                  // ignore: use_build_context_synchronously
+                  billdesk.launchWebView(
+                      '${AppConstants.baseUrl}/checkout?m=$bs64',
+                      context,
+                      widget.packageLineItemId);
 
                   // final url =
                   //     'https://studyevaluation.com/sandbox/study_evaluation_website/checkout?m=${bs64}';
@@ -121,16 +147,16 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                   //         )
                   //     .then((value) => print("hello"));
                   // ignore: use_build_context_synchronously
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PaymentView(bs64: bs64)))
-                      .then((value) {
-                    Provider.of<PackageListViewModel>(context, listen: false)
-                        .fetchPackageLineItems(widget.packageLineItemId);
-                    packageListVM = Provider.of<PackageListViewModel>(context,
-                        listen: false);
-                  });
+                  // Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => PaymentView(bs64: bs64)))
+                  //     .then((value) {
+                  //   Provider.of<PackageListViewModel>(context, listen: false)
+                  //       .fetchPackageLineItems(widget.packageLineItemId);
+                  //   packageListVM = Provider.of<PackageListViewModel>(context,
+                  //       listen: false);
+                  // });
 
                   // Navigator.push(
                   //     context,
@@ -262,7 +288,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                             '${AppConstants.baseUrl}${AppConstants.publicPath}/${document.documentUrl}')
                         .then((f) {
                       document.downloadedDocumentUrl = f.path;
-                      debug("remotePDF === ${document.downloadedDocumentUrl}");
+                      // debug("remotePDF === ${document.downloadedDocumentUrl}");
                       Navigator.pop(context);
                       Navigator.push(
                         context,
@@ -457,11 +483,11 @@ class _PackageDetailViewState extends State<PackageDetailView> {
               )));
     } else  */
 
-    if ((testSeries.pdfUrl != null &&
-        (testSeries.pdfUrl?.isNotEmpty)! &&
-        testSeries.type != "Free" &&
-        (package?.validityStatus == "PURCHASED" ||
-            userModel?.role?.toLowerCase() != "student"))) {
+    // if ((testSeries.pdfUrl != null &&
+    //     (testSeries.pdfUrl?.isNotEmpty)! && testSeries.type != "Free" && (package?.validityStatus == "PURCHASED" ||
+    //         userModel?.role?.toLowerCase() != "student"))) {
+
+    if (testSeries.pdfUrl != null && (testSeries.pdfUrl?.isNotEmpty)!) {
       widgets.add(AppUtils.getElevatedButton('Schedule',
           onPressed: () => _scheduledButton(testSeries),
           buttonStyle: ElevatedButton.styleFrom(
@@ -589,7 +615,7 @@ class _PackageDetailViewState extends State<PackageDetailView> {
                 '${AppConstants.baseUrl}${AppConstants.publicPath}/${testSeries.pdfUrl}')
             .then((f) {
           testSeries.downloadedDocumentUrl = f.path;
-          debug("remotePDF === ${testSeries.downloadedDocumentUrl}");
+          //  debug("remotePDF === ${testSeries.downloadedDocumentUrl}");
           Navigator.pop(context);
           Navigator.push(
             context,
@@ -751,10 +777,12 @@ class _PackageDetailViewState extends State<PackageDetailView> {
       padding: const EdgeInsets.all(10.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: AppUtils.getHtmlData(package?.description,
-            fontFamily: 'Kruti',
-            fontSize: double.tryParse(
-                _selectedFont!)!) /* Text(
+        child: AppUtils.getHtmlData1(
+          package?.description,
+          // fontFamily: 'Kruti Dev 010',
+          // fontSize: double.tryParse(
+          //     _selectedFont!)!
+        ) /* Text(
           (package?.description)!,
           style: const TextStyle(
               fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),

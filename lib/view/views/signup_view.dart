@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:study_evaluation/controller/user_controller.dart';
 import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
 import '../../utils/app_color.dart';
 import '../../utils/validator_util.dart';
@@ -31,7 +30,8 @@ class _SignupViewState extends State<SignupView> {
   String otpVerification = "";
   int? oneTimePassword;
   OtpFieldController otpController = OtpFieldController();
-  final TextEditingController _mobileController = TextEditingController();
+  var appSignatureID;
+  //final TextEditingController _mobileController = TextEditingController();
 
   String? _mobileNumber;
   String? _password;
@@ -39,8 +39,30 @@ class _SignupViewState extends State<SignupView> {
   String? _lastName;
 
   @override
+  void codeUpdated() {
+    //print("Update code $code");
+    setState(() {
+      //  print("codeUpdated");
+    });
+  }
+
+  void listenOtp() async {
+    await SmsAutoFill().listenForCode;
+    //   debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
+    //print("OTP listen Called");
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    // print("unregisterListener");
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+    listenOtp();
     passwordVisible = true;
     confirmPasswordVisible = true;
   }
@@ -60,7 +82,7 @@ class _SignupViewState extends State<SignupView> {
             WidgetUtils.getTextFormField(
                 'First Name', 'Enter First Name', Icons.person,
                 onSaved: ((value) {
-              debug("onsave firstname = $value");
+              //  debug("onsave firstname = $value");
               _firstName = value;
             }), onValidator: validateName),
             const SizedBox(
@@ -94,7 +116,7 @@ class _SignupViewState extends State<SignupView> {
               onSaved: ((value) {
                 _password = value;
 
-                print('_password @@@@ $_password');
+                // print('_password @@@@ $_password');
               }),
               onValidator: validatePassword,
               obscureText: passwordVisible,
@@ -124,7 +146,7 @@ class _SignupViewState extends State<SignupView> {
               'Enter Confirm Password',
               Icons.lock,
               onSaved: ((value) {
-                print('_confirmPassword @@@@ $_password');
+                ///  print('_confirmPassword @@@@ $_password');
               }),
               obscureText: confirmPasswordVisible,
               controller: confirmpasswordController,
@@ -132,11 +154,12 @@ class _SignupViewState extends State<SignupView> {
                 if (value!.isEmpty) {
                   return 'Please re-enter password';
                 }
-                print(passwordController.text);
-                print(confirmpasswordController.text);
+                //   print(passwordController.text);
+                //  print(confirmpasswordController.text);
                 if (passwordController.text != confirmpasswordController.text) {
                   return "Password does not match";
                 }
+                return null;
               },
               suffix: Padding(
                 padding: const EdgeInsetsDirectional.only(end: 10.0),
@@ -191,9 +214,15 @@ class _SignupViewState extends State<SignupView> {
 
   _displayDialog(BuildContext context) async {
     AppUtils.onLoading(context, "Please Wait...");
+    appSignatureID = await SmsAutoFill().getAppSignature;
 
-    UserListViewModel().getOTP(_mobileNumber!, "REGISTRATION").then((otp) {
+    UserListViewModel()
+        .getOTP(_mobileNumber!, "REGISTRATION", appSignatureID)
+        .then((otp) {
+      Navigator.pop(context);
+
       oneTimePassword = otp;
+
       showDialogOTP();
     }).catchError((onError) {
       Navigator.pop(context);
@@ -216,19 +245,33 @@ class _SignupViewState extends State<SignupView> {
               //position
               mainAxisSize: MainAxisSize.min,
               children: [
-                OTPTextField(
-                    controller: otpController,
-                    length: 4,
-                    width: MediaQuery.of(context).size.width,
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldWidth: 45,
-                    //fieldStyle: FieldStyle.box,
-                    outlineBorderRadius: 15,
-                    style: const TextStyle(fontSize: 17),
-                    onChanged: (pin) {
-                      otpVerification = pin;
-                    },
-                    onCompleted: (pin) {}),
+                PinFieldAutoFill(
+                  currentCode: otpVerification,
+                  codeLength: 4,
+                  onCodeChanged: (code) {
+                    otpVerification = code.toString();
+                    // print("onCodeChanged $code");
+                    // setState(() {
+
+                    // });
+                  },
+                  onCodeSubmitted: (val) {
+                    //  print("onCodeSubmitted $val");
+                  },
+                ),
+                // OTPTextField(
+                //     controller: otpController,
+                //     length: 4,
+                //     width: MediaQuery.of(context).size.width,
+                //     textFieldAlignment: MainAxisAlignment.spaceAround,
+                //     fieldWidth: 45,
+                //     //fieldStyle: FieldStyle.box,
+                //     outlineBorderRadius: 15,
+                //     style: const TextStyle(fontSize: 17),
+                //     onChanged: (pin) {
+                //       otpVerification = pin;
+                //     },
+                //     onCompleted: (pin) {}),
                 SizedBox(
                   height: 10,
                 ),
@@ -248,7 +291,8 @@ class _SignupViewState extends State<SignupView> {
                     InkWell(
                       onTap: () {
                         UserListViewModel()
-                            .getOTP(_mobileNumber!, "REGISTRATION")
+                            .getOTP(
+                                _mobileNumber!, "REGISTRATION", appSignatureID)
                             .then((records) {
                           oneTimePassword = records;
                           //showDialogOTP(records);
@@ -282,7 +326,7 @@ class _SignupViewState extends State<SignupView> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pop(context);
+                        otpVerification = "";
                       },
                       child: const Text(
                         'Cancel',
@@ -312,8 +356,8 @@ class _SignupViewState extends State<SignupView> {
 
   void _submit() {
     //AppUtils.onLoading(context, "Logging You, please wait...");
-    debug("_firstName = $_firstName");
-
+    // debug("_firstName = $_firstName");
+    AppUtils.onLoading(context, "Please wait...");
     if (otpVerification == oneTimePassword.toString()) {
       UserModel userModel = UserModel(
         role: "Student",
@@ -325,7 +369,7 @@ class _SignupViewState extends State<SignupView> {
       );
 
       userController?.signUp(userModel).then((value) {
-        print("success");
+        //  print("success");
         Navigator.pop(context);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const SignupSuccess()));

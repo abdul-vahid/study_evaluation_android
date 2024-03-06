@@ -7,8 +7,6 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 
-import '../models/free_content/free_content_model.dart';
-
 class PackageListViewModel extends BaseListViewModel {
   Future<void> fetch(
       {String categoryId = "",
@@ -38,6 +36,7 @@ class PackageListViewModel extends BaseListViewModel {
     UserModel? userModel = AppUtils.getSessionUser(prefs);
     String url = AppUtils.getUrl(
         "${AppConstants.packageLineItemsAPIPath}?package_id=$packageId&user_id=${userModel?.id}");
+    //print("url $url");
 
     get(baseModel: PackageModel(), url: url);
   }

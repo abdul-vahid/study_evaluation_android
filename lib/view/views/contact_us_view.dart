@@ -31,7 +31,7 @@ class _ContactUsViewState extends State<ContactUsView> {
                 padding: EdgeInsets.all(20),
                 child: Column(children: [
                   getCard('Contact Us', '+9186199-90680',
-                      'Studysevaluation@gmail.com'),
+                      'studysevaluation@gmail.com'),
                 ]))));
   }
 
@@ -89,7 +89,7 @@ class _ContactUsViewState extends State<ContactUsView> {
               onTap: () async {
                 final url = 'mailto:$textEmail?subject=&body=';
                 final uri = Uri.parse(url);
-                debug("url = $url");
+                //  debug("url = $url");
 
                 if (!await launchUrl(uri)) {}
               },

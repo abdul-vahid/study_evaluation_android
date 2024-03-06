@@ -57,22 +57,22 @@ getCards() {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10),
+                  padding: EdgeInsets.only(left: 10, top: 10),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
                         'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'),
                     radius: 35,
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 20,
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.only(top: 15),
                         child: Text(

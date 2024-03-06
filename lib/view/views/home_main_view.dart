@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
-import 'package:study_evaluation/core/models/base_model.dart';
 import 'package:study_evaluation/models/notification_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/view/views/category_list_view.dart';
@@ -18,6 +17,7 @@ import '../widgets/bottom_navigation.dart' as bottom_navi_widget;
 import 'package:study_evaluation/view/views/home_view.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
+// ignore: must_be_immutable
 class HomeMainView extends StatefulWidget {
   int? selectedIndex = 0;
   HomeMainView({super.key, this.selectedIndex});
@@ -30,8 +30,8 @@ class _HomeMainViewState extends State<HomeMainView> {
   int _selectedIndex = 0;
   var ctime;
   BaseListViewModel? baseListViewModel;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget>? _widgetOptions;
   bool isDeviceConnected = false;
   bool isAlertSet = false;

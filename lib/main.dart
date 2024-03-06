@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'package:study_evaluation/services/notifications/local_notification_service.dart';
-import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/aboutus_view.dart';
 
 import 'package:study_evaluation/view/views/category_list_view.dart';
@@ -32,12 +30,10 @@ import 'package:study_evaluation/view/views/package_detail_view.dart';
 import 'package:study_evaluation/view/views/package_list_view.dart';
 import 'package:study_evaluation/view/views/place_order_view.dart';
 import 'package:study_evaluation/view/views/profile_view.dart';
-import 'package:study_evaluation/view/views/result_view.dart';
 import 'package:study_evaluation/view/views/signup_success.dart';
 import 'package:study_evaluation/view/views/signup_view.dart';
 import 'package:study_evaluation/view/views/splash_view.dart';
 import 'package:study_evaluation/view/views/terms_conditions_view.dart';
-import 'package:study_evaluation/view_models/notifications_list_vm.dart';
 
 /* Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,12 +45,12 @@ void main() async {
   await Firebase.initializeApp();
   LocalNotificationService.initialize();
 
-  FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  // FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   runApp(const MyApp());
 }
 
 Future<void> _backgroundHandler(RemoteMessage message) async {
-  debug("_backgroundHandler");
+  //debug("_backgroundHandler");
 
   /* Navigator.push(
       NotificationUtil.context!,
@@ -78,7 +74,7 @@ class MyApp extends StatelessWidget {
 
     // ignore: prefer_const_constructors
 
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       routes: {

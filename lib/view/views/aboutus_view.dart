@@ -55,7 +55,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      'Our mission is "To educate Students and help them excel in Compitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
+                      'Our mission is "To educate Students and help them excel in competitive exam prepartion to the best of their potential. To impart good values in eventually develop their personality."',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,

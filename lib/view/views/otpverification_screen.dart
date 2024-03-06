@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:otp_text_field/otp_field.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:study_evaluation/utils/app_color.dart';
+import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/confirmpassword_screen.dart';
 import '../../utils/app_utils.dart';
 import '../../view_models/user_view_model/user_list_vm.dart';
@@ -11,23 +12,49 @@ class OTPVerificationScreen extends StatefulWidget {
     super.key,
     required this.otp,
     required this.userName,
+    required this.appSignatureID,
   });
   final int otp;
   final String userName;
+  final String appSignatureID;
 
   @override
   State<OTPVerificationScreen> createState() => _OTPVerificationScreenState();
 }
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
-  var otpVerification;
+  var otpVerification = "";
   int? oneTimePassword;
 
   List<String> char = [];
 
+  ///String codeValue = "";
+
+  @override
+  void codeUpdated() {
+    //print("Update code $code");
+    setState(() {
+      print("codeUpdated");
+    });
+  }
+
+  void listenOtp() async {
+    await SmsAutoFill().listenForCode;
+    debug("await SmsAutoFill().listenForCode ${SmsAutoFill().listenForCode}");
+    print("OTP listen Called");
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    print("unregisterListener");
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    listenOtp();
     for (int i = 0; i < 10; i++) {
       if (i == 0 || i == 1 || i == 8 || i == 9) {
         char.add(widget.userName[i]);
@@ -62,7 +89,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  WidgetUtils.getLoginImageContainer("assets/images/logo.jpg"),
+                  WidgetUtils.getLoginImageContainer("assets/images/logo.png"),
                   const SizedBox(
                     height: 40,
                   ),
@@ -94,22 +121,37 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       ],
                     ),
                   ),
-                  OTPTextField(
-                      // controller: otpController,
-                      length: 4,
-                      width: MediaQuery.of(context).size.width,
-                      textFieldAlignment: MainAxisAlignment.spaceAround,
-                      fieldWidth: 45,
-                      //fieldStyle: FieldStyle.box,
-                      outlineBorderRadius: 15,
-                      style: const TextStyle(fontSize: 17),
-                      onChanged: (pin) {
-                        //print("Changed: " + pin);
-                        otpVerification = pin;
-                      },
-                      onCompleted: (pin) {
-                        //print("Completed: " + pin);
-                      }),
+                  PinFieldAutoFill(
+                    currentCode: otpVerification,
+                    codeLength: 4,
+                    onCodeChanged: (code) {
+                      otpVerification = code.toString();
+
+                      // print("onCodeChanged $code");
+                      // setState(() {
+                      //   otpVerification = code.toString();
+                      // });
+                    },
+                    onCodeSubmitted: (val) {
+                      print("onCodeSubmitted $val");
+                    },
+                  ),
+                  // OTPTextField(
+                  //     // controller: otpController,
+                  //     length: 4,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     textFieldAlignment: MainAxisAlignment.spaceAround,
+                  //     fieldWidth: 45,
+                  //     //fieldStyle: FieldStyle.box,
+                  //     outlineBorderRadius: 15,
+                  //     style: const TextStyle(fontSize: 17),
+                  //     onChanged: (pin) {
+                  //       //print("Changed: " + pin);
+                  //       otpVerification = pin;
+                  //     },
+                  //     onCompleted: (pin) {
+                  //       //print("Completed: " + pin);
+                  //     }),
                   const SizedBox(
                     height: 30,
                   ),
@@ -134,7 +176,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       InkWell(
                         onTap: () {
                           UserListViewModel()
-                              .getOTP(widget.userName, "FORGOT_PASSWORD")
+                              .getOTP(widget.userName, "FORGOT_PASSWORD",
+                                  widget.appSignatureID)
                               .then((records) {
                             oneTimePassword = records;
                             //showDialogOTP(records);

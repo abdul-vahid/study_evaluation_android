@@ -6,15 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/view/views/order_detail_view.dart';
 
-import 'package:study_evaluation/view/views/package_detail_view.dart';
 import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/order_list_vm.dart';
 
-import '../../models/order_model.dart';
-import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
-import '../../utils/enum.dart';
-import '../../view_models/package_list_vm.dart';
 
 class MyOrderView extends StatefulWidget {
   const MyOrderView({super.key});
@@ -59,9 +54,9 @@ class _MyOrderViewState extends State<MyOrderView> {
     for (var viewModel in baseListViewModel!.viewModels) {
       widgets.add(getCard(viewModel.model));
 
-      print('viewModel$viewModel');
+      // print('viewModel$viewModel');
       // viewModel.model
-      print('viewModel.model@@ ${viewModel.model}');
+      // print('viewModel.model@@ ${viewModel.model}');
     }
 
     return widgets;

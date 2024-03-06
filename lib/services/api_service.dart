@@ -2,14 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
 import '../core/apis/app_exception.dart';
 
 class APIService {
   Future getResponse(String url, String token) async {
-    debug("url ----> $url");
-    debug("API Serivce URL = ${url.substring(6)}");
+    //debug("url ----> $url");
+    //debug("API Serivce URL = ${url.substring(6)}");
     dynamic responseJson;
     try {
       final response = await http.get(Uri.parse(url), headers: {

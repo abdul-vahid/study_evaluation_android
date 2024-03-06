@@ -12,9 +12,7 @@ import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import '../../models/user_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
-import '../../utils/enum.dart';
 import '../../view_models/user_view_model/user_list_vm.dart';
-import '../widgets/widget_utils.dart';
 import 'edit_profile_view.dart';
 
 class ProfileView extends StatefulWidget {
@@ -220,7 +218,8 @@ class _ProfileViewState extends State<ProfileView> {
           userModel?.profileUrl = records;
           prefs.setString(SharedPrefsConstants.userKey, (userModel?.toJson())!);
           profileUrl = AppUtils.getImageUrl(records);
-          debug('profileUrl $profileUrl');
+          // debug("profileUrl&&&& $profileUrl");
+          // debug('profileUrl $profileUrl');
         });
         Timer(const Duration(seconds: 1), (() {
           Navigator.pop(context);

@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/controller/home_controller.dart';
 import 'package:study_evaluation/models/configuration_model.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
@@ -40,12 +40,21 @@ class _HomeViewState extends State<HomeView> {
   var ctime;
   @override
   void initState() {
+    secureScreen();
     NotificationUtil().initialize(context);
     Provider.of<CategoryListViewModel>(context, listen: false).fetch();
     Provider.of<SliderImageListViewModel>(context, listen: false).fetch();
     Provider.of<FeedbackListViewModel>(context, listen: false).fetch();
     Provider.of<ConfigurationListViewModel>(context, listen: false).fetch();
     super.initState();
+  }
+
+  Future<void> secureScreen() async {
+    var userModel =
+        AppUtils.getSessionUser(await SharedPreferences.getInstance());
+    if (userModel?.roleId == "2") {
+      await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+    }
   }
 
   @override

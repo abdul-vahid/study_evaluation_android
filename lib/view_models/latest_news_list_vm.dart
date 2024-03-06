@@ -1,6 +1,5 @@
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/core/models/base_view_model.dart';
-import 'package:study_evaluation/models/current_affairs_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/app_utils.dart';
 

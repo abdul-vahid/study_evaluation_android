@@ -1,8 +1,8 @@
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:study_evaluation/utils/app_utils.dart';
 import 'package:video_player/video_player.dart';
 
+// ignore: must_be_immutable
 class AppVideoPlayer extends StatefulWidget {
   final String videoUrl;
   String? type;

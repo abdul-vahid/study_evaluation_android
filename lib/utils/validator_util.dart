@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 String? validateName(String? value) {
   value = value!.trim();
   if (value == '') return 'Required';
@@ -7,7 +5,7 @@ String? validateName(String? value) {
 }
 
 String? validateDate(String? value) {
-  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  // String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   value = value!.trim();
   if (value == '') return 'Required';
   if (value.contains(' ')) return 'Invalid Password';

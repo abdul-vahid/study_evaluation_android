@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view/views/signup_success.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/validator_util.dart';
@@ -62,7 +61,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           WidgetUtils.getLoginImageContainer(
-                              "assets/images/logo.jpg"),
+                              "assets/images/logo.png"),
                           const SizedBox(
                             height: 40,
                           ),
@@ -181,6 +180,9 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
           .changePasword(widget.userName, passwordController.text)
           .then((records) {
         Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Password has been changed Successfully."),
+        ));
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const LoginHome()));
       }).catchError((onError) {

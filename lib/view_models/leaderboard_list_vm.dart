@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_evaluation/core/models/base_list_view_model.dart';
 import 'package:study_evaluation/models/leader_board_model.dart';
 import 'package:study_evaluation/utils/app_constants.dart';

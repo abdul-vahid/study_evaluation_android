@@ -14,10 +14,8 @@ import 'package:study_evaluation/models/user_model.dart';
 import 'package:study_evaluation/utils/app_color.dart';
 import 'package:study_evaluation/utils/app_constants.dart';
 import 'package:study_evaluation/utils/function_lib.dart';
-import 'package:study_evaluation/utils/notification_utils.dart';
 import 'package:study_evaluation/view/views/home_main_view.dart';
 import 'package:study_evaluation/view/views/login_home.dart';
-import 'package:study_evaluation/view/views/notifications_view.dart';
 import 'package:study_evaluation/view_models/category_list_vm.dart';
 import 'package:study_evaluation/view_models/cofiguration_list_vm.dart';
 import 'package:study_evaluation/view_models/feedback_list_vm.dart';
@@ -27,6 +25,7 @@ import 'package:study_evaluation/view_models/slider_image_list_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class AppUtils {
   static bool isLoggedout = false;
@@ -266,9 +265,21 @@ class AppUtils {
     Navigator.of(context).pop();
   }
 
+  static HtmlWidget getHtmlData1(
+    data,
+    // {fontFamily = '',
+    // double fontSize = 14.0,
+    // Color? color,
+    // fontWeight = FontWeight.normal}
+  ) {
+    return HtmlWidget(
+      data,
+    );
+  }
+
   static Html getHtmlData(data,
       {fontFamily = '',
-      double fontSize = 15.0,
+      double fontSize = 14.0,
       Color? color,
       fontWeight = FontWeight.normal}) {
     return Html(
@@ -292,6 +303,18 @@ class AppUtils {
       //   }
       // },
     );
+  }
+
+  static String changeFontSize(String htmlData, String fontSize) {
+    RegExp exp = RegExp(r'(font-size\s*:\s*)(\d+(\.\d+)?)(pt|px)?');
+    // String? str = e.attributes['style'];
+    htmlData =
+        htmlData.replaceAll(exp, 'font-size:${double.tryParse(fontSize)}px');
+
+    htmlData =
+        '<div style="font-size:${double.tryParse(fontSize)}px">$htmlData</div>';
+
+    return htmlData;
   }
 
   static String capitalize(String string) {
@@ -374,7 +397,7 @@ class AppUtils {
   static void openDocument(context, documentUrl) async {
     final url =
         '${AppConstants.baseUrl}${AppConstants.publicPath}/$documentUrl';
-    debug("url = $url");
+    // debug("url = $url");
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -387,7 +410,7 @@ class AppUtils {
 
   static Future<File> createFileOfPdfUrl(url) async {
     Completer<File> completer = Completer();
-    print("Start download file from internet! $url");
+    // print("Start download file from internet! $url");
     try {
       // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
       // final url = "https://pdfkit.org/docs/guide.pdf";
@@ -397,14 +420,14 @@ class AppUtils {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      print("Download files");
-      print("${dir.path}/$filename");
+      //  print("Download files");
+      // print("${dir.path}/$filename");
       File file = File("${dir.path}/$filename");
 
       await file.writeAsBytes(bytes, flush: true);
       completer.complete(file);
     } catch (e) {
-      debug("Exception PDF == $e");
+      //debug("Exception PDF == $e");
       //throw Exception('Error parsing asset file!');
     }
 

@@ -46,26 +46,24 @@ class StartState extends State<SplashView> {
 
   initScreen(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColor.buttonColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                width: 100,
-                height: 100,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      "assets/images/logo.jpg",
-                      fit: BoxFit.contain,
-                    ))),
-            // const Padding(padding: EdgeInsets.only(top: 20.0)),
-            // const CircularProgressIndicator(
-            //   backgroundColor: AppColor.buttonColor,
-            //   strokeWidth: 2,
-            // )
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Color(0xFF2FB3E6),
+                  // width: 200,
+                  //height: 1000,R
+                  child: Image.asset(
+                    "assets/images/splash.png",
+                    fit: BoxFit.contain,
+                    width: 50,
+                  )),
+            ],
+          ),
         ),
       ),
     );

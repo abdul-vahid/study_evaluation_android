@@ -13,7 +13,7 @@ class UserListViewModel extends BaseListViewModel {
 
   Future<dynamic> signup(UserModel userModel) async {
     String url = AppUtils.getUrl(AppConstants.signupAPIPath);
-    debug(userModel.toJson());
+    // debug(userModel.toJson());
     return await post(url: url, body: userModel.toJson());
   }
 
@@ -35,11 +35,14 @@ class UserListViewModel extends BaseListViewModel {
     return await post(url: url, body: userModel.toJson());
   }
 
-  Future<dynamic> getOTP(String mobileNo, String reason) async {
+  Future<dynamic> getOTP(
+      String mobileNo, String reason, String signatureId) async {
     String url = AppUtils.getUrl(AppConstants.otpVerificationAPIPath);
     Map<String, String> requestData = {
       'contact_number': mobileNo,
-      'reason': reason
+      'reason': reason,
+      'signature_id': signatureId,
+      'device': "mobile"
     };
     var records = await post(url: url, body: jsonEncode(requestData));
     return records["message"];

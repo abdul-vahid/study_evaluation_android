@@ -64,7 +64,8 @@ class _PaymentViewState extends State<PaymentView> {
         body: Builder(builder: (BuildContext context) {
           return WebView(
             initialUrl:
-                'https://studyevaluation.com/sandbox/study_evaluation_website/checkout?m=${widget.bs64}',
+                //'${AppConstants.baseUrl}/study_evaluation_website/checkout?m=${widget.bs64}',
+                '${AppConstants.baseUrl}/checkout?m=${widget.bs64}',
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
@@ -144,7 +145,7 @@ class NavigationControls extends StatelessWidget {
         final WebViewController? controller = snapshot.data;
         controllerGlobal = controller;
 
-        return Row(
+        return const Row(
           children: <Widget>[
             // IconButton(
             //   icon: const Icon(Icons.arrow_back_ios),

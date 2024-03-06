@@ -121,7 +121,7 @@ class _NotificationViewState extends State<NotificationView> {
     Widget noButton = TextButton(
       child: Text("No"),
       onPressed: () {
-        debug("No");
+        // debug("No");
         Navigator.pop(context);
       },
     );
@@ -288,7 +288,7 @@ class _NotificationViewState extends State<NotificationView> {
 
   void onSlideAction(String id, String action) {
     AppUtils.onLoading(context, "Please Wait...");
-    int currentCount = (baseListViewModel?.viewModels.length)!;
+    // int currentCount = (baseListViewModel?.viewModels.length)!;
     NotificationsListViewModel().updateStatus(id, action).then((value) {
       Provider.of<NotificationsListViewModel>(context, listen: false).fetch();
       baseListViewModel =

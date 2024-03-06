@@ -14,7 +14,6 @@ import 'package:study_evaluation/utils/function_lib.dart';
 import 'package:study_evaluation/view/views/analysis_view.dart';
 import 'package:study_evaluation/view/views/learderboard_view.dart';
 import 'package:study_evaluation/view/widgets/custom_alertdialog.dart';
-import 'package:study_evaluation/view/widgets/app_drawer_widget.dart';
 import 'package:study_evaluation/view_models/leaderboard_list_vm.dart';
 import 'package:study_evaluation/view_models/result_list_vm.dart';
 
@@ -391,7 +390,7 @@ class _ResultViewState extends State<ResultView> {
   }
 
   void _loadFilterMap(key) {
-    print("debug _loadfilter");
+    // print("debug _loadfilter");
     int favCount = 0;
     if (filtersMap.containsKey(key)) {
       favCount = filtersMap[key]!;
@@ -548,21 +547,22 @@ class _ResultViewState extends State<ResultView> {
       key: _keys?[model.index],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 15),
+            padding: const EdgeInsets.only(left: 5, top: 11),
             child: Text(
               "Q ${model.index + 1}. ",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: double.tryParse(_selectedFont!),
+                //  fontWeight: FontWeight.bold
+              ),
             ),
           ),
           Expanded(
             child: _getContent(
                 "${model.questionHindi}", "${model.questionEnglish}",
-                questionNumber: model.index + 1,
-                fontSize: double.tryParse(_selectedFont!)!,
-                fontWeight: FontWeight.bold),
+                questionNumber: model.index + 1),
           ),
         ],
       ),
@@ -617,14 +617,25 @@ class _ResultViewState extends State<ResultView> {
     if (labelHindi != null &&
         (_selectedLanguage.toLowerCase() == "both" ||
             _selectedLanguage.toLowerCase() == "hindi")) {
+      debug("labelHindi  $labelHindi");
       /* labelHindi = questionNumber != null
           ? "Q. $questionNumber) $labelHindi"
           : labelHindi; */
-      widgets.add(AppUtils.getHtmlData(labelHindi,
-          fontFamily: 'Kruti',
-          fontSize: (fontSize + 4),
-          color: color,
-          fontWeight: fontWeight));
+      labelHindi = AppUtils.changeFontSize(labelHindi, _selectedFont!);
+
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(top: 10, right: 10),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1(
+            labelHindi,
+            // fontFamily: 'Kruti Dev 010',
+            // fontSize: (fontSize + 4),
+            // color: color,
+            // fontWeight: fontWeight)
+          ),
+        ),
+      ));
     }
 
     if (labelEnglish != null &&
@@ -639,8 +650,18 @@ class _ResultViewState extends State<ResultView> {
       widgets.add(Divider(
         height: 10,
       ));
-      widgets.add(AppUtils.getHtmlData(labelEnglish,
-          fontSize: fontSize, color: color, fontWeight: fontWeight));
+      labelEnglish = AppUtils.changeFontSize(labelEnglish, _selectedFont!);
+
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: AppUtils.getHtmlData1(
+            labelEnglish,
+            // fontSize: fontSize, color: color, fontWeight: fontWeight
+          ),
+        ),
+      ));
     }
 
     if (widgets.isNotEmpty) {
